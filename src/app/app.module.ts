@@ -14,8 +14,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProductCardComponent } from './home-page/product-card/product-card.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MenubarModule } from 'primeng/menubar';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { UpdateProductComponent } from './admin-page/update-product/update-product.component';
+import {DialogModule} from "primeng/dialog";
+import {FileUploadModule} from "primeng/fileupload";
+import {ToastModule} from "primeng/toast";
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +28,9 @@ import { MenubarModule } from 'primeng/menubar';
     ProductsListCarouselComponent,
     ProductCardComponent,
     NavBarComponent,
+    AdminPageComponent,
+    UpdateProductComponent,
+
   ],
   imports: [
     HttpClientModule,
@@ -35,7 +43,11 @@ import { MenubarModule } from 'primeng/menubar';
     InputSwitchModule,
     FormsModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    DialogModule,
+    ReactiveFormsModule,
+    FileUploadModule,
+    ToastModule
   ],
   providers: [],
   bootstrap: [AppComponent],

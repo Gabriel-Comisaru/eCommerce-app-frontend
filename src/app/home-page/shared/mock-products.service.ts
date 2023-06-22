@@ -13,4 +13,9 @@ export class MockProductsService {
   getMockProducts(): Observable<any> {
     return this.httpClient.get<any>(this.mockProductsUrl);
   }
+
+  saveMockProducts(product:any):Observable<any>{
+    return this.httpClient.post<any>(this.mockProductsUrl+'/add',product);
+  }
+
 }

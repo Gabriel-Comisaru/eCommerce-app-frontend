@@ -1,0 +1,11 @@
+<p-menubar>
+  <ng-template pTemplate="end">
+    <p-button (click)="showDialogNewProduct()" icon="pi pi-external-link" label="Add new product"></p-button>
+<!--    edit dialog bellow-->
+    <p-button (click)="showDialogEditProduct()" icon="pi pi-external-link" label="Edit product"></p-button>
+   <app-update-product (closeEmitter)="onClose()" [show]="visible" [header]="header"></app-update-product>
+<!--    <p-dialog header="{{header}}" [(visible)]="visible" [style]="{width: '50vw'}">-->
+<!--      //add new product-->
+<!--    </p-dialog>-->
+  </ng-template>
+</p-menubar>

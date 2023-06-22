@@ -1,0 +1,65 @@
+<div class="card flex justify-content-center">
+  <p-dialog [hidden]="header!='Add new product'" (onHide)="onClose($event)" header="{{header}}" [(visible)]="visible"
+            [style]="{width: '50vw'}">
+    <form [formGroup]="newProductForm" (ngSubmit)="onSubmit()">
+      <div>
+        <label>
+          Name:
+        </label>
+        <input formControlName="name">
+      </div>
+      <div>
+        <label>
+          Price:
+        </label>
+        <input formControlName="price">
+      </div>
+      <div>
+        <label>
+          Category:
+        </label>
+        <input formControlName="category">
+      </div>
+      <div>
+        <label>
+          Description:
+        </label>
+        <input formControlName="description">
+      </div>
+      <div>
+        <label>
+          Stock:
+        </label>
+        <input formControlName="stock">
+      </div>
+      <div class="card flex justify-content-center">
+        <p-fileUpload mode="basic" chooseLabel="Choose" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*"  (onUpload)="onUpload($event)" ></p-fileUpload>
+      </div>
+      <div>
+        <label>
+          Photos:
+        </label>
+        <input formControlName="photo2">
+      </div>
+      <div>
+        <label>
+          Photos:
+        </label>
+        <input formControlName="photo3">
+      </div>
+
+
+      <p-button type="submit" icon="pi pi-check" label="Add" styleClass="p-button-text"></p-button>
+
+
+  </form>
+  </p-dialog>
+  <p-dialog [hidden]="header!='Edit product'" (onHide)="onClose($event)" header="{{header}}" [(visible)]="visible"
+            [style]="{width: '50vw'}">
+    //add new product
+    <ng-template pTemplate="footer">
+      <p-button icon="pi pi-check" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+  </p-dialog>
+
+</div>
