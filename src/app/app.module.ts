@@ -13,13 +13,27 @@ import { RatingModule } from 'primeng/rating';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-
+import { HomePageComponent } from './home-page/home-page.component';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { CarouselModule } from 'primeng/carousel';
+import { TagModule } from 'primeng/tag';
+import { ProductsListCarouselComponent } from './home-page/products-list-carousel/products-list-carousel.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ProductCardComponent } from './home-page/product-card/product-card.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { MenubarModule } from 'primeng/menubar';
 @NgModule({
   declarations: [
     AppComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    HomePageComponent,
+    ProductsListCarouselComponent,
+    ProductCardComponent,
+    NavBarComponent,
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -30,9 +44,15 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     RatingModule,
     FormsModule,
     InputTextModule,
-    InputTextareaModule
+    InputTextareaModule,
+    MenubarModule,
+    CarouselModule,
+    TagModule,
+    InputSwitchModule,
+    TabMenuModule
+
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

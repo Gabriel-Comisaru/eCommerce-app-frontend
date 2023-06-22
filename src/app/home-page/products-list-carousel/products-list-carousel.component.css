@@ -1,0 +1,13 @@
+.productImageContainer {
+}
+
+.productImage {
+  object-fit: contain;
+}
+
+.productCard {
+}
+
+.productName {
+  cursor: pointer;
+}
