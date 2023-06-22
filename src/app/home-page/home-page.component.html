@@ -1,1 +1,23 @@
-<p>home-page works!</p>
+<header class="header"></header>
+<main>
+  <app-products-list-carousel
+    [mockProductsList]="mockProductsList"
+  ></app-products-list-carousel>
+
+  <section>
+    <h2>Hottest Products</h2>
+  </section>
+
+  <section>
+    <h2>Discounted Products</h2>
+  </section>
+
+  <!-- if logged in - recommended for you products -->
+  <section>
+    <h2>Recommended for you</h2>
+  </section>
+</main>
+
+<footer>
+  <!-- copyright info -->
+</footer>
