@@ -21,6 +21,7 @@ export class UpdateProductComponent {
   @Output() closeEmitter = new EventEmitter();
   visible = false;
   uploadedFiles: any[] = [];
+  imageURL:string='';
 
   constructor(private fb: FormBuilder,
               private mockProduct: MockProductsService,
@@ -29,6 +30,7 @@ export class UpdateProductComponent {
 
   newProductForm = this.fb.group({
     name: [''],
+    photos:[''],
     photo1: [''],
     photo2: [''],
     photo3: [''],
@@ -65,8 +67,19 @@ export class UpdateProductComponent {
   }
 
   onUpload(event: any) {
+    // @ts-ignore
+    const file = event.target.files[0];
+    this.newProductForm.patchValue({
+      photos: file.name
+    });
+    this.newProductForm.get('photos')!.updateValueAndValidity()
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imageURL = reader.result as string;
+    }
+    reader.readAsDataURL(file)
     this.uploadedFiles.push(event);
-    this.messageService.add({severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode'});
-    console.log(event.url);
+    // this.messageService.add({severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode'});
+    console.log(this.imageURL);
   }
 }

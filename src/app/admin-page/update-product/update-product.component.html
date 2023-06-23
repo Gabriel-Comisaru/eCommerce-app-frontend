@@ -33,7 +33,7 @@
         <input formControlName="stock">
       </div>
       <div class="card flex justify-content-center">
-        <p-fileUpload mode="basic" chooseLabel="Choose" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*"  (onUpload)="onUpload($event)" ></p-fileUpload>
+        <input type="file" mode="basic" value="Choose" accept="image/*"  (change)="onUpload($event)" >
       </div>
       <div>
         <label>
