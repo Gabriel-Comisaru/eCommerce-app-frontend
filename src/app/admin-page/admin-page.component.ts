@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {UpdateProductComponent} from "./update-product/update-product.component";
 import {MockProductsService} from "../home-page/shared/mock-products.service";
 import {MockProductDetailed} from "../home-page/shared/mockProduct.model";
 
@@ -14,6 +13,7 @@ export class AdminPageComponent implements OnInit{
   header = '';
   products:Array<MockProductDetailed>=[];
   mockProductsList=[];
+  selectedProduct:any=[];
 
   constructor(private mockProductsService:MockProductsService) {
   }
@@ -23,9 +23,10 @@ export class AdminPageComponent implements OnInit{
     this.header='Add new product'
   }
 
-  showDialogEditProduct() {
+  showDialogEditProduct(product:any) {
     this.visible = true;
     this.header='Edit product'
+    this.selectedProduct=product;
   }
 
   onClose(){
@@ -51,4 +52,8 @@ export class AdminPageComponent implements OnInit{
     });
   }
 
+  deleteItem(product:any,event:any) {
+    event.stopPropagation();
+  console.log(product.id)
+  }
 }

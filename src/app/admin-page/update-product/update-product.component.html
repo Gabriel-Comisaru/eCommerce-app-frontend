@@ -47,7 +47,29 @@
   </p-dialog>
   <p-dialog [hidden]="header!='Edit product'" (onHide)="onClose($event)" header="{{header}}" [(visible)]="visible"
             [style]="{width: '50vw'}">
-    //add new product
+    <h1>Edit {{selectedProduct.name}}</h1>
+    <form [formGroup]="newEditForm" (ngSubmit)="onEditSubmit()">
+      <div class="flex flex-column gap-2">
+        <label htmlFor="name">Name</label>
+        <input pInputText id="name" aria-describedby="username-help" formControlName="name"/>
+      </div>
+      <div class="flex flex-column gap-2">
+        <label htmlFor="category">Category</label>
+        <input pInputText id="category" aria-describedby="username-help" formControlName="category"/>
+      </div>
+      <div class="flex flex-column gap-2">
+        <label htmlFor="price">Price</label>
+        <input pInputText id="price" aria-describedby="username-help" formControlName="price"/>
+      </div>
+      <div class="flex flex-column gap-2">
+        <label htmlFor="stock">Stock</label>
+        <input pInputText id="stock" aria-describedby="username-help" formControlName="stock"/>
+      </div>
+      <div class="flex flex-column gap-2">
+        <label htmlFor="description">Description</label>
+        <input pInputText id="description" aria-describedby="username-help" formControlName="description"/>
+      </div>
+    </form>
     <ng-template pTemplate="footer">
       <p-button icon="pi pi-check" label="Ok" styleClass="p-button-text"></p-button>
     </ng-template>

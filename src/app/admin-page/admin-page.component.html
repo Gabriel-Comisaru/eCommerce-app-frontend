@@ -2,8 +2,8 @@
   <ng-template pTemplate="end">
     <p-button (click)="showDialogNewProduct()" icon="pi pi-external-link" label="Add new product"></p-button>
 <!--    edit dialog bellow-->
-    <p-button (click)="showDialogEditProduct()" icon="pi pi-external-link" label="Edit product"></p-button>
-   <app-update-product (closeEmitter)="onClose()" [show]="visible" [header]="header"></app-update-product>
+<!--    <p-button (click)="showDialogEditProduct()" icon="pi pi-external-link" label="Edit product"></p-button>-->
+   <app-update-product (closeEmitter)="onClose()" [selectedProduct]="selectedProduct" [show]="visible" [header]="header"></app-update-product>
   </ng-template>
 </p-menubar>
 
@@ -13,15 +13,21 @@
       <th>Image</th>
       <th>Name</th>
       <th>Category</th>
-      <th>Quantity</th>
+      <th>Stock</th>
+      <th>Price</th>
+      <th>Action</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-product>
-    <tr>
+    <tr (click)="showDialogEditProduct(product)" class="item">
       <td><img [src]="product.photos[0]" style="max-width: 100px;max-height: 50px"></td>
       <td>{{ product.name }}</td>
       <td>{{ product.category }}</td>
-      <td>{{ product.quantity }}</td>
+      <td>{{ product.stock }}</td>
+      <td>${{ product.price }}</td>
+      <td>
+        <p-button (click)="deleteItem(product,$event)">Delete</p-button>
+      </td>
     </tr>
   </ng-template>
 </p-table>

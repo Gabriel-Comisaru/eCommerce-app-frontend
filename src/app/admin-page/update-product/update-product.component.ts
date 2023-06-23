@@ -17,6 +17,8 @@ interface UploadEvent {
   providers: [MessageService]
 })
 export class UpdateProductComponent {
+  changes:any;
+  @Input() selectedProduct?:any;
   @Input() show: any;
   @Input() header: any;
   @Output() closeEmitter = new EventEmitter();
@@ -32,6 +34,25 @@ export class UpdateProductComponent {
               private messageService: MessageService,
               private httpClient: HttpClient) {
   }
+  newEditForm=this.fb.group({
+    name: [''],
+    photos:[''],
+    price: [0],
+    category: [''],
+    description: [''],
+    stock: [0],
+  })
+
+  ngOnInit(){
+    this.newEditForm.controls.name.setValue(this.selectedProduct?.name);
+    this.newEditForm.controls.photos.setValue(this.selectedProduct?.photos);
+    this.newEditForm.controls.price.setValue(this.selectedProduct.price);
+    this.newEditForm.controls.category.setValue(this.selectedProduct.category);
+    this.newEditForm.controls.description.setValue(this.selectedProduct.description);
+    this.newEditForm.controls.stock.setValue(this.selectedProduct.stock);
+  }
+
+
 
   newProductForm = this.fb.group({
     name: [''],
@@ -47,6 +68,10 @@ export class UpdateProductComponent {
     if (changes['show'].currentValue) {
       this.visible = changes['show'].currentValue;
     }
+    if(changes['selectedProduct'].currentValue){
+      this.changes=changes['selectedProduct'].currentValue;
+      this.newEditForm.controls.name.setValue(changes['selectedProduct'].currentValue.name)
+    }
   }
 
   onClose(event: any) {
@@ -57,8 +82,6 @@ export class UpdateProductComponent {
     this.newProductForm.controls.category.setValue('')
     this.newProductForm.controls.description.setValue('')
     this.newProductForm.controls.stock.setValue(0)
-    this.photos=[];
-    this.selectedFile=[];
   }
 
   onSubmit() {
@@ -106,5 +129,9 @@ export class UpdateProductComponent {
           }
         }
       );
+  }
+
+  onEditSubmit() {
+
   }
 }
