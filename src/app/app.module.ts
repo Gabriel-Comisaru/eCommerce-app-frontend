@@ -3,22 +3,30 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProductDetailsComponent } from './product-details/product-details.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ButtonModule } from 'primeng/button';
+import { GalleriaModule } from 'primeng/galleria';
+import { StyleClassModule } from 'primeng/styleclass';
+import { CardModule } from 'primeng/card';
+import { RatingModule } from 'primeng/rating';
+import { FormsModule } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { HomePageComponent } from './home-page/home-page.component';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { CarouselModule } from 'primeng/carousel';
-
 import { TagModule } from 'primeng/tag';
-import { ButtonModule } from 'primeng/button';
 import { ProductsListCarouselComponent } from './home-page/products-list-carousel/products-list-carousel.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { FormsModule } from '@angular/forms';
 import { MenubarModule } from 'primeng/menubar';
 import { RatingModule } from 'primeng/rating';
 @NgModule({
   declarations: [
     AppComponent,
+    ProductDetailsComponent,
     HomePageComponent,
     ProductsListCarouselComponent,
 
@@ -28,9 +36,17 @@ import { RatingModule } from 'primeng/rating';
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    ButtonModule,
+    GalleriaModule,
+    StyleClassModule,
+    CardModule,
+    RatingModule,
+    FormsModule,
+    InputTextModule,
+    InputTextareaModule,
     MenubarModule,
     CarouselModule,
-    ButtonModule,
     TagModule,
     InputSwitchModule,
     FormsModule,
