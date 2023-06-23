@@ -1,21 +1,29 @@
 <header class="header"></header>
 <main>
+  <!-- TODO -change mockProductsList to desired filtered list to display - according to each section -->
   <app-products-list-carousel
-    [mockProductsList]="mockProductsList"
+    [productsToDisplay]="mockProductsList"
   ></app-products-list-carousel>
-
-  <section>
-    <h2>Hottest Products</h2>
+  <section *ngIf="isLoggedIn">
+    <h2>Recommended for you</h2>
+    <!--[productsToDisplaye]="filtered list of products based on previous user's search tags" -->
   </section>
 
   <section>
     <h2>Discounted Products</h2>
+    <app-products-list-carousel>
+      <!-- [productsToDisplay]="filtered list of products by existence of a discount" -->
+    </app-products-list-carousel>
+  </section>
+  <section>
+    <h2>Hottest Products</h2>
+
+    <app-products-list-carousel>
+      <!-- [productsToDisplaye]='filtered list of products by most bought products' -->
+    </app-products-list-carousel>
   </section>
 
   <!-- if logged in - recommended for you products -->
-  <section>
-    <h2>Recommended for you</h2>
-  </section>
 </main>
 
 <footer>

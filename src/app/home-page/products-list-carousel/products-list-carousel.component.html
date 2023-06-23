@@ -1,6 +1,6 @@
 <div class="card">
   <p-carousel
-    [value]="mockProductsList"
+    [value]="productsToDisplay"
     [numVisible]="5"
     [numScroll]="5"
     [circular]="true"
@@ -11,7 +11,26 @@
       <div
         class="border-1 surface-border border-round m-2 text-center productCard h-25rem grid"
       >
-        <div class="mb-3 col-12">
+        <!-- deleted col-12 -->
+        <div class="mb-3 w-full relative overflow-hidden">
+          <p-tag
+            icon="pi pi-user"
+            severity="primary"
+            value="Most selled"
+            class="absolute mostSelledPosition"
+          ></p-tag>
+          <p-tag
+            icon="pi pi-user"
+            severity="danger"
+            value="Limited offer"
+            class="absolute limitedOfferPosition"
+          ></p-tag>
+          <p-tag
+            severity="danger"
+            [value]="'-' + product.discount + '%'"
+            class="absolute discountApplied"
+          >
+          </p-tag>
           <img
             [src]="product.photos[0]"
             [alt]="product.name"
@@ -27,9 +46,56 @@
             }}
           </h4>
 
-          <h6 class="mt-0 mb-3">{{ "$" + product.price }}</h6>
-          <p-tag [value]="product.stock"></p-tag>
-          <!-- [severity]="getSeverity(product.inventoryStatus)" -->
+          <h5
+            class="mt-0 mb-3 flex flex-column justify-content-center align-content-center"
+          >
+            <span [ngClass]="{ oldPrice: product.discount !== 0 }">
+              {{ "$" + product.price }} </span
+            ><span *ngIf="product.discount !== 0" class="discountedPrice">
+              {{
+                "$" +
+                  (
+                    product.price -
+                    (product.price * product.discount) / 100
+                  ).toFixed(0)
+              }}</span
+            >
+          </h5>
+
+          <!-- TODO - add - last piece in stock  and out of stock -->
+          <p-tag
+            [value]="
+              product.stock > 50
+                ? 'In stock'
+                : product.stock <= 50 && product.stock > 10
+                ? 'Limited stock'
+                : product.stock <= 10 && product.stock > 1
+                ? 'Last ' + product.stock + ' pieces'
+                : product.stock === 1
+                ? 'Last piece available'
+                : 'Out of stock'
+            "
+            [severity]="
+              product.stock > 50
+                ? 'success'
+                : product.stock <= 50 && product.stock > 10
+                ? 'warning'
+                : product.stock <= 10 && product.stock > 1
+                ? 'warning'
+                : product.stock === 1
+                ? 'danger'
+                : 'danger'
+            "
+          ></p-tag>
+
+          <div class="card flex justify-content-center">
+            <p-rating
+              [(ngModel)]="product.rating"
+              [readonly]="true"
+              [cancel]="false"
+            ></p-rating>
+          </div>
+
           <div class="car-buttons">
             <p-button
               type="button"

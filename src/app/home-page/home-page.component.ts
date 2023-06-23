@@ -9,7 +9,7 @@ import { MockProductDetailed } from './shared/mockProduct.model';
 })
 export class HomePageComponent {
   public mockProductsList!: MockProductDetailed[];
-
+  public isLoggedIn: boolean = false;
   constructor(private mockProductsService: MockProductsService) {}
   ngOnInit() {
     // getting mock list of products and mapping it according to my interface
@@ -20,9 +20,9 @@ export class HomePageComponent {
           name: product.title,
           photos: product.images,
           price: product.price,
-          rating: product.rating,
+          rating: Math.floor(product.rating),
           reviews: ['No reviews available'],
-          discount: product.discount,
+          discount: product.discountPercentage,
           category: product.category,
           description: product.description,
           stock: product.stock,

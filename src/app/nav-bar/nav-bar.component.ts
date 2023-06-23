@@ -6,14 +6,21 @@ import { PrimeIcons, MenuItem } from 'primeng/api';
   styleUrls: ['./nav-bar.component.css'],
 })
 export class NavBarComponent {
-  public items!: MenuItem[];
+  public navMainControls!: MenuItem[];
+  public navProductControls!: MenuItem[];
   isAdmin: boolean = false;
   ngOnInit() {
-    this.items = [
-      { label: 'Home', icon: 'pi pi-fw pi-home' },
-      { label: 'Products', icon: 'pi pi-fw pi-bars' },
-      { label: 'Deals', icon: 'pi pi-fw pi-heart' },
+    this.navMainControls = [
       { label: 'Login/Register', icon: 'pi pi-fw pi-user' },
+    ];
+    this.navProductControls = [
+      { label: 'Products', icon: 'pi pi-fw pi-bars' },
+      { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
+      {
+        label: 'Cart',
+        icon: 'pi pi-fw pi-shopping-cart',
+      },
+      { label: 'Favorite', icon: 'pi pi-fw pi-heart' },
     ];
   }
 }

@@ -11,3 +11,41 @@
 .productName {
   cursor: pointer;
 }
+
+.oldPrice {
+  text-decoration-line: line-through;
+}
+
+.discountedPrice {
+  font-size: 1.25rem;
+  color: red;
+}
+
+.mostSelledPosition {
+  bottom: 1.5rem;
+  left: 0;
+}
+
+.limitedOfferPosition {
+  top: 0.5rem;
+  right: 0;
+}
+
+.limitedOfferPosition::ng-deep .p-tag {
+  border-radius: 6px 0 0 6px;
+}
+
+.mostSelledPosition::ng-deep .p-tag {
+  border-radius: 0 6px 6px 0;
+}
+
+.discountApplied {
+  transform: rotate(-45deg);
+  left: -2rem;
+  top: 0.5rem;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.discountApplied ::ng-deep .p-tag {
+  width: 7rem;
+}

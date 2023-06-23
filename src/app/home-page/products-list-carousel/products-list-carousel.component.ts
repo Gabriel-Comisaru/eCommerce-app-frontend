@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { MockProductDetailed } from '../shared/mockProduct.model';
 
 @Component({
@@ -8,7 +8,20 @@ import { MockProductDetailed } from '../shared/mockProduct.model';
 })
 export class ProductsListCarouselComponent {
   constructor() {}
-  @Input() mockProductsList!: MockProductDetailed[];
+  @Input() productsToDisplay!: MockProductDetailed[];
 
   ngOnInit() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes['mockProductsList']);
+  }
+
+  stockStatus(stockValue: number) {
+    if (stockValue > 50) {
+    } else if (stockValue <= 50 && stockValue > 10) {
+    } else if (stockValue <= 10 && stockValue > 1) {
+    } else if (stockValue === 1) {
+    } else if (stockValue === 0) {
+    }
+  }
 }

@@ -1,8 +1,34 @@
-<div class="card">
-  <p-menubar [model]="items">
-    <ng-template pTemplate="end">
-      <p-inputSwitch [(ngModel)]="isAdmin" id="adminMode"></p-inputSwitch>
-      <label for="adminMode">Admin</label>
+<nav class="navBar">
+  <p-menubar [model]="navMainControls" class="navControls">
+    <ng-template pTemplate="start">
+      <div class="flex searchContainer">
+        <img
+          src="https://primefaces.org/cdn/primeng/images/primeng.svg"
+          height="40"
+          class="mx-2"
+        />
+        <input
+          type="text"
+          pInputText
+          placeholder="Search"
+          class="mx-4 searchInput"
+        />
+      </div>
     </ng-template>
+    <ng-template pTemplate="end">
+      <div class="mx-2 flex align-items-center">
+        <p-inputSwitch
+          [(ngModel)]="isAdmin"
+          id="adminMode"
+          class="flex"
+        ></p-inputSwitch>
+        <label for="adminMode" class="mx-2">Admin</label>
+      </div></ng-template
+    >
   </p-menubar>
-</div>
+  <p-menubar
+    [model]="navProductControls"
+    class="navControls navProductControls"
+  >
+  </p-menubar>
+</nav>
