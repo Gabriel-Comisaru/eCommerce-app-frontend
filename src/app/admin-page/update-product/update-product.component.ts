@@ -3,6 +3,7 @@ import {FormBuilder} from "@angular/forms";
 import {MockProductsService} from "../../home-page/shared/mock-products.service";
 import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
 import {MessageService} from "primeng/api";
+import {HttpClient} from "@angular/common/http";
 
 interface UploadEvent {
   originalEvent: Event;
@@ -22,18 +23,19 @@ export class UpdateProductComponent {
   visible = false;
   uploadedFiles: any[] = [];
   imageURL:string='';
+  photos:any=[];
+  selectedFile:any=[];
+  message: string='';
 
   constructor(private fb: FormBuilder,
               private mockProduct: MockProductsService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private httpClient: HttpClient) {
   }
 
   newProductForm = this.fb.group({
     name: [''],
     photos:[''],
-    photo1: [''],
-    photo2: [''],
-    photo3: [''],
     price: [0],
     category: [''],
     description: [''],
@@ -49,37 +51,60 @@ export class UpdateProductComponent {
 
   onClose(event: any) {
     this.closeEmitter.emit()
+    this.newProductForm.controls.name.setValue('')
+    this.newProductForm.controls.photos.setValue(null)
+    this.newProductForm.controls.price.setValue(0)
+    this.newProductForm.controls.category.setValue('')
+    this.newProductForm.controls.description.setValue('')
+    this.newProductForm.controls.stock.setValue(0)
+    this.photos=[];
+    this.selectedFile=[];
   }
-
-  protected readonly onsubmit = onsubmit;
 
   onSubmit() {
-    const photos: string[] = [this.newProductForm.controls.photo1.value!, this.newProductForm.controls.photo2.value!, this.newProductForm.controls.photo3.value!]
     const product: MockProductDetailed = {
       name: this.newProductForm.controls.name.value!,
-      photos: photos,
       price: +this.newProductForm.controls.price.value!,
+      photos: this.newProductForm.controls.photos.value,
       description: this.newProductForm.controls.description.value!,
       category: this.newProductForm.controls.category.value!
-    } as MockProductDetailed
+    } as unknown  as MockProductDetailed
     this.mockProduct.saveMockProducts(product)
-      .subscribe();
+      .subscribe(()=>console.log(this.newProductForm.value));
   }
 
-  onUpload(event: any) {
-    // @ts-ignore
-    const file = event.target.files[0];
-    this.newProductForm.patchValue({
-      photos: file.name
-    });
-    this.newProductForm.get('photos')!.updateValueAndValidity()
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imageURL = reader.result as string;
-    }
-    reader.readAsDataURL(file)
-    this.uploadedFiles.push(event);
+  onFileChanged(event: any) {
+    this.selectedFile = event.target.files[0];
+    // this.photos.push(this.file);
+    // this.newProductForm.controls.photos.setValue(this.photos)
+    // console.log(this.newProductForm.controls.photos.value)
+    // this.newProductForm.patchValue({
+    //   photos: file
+    // });
+    // console.log('asta e this.photos'+this.photos)
+    // // this.newProductForm.get('photos')!.updateValueAndValidity()
+    // const reader = new FileReader();
+    // reader.onload = () => {
+    //   this.imageURL = reader.result as string;
+    // }
+    // reader.readAsDataURL(file)
+    // this.uploadedFiles.push(event);
     // this.messageService.add({severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode'});
-    console.log(this.imageURL);
+    // console.log(this.newProductForm.controls.photos.value);
+  }
+
+  onUpload() {
+    console.log(this.selectedFile);
+    const uploadImageData = new FormData();
+    uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
+    this.httpClient.post('http://localhost:4200/image/upload', uploadImageData, { observe: 'response' })
+      .subscribe((response) => {
+          if (response.status === 200) {
+            this.message = 'Image uploaded successfully';
+          } else {
+            this.message = 'Image not uploaded successfully';
+          }
+        }
+      );
   }
 }
