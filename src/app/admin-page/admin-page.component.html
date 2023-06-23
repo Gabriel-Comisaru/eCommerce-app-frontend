@@ -4,8 +4,24 @@
 <!--    edit dialog bellow-->
     <p-button (click)="showDialogEditProduct()" icon="pi pi-external-link" label="Edit product"></p-button>
    <app-update-product (closeEmitter)="onClose()" [show]="visible" [header]="header"></app-update-product>
-<!--    <p-dialog header="{{header}}" [(visible)]="visible" [style]="{width: '50vw'}">-->
-<!--      //add new product-->
-<!--    </p-dialog>-->
   </ng-template>
 </p-menubar>
+
+<p-table [value]="mockProductsList" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Quantity</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td><img [src]="product.photos[0]" style="max-width: 100px;max-height: 50px"></td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.category }}</td>
+      <td>{{ product.quantity }}</td>
+    </tr>
+  </ng-template>
+</p-table>

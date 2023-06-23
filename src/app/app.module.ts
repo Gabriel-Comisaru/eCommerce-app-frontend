@@ -21,6 +21,7 @@ import { UpdateProductComponent } from './admin-page/update-product/update-produ
 import {DialogModule} from "primeng/dialog";
 import {FileUploadModule} from "primeng/fileupload";
 import {ToastModule} from "primeng/toast";
+import {TableModule} from "primeng/table";
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,23 +33,24 @@ import {ToastModule} from "primeng/toast";
     UpdateProductComponent,
 
   ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    AppRoutingModule,
-    MenubarModule,
-    CarouselModule,
-    ButtonModule,
-    TagModule,
-    InputSwitchModule,
-    FormsModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    DialogModule,
-    ReactiveFormsModule,
-    FileUploadModule,
-    ToastModule
-  ],
+    imports: [
+        HttpClientModule,
+        BrowserModule,
+        AppRoutingModule,
+        MenubarModule,
+        CarouselModule,
+        ButtonModule,
+        TagModule,
+        InputSwitchModule,
+        FormsModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        DialogModule,
+        ReactiveFormsModule,
+        FileUploadModule,
+        ToastModule,
+        TableModule
+    ],
   providers: [],
   bootstrap: [AppComponent],
 })
