@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PrimeIcons, MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -9,6 +10,7 @@ export class NavBarComponent {
   public navMainControls!: MenuItem[];
   public navProductControls!: MenuItem[];
   isAdmin: boolean = false;
+  constructor(private router: Router) {}
   ngOnInit() {
     this.navMainControls = [
       { label: 'Login/Register', icon: 'pi pi-fw pi-user' },
@@ -22,5 +24,9 @@ export class NavBarComponent {
       },
       { label: 'Favorite', icon: 'pi pi-fw pi-heart' },
     ];
+  }
+
+  goHome() {
+    this.router.navigate(['']);
   }
 }

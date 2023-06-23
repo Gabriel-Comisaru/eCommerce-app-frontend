@@ -27,7 +27,7 @@
           ></p-tag>
           <p-tag
             severity="danger"
-            [value]="'-' + product.discount + '%'"
+            [value]="'-' + product.discount.toFixed(0) + '%'"
             class="absolute discountApplied"
           >
           </p-tag>
@@ -105,7 +105,7 @@
             <p-button
               type="button"
               styleClass="p-button-success p-button-rounded mr-2"
-              icon="pi pi-star-fill"
+              icon="pi pi-star"
             ></p-button>
           </div>
         </div>
