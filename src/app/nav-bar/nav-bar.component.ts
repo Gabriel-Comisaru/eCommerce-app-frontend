@@ -10,7 +10,7 @@ export class NavBarComponent {
   isAdmin: boolean = false;
   ngOnInit() {
     this.items = [
-      { label: 'Home', icon: 'pi pi-fw pi-home' },
+      { label: 'Home', icon: 'pi pi-fw pi-home', routerLink:"/" },
       { label: 'Products', icon: 'pi pi-fw pi-bars' },
       { label: 'Deals', icon: 'pi pi-fw pi-heart' },
       { label: 'Login/Register', icon: 'pi pi-fw pi-user' },

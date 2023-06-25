@@ -10,7 +10,7 @@ import { GalleriaModule } from 'primeng/galleria';
 import { StyleClassModule } from 'primeng/styleclass';
 import { CardModule } from 'primeng/card';
 import { RatingModule } from 'primeng/rating';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -49,7 +49,8 @@ import { MenubarModule } from 'primeng/menubar';
     CarouselModule,
     TagModule,
     InputSwitchModule,
-    TabMenuModule
+    TabMenuModule,
+    ReactiveFormsModule
 
   ],
   providers: [],

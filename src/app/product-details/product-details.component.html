@@ -1,33 +1,28 @@
 <div class="w-10 mx-auto">
     <div class="card">
-        <h1 class="">Product Name</h1>
-        <p-rating [(ngModel)]="reviewsValue" [readonly]="true" [cancel]="false" (ngModelChange)="log()"></p-rating>
-        <p><em>Product category</em></p>
+        <h1 class="title">Product Name: {{product.name}}</h1>
+        <p-rating [(ngModel)]="product.rating" [readonly]="true" [cancel]="false" (click)="scrollToSection('reviews')"></p-rating>
+        <p><em>Product category: {{product.category}}</em></p>
     </div>
     <div class="flex justify-content-between">
         <div class="mx-10">
-            <p-galleria [value]="images" [thumbnailsPosition]="position" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="5">
-                <ng-template pTemplate="item" let-item>
-                    <img [src]="item.itemImageSrc" style="width: 100%; min-height: 420px; display: block;" />
-                </ng-template>
-                <ng-template pTemplate="thumbnail" let-item>
-                    <div class="grid grid-nogutter justify-content-center">
-                        <img [src]="item.thumbnailImageSrc" />
-                    </div>
+            <p-galleria [value]="images" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }">
+                <ng-template pTemplate="item" let-image>
+                    <img [src]="image.url" style="width: 100%; display: block;" />
                 </ng-template>
             </p-galleria>
         </div>
     
         <div class="card flex justify-content-center">
-            <p-card class="my-auto" header="Delivery details" subheader="Stock: 30" [style]="{ width: '360px' }">
-                <p><strong><em>100 RON</em></strong></p>
+            <p-card class="my-auto" header="Delivery details" subheader="Stock: {{product.stock}}" [style]="{ width: '360px' }">
+                <p class="text-red-700 text-2xl font-bold font-italic">$ {{product.price}}</p>
                 <p>
                     Estimated delivery time at <em>*address*</em> is 7 days after completing the order.
                 </p>
                 <ng-template pTemplate="footer">
                     <div class="flex justify-content-between">
-                        <p-button label="Add to cart" icon="pi pi-shopping-cart"></p-button>
-                        <p-button label="Add a review" icon="pi pi-star"></p-button>
+                        <p-button styleClass="p-button-success" label="Add to cart" icon="pi pi-shopping-cart"></p-button>
+                        <p-button (click)="scrollToSection('addReview')" label="Add a review" icon="pi pi-star"></p-button>
                     </div>
                 </ng-template>
             </p-card>
@@ -35,54 +30,40 @@
         
     </div>
     
-    <div class="mt-10">
-        <div class="description w-full mb-5">
-            <p-card header="Description">
+    <div class="description w-full my-5">
+        <p-card header="Description">
+            <p>
+                {{product.description}}
+            </p>
+        </p-card>
+    </div>
+    <div id="reviews" class="reviews w-full my-5">
+        <p-card header="Reviews">
+            <div class="card">
+                <p-rating [(ngModel)]="reviewsValue" [readonly]="true" [cancel]="false"></p-rating>
+                <h3>Best product ever!</h3>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                    quas!
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                    quas!
-
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
                     quas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                    quas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                    quas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                    quas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                    quas!
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
                     quas!
                 </p>
-            </p-card>
-        </div>
-        <div class="reviews w-full my-5">
-            <p-card header="Reviews">
-                <div class="card">
-                    <p-rating [(ngModel)]="reviewsValue" [readonly]="true" [cancel]="false" (ngModelChange)="log()"></p-rating>
-                    <h3>Best product ever!</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                        quas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-                        quas!
-                    </p>
-                </div>
-            </p-card>
-        </div>
-        <div class="add-review w-full my-5">
-            <p-card header="Add a review">
-                <div class="card">
-                    <p-rating [(ngModel)]="addReviewValue" [cancel]="false" (ngModelChange)="log()"></p-rating>
-                    <span class="p-float-label my-5">
-                        <input pInputText id="reviewTitle"/>
-                        <label htmlFor="reviewTitle">Title</label>
-                    </span>
-                    <span class="p-float-label my-5">
-                        <textarea pInputTextarea id="reviewBody" rows="5" cols="60"></textarea>
-                        <label htmlFor="reviewBody">Enter your review</label>
-                    </span>
-                    <p-button label="Submit review"></p-button>
-                </div>
-            </p-card>
-        </div>
+            </div>
+        </p-card>
+    </div>
+    <div id="addReview" class="add-review w-full my-5">
+        <p-card header="Add a review">
+            <div class="card">
+                <p-rating [(ngModel)]="addReviewValue" [cancel]="false"></p-rating>
+                <span class="p-float-label my-5">
+                    <input pInputText id="reviewTitle"/>
+                    <label htmlFor="reviewTitle">Title</label>
+                </span>
+                <span class="p-float-label my-5">
+                    <textarea pInputTextarea id="reviewBody" rows="5" cols="60"></textarea>
+                    <label htmlFor="reviewBody">Enter your review</label>
+                </span>
+                <p-button label="Submit review"></p-button>
+            </div>
+        </p-card>
     </div>
 </div>

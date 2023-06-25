@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { PhotoService } from './shared/photo.service';
+import { MockProductDetailed } from '../home-page/shared/mockProduct.model';
+import { MockProductsService } from '../home-page/shared/mock-products.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.css']
 })
+
 export class ProductDetailsComponent implements OnInit{
-  products: [] = [];
-  images: any[] = [];
+  product: MockProductDetailed = {} as MockProductDetailed;
+  images: {url: string}[] = [];
   position: string = 'bottom';
   positionOptions = [
     {
@@ -42,17 +45,42 @@ export class ProductDetailsComponent implements OnInit{
           numVisible: 3
       }
   ];
-  reviewsValue: number = 4;
+  reviewsValue: number = 5;
   addReviewValue: number = 0;
 
-  constructor(private photoService: PhotoService) {}
+  constructor(private productService: MockProductsService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.photoService.getImages().then((images) => (this.images = images));
+    const id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
+    this.productService.getProduct(id).subscribe(product => {
+      this.product = {
+          id: product.id,
+          name: product.title,
+          photos: product.images,
+          price: product.price,
+          rating: product.rating,
+          reviews: ['No reviews available'],
+          discount: product.discount,
+          category: product.category,
+          description: product.description,
+          stock: product.stock
+        }
+        this.getImages();
+      });
+    
   }
 
-  log() {
-    console.log(this.addReviewValue);
-    
+  scrollToSection(id: string) {
+    const section = document.getElementById(id)!;
+    section.scrollIntoView({ behavior: "smooth" });
+  }
+
+  getImages() {
+    for (let photo of this.product.photos) {
+      this.images.push({'url': photo});
+    }    
+    this.images = [...this.images];
   }
 }
