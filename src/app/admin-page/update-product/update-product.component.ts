@@ -71,6 +71,11 @@ export class UpdateProductComponent {
     if(changes['selectedProduct'].currentValue){
       this.changes=changes['selectedProduct'].currentValue;
       this.newEditForm.controls.name.setValue(changes['selectedProduct'].currentValue.name)
+      this.newEditForm.controls.category.setValue(changes['selectedProduct'].currentValue.category)
+      this.newEditForm.controls.price.setValue(changes['selectedProduct'].currentValue.price)
+      this.newEditForm.controls.description.setValue(changes['selectedProduct'].currentValue.description)
+      this.newEditForm.controls.stock.setValue(changes['selectedProduct'].currentValue.stock)
+      this.newEditForm.controls.photos.setValue(changes['selectedProduct'].currentValue.photos)
     }
   }
 
