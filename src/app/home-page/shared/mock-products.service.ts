@@ -18,4 +18,8 @@ export class MockProductsService {
     return this.httpClient.post<any>(this.mockProductsUrl+'/add',product);
   }
 
+  updateProduct(product:any,id:number):Observable<any>{
+    return this.httpClient.put<any>(this.mockProductsUrl+`/${id}`,product);
+  }
+
 }

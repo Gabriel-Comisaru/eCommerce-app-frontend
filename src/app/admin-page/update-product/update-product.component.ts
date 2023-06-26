@@ -1,14 +1,10 @@
-import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {MockProductsService} from "../../home-page/shared/mock-products.service";
 import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
 import {MessageService} from "primeng/api";
 import {HttpClient} from "@angular/common/http";
 
-interface UploadEvent {
-  originalEvent: Event;
-  files: File[];
-}
 
 @Component({
   selector: 'app-update-product',
@@ -16,47 +12,39 @@ interface UploadEvent {
   styleUrls: ['./update-product.component.css'],
   providers: [MessageService]
 })
-export class UpdateProductComponent {
-  changes:any;
-  @Input() selectedProduct?:any;
+export class UpdateProductComponent implements OnInit {
+  changes: any;
+  @Input() selectedProduct?: MockProductDetailed;
   @Input() show: any;
   @Input() header: any;
   @Output() closeEmitter = new EventEmitter();
   visible = false;
-  uploadedFiles: any[] = [];
-  imageURL:string='';
-  photos:any=[];
-  selectedFile:any=[];
-  message: string='';
+  photos: any = [];
+  selectedFile: any = [];
+  message: string = '';
 
   constructor(private fb: FormBuilder,
               private mockProduct: MockProductsService,
               private messageService: MessageService,
               private httpClient: HttpClient) {
   }
-  newEditForm=this.fb.group({
+
+  newEditForm = this.fb.group({
     name: [''],
-    photos:[''],
+    photos: [''],
     price: [0],
     category: [''],
     description: [''],
     stock: [0],
   })
 
-  ngOnInit(){
-    this.newEditForm.controls.name.setValue(this.selectedProduct?.name);
-    this.newEditForm.controls.photos.setValue(this.selectedProduct?.photos);
-    this.newEditForm.controls.price.setValue(this.selectedProduct.price);
-    this.newEditForm.controls.category.setValue(this.selectedProduct.category);
-    this.newEditForm.controls.description.setValue(this.selectedProduct.description);
-    this.newEditForm.controls.stock.setValue(this.selectedProduct.stock);
+  ngOnInit() {
   }
-
 
 
   newProductForm = this.fb.group({
     name: [''],
-    photos:[''],
+    photos: [''],
     price: [0],
     category: [''],
     description: [''],
@@ -68,14 +56,14 @@ export class UpdateProductComponent {
     if (changes['show'].currentValue) {
       this.visible = changes['show'].currentValue;
     }
-    if(changes['selectedProduct'].currentValue){
-      this.changes=changes['selectedProduct'].currentValue;
-      this.newEditForm.controls.name.setValue(changes['selectedProduct'].currentValue.name)
-      this.newEditForm.controls.category.setValue(changes['selectedProduct'].currentValue.category)
-      this.newEditForm.controls.price.setValue(changes['selectedProduct'].currentValue.price)
-      this.newEditForm.controls.description.setValue(changes['selectedProduct'].currentValue.description)
-      this.newEditForm.controls.stock.setValue(changes['selectedProduct'].currentValue.stock)
-      this.newEditForm.controls.photos.setValue(changes['selectedProduct'].currentValue.photos)
+    if (changes['selectedProduct'].currentValue) {
+      this.changes = changes['selectedProduct'].currentValue;
+      this.newEditForm.controls.name.setValue(this.changes.name)
+      this.newEditForm.controls.category.setValue(this.changes.category)
+      this.newEditForm.controls.price.setValue(this.changes.price)
+      this.newEditForm.controls.description.setValue(this.changes.description)
+      this.newEditForm.controls.stock.setValue(this.changes.stock)
+      this.newEditForm.controls.photos.setValue(this.changes.photos)
     }
   }
 
@@ -96,9 +84,9 @@ export class UpdateProductComponent {
       photos: this.newProductForm.controls.photos.value,
       description: this.newProductForm.controls.description.value!,
       category: this.newProductForm.controls.category.value!
-    } as unknown  as MockProductDetailed
+    } as unknown as MockProductDetailed
     this.mockProduct.saveMockProducts(product)
-      .subscribe(()=>console.log(this.newProductForm.value));
+      .subscribe(() => console.log(this.newProductForm.value));
   }
 
   onFileChanged(event: any) {
@@ -125,7 +113,7 @@ export class UpdateProductComponent {
     console.log(this.selectedFile);
     const uploadImageData = new FormData();
     uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
-    this.httpClient.post('http://localhost:4200/image/upload', uploadImageData, { observe: 'response' })
+    this.httpClient.post('http://localhost:4200/image/upload', uploadImageData, {observe: 'response'})
       .subscribe((response) => {
           if (response.status === 200) {
             this.message = 'Image uploaded successfully';
@@ -136,7 +124,16 @@ export class UpdateProductComponent {
       );
   }
 
-  onEditSubmit() {
-
+  onEditSubmit(id: any) {
+    let updatedProduct: MockProductDetailed = {
+      title: this.newEditForm.controls.name.value,
+      price: this.newEditForm.controls.price.value,
+      stock: this.newEditForm.controls.stock.value,
+      description: this.newEditForm.controls.description.value,
+      category: this.newEditForm.controls.category.value,
+    } as unknown as MockProductDetailed
+    console.log(this.newEditForm.controls.name.value)
+    this.mockProduct.updateProduct(updatedProduct, id)
+      .subscribe(() => this.onClose(event))
   }
 }
