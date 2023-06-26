@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MockProductsService} from "../home-page/shared/mock-products.service";
 import {MockProductDetailed} from "../home-page/shared/mockProduct.model";
 import {deleteFunction} from "./utilities/utilities";

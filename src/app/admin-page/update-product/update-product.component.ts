@@ -4,7 +4,6 @@ import {MockProductsService} from "../../home-page/shared/mock-products.service"
 import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
 import {MessageService} from "primeng/api";
 import {HttpClient} from "@angular/common/http";
-import {deleteFunction} from "../utilities/utilities";
 
 
 @Component({
@@ -70,6 +69,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   onClose(event: any) {
+    this.visible=false;
     this.closeEmitter.emit()
     this.newProductForm.controls.name.setValue('')
     this.newProductForm.controls.photos.setValue(null)
