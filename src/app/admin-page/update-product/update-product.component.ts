@@ -4,6 +4,7 @@ import {MockProductsService} from "../../home-page/shared/mock-products.service"
 import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
 import {MessageService} from "primeng/api";
 import {HttpClient} from "@angular/common/http";
+import {deleteFunction} from "../utilities/utilities";
 
 
 @Component({
@@ -18,6 +19,7 @@ export class UpdateProductComponent implements OnInit {
   @Input() show: any;
   @Input() header: any;
   @Output() closeEmitter = new EventEmitter();
+  @Output() deleteEmitter = new EventEmitter();
   visible = false;
   photos: any = [];
   selectedFile: any = [];
@@ -135,5 +137,14 @@ export class UpdateProductComponent implements OnInit {
     console.log(this.newEditForm.controls.name.value)
     this.mockProduct.updateProduct(updatedProduct, id)
       .subscribe(() => this.onClose(event))
+  }
+
+  delete(selectedProduct: MockProductDetailed | undefined) {
+    this.deleteEmitter.emit(selectedProduct?.id);
+    this.visible=false;
+  }
+
+  close(){
+    this.visible=false;
   }
 }

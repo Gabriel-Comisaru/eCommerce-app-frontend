@@ -19,7 +19,13 @@ export class MockProductsService {
   }
 
   updateProduct(product:any,id:number):Observable<any>{
-    return this.httpClient.put<any>(this.mockProductsUrl+`/${id}`,product);
+    const url = `${this.mockProductsUrl}/${id}`;
+    return this.httpClient.put<any>(url,product);
+  }
+
+  delete(id:number){
+    const url = `${this.mockProductsUrl}/${id}`;
+    return this.httpClient.delete(url);
   }
 
 }

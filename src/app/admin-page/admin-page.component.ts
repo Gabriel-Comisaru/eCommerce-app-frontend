@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MockProductsService} from "../home-page/shared/mock-products.service";
 import {MockProductDetailed} from "../home-page/shared/mockProduct.model";
+import {deleteFunction} from "./utilities/utilities";
 
 @Component({
   selector: 'app-admin-page',
@@ -29,6 +30,13 @@ export class AdminPageComponent implements OnInit{
     this.selectedProduct=product;
   }
 
+  showDialogDeleteProduct(product:any,event:any){
+    this.visible=true;
+    event.stopPropagation();
+    this.header='Delete'
+    this.selectedProduct=product;
+  }
+
   onClose(){
     this.visible=false;
   }
@@ -52,8 +60,10 @@ export class AdminPageComponent implements OnInit{
     });
   }
 
-  deleteItem(product:any,event:any) {
-    event.stopPropagation();
-  console.log(product.id)
+  delete() {
+    deleteFunction(this.mockProductsService, this.selectedProduct.id, this.products)
+      .subscribe((items: Array<any>) => {
+        this.products = items;
+      });
   }
 }

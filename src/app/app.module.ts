@@ -31,7 +31,6 @@ import {TableModule} from "primeng/table";
     NavBarComponent,
     AdminPageComponent,
     UpdateProductComponent,
-
   ],
     imports: [
         HttpClientModule,

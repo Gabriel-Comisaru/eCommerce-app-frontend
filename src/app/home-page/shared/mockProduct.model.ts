@@ -9,4 +9,5 @@ export interface MockProductDetailed {
   category: string;
   description: string;
   stock: number;
+  isDeleted:boolean
 }
