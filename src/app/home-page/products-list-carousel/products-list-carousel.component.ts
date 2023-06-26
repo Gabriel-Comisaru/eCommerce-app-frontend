@@ -15,4 +15,9 @@ export class ProductsListCarouselComponent {
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes['mockProductsList']);
   }
+
+  addToCart(product: MockProductDetailed) {}
+  addToFavorite(product: MockProductDetailed) {}
 }
+// <!-- notificare ca am adaugat in cos -->
+// <!-- notificare ca am adaugat la favorite plus update badge-->

@@ -45,4 +45,8 @@ export class HomePageComponent {
   }
 }
 
-// trebuie sa mai fac functia de search
+// trebuie sa mai fac serviciul de search
+// si atunci cand fac searchul sa mi se modifice ruta
+
+//add to cart service
+//add to favorite service

@@ -75,7 +75,7 @@ unde folosesti butoane la care scoti efectul de click si hover-->
     </div>
   </ng-template>
 </p-overlayPanel>
-<p-overlayPanel #shoppingCart>
+<p-overlayPanel #shoppingCart class="shoppingCart">
   <ng-template pTemplate="content">
     <h4>Last added products</h4>
     <table>
@@ -90,18 +90,20 @@ unde folosesti butoane la care scoti efectul de click si hover-->
     <p-button label="View whole basket" styleClass="p-button-raised"></p-button>
   </ng-template>
 </p-overlayPanel>
-<p-overlayPanel #favoriteItems>
+<p-overlayPanel #favoriteItems class="favoriteItems">
   <ng-template pTemplate="content">
-    <h4>Products you liked</h4>
-    <table>
-      <tr>
-        <th>Product</th>
-        <th>Qty</th>
-        <th>Price</th>
-      </tr>
-      <!-- waiting for backend -->
-      <!-- <tr *ngFor="let product of listOfproductsAddedInCart"></tr> -->
-    </table>
-    <p-button label="View all" styleClass="p-button-raised"></p-button>
+    <div class="favoriteItemsTooltip">
+      <h4>Products you liked</h4>
+      <table>
+        <tr>
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Price</th>
+        </tr>
+        <!-- waiting for backend -->
+        <!-- <tr *ngFor="let product of listOfproductsAddedInCart"></tr> -->
+      </table>
+      <p-button label="View all" styleClass="p-button-raised"></p-button>
+    </div>
   </ng-template>
 </p-overlayPanel>
