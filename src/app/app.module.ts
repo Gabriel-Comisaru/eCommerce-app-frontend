@@ -22,6 +22,10 @@ import {FileUploadModule} from "primeng/fileupload";
 import {ToastModule} from "primeng/toast";
 import {TableModule} from "primeng/table";
 import {InputTextModule} from "primeng/inputtext";
+import {DropdownModule} from "primeng/dropdown";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {InputNumberModule} from "primeng/inputnumber";
+import {PaginatorModule} from "primeng/paginator";
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +53,11 @@ import {InputTextModule} from "primeng/inputtext";
     FileUploadModule,
     ToastModule,
     TableModule,
-    InputTextModule
+    InputTextModule,
+    DropdownModule,
+    InputTextareaModule,
+    InputNumberModule,
+    PaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent],

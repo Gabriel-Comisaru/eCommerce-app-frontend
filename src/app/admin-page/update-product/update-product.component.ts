@@ -19,10 +19,12 @@ export class UpdateProductComponent implements OnInit {
   @Input() header: any;
   @Output() closeEmitter = new EventEmitter();
   @Output() deleteEmitter = new EventEmitter();
+  categories:any=[];
   visible = false;
   photos: any = [];
   selectedFile: any = [];
   message: string = '';
+  mockProductsList:any=[];
 
   constructor(private fb: FormBuilder,
               private mockProduct: MockProductsService,
@@ -40,6 +42,12 @@ export class UpdateProductComponent implements OnInit {
   })
 
   ngOnInit() {
+    this.mockProduct.getMockProducts().subscribe((list) => {
+      this.mockProductsList = list.products.map((product: any) => {
+        this.categories=[...this.categories,product.category]
+        this.categories = this.categories.filter((el:any, i:any, a:any) => i === a.indexOf(el))
+      });
+    });
   }
 
 

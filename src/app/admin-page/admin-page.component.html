@@ -1,13 +1,16 @@
 <p-menubar>
   <ng-template pTemplate="end">
     <p-button (click)="showDialogNewProduct()" icon="pi pi-plus" label="New product"></p-button>
-<!--    edit dialog bellow-->
-<!--    <p-button (click)="showDialogEditProduct()" icon="pi pi-external-link" label="Edit product"></p-button>-->
-   <app-update-product (deleteEmitter)="delete()" (closeEmitter)="onClose()" [selectedProduct]="selectedProduct" [show]="visible" [header]="header"></app-update-product>
+    <!--    edit dialog bellow-->
+    <!--    <p-button (click)="showDialogEditProduct()" icon="pi pi-external-link" label="Edit product"></p-button>-->
+    <app-update-product (deleteEmitter)="delete()" (closeEmitter)="onClose()" [selectedProduct]="selectedProduct"
+                        [show]="visible" [header]="header"></app-update-product>
   </ng-template>
 </p-menubar>
 
-<p-table [value]="mockProductsList" [tableStyle]="{ 'min-width': '50rem' }">
+<p-table [paginator]="true" [rows]="row" [rowsPerPageOptions]="rows" [value]="mockProductsList"
+         [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
+         [globalFilterFields]="['name']">
   <ng-template pTemplate="header">
     <tr>
       <th>Image</th>

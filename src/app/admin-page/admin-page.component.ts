@@ -8,37 +8,39 @@ import {deleteFunction} from "./utilities/utilities";
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.css']
 })
-export class AdminPageComponent implements OnInit{
+export class AdminPageComponent implements OnInit {
 
   visible = false;
   header = '';
-  products:Array<MockProductDetailed>=[];
-  mockProductsList=[];
-  selectedProduct:any=[];
+  products: Array<MockProductDetailed> = [];
+  mockProductsList = [];
+  selectedProduct: any = [];
+  rows: any = [5, 10, 15];
+  row: any = 5;
 
-  constructor(private mockProductsService:MockProductsService) {
+  constructor(private mockProductsService: MockProductsService) {
   }
 
   showDialogNewProduct() {
     this.visible = true;
-    this.header='Add new product'
+    this.header = 'Add new product'
   }
 
-  showDialogEditProduct(product:any) {
+  showDialogEditProduct(product: any) {
     this.visible = true;
-    this.header='Edit product'
-    this.selectedProduct=product;
+    this.header = 'Edit product'
+    this.selectedProduct = product;
   }
 
-  showDialogDeleteProduct(product:any,event:any){
-    this.visible=true;
+  showDialogDeleteProduct(product: any, event: any) {
+    this.visible = true;
     event.stopPropagation();
-    this.header='Delete'
-    this.selectedProduct=product;
+    this.header = 'Delete'
+    this.selectedProduct = product;
   }
 
-  onClose(){
-    this.visible=false;
+  onClose() {
+    this.visible = false;
   }
 
   ngOnInit(): void {
@@ -65,5 +67,9 @@ export class AdminPageComponent implements OnInit{
       .subscribe((items: Array<any>) => {
         this.products = items;
       });
+  }
+
+  selectRows(event: any) {
+    this.row = +event.value;
   }
 }
