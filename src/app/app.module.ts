@@ -21,6 +21,7 @@ import {DialogModule} from "primeng/dialog";
 import {FileUploadModule} from "primeng/fileupload";
 import {ToastModule} from "primeng/toast";
 import {TableModule} from "primeng/table";
+import {InputTextModule} from "primeng/inputtext";
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,24 +32,25 @@ import {TableModule} from "primeng/table";
     AdminPageComponent,
     UpdateProductComponent,
   ],
-    imports: [
-        HttpClientModule,
-        BrowserModule,
-        AppRoutingModule,
-        MenubarModule,
-        CarouselModule,
-        ButtonModule,
-        TagModule,
-        InputSwitchModule,
-        FormsModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        DialogModule,
-        ReactiveFormsModule,
-        FileUploadModule,
-        ToastModule,
-        TableModule
-    ],
+  imports: [
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
+    MenubarModule,
+    CarouselModule,
+    ButtonModule,
+    TagModule,
+    InputSwitchModule,
+    FormsModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    DialogModule,
+    ReactiveFormsModule,
+    FileUploadModule,
+    ToastModule,
+    TableModule,
+    InputTextModule
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -2,11 +2,11 @@
   <p-dialog [hidden]="header!='Add new product'" (onHide)="onClose($event)" header="{{header}}" [(visible)]="visible"
             [style]="{width: '50vw'}">
     <form [formGroup]="newProductForm" (ngSubmit)="onSubmit()">
-      <div>
-        <label>
-          Name:
-        </label>
-        <input formControlName="name">
+      <div class="card flex justify-content-center">
+    <span class="p-float-label">
+        <input pInputText id="name" formControlName="name"/>
+        <label htmlFor="name">Name</label>
+    </span>
       </div>
       <div>
         <label>
@@ -50,8 +50,8 @@
     <h1>Edit {{selectedProduct!.name}}</h1>
     <form [formGroup]="newEditForm" (ngSubmit)="onEditSubmit(selectedProduct!.id)">
       <div class="flex flex-column gap-2">
-        <label htmlFor="name">Name</label>
-        <input pInputText id="name" aria-describedby="username-help" formControlName="name"/>
+        <label htmlFor="title">Title</label>
+        <input pInputText id="title" aria-describedby="username-help" formControlName="name"/>
       </div>
       <div class="flex flex-column gap-2">
         <label htmlFor="category">Category</label>
