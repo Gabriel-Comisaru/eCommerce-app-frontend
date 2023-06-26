@@ -13,7 +13,6 @@ import {HttpClient} from "@angular/common/http";
   providers: [MessageService]
 })
 export class UpdateProductComponent implements OnInit {
-  changes: any;
   @Input() selectedProduct?: MockProductDetailed;
   @Input() show: any;
   @Input() header: any;
@@ -142,7 +141,7 @@ export class UpdateProductComponent implements OnInit {
     } as unknown as MockProductDetailed
     console.log(this.newEditForm.controls.name.value)
     this.mockProduct.updateProduct(updatedProduct, id)
-      .subscribe(() => this.onClose(event))
+      .subscribe(() => this.visible=false)
   }
 
   delete(selectedProduct: MockProductDetailed | undefined) {
