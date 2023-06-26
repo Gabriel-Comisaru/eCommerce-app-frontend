@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { PrimeIcons, MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 @Component({
@@ -7,22 +7,40 @@ import { Router } from '@angular/router';
   styleUrls: ['./nav-bar.component.css'],
 })
 export class NavBarComponent {
-  public navMainControls!: MenuItem[];
   public navProductControls!: MenuItem[];
+
   isAdmin: boolean = false;
+
   constructor(private router: Router) {}
   ngOnInit() {
-    this.navMainControls = [
-      { label: 'Login/Register', icon: 'pi pi-fw pi-user' },
-    ];
     this.navProductControls = [
-      { label: 'Products', icon: 'pi pi-fw pi-bars' },
-      { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
       {
-        label: 'Cart',
-        icon: 'pi pi-fw pi-shopping-cart',
+        label: 'Products',
+        icon: 'pi pi-fw pi-bars',
+        items: [
+          {
+            label: 'Category 1',
+            icon: 'pi pi-prime',
+          },
+          {
+            label: 'Category 2',
+            icon: 'pi pi-prime',
+          },
+          {
+            label: 'Category 3',
+            icon: 'pi pi-prime',
+          },
+          {
+            label: 'Category 4',
+            icon: 'pi pi-prime',
+          },
+          {
+            label: 'Category 5',
+            icon: 'pi pi-prime',
+          },
+        ],
       },
-      { label: 'Favorite', icon: 'pi pi-fw pi-heart' },
+      { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
     ];
   }
 

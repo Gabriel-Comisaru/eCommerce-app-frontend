@@ -1,35 +1,107 @@
-<nav class="navBar">
-  <p-menubar [model]="navMainControls" class="navControls">
-    <ng-template pTemplate="start">
-      <div class="flex searchContainer">
-        <img
-          src="https://primefaces.org/cdn/primeng/images/primeng.svg"
-          height="40"
-          class="mx-2"
-          (click)="goHome()"
-        />
-        <input
-          type="text"
-          pInputText
-          placeholder="Search"
-          class="mx-4 searchInput"
-        />
-      </div>
-    </ng-template>
-    <ng-template pTemplate="end">
-      <div class="mx-2 flex align-items-center">
-        <p-inputSwitch
-          [(ngModel)]="isAdmin"
-          id="adminMode"
-          class="flex"
-        ></p-inputSwitch>
-        <label for="adminMode" class="mx-2">Admin</label>
-      </div></ng-template
+<nav class="navBar py-2 px-2" aria-label="product navigation">
+  <div class="navControlsContainer">
+    <img
+      src="./../../assets/images/project-logo.png"
+      height="40"
+      class="mx-2"
+      (click)="goHome()"
+    />
+
+    <div class="searchContainer">
+      <input
+        type="text"
+        pInputText
+        placeholder="Search"
+        class="ml-4 searchInput"
+      />
+      <button class="searchButton">
+        <i class="pi pi-search"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="navControlsContainer accountControls">
+    <a class="navBarItem" (click)="shoppingCart.toggle($event)"
+      ><i class="pi pi-shopping-cart"></i><span>Cart</span></a
     >
-  </p-menubar>
+    <a class="navBarItem" (click)="favoriteItems.toggle($event)"
+      ><i class="pi pi-heart"></i><span>Favorite</span></a
+    >
+
+    <a class="navBarItem" (click)="myAccount.toggle($event)">
+      <i class="pi pi-user"></i
+      ><span style="white-space: nowrap">My Account</span></a
+    >
+
+    <div class="flex navBarItem">
+      <p-inputSwitch
+        [(ngModel)]="isAdmin"
+        id="adminMode"
+        class="flex"
+      ></p-inputSwitch>
+      <label for="adminMode" class="mx-2">Admin</label>
+    </div>
+  </div>
+</nav>
+
+<nav class="">
   <p-menubar
+    #nav
     [model]="navProductControls"
     class="navControls navProductControls"
   >
   </p-menubar>
 </nav>
+
+<!-- pe buton ar trebui sa am un mouseover event sau mouse enter si o comanda de mouse leave? sau un if legat de event target idk? 
+apoi pe blocul de cart ar trebui sa am tot un event de mouse enter si leave -->
+
+<!-- modifica navbarul si elimina itemele sau fa-ti navbarul tau 
+
+unde folosesti butoane la care scoti efectul de click si hover-->
+<p-overlayPanel #myAccount>
+  <ng-template pTemplate="content">
+    <div class="flex flex-column justify-content-center align-items-left">
+      <p-button
+        label="Login"
+        styleClass="p-button-secondary p-button-text"
+      ></p-button>
+
+      <p-button
+        label="I don't have an account"
+        styleClass="p-button-link"
+      ></p-button>
+      <p-button label="Forgot Password" styleClass="p-button-link"></p-button>
+    </div>
+  </ng-template>
+</p-overlayPanel>
+<p-overlayPanel #shoppingCart>
+  <ng-template pTemplate="content">
+    <h4>Last added products</h4>
+    <table>
+      <tr>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Price</th>
+      </tr>
+      <!-- waiting for backend -->
+      <!-- <tr *ngFor="let product of listOfproductsAddedInCart"></tr> -->
+    </table>
+    <p-button label="View whole basket" styleClass="p-button-raised"></p-button>
+  </ng-template>
+</p-overlayPanel>
+<p-overlayPanel #favoriteItems>
+  <ng-template pTemplate="content">
+    <h4>Products you liked</h4>
+    <table>
+      <tr>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Price</th>
+      </tr>
+      <!-- waiting for backend -->
+      <!-- <tr *ngFor="let product of listOfproductsAddedInCart"></tr> -->
+    </table>
+    <p-button label="View all" styleClass="p-button-raised"></p-button>
+  </ng-template>
+</p-overlayPanel>

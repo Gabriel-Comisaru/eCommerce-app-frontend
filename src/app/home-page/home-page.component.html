@@ -1,24 +1,51 @@
 <header class="header"></header>
 <main>
   <!-- TODO -change mockProductsList to desired filtered list to display - according to each section -->
-  <app-products-list-carousel
-    [productsToDisplay]="mockProductsList"
-  ></app-products-list-carousel>
+
   <section *ngIf="isLoggedIn">
-    <h2>Recommended for you</h2>
+    <div class="titles">
+      <h2 class="ml-7">Recommended for you</h2>
+      <p-button
+        class="mr-6"
+        label="View more"
+        styleClass="p-button-link"
+      ></p-button>
+    </div>
+    <app-products-list-carousel
+      [productsToDisplay]="mockProductsList"
+    ></app-products-list-carousel>
+
     <!--[productsToDisplaye]="filtered list of products based on previous user's search tags" -->
   </section>
 
   <section>
-    <h2>Discounted Products</h2>
-    <app-products-list-carousel>
+    <div class="titles">
+      <h2 class="ml-7">Discounted Products</h2>
+      <p-button
+        class="mr-6"
+        label="View more"
+        styleClass="p-button-link"
+      ></p-button>
+    </div>
+
+    <app-products-list-carousel
+      [productsToDisplay]="productsWithDiscountApplied"
+    >
       <!-- [productsToDisplay]="filtered list of products by existence of a discount" -->
     </app-products-list-carousel>
   </section>
   <section>
-    <h2>Hottest Products</h2>
+    <div class="titles">
+      <h2 class="ml-7">Hottest Products</h2>
+      <p-button
+        class="mr-6"
+        label="View more"
+        styleClass="p-button-link"
+        class=""
+      ></p-button>
+    </div>
 
-    <app-products-list-carousel>
+    <app-products-list-carousel [productsToDisplay]="mostSelledProducts">
       <!-- [productsToDisplaye]='filtered list of products by most bought products' -->
     </app-products-list-carousel>
   </section>

@@ -9,7 +9,9 @@ import { MockProductDetailed } from './shared/mockProduct.model';
 })
 export class HomePageComponent {
   public mockProductsList!: MockProductDetailed[];
-  public isLoggedIn: boolean = false;
+  public productsWithDiscountApplied: MockProductDetailed[] = [];
+  public mostSelledProducts: MockProductDetailed[] = [];
+  public isLoggedIn: boolean = true; //set to default true just for display purposes
   constructor(private mockProductsService: MockProductsService) {}
   ngOnInit() {
     // getting mock list of products and mapping it according to my interface
@@ -28,6 +30,19 @@ export class HomePageComponent {
           stock: product.stock,
         };
       });
+
+      if (this.mockProductsList) {
+        this.productsWithDiscountApplied = this.mockProductsList.filter(
+          (product) => product.discount > 0
+        );
+        console.log(this.productsWithDiscountApplied);
+
+        this.mostSelledProducts = this.mockProductsList.filter(
+          (product) => product.price < 200
+        );
+      }
     });
   }
 }
+
+// trebuie sa mai fac functia de search

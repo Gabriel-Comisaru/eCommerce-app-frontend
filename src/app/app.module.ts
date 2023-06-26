@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { HomePageComponent } from './home-page/home-page.component';
-import { TabMenuModule } from 'primeng/tabmenu';
+
 import { CarouselModule } from 'primeng/carousel';
 import { TagModule } from 'primeng/tag';
 import { ProductsListCarouselComponent } from './home-page/products-list-carousel/products-list-carousel.component';
@@ -23,6 +23,9 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MenubarModule } from 'primeng/menubar';
 
+import { BadgeModule } from 'primeng/badge';
+
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,6 +54,8 @@ import { MenubarModule } from 'primeng/menubar';
     InputSwitchModule,
     FormsModule,
     RatingModule,
+    OverlayPanelModule,
+    BadgeModule,
   ],
 
   providers: [],
