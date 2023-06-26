@@ -31,20 +31,6 @@ export class ProductDetailsComponent implements OnInit{
         value: 'right'
     }
   ];
-  responsiveOptions: any[] = [
-      {
-        breakpoint: '3000px',
-        numVisible: 5
-      },
-      {
-          breakpoint: '1024px',
-          numVisible: 5
-      },
-      {
-          breakpoint: '650px',
-          numVisible: 3
-      }
-  ];
   reviewsValue: number = 5;
   addReviewValue: number = 0;
 
@@ -55,14 +41,16 @@ export class ProductDetailsComponent implements OnInit{
   ngOnInit(): void {
     const id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
     this.productService.getProduct(id).subscribe(product => {
+      let rating = Math.round(product.rating);
+      let discountedPrice = Math.round(product.price - product.price*(product.discountPercentage/100));
       this.product = {
           id: product.id,
           name: product.title,
           photos: product.images,
           price: product.price,
-          rating: product.rating,
+          rating: rating,
           reviews: ['No reviews available'],
-          discount: product.discount,
+          discount: discountedPrice,
           category: product.category,
           description: product.description,
           stock: product.stock
