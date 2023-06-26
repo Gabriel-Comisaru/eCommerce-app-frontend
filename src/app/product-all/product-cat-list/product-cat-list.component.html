@@ -1,0 +1,12 @@
+<div class="categories-list">
+  <p-card *ngFor="let category of categories" class="category-card">
+    <ng-template pTemplate="title">
+      {{ category.category }}
+    </ng-template>
+    <ng-template pTemplate="content">
+      <div class="category-image">
+        <img [src]="category.image" alt="Category Image" class="fit-image">
+      </div>
+    </ng-template>
+  </p-card>
+</div>

@@ -1,0 +1,13 @@
+<div class="filters">
+  <h2>Filters</h2>
+  <div class="filter-item">
+    <label for="category">Category:</label>
+    <p-dropdown id="category" [options]="categories" [(ngModel)]="selectedCategory" [placeholder]="'All'"></p-dropdown>
+  </div>
+  <div class="filter-item">
+    <label for="priceRange">Price Range:</label>
+    <p-slider id="priceRange" [(ngModel)]="selectedPriceRange" [range]="true" [min]="0" [max]="1000" [step]="10"></p-slider>
+  </div>
+  <!-- Add more filter options as needed -->
+  <button class="apply-button" (click)="applyFilters()">Apply Filters</button>
+</div>
