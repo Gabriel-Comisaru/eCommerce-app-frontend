@@ -34,7 +34,7 @@ export class UpdateProductComponent implements OnInit {
 
   newEditForm = this.fb.group({
     name: [''],
-    photos: [''],
+    photos: [['']],
     price: [0],
     category: [''],
     description: [''],
@@ -62,29 +62,26 @@ export class UpdateProductComponent implements OnInit {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['show'].currentValue) {
+    if (changes['show'].currentValue != changes['show'].previousValue) {
       this.visible = changes['show'].currentValue;
-    }
-    if (changes['selectedProduct'].currentValue) {
-      this.changes = changes['selectedProduct'].currentValue;
-      this.newEditForm.controls.name.setValue(this.changes.name)
-      this.newEditForm.controls.category.setValue(this.changes.category)
-      this.newEditForm.controls.price.setValue(this.changes.price)
-      this.newEditForm.controls.description.setValue(this.changes.description)
-      this.newEditForm.controls.stock.setValue(this.changes.stock)
-      this.newEditForm.controls.photos.setValue(this.changes.photos)
+      this.newEditForm.controls.name.setValue(this.selectedProduct!.name)
+      this.newEditForm.controls.category.setValue(this.selectedProduct!.category)
+      this.newEditForm.controls.price.setValue(this.selectedProduct!.price)
+      this.newEditForm.controls.description.setValue(this.selectedProduct!.description)
+      this.newEditForm.controls.stock.setValue(this.selectedProduct!.stock)
+      this.newEditForm.controls.photos.setValue(this.selectedProduct!.photos)
     }
   }
-
   onClose(event: any) {
-    this.visible=false;
-    this.closeEmitter.emit()
+
     this.newProductForm.controls.name.setValue('')
     this.newProductForm.controls.photos.setValue(null)
     this.newProductForm.controls.price.setValue(0)
     this.newProductForm.controls.category.setValue('')
     this.newProductForm.controls.description.setValue('')
     this.newProductForm.controls.stock.setValue(0)
+    this.visible=false;
+    this.closeEmitter.emit(this.visible)
   }
 
   onSubmit() {
@@ -96,7 +93,8 @@ export class UpdateProductComponent implements OnInit {
       category: this.newProductForm.controls.category.value!
     } as unknown as MockProductDetailed
     this.mockProduct.saveMockProducts(product)
-      .subscribe(() => console.log(this.newProductForm.value));
+      .subscribe(()=>this.visible=false);
+
   }
 
   onFileChanged(event: any) {
@@ -154,5 +152,6 @@ export class UpdateProductComponent implements OnInit {
 
   close(){
     this.visible=false;
+    this.closeEmitter.emit(this.visible)
   }
 }
