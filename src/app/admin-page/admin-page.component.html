@@ -1,6 +1,6 @@
 <p-menubar>
   <ng-template pTemplate="end">
-    <p-button (click)="showDialogNewProduct()" icon="pi pi-external-link" label="Add new product"></p-button>
+    <p-button (click)="showDialogNewProduct()" icon="pi pi-plus" label="New product"></p-button>
 <!--    edit dialog bellow-->
 <!--    <p-button (click)="showDialogEditProduct()" icon="pi pi-external-link" label="Edit product"></p-button>-->
    <app-update-product (deleteEmitter)="delete()" (closeEmitter)="onClose()" [selectedProduct]="selectedProduct" [show]="visible" [header]="header"></app-update-product>
@@ -26,7 +26,7 @@
       <td>{{ product.stock }}</td>
       <td>${{ product.price }}</td>
       <td>
-        <p-button (click)="showDialogDeleteProduct(product,$event)">Delete</p-button>
+        <p-button icon="pi pi-trash" label="Delete" (click)="showDialogDeleteProduct(product,$event)"></p-button>
       </td>
     </tr>
   </ng-template>
