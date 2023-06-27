@@ -10,13 +10,17 @@ const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: 'all',
+    path: 'products',
     component: ProductAllComponent,
   },
   {
     path: 'categories',
     component: ProductCategoriesComponent,
   },
+  {
+    path: 'products/:category',
+    component: ProductAllComponent
+  }
 ];
 
 @NgModule({

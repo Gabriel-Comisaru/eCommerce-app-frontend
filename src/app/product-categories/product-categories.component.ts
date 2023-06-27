@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MockProductModel} from "../product-all/shared/mock-product.model";
 import {MockProductsService} from "../product-all/shared/mock-products.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-product-categories',
@@ -13,7 +14,8 @@ export class ProductCategoriesComponent implements OnInit {
   public categories: { category: string, image: string }[] = [];
 
 
-  constructor(private productService: MockProductsService) {}
+  constructor(private productService: MockProductsService,
+              private router: Router) {}
 
   ngOnInit(): void {
     this.productService.getMockProducts().subscribe((list) => {

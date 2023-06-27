@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 
 import { MockProductModel} from "./shared/mock-product.model";
 import { MockProductsService} from "./shared/mock-products.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-product-all',
@@ -16,7 +17,8 @@ export class ProductAllComponent implements OnInit {
   public placeholder: MockProductModel[] = [];
 
 
-  constructor(private productService: MockProductsService) {}
+  constructor(private productService: MockProductsService,
+              private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.productService.getMockProducts().subscribe((list) => {
@@ -36,23 +38,34 @@ export class ProductAllComponent implements OnInit {
       });
       this.categories = Array.from(new Set(this.mockProducts.map(product => product.category)));
       this.placeholder = this.mockProducts
-
+      this.route.paramMap.subscribe(params => {
+        const category = params.get('category');
+        if (category) {
+          this.selectedCategory = category;
+          this.applyFilters();
+        }});
     });
+
   }
-  applyFilters(selectedCategory: string) {
-    console.log('Selected Category:', selectedCategory);
-    if(selectedCategory) {
-      this.mockProducts = this.mockProducts.filter((product: MockProductModel) => product.category === selectedCategory);
-      console.log(this.mockProducts)
-    } else  {
+  // applyFilters(selectedCategory?: string) {
+  //   console.log('Selected Category:', selectedCategory);
+  //   if(selectedCategory) {
+  //     this.mockProducts = this.mockProducts.filter((product: MockProductModel) => product.category === selectedCategory);
+  //     console.log(this.mockProducts)
+  //   } else  {
+  //     console.log('No selected category');
+  //   }
+  //
+  // }
+  applyFilters() {
+    console.log('Selected Category:', this.selectedCategory);
+    if (this.selectedCategory) {
+      this.mockProducts = this.placeholder.filter((product: MockProductModel) => product.category === this.selectedCategory);
+      console.log(this.mockProducts);
+    } else {
       console.log('No selected category');
     }
-
   }
-  deleteFilters(selectedCategory: string) {
-
-  }
-
   clearFilters(selectedCategory: string) {
     this.mockProducts = this.placeholder
   }
