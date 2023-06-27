@@ -8,8 +8,8 @@
     <label for="priceRange">Price Range:</label>
     <p-slider id="priceRange" [(ngModel)]="selectedPriceRange" [range]="true" [min]="0" [max]="1000" [step]="10"></p-slider>
   </div>
-  <!-- Add more filter options as needed -->
-  <p-button label="Apply Filters" styleClass="p-button-info"(click)="applyFilters()"></p-button>
-  <p-button label="Clear Filters" styleClass="p-button-danger"(click)="clearFilters()"></p-button>
+
+  <p-button label="Apply Filters" styleClass="p-button-info p-button-sm" (click)="applyFilters()"></p-button>
+  <p-button label="Clear Filters" styleClass="p-button-danger p-button-sm" (click)="clearFilters()"></p-button>
 
 </div>

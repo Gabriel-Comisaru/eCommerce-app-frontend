@@ -43,3 +43,7 @@
 .apply-button:focus {
   outline: none;
 }
+
+.p-button-sm{
+  margin-right: 10px!important;
+}
