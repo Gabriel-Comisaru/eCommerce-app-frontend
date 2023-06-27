@@ -23,4 +23,9 @@ export class BasketService {
   log() {
     console.log(this.basketItems);
   }
+  deleteFromBasket(index: number): void {
+    if (index >= 0 && index < this.basketItems.length) {
+      this.basketItems.splice(index, 1);
+    }
+  }
 }
