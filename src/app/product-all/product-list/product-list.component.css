@@ -1,8 +1,8 @@
 .product-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 2fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* Display 4 columns */
   gap: 20px;
-  align-items: stretch; /* Add this line */
+  align-items: stretch;
 }
 
 .product-card {
