@@ -9,6 +9,7 @@ import { SelectItem } from 'primeng/api';
 export class FiltersComponent implements OnInit {
   @Input() categories!: string[];
   @Output() filtersApplied: EventEmitter<string> = new EventEmitter<string>();
+  @Output() filtersCleared: EventEmitter<string> = new EventEmitter<string>();
 
   selectedCategory!: string;
   selectedPriceRange!: [number, number];
@@ -32,8 +33,7 @@ export class FiltersComponent implements OnInit {
   }
   clearFilters(): void {
     this.selectedCategory = '';
-    this.selectedPriceRange = [0, 1000];
-    this.filtersApplied.emit('');
+    this.filtersCleared.emit(this.selectedCategory);
   }
 
 

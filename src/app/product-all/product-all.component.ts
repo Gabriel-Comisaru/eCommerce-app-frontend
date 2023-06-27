@@ -10,9 +10,10 @@ import { MockProductsService} from "./shared/mock-products.service";
 })
 export class ProductAllComponent implements OnInit {
   @Input () selectedCategory!: string;
-
+  @Input ()
   public mockProducts: MockProductModel[] = [];
   public categories: any[] = [];
+  public placeholder: MockProductModel[] = [];
 
 
   constructor(private productService: MockProductsService) {}
@@ -34,7 +35,7 @@ export class ProductAllComponent implements OnInit {
         };
       });
       this.categories = Array.from(new Set(this.mockProducts.map(product => product.category)));
-
+      this.placeholder = this.mockProducts
 
     });
   }
@@ -43,10 +44,16 @@ export class ProductAllComponent implements OnInit {
     if(selectedCategory) {
       this.mockProducts = this.mockProducts.filter((product: MockProductModel) => product.category === selectedCategory);
       console.log(this.mockProducts)
-    } else {
+    } else  {
       console.log('No selected category');
     }
 
   }
+  deleteFilters(selectedCategory: string) {
 
+  }
+
+  clearFilters(selectedCategory: string) {
+    this.mockProducts = this.placeholder
+  }
 }

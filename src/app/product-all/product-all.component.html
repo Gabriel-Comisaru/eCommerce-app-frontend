@@ -3,6 +3,7 @@
     <app-filters
       [categories]="categories"
       (filtersApplied)="applyFilters($event)"
+      (filtersCleared)="clearFilters($event)"
     ></app-filters>
   </div>
   <div class="product-list">
