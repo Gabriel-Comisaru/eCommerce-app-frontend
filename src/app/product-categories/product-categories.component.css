@@ -20,6 +20,11 @@
   height: 300px;
   margin-bottom: 20px;
 }
+
+.category-card:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  cursor: pointer;
+}
 .category-image {
   height: 250px; /* Set a fixed height for the image container */
   overflow: hidden;
