@@ -31,6 +31,7 @@ import {ProductListComponent} from "./product-all/product-list/product-list.comp
 import {FiltersComponent} from "./product-all/filters/filters.component";
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.component';
+import {TableModule} from "primeng/table";
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,28 +47,29 @@ import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.compo
     ShoppingCartComponent,
     BasketpageComponent,
   ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    ButtonModule,
-    GalleriaModule,
-    StyleClassModule,
-    CardModule,
-    RatingModule,
-    FormsModule,
-    InputTextModule,
-    InputTextareaModule,
-    MenubarModule,
-    CarouselModule,
-    TagModule,
-    InputSwitchModule,
-    TabMenuModule,
-    SliderModule,
-    DropdownModule
+    imports: [
+        HttpClientModule,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ButtonModule,
+        GalleriaModule,
+        StyleClassModule,
+        CardModule,
+        RatingModule,
+        FormsModule,
+        InputTextModule,
+        InputTextareaModule,
+        MenubarModule,
+        CarouselModule,
+        TagModule,
+        InputSwitchModule,
+        TabMenuModule,
+        SliderModule,
+        DropdownModule,
+        TableModule
 
-  ],
+    ],
   providers: [],
   bootstrap: [AppComponent],
 })
