@@ -2,7 +2,7 @@
   <div class="filters">
     <app-filters
       [categories]="categories"
-      (filtersApplied)="applyFilters()"
+      (filtersApplied)="applyFilters($event)"
       (filtersCleared)="clearFilters($event)"
     ></app-filters>
   </div>

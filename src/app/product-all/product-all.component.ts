@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 
 import { MockProductModel} from "./shared/mock-product.model";
 import { MockProductsService} from "./shared/mock-products.service";
@@ -11,7 +11,6 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ProductAllComponent implements OnInit {
   @Input () selectedCategory!: string;
-  @Input ()
   public mockProducts: MockProductModel[] = [];
   public categories: any[] = [];
   public placeholder: MockProductModel[] = [];
@@ -42,13 +41,19 @@ export class ProductAllComponent implements OnInit {
         const category = params.get('category');
         if (category) {
           this.selectedCategory = category;
-          this.applyFilters();
+          this.applyFilters(this.selectedCategory);
         }});
     });
 
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedCategory']) {
+      this.applyFilters(this.selectedCategory);
+    }
+  }
 
-  applyFilters() {
+  applyFilters(selectedCategory: string) {
+    this.selectedCategory = selectedCategory;
     console.log('Selected Category:', this.selectedCategory);
     if (this.selectedCategory) {
       this.mockProducts = this.placeholder.filter((product: MockProductModel) => product.category === this.selectedCategory);
