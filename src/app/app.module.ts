@@ -24,12 +24,11 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MenubarModule } from 'primeng/menubar';
 import { ProductAllComponent } from './product-all/product-all.component';
-import { ProductListComponent } from './product-all/product-all-list/product-list/product-list.component';
-import { FiltersComponent } from './product-all/product-all-list/filters/filters.component';
 import {SliderModule} from "primeng/slider";
 import {DropdownModule} from "primeng/dropdown";
-import { ProductCatListComponent } from './product-all/product-cat-list/product-cat-list.component';
-import { ProductAllListComponent } from './product-all/product-all-list/product-all-list.component';
+import { ProductCategoriesComponent } from './product-categories/product-categories.component';
+import {ProductListComponent} from "./product-all/product-list/product-list.component";
+import {FiltersComponent} from "./product-all/filters/filters.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,8 +40,7 @@ import { ProductAllListComponent } from './product-all/product-all-list/product-
     ProductAllComponent,
     ProductListComponent,
     FiltersComponent,
-    ProductCatListComponent,
-    ProductAllListComponent,
+    ProductCategoriesComponent,
   ],
   imports: [
     HttpClientModule,

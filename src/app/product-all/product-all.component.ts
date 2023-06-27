@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import { MockProductModel} from "./shared/mock-product.model";
 import { MockProductsService} from "./shared/mock-products.service";
@@ -9,9 +9,10 @@ import { MockProductsService} from "./shared/mock-products.service";
   styleUrls: ['./product-all.component.css']
 })
 export class ProductAllComponent implements OnInit {
+  @Input () selectedCategory!: string;
 
   public mockProducts: MockProductModel[] = [];
-  public categories: { category: string, image: string }[] = [];
+  public categories: any[] = [];
 
 
   constructor(private productService: MockProductsService) {}
@@ -32,23 +33,20 @@ export class ProductAllComponent implements OnInit {
           stock: product.stock,
         };
       });
+      this.categories = Array.from(new Set(this.mockProducts.map(product => product.category)));
 
-      this.generateCategoryImages();
 
     });
   }
-  generateCategoryImages(): void {
-    const categories = Array.from(new Set(this.mockProducts.map(product => product.category)));
+  applyFilters(selectedCategory: string) {
+    console.log('Selected Category:', selectedCategory);
+    if(selectedCategory) {
+      this.mockProducts = this.mockProducts.filter((product: MockProductModel) => product.category === selectedCategory);
+      console.log(this.mockProducts)
+    } else {
+      console.log('No selected category');
+    }
 
-    this.categories = categories.map(category => {
-      const productsInCategory = this.mockProducts.filter(product => product.category === category);
-      const randomProduct = productsInCategory[Math.floor(Math.random() * productsInCategory.length)];
-
-      return {
-        category: category,
-        image: randomProduct?.photos[0] || '' // Use the first image of the random product, or an empty string if no product found
-      };
-    });
   }
 
 }

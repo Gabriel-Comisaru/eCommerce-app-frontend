@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {MockProductModel} from "../../shared/mock-product.model";
+import {MockProductModel} from "../shared/mock-product.model";
 
 @Component({
   selector: 'app-product-list',

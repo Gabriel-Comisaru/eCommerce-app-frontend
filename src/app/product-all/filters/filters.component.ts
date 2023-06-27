@@ -22,7 +22,6 @@ export class FiltersComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    // Initialize the filter options and selected values
     this.selectedCategory = '';
     this.selectedPriceRange = [0, 1000];
   }
@@ -31,4 +30,6 @@ export class FiltersComponent implements OnInit {
     this.filtersApplied.emit(this.selectedCategory);
 
   }
+
+
 }

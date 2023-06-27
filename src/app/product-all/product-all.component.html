@@ -1,18 +1,13 @@
-<!--<div class="product-all">-->
-<!--  <div class="filters">-->
-<!--    <app-filters></app-filters>-->
-<!--  </div>-->
-<!--  <div class="product-list">-->
-<!--    <app-product-list-->
-<!--    [mockProduct]="mockProducts"-->
-<!--    ></app-product-list>-->
-<!--  </div>-->
-<!--</div>-->
-<div class="main">
-  <div>
-    <app-product-cat-list
-    [categories]="categories"
-    ></app-product-cat-list>
+<div class="product-all">
+  <div class="filters">
+    <app-filters
+      [categories]="categories"
+      (filtersApplied)="applyFilters($event)"
+    ></app-filters>
   </div>
-
+  <div class="product-list">
+    <app-product-list
+      [mockProduct]="mockProducts"
+    ></app-product-list>
+  </div>
 </div>
