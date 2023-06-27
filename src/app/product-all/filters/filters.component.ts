@@ -30,6 +30,11 @@ export class FiltersComponent implements OnInit {
     this.filtersApplied.emit(this.selectedCategory);
 
   }
+  clearFilters(): void {
+    this.selectedCategory = '';
+    this.selectedPriceRange = [0, 1000];
+    this.filtersApplied.emit('');
+  }
 
 
 }
