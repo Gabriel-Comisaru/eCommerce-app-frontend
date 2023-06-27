@@ -22,9 +22,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MenubarModule } from 'primeng/menubar';
-
 import { BadgeModule } from 'primeng/badge';
 
+import { SkeletonModule } from 'primeng/skeleton';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 @NgModule({
   declarations: [
@@ -52,6 +52,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     CarouselModule,
     TagModule,
     InputSwitchModule,
+    SkeletonModule,
     FormsModule,
     RatingModule,
     OverlayPanelModule,

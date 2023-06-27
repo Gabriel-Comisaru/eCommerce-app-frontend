@@ -22,10 +22,22 @@
 
   <div class="navControlsContainer accountControls">
     <a class="navBarItem" (click)="shoppingCart.toggle($event)"
-      ><i class="pi pi-shopping-cart"></i><span>Cart</span></a
+      ><i
+        class="pi pi-shopping-cart"
+        pBadge
+        severity="danger"
+        [value]="cartProductsList.length.toString()"
+      ></i
+      ><span>Cart</span></a
     >
     <a class="navBarItem" (click)="favoriteItems.toggle($event)"
-      ><i class="pi pi-heart"></i><span>Favorite</span></a
+      ><i
+        class="pi pi-heart"
+        pBadge
+        severity="danger"
+        [value]="favoriteProductsList.length.toString()"
+      ></i
+      ><span>Favorite</span></a
     >
 
     <a class="navBarItem" (click)="myAccount.toggle($event)">
@@ -53,15 +65,9 @@
   </p-menubar>
 </nav>
 
-<!-- pe buton ar trebui sa am un mouseover event sau mouse enter si o comanda de mouse leave? sau un if legat de event target idk? 
-apoi pe blocul de cart ar trebui sa am tot un event de mouse enter si leave -->
-
-<!-- modifica navbarul si elimina itemele sau fa-ti navbarul tau 
-
-unde folosesti butoane la care scoti efectul de click si hover-->
 <p-overlayPanel #myAccount>
   <ng-template pTemplate="content">
-    <div class="flex flex-column justify-content-center align-items-left">
+    <div class="overlay">
       <p-button
         label="Login"
         styleClass="p-button-secondary p-button-text"
@@ -77,31 +83,48 @@ unde folosesti butoane la care scoti efectul de click si hover-->
 </p-overlayPanel>
 <p-overlayPanel #shoppingCart class="shoppingCart">
   <ng-template pTemplate="content">
-    <h4>Last added products</h4>
-    <table>
-      <tr>
-        <th>Product</th>
-        <th>Qty</th>
-        <th>Price</th>
-      </tr>
-      <!-- waiting for backend -->
-      <!-- <tr *ngFor="let product of listOfproductsAddedInCart"></tr> -->
-    </table>
-    <p-button label="View whole basket" styleClass="p-button-raised"></p-button>
-  </ng-template>
-</p-overlayPanel>
-<p-overlayPanel #favoriteItems class="favoriteItems">
-  <ng-template pTemplate="content">
-    <div class="favoriteItemsTooltip">
-      <h4>Products you liked</h4>
+    <div class="overlay">
+      <h4>Last added products</h4>
       <table>
-        <tr>
+        <tr class="contentRow">
           <th>Product</th>
           <th>Qty</th>
           <th>Price</th>
         </tr>
-        <!-- waiting for backend -->
-        <!-- <tr *ngFor="let product of listOfproductsAddedInCart"></tr> -->
+        <tr *ngFor="let product of cartProductsList" class="contentRow">
+          <td class="productContainer">
+            <img [src]="product.photos[0]" alt="product photo" />
+            <span class="productName">{{ product.name }}</span>
+          </td>
+          <td>x{{ product.stock }}</td>
+          <td>${{ product.price }}</td>
+        </tr>
+      </table>
+      <p-button
+        label="View whole basket"
+        styleClass="p-button-raised"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-overlayPanel>
+<p-overlayPanel #favoriteItems class="favoriteItems">
+  <ng-template pTemplate="content">
+    <div class="overlay">
+      <h4>Products you liked</h4>
+      <table>
+        <tr class="contentRow">
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Price</th>
+        </tr>
+        <tr *ngFor="let product of favoriteProductsList" class="contentRow">
+          <td class="productContainer">
+            <img [src]="product.photos[0]" alt="product photo" />
+            <span class="productName">{{ product.name }}</span>
+          </td>
+          <td>x{{ product.stock }}</td>
+          <td>${{ product.price }}</td>
+        </tr>
       </table>
       <p-button label="View all" styleClass="p-button-raised"></p-button>
     </div>

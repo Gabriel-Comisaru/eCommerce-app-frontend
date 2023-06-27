@@ -1,14 +1,20 @@
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
 .navBar {
   min-width: min-content;
   /* new */
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: white;
 }
 
 .navProductControls::ng-deep .p-menubar.p-component p-menubarsub {
   display: flex;
-
   width: 100%;
 }
 .navProductControls::ng-deep
@@ -66,7 +72,7 @@
 }
 .accountControls .navBarItem i {
   font-size: 1.5rem;
-  margin: 0 0.25rem;
+  margin: 0 0.75rem;
   color: #ee4f277e;
 }
 
@@ -112,4 +118,50 @@
 
 ::ng-deep .p-overlaypanel .p-overlaypanel-content {
   padding: 0;
+}
+
+.overlay {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 1rem;
+  align-items: center;
+}
+
+.contentRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentRow img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.contentRow td,
+.contentRow th {
+  margin: 0.25rem 1rem;
+}
+
+.contentRow td:first-child,
+.contentRow th:first-child {
+  width: 10rem;
+}
+.productName {
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  font-size: 0.75rem;
+}
+
+.productContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
 }
