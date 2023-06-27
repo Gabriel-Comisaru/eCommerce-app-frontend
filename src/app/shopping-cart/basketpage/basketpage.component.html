@@ -1,0 +1,11 @@
+<div class="basket-items">
+  <div *ngFor="let item of basketItems" class="basket-item p-card">
+    <div class="p-card-header">
+      <img [src]="item.photos[0]" alt="Product Image" class="product-img">
+    </div>
+    <div class="p-card-body">
+      <h4 class="product-name">{{ item.name }}</h4>
+      <p class="product-price">{{ item.price }}</p>
+    </div>
+  </div>
+</div>
