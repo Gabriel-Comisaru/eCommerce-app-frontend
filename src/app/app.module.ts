@@ -29,6 +29,7 @@ import {DropdownModule} from "primeng/dropdown";
 import { ProductCategoriesComponent } from './product-categories/product-categories.component';
 import {ProductListComponent} from "./product-all/product-list/product-list.component";
 import {FiltersComponent} from "./product-all/filters/filters.component";
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +42,7 @@ import {FiltersComponent} from "./product-all/filters/filters.component";
     ProductListComponent,
     FiltersComponent,
     ProductCategoriesComponent,
+    ShoppingCartComponent,
   ],
   imports: [
     HttpClientModule,
