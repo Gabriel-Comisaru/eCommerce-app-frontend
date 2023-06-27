@@ -47,16 +47,7 @@ export class ProductAllComponent implements OnInit {
     });
 
   }
-  // applyFilters(selectedCategory?: string) {
-  //   console.log('Selected Category:', selectedCategory);
-  //   if(selectedCategory) {
-  //     this.mockProducts = this.mockProducts.filter((product: MockProductModel) => product.category === selectedCategory);
-  //     console.log(this.mockProducts)
-  //   } else  {
-  //     console.log('No selected category');
-  //   }
-  //
-  // }
+
   applyFilters() {
     console.log('Selected Category:', this.selectedCategory);
     if (this.selectedCategory) {

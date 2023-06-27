@@ -11,9 +11,17 @@ export class NavBarComponent {
   ngOnInit() {
     this.items = [
       { label: 'Home', icon: 'pi pi-fw pi-home' },
-      { label: 'Products', icon: 'pi pi-fw pi-bars' },
+      { label: 'Products',
+        icon: 'pi pi-fw pi-bars',
+        routerLink: '/products'
+      },
       { label: 'Deals', icon: 'pi pi-fw pi-heart' },
       { label: 'Login/Register', icon: 'pi pi-fw pi-user' },
+      {
+        label: 'Basket',
+        icon: 'pi pi-fw pi-shopping-cart',
+        routerLink: '/basket',
+      },
     ];
   }
 }
