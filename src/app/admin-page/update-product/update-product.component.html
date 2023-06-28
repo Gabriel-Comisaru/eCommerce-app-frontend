@@ -6,32 +6,32 @@
       <div class="flex flex-column gap-2">
         <label class="block font-bold mb-2" htmlFor="name">Name</label>
         <input type="text" pInputText formControlName="name"/>
-      </div>
-      <div class="flex flex-column gap-2">
         <label class="block font-bold mb-2">Price</label>
           <p-inputNumber formControlName="price" inputId="currency-us" mode="currency" currency="USD"
                          locale="en-US"></p-inputNumber>
-      </div>
-      <div class="flex flex-column gap-2">
         <label class="block font-bold mb-2">Category</label>
         <p-dropdown formControlName="category" [options]="categories" placeholder="Select category"></p-dropdown>
-      </div>
-      <div class="flex flex-column gap-2">
         <label class="block font-bold mb-2">Description</label>
         <textarea rows="5" cols="30" pInputTextarea formControlName="description"></textarea>
-      </div>
-      <div class="flex flex-column gap-2">
         <label class="block font-bold mb-2">Stock</label>
         <p-inputNumber formControlName="stock" inputId="integeronly"></p-inputNumber>
+        <p-toast></p-toast>
+        <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)" [multiple]="true" accept="image/*">
+          <ng-template pTemplate="content">
+            <ul *ngIf="uploadedFiles.length">
+              <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+            </ul>
+          </ng-template>
+        </p-fileUpload>
       </div>
-      <div class="flex flex-column gap-2">
-        <input type="file" value="Choose" accept="image/*" (change)="onFileChanged($event)">
-        <input type="button" (click)="onUpload()" value="upload">
-      </div>
-      <div class="card flex justify-content-center">
-        <input type="file" value="Choose" accept="image/*" (change)="onFileChanged($event)">
-        <input type="button" (click)="onUpload()" value="upload">
-      </div>
+<!--      <div class="flex flex-column gap-2">-->
+<!--        <input type="file" value="Choose" accept="image/*" (change)="onFileChanged($event)">-->
+<!--        <input type="button" (click)="onUpload()" value="upload">-->
+<!--      </div>-->
+<!--      <div class="card flex justify-content-center">-->
+<!--        <input type="file" value="Choose" accept="image/*" (change)="onFileChanged($event)">-->
+<!--        <input type="button" (click)="onUpload()" value="upload">-->
+<!--      </div>-->
       <p-button type="submit" icon="pi pi-check" label="Add" styleClass="p-button-text"></p-button>
       <p-button (click)="close()" icon="pi pi-times" label="Cancel" styleClass="p-button-text"></p-button>
 

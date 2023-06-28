@@ -5,6 +5,10 @@ import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
 import {MessageService} from "primeng/api";
 import {HttpClient} from "@angular/common/http";
 
+interface UploadEvent {
+  originalEvent: Event;
+  files: File[];
+}
 
 @Component({
   selector: 'app-update-product',
@@ -24,6 +28,7 @@ export class UpdateProductComponent implements OnInit {
   selectedFile: any = [];
   message: string = '';
   mockProductsList:any=[];
+  uploadedFiles: any[] = [];
 
   constructor(private fb: FormBuilder,
               private mockProduct: MockProductsService,
@@ -116,19 +121,27 @@ export class UpdateProductComponent implements OnInit {
     // console.log(this.newProductForm.controls.photos.value);
   }
 
-  onUpload() {
-    console.log(this.selectedFile);
-    const uploadImageData = new FormData();
-    uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
-    this.httpClient.post('http://localhost:4200/image/upload', uploadImageData, {observe: 'response'})
-      .subscribe((response) => {
-          if (response.status === 200) {
-            this.message = 'Image uploaded successfully';
-          } else {
-            this.message = 'Image not uploaded successfully';
-          }
-        }
-      );
+  // onUpload() {
+  //   console.log(this.selectedFile);
+  //   const uploadImageData = new FormData();
+  //   uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
+  //   this.httpClient.post('http://localhost:4200/image/upload', uploadImageData, {observe: 'response'})
+  //     .subscribe((response) => {
+  //         if (response.status === 200) {
+  //           this.message = 'Image uploaded successfully';
+  //         } else {
+  //           this.message = 'Image not uploaded successfully';
+  //         }
+  //       }
+  //     );
+  // }
+
+  onUpload(event:UploadEvent) {
+    for(let file of event.files) {
+      this.uploadedFiles.push(file);
+    }
+
+    this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
   }
 
   onEditSubmit(id: any) {
