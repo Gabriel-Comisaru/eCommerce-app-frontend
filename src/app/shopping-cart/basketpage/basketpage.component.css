@@ -1,0 +1,31 @@
+.basket-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.p-card-header {
+  width: 80px; /* Adjust the width as needed */
+}
+
+.product-img {
+  width: 100%;
+  height: auto;
+}
+
+.p-card-body {
+  flex-grow: 1;
+  padding-left: 10px; /* Add some spacing between the image and content */
+}
+
+.product-name {
+  font-size: 18px;
+  margin-top: 0;
+}
+
+.product-price {
+  font-size: 16px;
+  margin-top: 5px;
+  color: #888;
+}

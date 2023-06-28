@@ -1,0 +1,22 @@
+<div class="product-list">
+  <p-card *ngFor="let product of mockProduct" class="product-card">
+    <ng-template pTemplate="title" class="product-title">
+      {{ product.name }}
+    </ng-template>
+    <ng-template pTemplate="subtitle">
+      {{ product.price }} $
+    </ng-template>
+    <ng-template pTemplate="content">
+      <div class="product-image">
+        <img [src]="product.photos[0]" alt="Product Image" class="fit-image">
+      </div>
+      <p class="product-description">{{ product.description }}</p>
+      <div class="product-rating">
+        <p-rating [(ngModel)]="product.rating" [readonly]="true"></p-rating>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <p-button class="add-to-cart-button" (click)="addToBasket(product)">Add to Cart</p-button>
+    </ng-template>
+  </p-card>
+</div>

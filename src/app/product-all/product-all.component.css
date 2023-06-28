@@ -1,0 +1,10 @@
+.product-all {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px
+}
+
+.filters {
+  width: 30%;
+  padding: 0 10px;
+}

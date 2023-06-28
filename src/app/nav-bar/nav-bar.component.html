@@ -1,0 +1,8 @@
+<div class="card">
+  <p-menubar [model]="items">
+    <ng-template pTemplate="end">
+      <p-inputSwitch [(ngModel)]="isAdmin" id="adminMode" (click)="goToAdminPage()"></p-inputSwitch>
+      <label for="adminMode">Admin</label>
+    </ng-template>
+  </p-menubar>
+</div>

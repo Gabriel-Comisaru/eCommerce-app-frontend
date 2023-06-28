@@ -1,0 +1,49 @@
+<div class="card">
+  <p-carousel
+    [value]="mockProductsList"
+    [numVisible]="5"
+    [numScroll]="5"
+    [circular]="true"
+    autoPlayInterval="3000"
+  >
+    <!-- [responsiveOptions]="responsiveOptions" -->
+    <ng-template let-product pTemplate="item">
+      <div
+        class="border-1 surface-border border-round m-2 text-center productCard h-25rem grid"
+      >
+        <div class="mb-3 col-12">
+          <img
+            [src]="product.photos[0]"
+            [alt]="product.name"
+            class="w-full h-12rem max-h-full shadow-2 productImage"
+          />
+        </div>
+        <div class="col-12">
+          <h4 class="mb-1 mt-0 productName" [title]="product.name">
+            {{
+              product.name.length > 15
+                ? product.name.slice(0, 12) + "..."
+                : product.name
+            }}
+          </h4>
+
+          <h6 class="mt-0 mb-3">{{ "$" + product.price }}</h6>
+          <p-tag [value]="product.stock"></p-tag>
+          <!-- [severity]="getSeverity(product.inventoryStatus)" -->
+          <div class="car-buttons">
+            <p-button
+              type="button"
+              styleClass="p-button p-button-rounded mr-2"
+              icon="pi pi-search"
+            ></p-button>
+            <p-button
+              type="button"
+              styleClass="p-button-success p-button-rounded mr-2"
+              icon="pi pi-star-fill"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+</div>
