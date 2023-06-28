@@ -50,6 +50,19 @@ export class ProductsListCarouselComponent {
       favoriteProductsList
     );
   }
+
+  getStock(stock: number) {
+    console.log('1');
+    return stock > 50
+      ? 'In stock'
+      : stock <= 50 && stock > 10
+      ? 'Limited stock'
+      : stock <= 10 && stock > 1
+      ? 'Last ' + stock + ' pieces'
+      : stock === 1
+      ? 'Last piece available'
+      : 'Out of stock';
+  }
 }
 // <!-- notificare ca am adaugat in cos -->
 // <!-- notificare ca am adaugat la favorite plus update badge-->

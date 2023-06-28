@@ -49,23 +49,6 @@ export class NavBarComponent {
       { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
     ];
 
-    // create localStorage item if it doesn't exist already
-    // if (localStorage.getItem('shoppingCart') === null) {
-    //   localStorage.setItem(
-    //     'shoppingCart',
-    //     JSON.stringify(this.cartProductsList)
-    //   );
-    // }
-    // if (localStorage.getItem('favoriteProducts') === null) {
-    //   localStorage.setItem(
-    //     'favoriteProducts',
-    //     JSON.stringify(this.favoriteProductsList)
-    //   );
-    // }
-    // this.cartProductsList = JSON.parse(
-    //   localStorage.getItem('shoppingCart') || '[]'
-    // );
-
     this.mockProductsService
       .getShopingCartObservable()
       .subscribe((response) => (this.cartProductsList = response));

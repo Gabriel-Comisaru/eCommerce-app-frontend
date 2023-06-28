@@ -76,18 +76,8 @@
           ></p-rating>
 
           <div class="stockAndPrice">
-            <p-tag
-              [value]="
-                product.stock > 50
-                  ? 'In stock'
-                  : product.stock <= 50 && product.stock > 10
-                  ? 'Limited stock'
-                  : product.stock <= 10 && product.stock > 1
-                  ? 'Last ' + product.stock + ' pieces'
-                  : product.stock === 1
-                  ? 'Last piece available'
-                  : 'Out of stock'
-              "
+            <!-- <p-tag
+              [value]="getStock(product.stock)"
               [severity]="
                 product.stock > 50
                   ? 'success'
@@ -99,7 +89,8 @@
                   ? 'danger'
                   : 'danger'
               "
-            ></p-tag>
+            ></p-tag> -->
+            <app-product-status [product]="product"></app-product-status>
             <h5 class="mt-0 mb-1 productPrice">
               <span [ngClass]="{ oldPrice: product.discount !== 0 }">
                 {{ "$" + product.price }} </span

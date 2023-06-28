@@ -26,6 +26,8 @@ import { BadgeModule } from 'primeng/badge';
 
 import { SkeletonModule } from 'primeng/skeleton';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ProductStatusComponent } from './home-page/products-list-carousel/product-status/product-status.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,6 +36,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     ProductsListCarouselComponent,
 
     NavBarComponent,
+    ProductStatusComponent,
   ],
   imports: [
     HttpClientModule,
