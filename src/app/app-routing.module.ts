@@ -4,11 +4,16 @@ import { HomePageComponent } from './home-page/home-page.component';
 import {ProductAllComponent} from "./product-all/product-all.component";
 import {ProductCategoriesComponent} from "./product-categories/product-categories.component";
 import {BasketpageComponent} from "./shopping-cart/basketpage/basketpage.component";
+import {AdminPageComponent} from "./admin-page/admin-page.component";
 
 const routes: Routes = [
   {
     path: '',
     component: HomePageComponent,
+  },
+  {
+    path: 'admin',
+    component: AdminPageComponent,
   },
   {
     path: 'products',
