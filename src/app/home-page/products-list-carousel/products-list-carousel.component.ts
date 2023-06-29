@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MockProductDetailed } from '../shared/mockProduct.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -7,8 +8,12 @@ import { MockProductDetailed } from '../shared/mockProduct.model';
   styleUrls: ['./products-list-carousel.component.css'],
 })
 export class ProductsListCarouselComponent {
-  constructor() {}
+  constructor(private router: Router) {}
   @Input() mockProductsList!: MockProductDetailed[];
 
   ngOnInit() {}
+
+  getProductDetails(id: number) {
+    this.router.navigate([`product-details/${id}`]);
+  }
 }

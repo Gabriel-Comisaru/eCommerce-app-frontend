@@ -5,6 +5,7 @@ import {ProductAllComponent} from "./product-all/product-all.component";
 import {ProductCategoriesComponent} from "./product-categories/product-categories.component";
 import {BasketpageComponent} from "./shopping-cart/basketpage/basketpage.component";
 import {AdminPageComponent} from "./admin-page/admin-page.component";
+import { ProductDetailsComponent } from './product-details/product-details.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
   {
     path: 'basket',
     component: BasketpageComponent
+  },
+  {
+    path: 'product-details/:id',
+    component: ProductDetailsComponent
   }
 ];
 

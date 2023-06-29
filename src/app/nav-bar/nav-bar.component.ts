@@ -18,7 +18,7 @@ export class NavBarComponent {
     this.isAdmin = false;
     this.goToAdminPage();
     this.items = [
-      { label: 'Home', icon: 'pi pi-fw pi-home' },
+      { label: 'Home', icon: 'pi pi-fw pi-home', routerLink:"/"  },
       { label: 'Products',
         icon: 'pi pi-fw pi-bars',
         routerLink: '/products'

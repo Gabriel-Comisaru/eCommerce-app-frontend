@@ -19,7 +19,7 @@
           />
         </div>
         <div class="col-12">
-          <h4 class="mb-1 mt-0 productName" [title]="product.name">
+          <h4 class="mb-1 mt-0 productName" [title]="product.name" (click)="getProductDetails(product.id)">
             {{
               product.name.length > 15
                 ? product.name.slice(0, 12) + "..."
