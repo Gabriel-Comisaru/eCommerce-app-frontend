@@ -19,32 +19,16 @@ export class NavBarComponent {
     private mockProductsService: MockProductsService
   ) {}
   ngOnInit() {
+    this.isAdmin = false;
+    this.goToAdminPage();
     this.navProductControls = [
       {
         label: 'Products',
         icon: 'pi pi-fw pi-bars',
-        items: [
-          {
-            label: 'Category 1',
-            icon: 'pi pi-prime',
-          },
-          {
-            label: 'Category 2',
-            icon: 'pi pi-prime',
-          },
-          {
-            label: 'Category 3',
-            icon: 'pi pi-prime',
-          },
-          {
-            label: 'Category 4',
-            icon: 'pi pi-prime',
-          },
-          {
-            label: 'Category 5',
-            icon: 'pi pi-prime',
-          },
-        ],
+        routerLink: '/products',
+        // command: () => {
+        //   this.router.navigate(['/products']);
+        // },
       },
       { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
     ];
@@ -61,5 +45,15 @@ export class NavBarComponent {
 
   goHome() {
     this.router.navigate(['']);
+  }
+  goToBasketPage() {
+    this.router.navigate(['basket']);
+  }
+  goToAdminPage() {
+    if (this.isAdmin) {
+      this.router.navigate(['admin']);
+    } else if (!this.isAdmin) {
+      this.router.navigate(['']);
+    }
   }
 }

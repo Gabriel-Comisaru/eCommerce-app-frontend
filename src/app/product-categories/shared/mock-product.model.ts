@@ -1,4 +1,4 @@
-export interface MockProductDetailed {
+export interface MockProductModel {
   id: number;
   name: string;
   photos: string[];
@@ -9,5 +9,4 @@ export interface MockProductDetailed {
   category: string;
   description: string;
   stock: number;
-  isDeleted:boolean
 }

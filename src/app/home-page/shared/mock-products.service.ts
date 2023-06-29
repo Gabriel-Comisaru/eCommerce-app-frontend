@@ -56,4 +56,22 @@ export class MockProductsService {
   //       )
   //     );
   // }
+  getProduct(id: number): Observable<any | undefined> {
+    const url = `${this.mockProductsUrl}/${id}`;
+    return this.httpClient.get(url);
+  }
+
+  saveMockProducts(product: any): Observable<any> {
+    return this.httpClient.post<any>(this.mockProductsUrl + '/add', product);
+  }
+
+  updateProduct(product: any, id: number): Observable<any> {
+    const url = `${this.mockProductsUrl}/${id}`;
+    return this.httpClient.put<any>(url, product);
+  }
+
+  delete(id: number) {
+    const url = `${this.mockProductsUrl}/${id}`;
+    return this.httpClient.delete(url);
+  }
 }

@@ -28,7 +28,7 @@
         severity="danger"
         [value]="cartProductsList.length.toString()"
       ></i
-      ><span>Cart</span></a
+      ><span>Basket</span></a
     >
     <a class="navBarItem" (click)="favoriteItems.toggle($event)"
       ><i
@@ -50,6 +50,7 @@
         [(ngModel)]="isAdmin"
         id="adminMode"
         class="flex"
+        (click)="goToAdminPage()"
       ></p-inputSwitch>
       <label for="adminMode" class="mx-2">Admin</label>
     </div>
@@ -101,6 +102,7 @@
         </tr>
       </table>
       <p-button
+        (click)="goToBasketPage()"
         label="View whole basket"
         styleClass="p-button-raised"
       ></p-button>

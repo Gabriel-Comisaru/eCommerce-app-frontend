@@ -1,18 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
 import { GalleriaModule } from 'primeng/galleria';
 import { StyleClassModule } from 'primeng/styleclass';
 import { CardModule } from 'primeng/card';
 import { RatingModule } from 'primeng/rating';
-import { FormsModule } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { HomePageComponent } from './home-page/home-page.component';
 
 import { CarouselModule } from 'primeng/carousel';
@@ -21,6 +17,7 @@ import { ProductsListCarouselComponent } from './home-page/products-list-carouse
 import { HttpClientModule } from '@angular/common/http';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 
@@ -28,6 +25,24 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProductStatusComponent } from './home-page/products-list-carousel/product-status/product-status.component';
 
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { UpdateProductComponent } from './admin-page/update-product/update-product.component';
+import { DialogModule } from 'primeng/dialog';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ToastModule } from 'primeng/toast';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { PaginatorModule } from 'primeng/paginator';
+import { ProductAllComponent } from './product-all/product-all.component';
+import { SliderModule } from 'primeng/slider';
+import { DropdownModule } from 'primeng/dropdown';
+import { ProductCategoriesComponent } from './product-categories/product-categories.component';
+import { ProductListComponent } from './product-all/product-list/product-list.component';
+import { FiltersComponent } from './product-all/filters/filters.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.component';
+import { TableModule } from 'primeng/table';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,29 +52,45 @@ import { ProductStatusComponent } from './home-page/products-list-carousel/produ
 
     NavBarComponent,
     ProductStatusComponent,
+    AdminPageComponent,
+    UpdateProductComponent,
+    ProductAllComponent,
+    ProductListComponent,
+    FiltersComponent,
+    ProductCategoriesComponent,
+    ShoppingCartComponent,
+    BasketpageComponent,
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
-    ButtonModule,
-    GalleriaModule,
-    StyleClassModule,
-    CardModule,
-    RatingModule,
-    FormsModule,
-    InputTextModule,
-    InputTextareaModule,
     MenubarModule,
     CarouselModule,
+    ButtonModule,
     TagModule,
     InputSwitchModule,
     SkeletonModule,
-    FormsModule,
     RatingModule,
     OverlayPanelModule,
     BadgeModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    DialogModule,
+    FileUploadModule,
+    ToastModule,
+    TableModule,
+    InputTextModule,
+    DropdownModule,
+    InputTextareaModule,
+    InputNumberModule,
+    PaginatorModule,
+    SliderModule,
+    RatingModule,
+    CardModule,
+    GalleriaModule,
+    StyleClassModule,
   ],
 
   providers: [],

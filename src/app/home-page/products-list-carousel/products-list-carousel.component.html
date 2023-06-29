@@ -65,7 +65,11 @@
         </div>
         <div class="detailsContainer">
           <div class="productNameContainer">
-            <h4 class="mb-1 mt-0 productName" [title]="product.name">
+            <h4
+              class="mb-1 mt-0 productName"
+              [title]="product.name"
+              (click)="getProductDetails(product.id)"
+            >
               {{ product.name }}
             </h4>
           </div>

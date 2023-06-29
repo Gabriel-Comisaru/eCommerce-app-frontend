@@ -1,6 +1,7 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { MockProductDetailed } from '../shared/mockProduct.model';
 import { MockProductsService } from '../shared/mock-products.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -8,8 +9,12 @@ import { MockProductsService } from '../shared/mock-products.service';
   styleUrls: ['./products-list-carousel.component.css'],
 })
 export class ProductsListCarouselComponent {
-  constructor(private mockProductsService: MockProductsService) {}
+  constructor(
+    private mockProductsService: MockProductsService,
+    private router: Router
+  ) {}
   @Input() productsToDisplay!: MockProductDetailed[];
+  @Input() mockProductsList!: MockProductDetailed[];
   public dataLoaded: boolean = false;
   ngOnInit() {}
 
@@ -50,7 +55,9 @@ export class ProductsListCarouselComponent {
       favoriteProductsList
     );
   }
-
+  getProductDetails(id: number) {
+    this.router.navigate([`product-details/${id}`]);
+  }
   getStock(stock: number) {
     console.log('1');
     return stock > 50
