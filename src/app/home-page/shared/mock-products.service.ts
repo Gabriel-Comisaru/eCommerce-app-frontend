@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
-import { MockProductDetailed } from './mockProduct.model';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -19,4 +18,19 @@ export class MockProductsService {
     const url = `${this.mockProductsUrl}/${id}`;
     return this.httpClient.get(url);
   }
+  
+  saveMockProducts(product:any):Observable<any>{
+    return this.httpClient.post<any>(this.mockProductsUrl+'/add',product);
+  }
+
+  updateProduct(product:any,id:number):Observable<any>{
+    const url = `${this.mockProductsUrl}/${id}`;
+    return this.httpClient.put<any>(url,product);
+  }
+
+  delete(id:number){
+    const url = `${this.mockProductsUrl}/${id}`;
+    return this.httpClient.delete(url);
+  }
+
 }

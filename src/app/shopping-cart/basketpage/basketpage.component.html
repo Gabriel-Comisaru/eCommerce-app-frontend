@@ -1,0 +1,40 @@
+<p-table [paginator]="true" [rows]="row" [rowsPerPageOptions]="rows" [value]="basketItems"
+         [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
+         [globalFilterFields]="['name']">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product let-index="rowIndex">
+    <tr  class="item">
+      <td *ngIf="isProductAvailable(product)"><img alt="image" [src]="product.photos[0]" style="max-width: 100px;max-height: 50px"></td>
+      <td *ngIf="isProductAvailable(product)">{{ product.name }}</td>
+      <td *ngIf="isProductAvailable(product)">{{ product.category }}</td>
+      <td *ngIf="isProductAvailable(product)">{{ getQuantity(product) }}</td>
+      <td *ngIf="isProductAvailable(product)">${{ product.price }}</td>
+      <td *ngIf="isProductAvailable(product)">
+        <p-button icon="pi pi-trash" label="Delete" (click)="deleteProduct(product, index, $event)"></p-button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><strong>Total:</strong></td>
+      <td><strong>${{ getTotalPrice() }}</strong></td>
+      <td>
+        <div class="checkout-button">
+          <p-button type="button" label="Checkout" (click)="checkout()"></p-button>
+        </div>
+
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
