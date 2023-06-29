@@ -33,6 +33,7 @@ export class ProductDetailsComponent implements OnInit{
   ];
   reviewsValue: number = 5;
   addReviewValue: number = 0;
+  discountedPrice: number = 0;
 
   constructor(private productService: MockProductsService,
     private activatedRoute: ActivatedRoute
@@ -42,7 +43,7 @@ export class ProductDetailsComponent implements OnInit{
     const id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
     this.productService.getProduct(id).subscribe(product => {
       let rating = Math.round(product.rating);
-      let discountedPrice = Math.round(product.price - product.price*(product.discountPercentage/100));
+      this.discountedPrice = Math.round(product.price - product.price*(product.discountPercentage/100));
       this.product = {
           id: product.id,
           name: product.title,
@@ -50,10 +51,11 @@ export class ProductDetailsComponent implements OnInit{
           price: product.price,
           rating: rating,
           reviews: ['No reviews available'],
-          discount: discountedPrice,
+          discount: product.discount,
           category: product.category,
           description: product.description,
-          stock: product.stock
+          stock: product.stock,
+          isDeleted: product.isDeleted
         }
         this.getImages();
       });
