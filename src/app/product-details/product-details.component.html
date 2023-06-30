@@ -22,7 +22,7 @@
                 </p>
                 <ng-template pTemplate="footer">
                     <div class="justify-content-center">
-                        <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-success" label="Add to cart" icon="pi pi-shopping-cart"></p-button>
+                        <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-success" label="Add to cart" icon="pi pi-shopping-cart" (click)="addToBasket(product)"></p-button>
                         <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-danger" label="Add to favorites" icon="pi pi-heart"></p-button>
                         <p-button [style]="{ width: '100%', margin: '5px 0' }" (click)="scrollToSection('addReview')" label="Add a review" icon="pi pi-star"></p-button>
                     </div>
@@ -52,31 +52,39 @@
     </div>
     <div id="reviews" class="reviews w-full my-5">
         <p-card header="Reviews">
-            <div class="card">
-                <p-rating [(ngModel)]="reviewsValue" [readonly]="true" [cancel]="false"></p-rating>
-                <h3>Best product ever!</h3>
+            <p *ngIf="reviews.length === 0"><em>The product did not receive any reviews yet. Be the first to share your opinion!</em></p>
+            <div class="card" *ngFor="let review of reviews">
+                <p-rating [(ngModel)]="review.rating" [readonly]="true" [cancel]="false"></p-rating>
+                <h3>{{review.title}}</h3>
                 <p>
+                    {{review.comment}}
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
                     quas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
                     quas!
                 </p>
+                <div *ngIf="reviews.length > 1">
+                    <hr>
+                    <br>
+                </div>
             </div>
         </p-card>
     </div>
     <div id="addReview" class="add-review w-full my-5">
-        <p-card header="Add a review">
-            <div class="card">
-                <p-rating [(ngModel)]="addReviewValue" [cancel]="false"></p-rating>
-                <span class="p-float-label my-5">
-                    <input pInputText class="w-full max-w-full" id="reviewTitle"/>
-                    <label htmlFor="reviewTitle">Title</label>
-                </span>
-                <span class="p-float-label my-5">
-                    <textarea class="max-w-full" pInputTextarea id="reviewBody" rows="5" cols="60"></textarea>
-                    <label htmlFor="reviewBody">Enter your review</label>
-                </span>
-                <p-button label="Submit review"></p-button>
-            </div>
-        </p-card>
+        <form [formGroup]="reviewForm">
+            <p-card header="Add a review">
+                <div class="card">
+                    <p-rating [cancel]="false" formControlName="rating"></p-rating>
+                    <span class="p-float-label my-5">
+                        <input pInputText class="w-full max-w-full" id="reviewTitle" formControlName="title" type="text"/>
+                        <label htmlFor="reviewTitle">Title</label>
+                    </span>
+                    <span class="p-float-label my-5">
+                        <textarea class="w-full max-w-full" pInputTextarea id="reviewBody" rows="5" cols="60" formControlName="comment" type="text"></textarea>
+                        <label htmlFor="reviewBody">Enter your review</label>
+                    </span>
+                    <p-button label="Submit review" (onClick)="onSubmit()"></p-button>
+                </div>
+            </p-card>
+        </form>
     </div>
 </div>

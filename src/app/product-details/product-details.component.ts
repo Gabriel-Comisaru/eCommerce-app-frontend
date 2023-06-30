@@ -2,7 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MockProductDetailed } from '../home-page/shared/mockProduct.model';
 import { MockProductsService } from '../home-page/shared/mock-products.service';
 import { ActivatedRoute } from '@angular/router';
+import { BasketService } from '../shopping-cart/shared/basket.service';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
+interface Review {
+  rating: number,
+  title: string,
+  comment: string
+}
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
@@ -13,30 +20,21 @@ export class ProductDetailsComponent implements OnInit{
   product: MockProductDetailed = {} as MockProductDetailed;
   images: {url: string}[] = [];
   position: string = 'bottom';
-  positionOptions = [
-    {
-        label: 'Bottom',
-        value: 'bottom'
-    },
-    {
-        label: 'Top',
-        value: 'top'
-    },
-    {
-        label: 'Left',
-        value: 'left'
-    },
-    {
-        label: 'Right',
-        value: 'right'
-    }
-  ];
   reviewsValue: number = 5;
-  addReviewValue: number = 0;
+  // addReviewValue: number = 0;
   discountedPrice: number = 0;
+  reviews: Review[] = [];
+
+  reviewForm = this.fb.group({
+    rating: new FormControl(0, {nonNullable: true}),
+    title: new FormControl('', {nonNullable: true}),
+    comment: new FormControl('', {nonNullable: true})
+  })
 
   constructor(private productService: MockProductsService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private basketService: BasketService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -72,5 +70,21 @@ export class ProductDetailsComponent implements OnInit{
       this.images.push({'url': photo});
     }    
     this.images = [...this.images];
+  }
+
+  addToBasket(product: MockProductDetailed): void {
+    this.basketService.addToBasket(product);
+  }
+
+  onSubmit() {
+    const review: Review = 
+    {
+      rating: this.reviewForm.controls.rating.value,
+      title: this.reviewForm.controls.title.value,
+      comment: this.reviewForm.controls.comment.value,
+    }
+    this.reviews.push(review)
+    console.log(this.reviews);
+    
   }
 }
