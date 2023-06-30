@@ -1,0 +1,155 @@
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
+.navBar {
+  min-width: min-content;
+  /* new */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+}
+
+@media screen and (max-width: 960px) {
+  ::ng-deep .p-menubar .p-menubar-button {
+    display: none;
+  }
+  ::ng-deep .p-menubar {
+    position: inherit;
+  }
+  ::ng-deep .p-menubar .p-menubar-root-list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    position: unset;
+    padding: unset;
+    background: inherit;
+    border: unset;
+    box-shadow: unset;
+  }
+  .navProductControls::ng-deep
+    .p-menubar.p-component
+    p-menubarsub
+    .p-menubar-root-list
+    li:nth-child(2) {
+    margin-right: 0;
+  }
+}
+
+.navBarItem:last-child:hover {
+  background-color: transparent;
+}
+
+.navBarItem:last-child {
+  margin-right: 0;
+}
+.navControlsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.accountControls .navBarItem {
+  margin: 0.25rem 0.25rem;
+  padding: 0.5rem 0.5rem;
+  display: flex;
+  align-items: flex-end;
+}
+.accountControls .navBarItem i {
+  font-size: 1.5rem;
+  margin: 0 0.75rem;
+  color: #ee4f277e;
+}
+
+.accountControls .navBarItem:hover i {
+  color: #ee4f27;
+}
+
+.searchContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+  align-items: center;
+}
+
+.searchContainer .searchButton {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  border-radius: 0 6px 6px 0;
+  background-color: transparent;
+  border: transparent;
+  height: 2.5rem;
+}
+.searchContainer .searchButton:hover {
+  background-color: lightskyblue;
+  border: 1px solid gray;
+  border-left-color: transparent;
+}
+.searchContainer .searchButton i {
+  font-size: 1.5rem;
+  color: gray;
+}
+
+.searchInput {
+  height: 2.5rem;
+  width: 25vw;
+  min-width: 5rem;
+  border-radius: 0.5rem;
+  border: 1px solid gray;
+  padding-left: 0.5rem;
+}
+
+::ng-deep .p-overlaypanel .p-overlaypanel-content {
+  padding: 0;
+}
+
+.overlay {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 1rem;
+  align-items: center;
+}
+
+.contentRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentRow img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.contentRow td,
+.contentRow th {
+  margin: 0.25rem 1rem;
+}
+
+.contentRow td:first-child,
+.contentRow th:first-child {
+  width: 10rem;
+}
+.productName {
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  font-size: 0.75rem;
+}
+
+.productContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}

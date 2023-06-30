@@ -13,12 +13,11 @@ interface Review {
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.css']
+  styleUrls: ['./product-details.component.css'],
 })
-
-export class ProductDetailsComponent implements OnInit{
+export class ProductDetailsComponent implements OnInit {
   product: MockProductDetailed = {} as MockProductDetailed;
-  images: {url: string}[] = [];
+  images: { url: string }[] = [];
   position: string = 'bottom';
   reviewsValue: number = 5;
   // addReviewValue: number = 0;
@@ -39,36 +38,36 @@ export class ProductDetailsComponent implements OnInit{
 
   ngOnInit(): void {
     const id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
-    this.productService.getProduct(id).subscribe(product => {
+    this.productService.getProduct(id).subscribe((product) => {
       let rating = Math.round(product.rating);
-      this.discountedPrice = Math.round(product.price - product.price*(product.discountPercentage/100));
+      let discountedPrice = Math.round(
+        product.price - product.price * (product.discountPercentage / 100)
+      );
       this.product = {
-          id: product.id,
-          name: product.title,
-          photos: product.images,
-          price: product.price,
-          rating: rating,
-          reviews: ['No reviews available'],
-          discount: product.discount,
-          category: product.category,
-          description: product.description,
-          stock: product.stock,
-          isDeleted: product.isDeleted
-        }
-        this.getImages();
-      });
-    
+        id: product.id,
+        name: product.title,
+        photos: product.images,
+        price: product.price,
+        rating: rating,
+        reviews: ['No reviews available'],
+        discount: discountedPrice,
+        category: product.category,
+        description: product.description,
+        stock: product.stock,
+      } as MockProductDetailed;
+      this.getImages();
+    });
   }
 
   scrollToSection(id: string) {
     const section = document.getElementById(id)!;
-    section.scrollIntoView({ behavior: "smooth" });
+    section.scrollIntoView({ behavior: 'smooth' });
   }
 
   getImages() {
     for (let photo of this.product.photos) {
-      this.images.push({'url': photo});
-    }    
+      this.images.push({ url: photo });
+    }
     this.images = [...this.images];
   }
 
