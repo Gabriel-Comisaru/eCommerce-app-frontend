@@ -1,6 +1,31 @@
-<div class="card">
+<div>
   <p-carousel
-    [value]="mockProductsList"
+    [value]="[5, 5, 5, 5, 5]"
+    [numVisible]="5"
+    [numScroll]="5"
+    *ngIf="!dataLoaded"
+  >
+    <ng-template let-skeleton pTemplate="item">
+      <div class="mr-2 mt-2 flex flex-column align-items-center">
+        <p-skeleton width="200px" height="200px"></p-skeleton>
+        <p-skeleton
+          width="8rem"
+          height="30px"
+          styleClass="mb-2 mt-2"
+        ></p-skeleton>
+        <p-skeleton width="12rem" height="50px" styleClass="mb-2"></p-skeleton>
+
+        <div class="flex flex-row justify-content-around w-12">
+          <p-skeleton size="3rem" styleClass="mb-2"></p-skeleton>
+          <p-skeleton size="3rem" styleClass="mb-2"></p-skeleton>
+        </div>
+      </div>
+    </ng-template>
+  </p-carousel>
+
+  <p-carousel
+    *ngIf="dataLoaded"
+    [value]="productsToDisplay"
     [numVisible]="5"
     [numScroll]="5"
     [circular]="true"
@@ -9,37 +34,94 @@
     <!-- [responsiveOptions]="responsiveOptions" -->
     <ng-template let-product pTemplate="item">
       <div
-        class="border-1 surface-border border-round m-2 text-center productCard h-25rem grid"
+        class="border-1 surface-border border-round m-2 text-center productCard"
       >
-        <div class="mb-3 col-12">
+        <div class="mb-1 w-full relative overflow-hidden imageContainer">
+          <!-- *ngIf="product.soldPieces && product.soldPieces > 100" -->
+          <p-tag
+            *ngIf="product.price && product.price < 100"
+            severity="primary"
+            value="Most selled"
+            class="absolute mostSelledPosition"
+          ></p-tag>
+          <p-tag
+            *ngIf="product.discount && product.discount > 0"
+            severity="danger"
+            value="Limited offer"
+            class="absolute limitedOfferPosition"
+          ></p-tag>
+          <p-tag
+            *ngIf="product.discount && product.discount > 0"
+            severity="danger"
+            [value]="'-' + product.discount.toFixed(0) + '%'"
+            class="absolute discountApplied"
+          >
+          </p-tag>
           <img
             [src]="product.photos[0]"
             [alt]="product.name"
             class="w-full h-12rem max-h-full shadow-2 productImage"
           />
         </div>
-        <div class="col-12">
-          <h4 class="mb-1 mt-0 productName" [title]="product.name">
-            {{
-              product.name.length > 15
-                ? product.name.slice(0, 12) + "..."
-                : product.name
-            }}
-          </h4>
+        <div class="detailsContainer">
+          <div class="productNameContainer">
+            <h4
+              class="mb-1 mt-0 productName"
+              [title]="product.name"
+              (click)="getProductDetails(product.id)"
+            >
+              {{ product.name }}
+            </h4>
+          </div>
+          <p-rating
+            [(ngModel)]="product.rating"
+            [readonly]="true"
+            [cancel]="false"
+          ></p-rating>
 
-          <h6 class="mt-0 mb-3">{{ "$" + product.price }}</h6>
-          <p-tag [value]="product.stock"></p-tag>
-          <!-- [severity]="getSeverity(product.inventoryStatus)" -->
-          <div class="car-buttons">
+          <div class="stockAndPrice">
+            <!-- <p-tag
+              [value]="getStock(product.stock)"
+              [severity]="
+                product.stock > 50
+                  ? 'success'
+                  : product.stock <= 50 && product.stock > 10
+                  ? 'warning'
+                  : product.stock <= 10 && product.stock > 1
+                  ? 'warning'
+                  : product.stock === 1
+                  ? 'danger'
+                  : 'danger'
+              "
+            ></p-tag> -->
+            <app-product-status [product]="product"></app-product-status>
+            <h5 class="mt-0 mb-1 productPrice">
+              <span [ngClass]="{ oldPrice: product.discount !== 0 }">
+                {{ "$" + product.price }} </span
+              ><span *ngIf="product.discount !== 0" class="discountedPrice">
+                {{
+                  "$" +
+                    (
+                      product.price -
+                      (product.price * product.discount) / 100
+                    ).toFixed(0)
+                }}</span
+              >
+            </h5>
+          </div>
+
+          <div class="productButtons mb-2">
             <p-button
+              (onClick)="addToCart(product)"
               type="button"
-              styleClass="p-button p-button-rounded mr-2"
-              icon="pi pi-search"
+              styleClass="p-button"
+              icon="pi pi-cart-plus"
             ></p-button>
             <p-button
+              (onClick)="addToFavorite(product)"
               type="button"
-              styleClass="p-button-success p-button-rounded mr-2"
-              icon="pi pi-star-fill"
+              styleClass="p-button-success"
+              icon="pi pi-star"
             ></p-button>
           </div>
         </div>

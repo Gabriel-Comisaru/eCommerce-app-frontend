@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MockProductModel} from "../shared/mock-product.model";
 import {BasketService} from "../../shopping-cart/shared/basket.service";
 
@@ -7,8 +7,9 @@ import {BasketService} from "../../shopping-cart/shared/basket.service";
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent {
+export class ProductListComponent implements  OnInit{
   @Input() mockProduct!: MockProductModel[];
+  @Input() lalalala!: MockProductModel[];
 
   constructor(private basketService: BasketService) {}
 
@@ -21,5 +22,9 @@ export class ProductListComponent {
   addToBasket(product: MockProductModel): void {
     this.basketService.addToBasket(product);
     this.basketService.log();
+  }
+
+  ngOnInit(): void {
+    console.log(this.lalalala)
   }
 }

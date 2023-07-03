@@ -1,0 +1,14 @@
+<p-tag
+  [value]="stock"
+  [severity]="
+    product.stock > 50
+      ? 'success'
+      : product.stock <= 50 && product.stock > 10
+      ? 'warning'
+      : product.stock <= 10 && product.stock > 1
+      ? 'warning'
+      : product.stock === 1
+      ? 'danger'
+      : 'danger'
+  "
+></p-tag>

@@ -14,6 +14,7 @@ export class ProductAllComponent implements OnInit {
   public mockProducts: MockProductModel[] = [];
   public categories: any[] = [];
   public placeholder: MockProductModel[] = [];
+  public lalalala: any[] = [];
 
 
   constructor(private productService: MockProductsService,
@@ -44,7 +45,22 @@ export class ProductAllComponent implements OnInit {
           this.applyFilters(this.selectedCategory);
         }});
     });
-
+    this.productService.randomMethod().subscribe((list) => {
+      this.lalalala = list.map((product: any) => {
+        return {
+          id: product.id,
+          name: product.title,
+          photos: product.images,
+          price: product.price,
+          reviews: ['Nothing yet'],
+          rating: product.rating,
+          discount: product.discount,
+          category: product.category,
+          description: product.description,
+          stock: product.stock,
+        };
+      });
+    });
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedCategory']) {

@@ -1,8 +1,134 @@
-<div class="card">
-  <p-menubar [model]="items">
-    <ng-template pTemplate="end">
-      <p-inputSwitch [(ngModel)]="isAdmin" id="adminMode" (click)="goToAdminPage()"></p-inputSwitch>
-      <label for="adminMode">Admin</label>
-    </ng-template>
+<nav class="navBar py-2 px-2" aria-label="product navigation">
+  <div class="navControlsContainer">
+    <img
+      src="./../../assets/images/project-logo.png"
+      height="40"
+      class="mx-2"
+      (click)="goHome()"
+    />
+
+    <div class="searchContainer">
+      <input
+        type="text"
+        pInputText
+        placeholder="Search"
+        class="ml-4 searchInput"
+      />
+      <button class="searchButton">
+        <i class="pi pi-search"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="navControlsContainer accountControls">
+    <a class="navBarItem" (click)="shoppingCart.toggle($event)"
+      ><i
+        class="pi pi-shopping-cart"
+        pBadge
+        severity="danger"
+        [value]="cartProductsList.length.toString()"
+      ></i
+      ><span>Basket</span></a
+    >
+    <a class="navBarItem" (click)="favoriteItems.toggle($event)"
+      ><i
+        class="pi pi-heart"
+        pBadge
+        severity="danger"
+        [value]="favoriteProductsList.length.toString()"
+      ></i
+      ><span>Favorite</span></a
+    >
+
+    <a class="navBarItem" (click)="myAccount.toggle($event)">
+      <i class="pi pi-user"></i
+      ><span style="white-space: nowrap">My Account</span></a
+    >
+
+    <div class="flex navBarItem">
+      <p-inputSwitch
+        [(ngModel)]="isAdmin"
+        id="adminMode"
+        class="flex"
+        (click)="goToAdminPage()"
+      ></p-inputSwitch>
+      <label for="adminMode" class="mx-2">Admin</label>
+    </div>
+  </div>
+</nav>
+
+<nav class="">
+  <p-menubar
+    #nav
+    [model]="navProductControls"
+    class="navControls navProductControls"
+  >
   </p-menubar>
-</div>
+</nav>
+
+<p-overlayPanel #myAccount>
+  <ng-template pTemplate="content">
+    <div class="overlay">
+      <p-button
+        label="Login"
+        styleClass="p-button-secondary p-button-text"
+      ></p-button>
+
+      <p-button
+        label="I don't have an account"
+        styleClass="p-button-link"
+      ></p-button>
+      <p-button label="Forgot Password" styleClass="p-button-link"></p-button>
+    </div>
+  </ng-template>
+</p-overlayPanel>
+<p-overlayPanel #shoppingCart class="shoppingCart">
+  <ng-template pTemplate="content">
+    <div class="overlay">
+      <h4>Last added products</h4>
+      <table>
+        <tr class="contentRow">
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Price</th>
+        </tr>
+        <tr *ngFor="let product of cartProductsList" class="contentRow">
+          <td class="productContainer">
+            <img [src]="product.photos[0]" alt="product photo" />
+            <span class="productName">{{ product.name }}</span>
+          </td>
+          <td>x{{ product.stock }}</td>
+          <td>${{ product.price }}</td>
+        </tr>
+      </table>
+      <p-button
+        (click)="goToBasketPage()"
+        label="View whole basket"
+        styleClass="p-button-raised"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-overlayPanel>
+<p-overlayPanel #favoriteItems class="favoriteItems">
+  <ng-template pTemplate="content">
+    <div class="overlay">
+      <h4>Products you liked</h4>
+      <table>
+        <tr class="contentRow">
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Price</th>
+        </tr>
+        <tr *ngFor="let product of favoriteProductsList" class="contentRow">
+          <td class="productContainer">
+            <img [src]="product.photos[0]" alt="product photo" />
+            <span class="productName">{{ product.name }}</span>
+          </td>
+          <td>x{{ product.stock }}</td>
+          <td>${{ product.price }}</td>
+        </tr>
+      </table>
+      <p-button label="View all" styleClass="p-button-raised"></p-button>
+    </div>
+  </ng-template>
+</p-overlayPanel>

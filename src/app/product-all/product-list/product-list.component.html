@@ -1,4 +1,5 @@
 <div class="product-list">
+<!--  change to lalalala-->
   <p-card *ngFor="let product of mockProduct" class="product-card">
     <ng-template pTemplate="title" class="product-title">
       {{ product.name }}
@@ -16,7 +17,13 @@
       </div>
     </ng-template>
     <ng-template pTemplate="footer">
+      <p-button
+        icon="pi pi-heart"
+        class="favorite-button"
+      ></p-button>
       <p-button class="add-to-cart-button" (click)="addToBasket(product)">Add to Cart</p-button>
+      <!--        (click)="addToFavorites(product)"-->
+      <!--        [styleClass]="isFavorite(product) ? 'favorite' : ''"-->
     </ng-template>
   </p-card>
 </div>
