@@ -75,7 +75,11 @@ import {TableModule} from "primeng/table";
     DropdownModule,
     InputTextareaModule,
     InputNumberModule,
-    PaginatorModule
+    PaginatorModule,
+    GalleriaModule,
+    RatingModule,
+    CardModule,
+    SliderModule
   ],
   providers: [],
   bootstrap: [AppComponent],
