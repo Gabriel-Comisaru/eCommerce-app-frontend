@@ -74,4 +74,11 @@ export class MockProductsService {
     const url = `${this.mockProductsUrl}/${id}`;
     return this.httpClient.delete(url);
   }
+
+  categoriesUrl = 'http://localhost:8080/api/products';
+  // http://localhost:8080/api/products
+
+  getCategories(): Observable<any> {
+    return this.httpClient.get<any>(this.categoriesUrl);
+  }
 }

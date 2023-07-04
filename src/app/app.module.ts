@@ -14,7 +14,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { CarouselModule } from 'primeng/carousel';
 import { TagModule } from 'primeng/tag';
 import { ProductsListCarouselComponent } from './home-page/products-list-carousel/products-list-carousel.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -43,6 +43,7 @@ import { FiltersComponent } from './product-all/filters/filters.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.component';
 import { TableModule } from 'primeng/table';
+import { LoginInterceptor } from './home-page/shared/login.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -93,7 +94,9 @@ import { TableModule } from 'primeng/table';
     StyleClassModule,
   ],
 
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: LoginInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

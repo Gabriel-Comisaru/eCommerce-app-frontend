@@ -16,7 +16,11 @@ export class ProductsListCarouselComponent {
   @Input() productsToDisplay!: MockProductDetailed[];
   @Input() mockProductsList!: MockProductDetailed[];
   public dataLoaded: boolean = false;
-  ngOnInit() {}
+  ngOnInit() {
+    this.mockProductsService
+      .getCategories()
+      .subscribe((response) => console.log(response));
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.productsToDisplay && this.productsToDisplay.length > 0) {
@@ -73,3 +77,41 @@ export class ProductsListCarouselComponent {
 }
 // <!-- notificare ca am adaugat in cos -->
 // <!-- notificare ca am adaugat la favorite plus update badge-->
+// for login:
+//   login(username: string, password: string) {
+//     return this.http
+//       .post<any>(`${API_URL}/login`, {
+//         username,
+//         password,
+//       })
+//       .subscribe((user) => {
+//         localStorage.setItem('user', JSON.stringify(user));
+//         this.userSubject.next(user);
+//       });
+//   }
+
+//   interceptor:
+// @Injectable()
+// export class JwtInterceptor implements HttpInterceptor {
+//   constructor(private userService: UserService) {}
+
+//   intercept(
+//     request: HttpRequest<any>,
+//     next: HttpHandler
+//   ): Observable<HttpEvent<any>> {
+//     const userData = localStorage.getItem('user');
+//     const isApiUrl = request.url.startsWith(API_URL);
+//     if (userData && isApiUrl) {
+//       const userToken = JSON.parse(userData).token;
+//       request = request.clone({
+//         setHeaders: {
+
+//           Authorization: `Bearer ${userToken}`,
+//         },
+//       });
+//     }
+
+//     return next.handle(request);
+//   }
+// }
+// TODO: make it nicer, no magic strings, use constants or enums
