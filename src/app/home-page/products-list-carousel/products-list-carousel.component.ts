@@ -59,7 +59,6 @@ export class ProductsListCarouselComponent {
     this.router.navigate([`product-details/${id}`]);
   }
   getStock(stock: number) {
-    console.log('1');
     return stock > 50
       ? 'In stock'
       : stock <= 50 && stock > 10

@@ -56,4 +56,8 @@ export class NavBarComponent {
       this.router.navigate(['']);
     }
   }
+
+  clearStorage() {
+    window.localStorage.clear();
+  }
 }

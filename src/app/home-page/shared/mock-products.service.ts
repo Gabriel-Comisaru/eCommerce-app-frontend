@@ -8,7 +8,8 @@ import { MockProductDetailed } from './mockProduct.model';
 export class MockProductsService {
   constructor(private httpClient: HttpClient) {}
 
-  private mockProductsUrl = 'https://dummyjson.com/products';
+  // private mockProductsUrl = 'https://dummyjson.com/products';
+  private mockProductsUrl = 'http://localhost:8080/api/products';
 
   public shoppingCartObservable = new Subject<MockProductDetailed[]>();
   public favoriteProductsObservable = new Subject<MockProductDetailed[]>();

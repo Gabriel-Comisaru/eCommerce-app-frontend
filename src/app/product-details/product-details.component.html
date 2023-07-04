@@ -23,7 +23,7 @@
                 <ng-template pTemplate="footer">
                     <div class="justify-content-center">
                         <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-success" label="Add to cart" icon="pi pi-shopping-cart" (click)="addToBasket(product)"></p-button>
-                        <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-danger" label="Add to favorites" icon="pi pi-heart"></p-button>
+                        <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-danger" label="Add to favorites" icon="pi pi-heart" (onClick)="addToFavorite(product)"></p-button>
                         <p-button [style]="{ width: '100%', margin: '5px 0' }" (click)="scrollToSection('addReview')" label="Add a review" icon="pi pi-star"></p-button>
                     </div>
                 </ng-template>
@@ -82,7 +82,7 @@
                         <textarea class="w-full max-w-full" pInputTextarea id="reviewBody" rows="5" cols="60" formControlName="comment" type="text"></textarea>
                         <label htmlFor="reviewBody">Enter your review</label>
                     </span>
-                    <p-button label="Submit review" (onClick)="onSubmit()"></p-button>
+                    <p-button label="Submit review" (click)="onSubmit()"></p-button>
                 </div>
             </p-card>
         </form>

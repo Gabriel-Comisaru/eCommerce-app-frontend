@@ -35,7 +35,6 @@ export class HomePageComponent {
         this.productsWithDiscountApplied = this.mockProductsList.filter(
           (product) => product.discount > 0
         );
-        console.log(this.productsWithDiscountApplied);
 
         this.mostSelledProducts = this.mockProductsList.filter(
           (product) => product.price < 200

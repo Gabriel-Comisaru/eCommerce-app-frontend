@@ -9,7 +9,6 @@ export class ProductStatusComponent {
   @Input() product: any;
 
   get stock() {
-    console.log('1');
     return this.product.stock > 50
       ? 'In stock'
       : this.product.stock <= 50 && this.product.stock > 10

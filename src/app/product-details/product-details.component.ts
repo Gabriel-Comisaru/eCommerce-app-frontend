@@ -84,6 +84,25 @@ export class ProductDetailsComponent implements OnInit {
     }
     this.reviews.push(review)
     console.log(this.reviews);
-    
+    this.reviewForm.reset();
   }
+
+  addToFavorite(product: MockProductDetailed) {
+    const favoriteProductsList: MockProductDetailed[] = JSON.parse(
+      localStorage.getItem('favoriteProducts') || '[]'
+    );
+    if (favoriteProductsList.some((element) => element.id === product.id)) {
+
+    } else favoriteProductsList.push(product);
+
+    localStorage.setItem(
+      'favoriteProducts',
+      JSON.stringify(favoriteProductsList)
+    );
+    this.productService.favoriteProductsObservable.next(
+      favoriteProductsList
+    );
+  }
+
+  
 }
