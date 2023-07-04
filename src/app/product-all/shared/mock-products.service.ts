@@ -18,7 +18,7 @@ export class MockProductsService {
   }
 
 
-  randomMethod(): Observable<any> {
+  getProducts(): Observable<any> {
     // const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkYW5hbmQyNyIsImlhdCI6MTY4ODQ3MTM1MywiZXhwIjoxNjg4NDg5MzUzfQ.hilzy3f8A786zVLwNFFrh_m_y6E50Ald7u-kYB12q8I';
     // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<any>(this.url).pipe(

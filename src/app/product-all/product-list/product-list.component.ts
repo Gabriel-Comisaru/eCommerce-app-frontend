@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MockProductModel} from "../shared/mock-product.model";
 import {BasketService} from "../../shopping-cart/shared/basket.service";
-import {MockProductsService} from "../../product-categories/shared/mock-products.service";
+import {CategoriesService} from "../../product-categories/shared/categories.service";
 
 @Component({
   selector: 'app-product-list',
@@ -13,7 +13,7 @@ export class ProductListComponent implements  OnInit{
   @Input() lalalala!: MockProductModel[];
 
   constructor(private basketService: BasketService,
-              private mockproductService: MockProductsService
+              private mockproductService: CategoriesService
               ) {}
 
   filterList(category: string) {
@@ -29,6 +29,6 @@ export class ProductListComponent implements  OnInit{
 
   ngOnInit(): void {
     console.log(this.lalalala);
-    this.mockproductService.randomMethod().subscribe()
+    this.mockproductService.getCategories().subscribe()
   }
 }
