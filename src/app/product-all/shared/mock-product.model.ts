@@ -5,6 +5,7 @@ export interface MockProductModel {
   price: number;
   rating: number;
   reviews: string[];
+  categoryId: number;
   discount: number;
   category: string;
   description: string;

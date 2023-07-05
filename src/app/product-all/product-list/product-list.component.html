@@ -1,7 +1,7 @@
 <div class="product-list">
 <!--  change to lalalala-->
   <p-card *ngFor="let product of lalalala" class="product-card"
-          (click)="getProductDetails(product.id)"
+          (click)="getProductDetails(product.id, $event)"
 
   >
     <ng-template pTemplate="title" class="product-title">
@@ -24,7 +24,7 @@
         icon="pi pi-heart"
         class="favorite-button"
       ></p-button>
-      <p-button class="add-to-cart-button" (click)="addToBasket(product)">Add to Cart</p-button>
+      <p-button class="add-to-cart-button" (click)="addToBasket(product, $event)">Add to Cart</p-button>
       <!--        (click)="addToFavorites(product)"-->
       <!--        [styleClass]="isFavorite(product) ? 'favorite' : ''"-->
     </ng-template>

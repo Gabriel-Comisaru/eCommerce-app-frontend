@@ -3,6 +3,7 @@ import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import { MockProductModel} from "./shared/mock-product.model";
 import { MockProductsService} from "./shared/mock-products.service";
 import {ActivatedRoute} from "@angular/router";
+import {CategoriesService} from "../product-categories/shared/categories.service";
 
 @Component({
   selector: 'app-product-all',
@@ -20,7 +21,7 @@ export class ProductAllComponent implements OnInit {
 
   constructor(private productService: MockProductsService,
               private route: ActivatedRoute,
-              private categoryService: MockProductsService
+              private categoryService: CategoriesService
               ) {}
 
   ngOnInit(): void {
@@ -35,12 +36,19 @@ export class ProductAllComponent implements OnInit {
           reviews: ['Nothing yet'],
           rating: product.rating,
           discount: product.discount,
-          category: product.categoryId,
+          categoryId: product.categoryId,
+          category: this.categoryService.getCategoryById(product.categoryId).subscribe((category) => {
+            console.log('A--------------------------------------', category.name)
+            return category.name
+            }),
           description: product.description,
           stock: product.stock,
           userId: product.userId
+
         };
       });
+      console.log('Product ---', this.lalalala);
+
       this.placeholder = this.lalalala;
       this.allprods = this.lalalala;
 
@@ -58,7 +66,7 @@ export class ProductAllComponent implements OnInit {
     console.log('Selected Category:', this.selectedCategory.categoryId);
     console.log(this.route.snapshot.params['category'])
     if (this.selectedCategory) {
-      this.lalalala = this.placeholder.filter((product: MockProductModel) => product.category === this.selectedCategory.categoryId);
+      this.lalalala = this.placeholder.filter((product: MockProductModel) => product.categoryId === this.selectedCategory.categoryId);
       console.log(this.lalalala);
     } else {
       console.log('No selected category');

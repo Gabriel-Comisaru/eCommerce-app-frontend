@@ -3,7 +3,7 @@
   <div class="filter-item">
 <!--    <label for="category">Category:</label>-->
 <!--    <p-dropdown id="category" [options]="categories" [(ngModel)]="selectedCategory" [placeholder]="'All'"></p-dropdown>-->
-    <p-dropdown id="category" [options]="categories" [(ngModel)]="selectedCategory" [placeholder]="'All'">
+    <p-dropdown id="category" [options]="categories" [(ngModel)]="selectedCategory" optionLabel="categoryName" [placeholder]="'All'">
       <ng-template let-category pTemplate="item">
         {{category.categoryName}}
       </ng-template>

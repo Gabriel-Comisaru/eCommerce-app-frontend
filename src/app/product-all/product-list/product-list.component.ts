@@ -25,16 +25,22 @@ export class ProductListComponent implements  OnInit{
       ? this.mockProduct.filter((product: MockProductModel) => product.category === category) && console.log(this.mockProduct)
       : this.mockProduct && console.log('aaa');
   }
-  addToBasket(product: MockProductModel): void {
-    this.basketService.addToBasket(product);
-    this.basketService.log();
+  addToBasket(product: MockProductModel, event: any): void {
+    event.stopPropagation()
+
+    // this.basketService.addToBasket(product);
+    // this.basketService.log();
+    console.log(product.id);
+    this.basketService.createOrder(product.id)
   }
 
   ngOnInit(): void {
     console.log(this.lalalala);
     this.mockproductService.getCategories().subscribe()
   }
-  getProductDetails(id: number) {
+  getProductDetails(id: number, event: any) {
+    event.stopPropagation()
     this.router.navigate([`product-details/${id}`]);
+
   }
 }

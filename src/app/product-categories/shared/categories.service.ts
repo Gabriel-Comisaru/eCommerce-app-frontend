@@ -31,4 +31,16 @@ export class CategoriesService {
       }),
     );
   }
+  getCategoryById(id: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.url}/${id}`).pipe(
+      tap((data: any) => {
+        console.log('Category received from the backend:', data);
+      }),
+      catchError((error: any) => {
+        console.error('An error occurred:', error);
+        // Handle the error as needed
+        return throwError('Something went wrong');
+      }),
+    );
+  }
 }
