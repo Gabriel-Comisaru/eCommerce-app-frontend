@@ -17,6 +17,7 @@ export class ProductAllComponent implements OnInit {
   public placeholder: any[] = [];
   public allprods: any[] = [];
   public lalalala: any[] = [];
+  public categoryNames: Map<number,string> = new Map<number, string>()
 
 
   constructor(private productService: MockProductsService,
@@ -25,34 +26,52 @@ export class ProductAllComponent implements OnInit {
               ) {}
 
   ngOnInit(): void {
+    let that = this;
+    this.categoryService.getCategories().subscribe((list) => {
+      this.categories = list.map((category: any) => {
+        that.categoryNames.set(category.id, category.name);
+      })
+    })
+    setTimeout(function() {
+      that.productService.getProducts().subscribe((list) => {
+        that.lalalala = list.map( (product: any) => {
+          let placeholder = ''
+          that.categoryService.getCategoryById(product.categoryId).subscribe((category) => {
+            // debugger
+            // setTimeout(function() {}, 1000);
+            placeholder = category.name;
+            console.log(placeholder, 'placeholder...')
+            console.log(category.name, 'cat....name')
+            return category.name;
+          });
 
-    this.productService.getProducts().subscribe((list) => {
-      this.lalalala = list.map((product: any) => {
-        return {
-          id: product.id,
-          name: product.name,
-          photos: product.images,
-          price: product.price,
-          reviews: ['Nothing yet'],
-          rating: product.rating,
-          discount: product.discount,
-          categoryId: product.categoryId,
-          category: this.categoryService.getCategoryById(product.categoryId).subscribe((category) => {
-            console.log('A--------------------------------------', category.name)
-            return category.name
-            }),
-          description: product.description,
-          stock: product.stock,
-          userId: product.userId
+          // debugger
 
-        };
+          return {
+            id: product.id,
+            name: product.name,
+            photos: product.images,
+            price: product.price,
+            reviews: ['Nothing yet'],
+            rating: product.rating,
+            discount: product.discount,
+            categoryId: product.categoryId,
+            category: that.categoryNames.get(product.categoryId),
+            description: product.description,
+            stock: product.stock,
+            userId: product.userId
+
+          };
+        });
+        console.log('Product ---', that.lalalala);
+
+        that.placeholder = that.lalalala;
+        that.allprods = that.lalalala;
+
       });
-      console.log('Product ---', this.lalalala);
 
-      this.placeholder = this.lalalala;
-      this.allprods = this.lalalala;
+    }, 100);
 
-    });
 
   }
   ngOnChanges(changes: SimpleChanges): void {
