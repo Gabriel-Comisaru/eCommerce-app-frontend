@@ -28,6 +28,7 @@ export class UpdateProductComponent implements OnInit {
   selectedFile: any = [];
   message: string = '';
   mockProductsList:any=[];
+  categoriesList:any=[];
   uploadedFiles: any[] = [];
 
   constructor(private fb: FormBuilder,
@@ -46,12 +47,15 @@ export class UpdateProductComponent implements OnInit {
   })
 
   ngOnInit() {
-    this.mockProduct.getMockProducts().subscribe((list) => {
-      this.mockProductsList = list.products.map((product: any) => {
-        this.categories=[...this.categories,product.category]
-        this.categories = this.categories.filter((el:any, i:any, a:any) => i === a.indexOf(el))
-      });
+    this.mockProduct.getProducts()
+      .subscribe(list => {
+      this.mockProductsList = list
+        console.log(this.mockProductsList)
+
     });
+    this.mockProduct.getCategories()
+      .subscribe(list=>this.categoriesList=list)
+
   }
 
 
@@ -96,7 +100,7 @@ export class UpdateProductComponent implements OnInit {
       description: this.newProductForm.controls.description.value!,
       category: this.newProductForm.controls.category.value!
     } as unknown as MockProductDetailed
-    this.mockProduct.saveMockProducts(product)
+    this.mockProduct.saveProducts(product,this.newProductForm.controls.category)
       .subscribe(()=>this.visible=false);
 
   }

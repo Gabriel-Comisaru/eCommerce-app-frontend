@@ -45,7 +45,7 @@
         <label htmlFor="title" class="block font-bold mb-2">Title</label>
         <input pInputText id="title" formControlName="name"/>
         <label class="block font-bold mb-2">Category</label>
-        <p-dropdown formControlName="category" [options]="categories" placeholder="Select category"></p-dropdown>
+        <p-dropdown formControlName="category" [options]="categoriesList" placeholder="Select category"></p-dropdown>
         <label htmlFor="price" class="block font-bold mb-2">Price</label>
         <p-inputNumber style="width: 100%" formControlName="price" inputId="currency-us" mode="currency" currency="USD"
                        locale="en-US"></p-inputNumber>
