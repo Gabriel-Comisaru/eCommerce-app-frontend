@@ -22,30 +22,12 @@ export class ProductCategoriesComponent implements OnInit {
               ) {}
 
   ngOnInit(): void {
-    // this.productService.getMockProducts().subscribe((list) => {
-    //   this.mockProducts = list.products.map((product: any) => {
-    //     return {
-    //       id: product.id,
-    //       name: product.title,
-    //       photos: product.images,
-    //       price: product.price,
-    //       reviews: ['Nothing yet'],
-    //       rating: product.rating,
-    //       discount: product.discount,
-    //       category: product.category,
-    //       description: product.description,
-    //       stock: product.stock,
-    //     };
-    //   });
-    //
-    //   this.generateCategoryImages();
-    //
-    // });
+
     this.categoryService.getCategories().subscribe((list) => {
       this.categories = list.map((category: any) => {
         return {
           categoryId: category.id,
-          categoryName: category.category,
+          categoryName: category.name,
           productNo: category.productIds.length
           // image: category.image
         };
@@ -53,18 +35,6 @@ export class ProductCategoriesComponent implements OnInit {
     })
 
   }
-  // generateCategoryImages(): void {
-  //   const categories = Array.from(new Set(this.mockProducts.map(product => product.category)));
-  //
-  //   this.categories = categories.map(category => {
-  //     const productsInCategory = this.mockProducts.filter(product => product.category === category);
-  //     const randomProduct = productsInCategory[Math.floor(Math.random() * productsInCategory.length)];
-  //
-  //     return {
-  //       category: category,
-  //       image: randomProduct?.photos[0] || '' // Use the first image of the random product, or an empty string if no product found
-  //     };
-  //   });
-  // }
+
 
 }

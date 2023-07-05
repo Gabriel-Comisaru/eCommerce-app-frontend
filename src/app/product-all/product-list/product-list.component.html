@@ -1,11 +1,14 @@
 <div class="product-list">
 <!--  change to lalalala-->
-  <p-card *ngFor="let product of lalalala" class="product-card">
+  <p-card *ngFor="let product of lalalala" class="product-card"
+          (click)="getProductDetails(product.id)"
+
+  >
     <ng-template pTemplate="title" class="product-title">
       {{ product.name }}
     </ng-template>
     <ng-template pTemplate="subtitle">
-      {{ product.price }} $
+      {{ product.price }} $ {{product.category}}
     </ng-template>
     <ng-template pTemplate="content">
       <div class="product-image">

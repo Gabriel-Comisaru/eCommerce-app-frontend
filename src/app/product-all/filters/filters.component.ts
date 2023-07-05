@@ -24,7 +24,7 @@ export class FiltersComponent implements OnInit {
   constructor(private categoryService: CategoriesService) { }
 
   ngOnInit(): void {
-    this.selectedCategory = '';
+    this.selectedCategory = '' ;
     this.selectedPriceRange = [0, 1000];
     this.categoryService.getCategories().subscribe((list) => {
       this.categories = list.map((category: any) => {

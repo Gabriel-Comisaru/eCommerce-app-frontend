@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MockProductModel} from "../shared/mock-product.model";
 import {BasketService} from "../../shopping-cart/shared/basket.service";
 import {CategoriesService} from "../../product-categories/shared/categories.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-product-list',
@@ -13,7 +14,9 @@ export class ProductListComponent implements  OnInit{
   @Input() lalalala!: MockProductModel[];
 
   constructor(private basketService: BasketService,
-              private mockproductService: CategoriesService
+              private router: Router,
+
+  private mockproductService: CategoriesService
               ) {}
 
   filterList(category: string) {
@@ -30,5 +33,8 @@ export class ProductListComponent implements  OnInit{
   ngOnInit(): void {
     console.log(this.lalalala);
     this.mockproductService.getCategories().subscribe()
+  }
+  getProductDetails(id: number) {
+    this.router.navigate([`product-details/${id}`]);
   }
 }
