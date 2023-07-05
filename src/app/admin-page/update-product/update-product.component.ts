@@ -22,7 +22,6 @@ export class UpdateProductComponent implements OnInit {
   @Input() header: any;
   @Output() closeEmitter = new EventEmitter();
   @Output() deleteEmitter = new EventEmitter();
-  categories:any=[];
   visible = false;
   photos: any = [];
   selectedFile: any = [];

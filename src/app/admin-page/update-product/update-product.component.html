@@ -10,7 +10,7 @@
           <p-inputNumber formControlName="price" inputId="currency-us" mode="currency" currency="USD"
                          locale="en-US"></p-inputNumber>
         <label class="block font-bold mb-2">Category</label>
-        <p-dropdown formControlName="category" [options]="categories" placeholder="Select category"></p-dropdown>
+        <p-dropdown formControlName="category" [options]="categoriesList.name" placeholder="Select category"></p-dropdown>
         <label class="block font-bold mb-2">Description</label>
         <textarea rows="5" cols="30" pInputTextarea formControlName="description"></textarea>
         <label class="block font-bold mb-2">Stock</label>
