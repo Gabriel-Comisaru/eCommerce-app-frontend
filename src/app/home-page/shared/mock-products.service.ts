@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
@@ -26,8 +26,10 @@ export class MockProductsService {
   }
 
   saveProducts(product:any,categoryId:any):Observable<any>{
+    let token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY4ODU2NTY5MSwiZXhwIjoxNjg4NTgzNjkxfQ.Q8Ep2VbGYRqu4pW_EQPvVsL-P4RM1rzq_OsxQ_lHZsM'
+    let head_obj = new HttpHeaders().set('Authorization','bearer '+token)
     const url=`${this.urlProducts}/category/${categoryId}`
-    return this.httpClient.post<any>(url,product);
+    return this.httpClient.post<any>(url,product,{headers:head_obj});
   }
 
   updateProduct(product:any,id:number):Observable<any>{
@@ -42,6 +44,7 @@ export class MockProductsService {
 
   getToken(username: string, password: string): Observable<any> {
     const loginUrl = `http://localhost:8080/auth/login?username=${username}&password=${password}`;
-    return this.httpClient.post<any>(loginUrl, '');
+    console.log(loginUrl)
+    return this.httpClient.post<any>(loginUrl, {responseType:'text'});
   }
 }

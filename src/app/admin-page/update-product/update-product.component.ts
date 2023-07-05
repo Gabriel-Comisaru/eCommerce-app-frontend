@@ -3,7 +3,7 @@ import {FormBuilder} from "@angular/forms";
 import {MockProductsService} from "../../home-page/shared/mock-products.service";
 import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
 import {MessageService} from "primeng/api";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 interface UploadEvent {
   originalEvent: Event;
@@ -58,7 +58,9 @@ export class UpdateProductComponent implements OnInit {
         console.log(this.categoriesList)
       })
     console.log(this.selectedProduct)
-
+    const user =this.mockProduct.getToken('admin','admin')
+      .subscribe();
+    console.log(user)
   }
 
 
@@ -99,6 +101,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   onSubmit() {
+
     const product: MockProductDetailed = {
       name: this.newProductForm.controls.name.value!,
       price: +this.newProductForm.controls.price.value!,
@@ -108,10 +111,9 @@ export class UpdateProductComponent implements OnInit {
     } as unknown as MockProductDetailed
     let selectedCategory = this.categoriesList.filter((category: any) => category.id === product.categoryId)
     if (this.header === 'Add new product') {
-      this.mockProduct.saveProducts(product, selectedCategory.Id)
+      this.mockProduct.saveProducts(product, product.categoryId)
         .subscribe(() => {
           this.visible = false
-          this.mockProduct.getToken('admin','admin')
         });
       console.log(this.newEditForm.value)
     } else {

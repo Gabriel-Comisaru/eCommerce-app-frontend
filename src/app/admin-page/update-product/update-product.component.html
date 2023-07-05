@@ -9,7 +9,7 @@
         <label htmlFor="title" class="block font-bold mb-2">Title</label>
         <input pInputText id="title" formControlName="name"/>
         <label class="block font-bold mb-2">Category</label>
-        <p-dropdown formControlName="category" [options]="categoriesList" optionLabel="name">
+        <p-dropdown formControlName="category" [options]="categoriesList.id" optionLabel="name">
           <ng-template let-category>
             {{category.name}}
           </ng-template>
