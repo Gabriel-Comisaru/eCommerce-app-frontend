@@ -15,6 +15,7 @@ export class BasketpageComponent implements OnInit {
   header = '';
   products: Array<Product> = [];
   public productQuantityMap: Map<string, number> = new Map<string, number>();
+  orderItems: any = [];
 
   selectedProduct: any = [];
   rows: any = [5, 10, 15];
@@ -26,6 +27,8 @@ export class BasketpageComponent implements OnInit {
     this.basketItems = this.basketService.getBasketItems();
     console.log(this.basketItems);
     this.updateProductQuantityMap();
+    this.orderItems = this.basketService.getOrderItems();
+    console.log(this.basketService.getOrderItems());
   }
 
   deleteProduct(product: any, index: number, event: any) {

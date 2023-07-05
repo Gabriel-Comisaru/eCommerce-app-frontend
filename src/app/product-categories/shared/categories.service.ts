@@ -22,7 +22,7 @@ export class CategoriesService {
     // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<any>(this.url).pipe(
       tap((data: any) => {
-        console.log('Categories received from the backend:', data);
+        // console.log('Categories received from the backend:', data);
       }),
       catchError((error: any) => {
         console.error('An error occurred:', error);
