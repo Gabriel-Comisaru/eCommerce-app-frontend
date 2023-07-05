@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, of, tap } from 'rxjs';
-import { MockProductDetailed } from './mockProduct.model';
+import { Product } from './product.model';
 @Injectable({
   providedIn: 'root',
 })
-export class MockProductsService {
+export class ProductsService {
   constructor(private httpClient: HttpClient) {}
 
-  private mockProductsUrl = 'https://dummyjson.com/products';
+  // private productsUrl = 'https://dummyjson.com/products';
+  private productsUrl = 'http://localhost:8080/api/products';
 
-  public shoppingCartObservable = new Subject<MockProductDetailed[]>();
-  public favoriteProductsObservable = new Subject<MockProductDetailed[]>();
+  public shoppingCartObservable = new Subject<Product[]>();
+  public favoriteProductsObservable = new Subject<Product[]>();
 
   setInitialCartProducts() {
     const localStorageCartList = JSON.parse(
@@ -19,7 +20,7 @@ export class MockProductsService {
     );
     this.shoppingCartObservable.next(localStorageCartList);
   }
-  getShopingCartObservable(): Observable<MockProductDetailed[]> {
+  getShopingCartObservable(): Observable<Product[]> {
     return this.shoppingCartObservable.asObservable();
   }
 
@@ -29,49 +30,49 @@ export class MockProductsService {
     );
     this.favoriteProductsObservable.next(localStorageCartList);
   }
-  getfavoriteProductsObservable(): Observable<MockProductDetailed[]> {
+  getfavoriteProductsObservable(): Observable<Product[]> {
     return this.favoriteProductsObservable.asObservable();
   }
 
-  getMockProducts(): Observable<any> {
-    return this.httpClient.get<any>(this.mockProductsUrl);
+  getProducts(): Observable<any> {
+    return this.httpClient.get<any>(this.productsUrl);
   }
 
   // i want to add it in cartList or favoriteList
-  addMockProduct(
-    product: MockProductDetailed,
+  addProduct(
+    product: Product,
     url: string
-  ): Observable<MockProductDetailed> {
-    return this.httpClient.post<MockProductDetailed>(url, product);
+  ): Observable<Product> {
+    return this.httpClient.post<Product>(url, product);
   }
 
-  // searchMockItem(value: string): Observable<MockProductDetailed[]> {
+  // searchItem(value: string): Observable<Product[]> {
   //   if (!value.trim()) {
   //     return of([]);
   //   }
   //   return this.httpClient
-  //     .get<MockProductDetailed>(`${this.mockProductsUrl}/?search=${value}`)
+  //     .get<Product>(`${this.ProductsUrl}/?search=${value}`)
   //     .pipe(
   //       tap(
   //       )
   //     );
   // }
   getProduct(id: number): Observable<any | undefined> {
-    const url = `${this.mockProductsUrl}/${id}`;
+    const url = `${this.productsUrl}/${id}`;
     return this.httpClient.get(url);
   }
 
-  saveMockProducts(product: any): Observable<any> {
-    return this.httpClient.post<any>(this.mockProductsUrl + '/add', product);
+  saveProducts(product: any): Observable<any> {
+    return this.httpClient.post<any>(this.productsUrl + '/add', product);
   }
 
   updateProduct(product: any, id: number): Observable<any> {
-    const url = `${this.mockProductsUrl}/${id}`;
+    const url = `${this.productsUrl}/${id}`;
     return this.httpClient.put<any>(url, product);
   }
 
   delete(id: number) {
-    const url = `${this.mockProductsUrl}/${id}`;
+    const url = `${this.productsUrl}/${id}`;
     return this.httpClient.delete(url);
   }
 }

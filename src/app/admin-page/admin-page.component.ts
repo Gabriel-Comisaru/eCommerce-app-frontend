@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {MockProductsService} from "../home-page/shared/mock-products.service";
-import {MockProductDetailed} from "../home-page/shared/mockProduct.model";
+import {ProductsService} from "../home-page/shared/products.service";
+import {Product} from "../home-page/shared/product.model";
 import {deleteFunction} from "./utilities/utilities";
 
 @Component({
@@ -12,13 +12,13 @@ export class AdminPageComponent implements OnInit {
 
   visible = false;
   header = '';
-  products: Array<MockProductDetailed> = [];
-  mockProductsList = [];
+  products: Array<Product> = [];
+  productsList = [];
   selectedProduct: any = [];
   rows: any = [5, 10, 15];
   row: any = 5;
 
-  constructor(private mockProductsService: MockProductsService) {
+  constructor(private productsService: ProductsService) {
   }
 
   showDialogNewProduct() {
@@ -44,8 +44,8 @@ export class AdminPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mockProductsService.getMockProducts().subscribe((list) => {
-      this.mockProductsList = list.products.map((product: any) => {
+    this.productsService.getProducts().subscribe((list) => {
+      this.productsList = list.products.map((product: any) => {
         return {
           id: product.id,
           name: product.title,
@@ -63,7 +63,7 @@ export class AdminPageComponent implements OnInit {
   }
 
   delete() {
-    deleteFunction(this.mockProductsService, this.selectedProduct.id, this.products)
+    deleteFunction(this.productsService, this.selectedProduct.id, this.products)
       .subscribe((items: Array<any>) => {
         this.products = items;
       });

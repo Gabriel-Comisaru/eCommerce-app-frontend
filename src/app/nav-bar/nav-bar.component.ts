@@ -1,8 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { PrimeIcons, MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { MockProductDetailed } from '../home-page/shared/mockProduct.model';
-import { MockProductsService } from '../home-page/shared/mock-products.service';
+import { Product } from '../home-page/shared/product.model';
+import { ProductsService } from '../home-page/shared/products.service';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -10,13 +10,13 @@ import { MockProductsService } from '../home-page/shared/mock-products.service';
 })
 export class NavBarComponent {
   public navProductControls!: MenuItem[];
-  public cartProductsList: MockProductDetailed[] = [];
-  public favoriteProductsList: MockProductDetailed[] = [];
+  public cartProductsList: Product[] = [];
+  public favoriteProductsList: Product[] = [];
   isAdmin: boolean = false;
 
   constructor(
     private router: Router,
-    private mockProductsService: MockProductsService
+    private productsService: ProductsService
   ) {}
   ngOnInit() {
     this.isAdmin = false;
@@ -33,14 +33,14 @@ export class NavBarComponent {
       { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
     ];
 
-    this.mockProductsService
+    this.productsService
       .getShopingCartObservable()
       .subscribe((response) => (this.cartProductsList = response));
-    this.mockProductsService.setInitialCartProducts();
-    this.mockProductsService
+    this.productsService.setInitialCartProducts();
+    this.productsService
       .getfavoriteProductsObservable()
       .subscribe((response) => (this.favoriteProductsList = response));
-    this.mockProductsService.setInitialFavoriteProducts();
+    this.productsService.setInitialFavoriteProducts();
   }
 
   goHome() {
@@ -55,5 +55,9 @@ export class NavBarComponent {
     } else if (!this.isAdmin) {
       this.router.navigate(['']);
     }
+  }
+
+  clearStorage() {
+    window.localStorage.clear();
   }
 }
