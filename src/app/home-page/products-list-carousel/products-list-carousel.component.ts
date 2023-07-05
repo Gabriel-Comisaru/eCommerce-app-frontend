@@ -1,6 +1,6 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { MockProductDetailed } from '../shared/mockProduct.model';
-import { MockProductsService } from '../shared/mock-products.service';
+import { Product } from '../shared/product.model';
+import { ProductsService } from '../shared/products.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,11 +10,11 @@ import { Router } from '@angular/router';
 })
 export class ProductsListCarouselComponent {
   constructor(
-    private mockProductsService: MockProductsService,
+    private productsService: ProductsService,
     private router: Router
   ) {}
-  @Input() productsToDisplay!: MockProductDetailed[];
-  @Input() mockProductsList!: MockProductDetailed[];
+  @Input() productsToDisplay!: Product[];
+  @Input() ProductsList!: Product[];
   public dataLoaded: boolean = false;
   ngOnInit() {}
 
@@ -26,8 +26,8 @@ export class ProductsListCarouselComponent {
   dataLoadingStatus() {
     this.dataLoaded = true;
   }
-  addToCart(product: MockProductDetailed) {
-    const shoppingCartList: MockProductDetailed[] = JSON.parse(
+  addToCart(product: Product) {
+    const shoppingCartList: Product[] = JSON.parse(
       localStorage.getItem('shoppingCart') || '[]'
     );
     if (shoppingCartList.some((element) => element.id === product.id)) {
@@ -35,12 +35,12 @@ export class ProductsListCarouselComponent {
     } else shoppingCartList.push(product);
 
     localStorage.setItem('shoppingCart', JSON.stringify(shoppingCartList));
-    this.mockProductsService.shoppingCartObservable.next(shoppingCartList);
+    this.productsService.shoppingCartObservable.next(shoppingCartList);
 
     // if product already exists don't add it
   }
-  addToFavorite(product: MockProductDetailed) {
-    const favoriteProductsList: MockProductDetailed[] = JSON.parse(
+  addToFavorite(product: Product) {
+    const favoriteProductsList: Product[] = JSON.parse(
       localStorage.getItem('favoriteProducts') || '[]'
     );
     if (favoriteProductsList.some((element) => element.id === product.id)) {
@@ -51,7 +51,7 @@ export class ProductsListCarouselComponent {
       'favoriteProducts',
       JSON.stringify(favoriteProductsList)
     );
-    this.mockProductsService.favoriteProductsObservable.next(
+    this.productsService.favoriteProductsObservable.next(
       favoriteProductsList
     );
   }

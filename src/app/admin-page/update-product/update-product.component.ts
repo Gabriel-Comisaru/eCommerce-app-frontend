@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
-import {MockProductsService} from "../../home-page/shared/mock-products.service";
-import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
+import {ProductsService} from "../../home-page/shared/products.service";
+import {Product} from "../../home-page/shared/product.model";
 import {MessageService} from "primeng/api";
 import {HttpClient} from "@angular/common/http";
 
@@ -17,28 +17,28 @@ interface UploadEvent {
   providers: [MessageService]
 })
 export class UpdateProductComponent implements OnInit {
-  @Input() selectedProduct?: MockProductDetailed;
+  @Input() selectedProduct?: Product;
   @Input() show: any;
   @Input() header: any;
   @Output() closeEmitter = new EventEmitter();
   @Output() deleteEmitter = new EventEmitter();
   categories:any=[];
   visible = false;
-  photos: any = [];
+  images: any = [];
   selectedFile: any = [];
   message: string = '';
-  mockProductsList:any=[];
+  productsList:any=[];
   uploadedFiles: any[] = [];
 
   constructor(private fb: FormBuilder,
-              private mockProduct: MockProductsService,
+              private product: ProductsService,
               private messageService: MessageService,
               private httpClient: HttpClient) {
   }
 
   newEditForm = this.fb.group({
     name: [''],
-    photos: [['']],
+    images: [['']],
     price: [0],
     category: [''],
     description: [''],
@@ -46,8 +46,8 @@ export class UpdateProductComponent implements OnInit {
   })
 
   ngOnInit() {
-    this.mockProduct.getMockProducts().subscribe((list) => {
-      this.mockProductsList = list.products.map((product: any) => {
+    this.product.getProducts().subscribe((list) => {
+      this.productsList = list.products.map((product: any) => {
         this.categories=[...this.categories,product.category]
         this.categories = this.categories.filter((el:any, i:any, a:any) => i === a.indexOf(el))
       });
@@ -57,7 +57,7 @@ export class UpdateProductComponent implements OnInit {
 
   newProductForm = this.fb.group({
     name: [''],
-    photos: [''],
+    images: [''],
     price: [0],
     category: [''],
     description: [''],
@@ -73,13 +73,13 @@ export class UpdateProductComponent implements OnInit {
       this.newEditForm.controls.price.setValue(this.selectedProduct!.price)
       this.newEditForm.controls.description.setValue(this.selectedProduct!.description)
       this.newEditForm.controls.stock.setValue(this.selectedProduct!.stock)
-      this.newEditForm.controls.photos.setValue(this.selectedProduct!.photos)
+      this.newEditForm.controls.images.setValue(this.selectedProduct!.images)
     }
   }
   onClose(event: any) {
 
     this.newProductForm.controls.name.setValue('')
-    this.newProductForm.controls.photos.setValue(null)
+    this.newProductForm.controls.images.setValue(null)
     this.newProductForm.controls.price.setValue(0)
     this.newProductForm.controls.category.setValue('')
     this.newProductForm.controls.description.setValue('')
@@ -89,14 +89,14 @@ export class UpdateProductComponent implements OnInit {
   }
 
   onSubmit() {
-    const product: MockProductDetailed = {
+    const product: Product = {
       name: this.newProductForm.controls.name.value!,
       price: +this.newProductForm.controls.price.value!,
-      photos: this.newProductForm.controls.photos.value,
+      images: this.newProductForm.controls.images.value,
       description: this.newProductForm.controls.description.value!,
       category: this.newProductForm.controls.category.value!
-    } as unknown as MockProductDetailed
-    this.mockProduct.saveMockProducts(product)
+    } as unknown as Product
+    this.product.saveProducts(product)
       .subscribe(()=>this.visible=false);
 
   }
@@ -145,19 +145,19 @@ export class UpdateProductComponent implements OnInit {
   }
 
   onEditSubmit(id: any) {
-    let updatedProduct: MockProductDetailed = {
+    let updatedProduct: Product = {
       title: this.newEditForm.controls.name.value,
       price: this.newEditForm.controls.price.value,
       stock: this.newEditForm.controls.stock.value,
       description: this.newEditForm.controls.description.value,
       category: this.newEditForm.controls.category.value,
-    } as unknown as MockProductDetailed
+    } as unknown as Product
     console.log(this.newEditForm.controls.name.value)
-    this.mockProduct.updateProduct(updatedProduct, id)
+    this.product.updateProduct(updatedProduct, id)
       .subscribe(() => this.visible=false)
   }
 
-  delete(selectedProduct: MockProductDetailed | undefined) {
+  delete(selectedProduct: Product | undefined) {
     this.deleteEmitter.emit(selectedProduct?.id);
     this.visible=false;
   }

@@ -2,7 +2,7 @@
     <div class="card">
         <h1 class="title">{{product.name}}</h1>
         <p-rating [(ngModel)]="product.rating" [readonly]="true" [cancel]="false" (click)="scrollToSection('reviews')"></p-rating>
-        <p><em>Category: {{product.category}}</em></p>
+        <!-- <p><em>Category: {{product.category}}</em></p> -->
     </div>
     <div class="gallery xl:flex lg:block md:block sm:block lg:justify-content-between md:justify-content-center sm:justify-content-center">
         <div class="flex justify-content-center">
@@ -16,13 +16,13 @@
         <div class="delivery-details card flex justify-content-center">
             <p-card class="my-auto" header="Delivery details" subheader="Stock: {{product.stock}}" [style]="{ width: '360px' }">
                 <p *ngIf="discountedPrice > 0"><span class="text-red-700 font-bold text-2xl font-italic">$ {{discountedPrice}}    </span><span class="text-base font-bold"><s>$ {{product.price}}</s></span></p>
-                <p *ngIf="discountedPrice === 0"><span class="text-red-700 text-2xl font-bold font-italic">$ {{product.price}}</span></p>
+                <p><span class="text-red-700 text-2xl font-bold font-italic">$ {{product.price}}</span></p>
                 <p>
                     Estimated delivery time at <em>*address*</em> is 7 days after completing the order.
                 </p>
                 <ng-template pTemplate="footer">
                     <div class="justify-content-center">
-                        <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-success" label="Add to cart" icon="pi pi-shopping-cart" (click)="addToBasket(product)"></p-button>
+                        <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-success" label="Add to cart" icon="pi pi-shopping-cart"></p-button>
                         <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-danger" label="Add to favorites" icon="pi pi-heart" (onClick)="addToFavorite(product)"></p-button>
                         <p-button [style]="{ width: '100%', margin: '5px 0' }" (click)="scrollToSection('addReview')" label="Add a review" icon="pi pi-star"></p-button>
                     </div>

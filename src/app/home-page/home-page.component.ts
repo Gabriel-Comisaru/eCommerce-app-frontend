@@ -1,42 +1,43 @@
 import { Component } from '@angular/core';
 
-import { MockProductsService } from './shared/mock-products.service';
-import { MockProductDetailed } from './shared/mockProduct.model';
+import { ProductsService } from './shared/products.service';
+import { Product } from './shared/product.model';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent {
-  public mockProductsList!: MockProductDetailed[];
-  public productsWithDiscountApplied: MockProductDetailed[] = [];
-  public mostSelledProducts: MockProductDetailed[] = [];
+  public productsList!: Product[];
+  public productsWithDiscountApplied: Product[] = [];
+  public mostSelledProducts: Product[] = [];
   public isLoggedIn: boolean = true; //set to default true just for display purposes
-  constructor(private mockProductsService: MockProductsService) {}
+  constructor(private productsService: ProductsService) {}
   ngOnInit() {
     // getting mock list of products and mapping it according to my interface
-    this.mockProductsService.getMockProducts().subscribe((list) => {
-      this.mockProductsList = list.products.map((product: any) => {
-        return {
-          id: product.id,
-          name: product.title,
-          photos: product.images,
-          price: product.price,
-          rating: Math.floor(product.rating),
-          reviews: ['No reviews available'],
-          discount: product.discountPercentage,
-          category: product.category,
-          description: product.description,
-          stock: product.stock,
-        };
-      });
+    this.productsService.getProducts().subscribe((list) => {
+      // this.ProductsList = list.products.map((product: any) => {
+      //   return {
+      //     id: product.id,
+      //     name: product.title,
+      //     photos: product.images,
+      //     price: product.price,
+      //     rating: Math.floor(product.rating),
+      //     reviews: ['No reviews available'],
+      //     discount: product.discountPercentage,
+      //     category: product.category,
+      //     description: product.description,
+      //     stock: product.stock,
+      //   };
+      // });
+      this.productsList = list;
 
-      if (this.mockProductsList) {
-        this.productsWithDiscountApplied = this.mockProductsList.filter(
-          (product) => product.discount > 0
+      if (this.productsList) {
+        this.productsWithDiscountApplied = this.productsList.filter(
+          (product) => product.discountPercentage > 0
         );
 
-        this.mostSelledProducts = this.mockProductsList.filter(
+        this.mostSelledProducts = this.productsList.filter(
           (product) => product.price < 200
         );
       }
