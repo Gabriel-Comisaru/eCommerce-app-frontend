@@ -75,10 +75,14 @@ export class MockProductsService {
     return this.httpClient.delete(url);
   }
 
-  categoriesUrl = 'http://localhost:8080/api/products';
-  // http://localhost:8080/api/products
+  categoriesUrl = 'http://localhost:8080/api/categories';
 
-  getCategories(): Observable<any> {
-    return this.httpClient.get<any>(this.categoriesUrl);
+  getToken(username: string, password: string): Observable<any> {
+    const loginUrl = `http://localhost:8080/auth/login?username=${username}&password=${password}`;
+    return this.httpClient.post<any>(loginUrl, '');
+  }
+
+  getTokenFromLocalStorage(): any {
+    return localStorage.getItem('token');
   }
 }
