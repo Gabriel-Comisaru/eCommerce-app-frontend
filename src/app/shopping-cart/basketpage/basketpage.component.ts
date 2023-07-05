@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MockProductModel } from "../../product-all/shared/mock-product.model";
 import { BasketService } from "../shared/basket.service";
-import { MockProductDetailed } from "../../home-page/shared/mockProduct.model";
+import { Product } from "../../home-page/shared/product.model";
 
 @Component({
   selector: 'app-basketpage',
@@ -13,7 +13,7 @@ export class BasketpageComponent implements OnInit {
   public basketItems: MockProductModel[] = [];
   visible = false;
   header = '';
-  products: Array<MockProductDetailed> = [];
+  products: Array<Product> = [];
   public productQuantityMap: Map<string, number> = new Map<string, number>();
 
   selectedProduct: any = [];
