@@ -6,7 +6,7 @@ export interface MockProductDetailed {
   rating: number;
   reviews: string[];
   discount: number;
-  category: string;
+  categoryId: number;
   description: string;
   stock: number;
   isDeleted:boolean

@@ -1,55 +1,19 @@
 <div class="card flex justify-content-center">
-  <p-dialog [hidden]="header!='Add new product'" (onHide)="onClose($event)" header="{{header}}" [(visible)]="visible"
-            [style]="{width: '50vw'}">
-    <form [formGroup]="newProductForm" (ngSubmit)="onSubmit()">
 
-      <div class="flex flex-column gap-2">
-        <label class="block font-bold mb-2" htmlFor="name">Name</label>
-        <input type="text" pInputText formControlName="name"/>
-        <label class="block font-bold mb-2">Price</label>
-          <p-inputNumber formControlName="price" inputId="currency-us" mode="currency" currency="USD"
-                         locale="en-US"></p-inputNumber>
-        <label class="block font-bold mb-2">Category</label>
-        <p-dropdown formControlName="category" [options]="categoriesList" placeholder="Select category">
-          <ng-template let-category>
-            {{category.name}}
-          </ng-template>
-        </p-dropdown>
-        <label class="block font-bold mb-2">Description</label>
-        <textarea rows="5" cols="30" pInputTextarea formControlName="description"></textarea>
-        <label class="block font-bold mb-2">Stock</label>
-        <p-inputNumber formControlName="stock" inputId="integeronly"></p-inputNumber>
-        <p-toast></p-toast>
-        <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)" [multiple]="true" accept="image/*">
-          <ng-template pTemplate="content">
-            <ul *ngIf="uploadedFiles.length">
-              <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
-            </ul>
-          </ng-template>
-        </p-fileUpload>
-      </div>
-<!--      <div class="flex flex-column gap-2">-->
-<!--        <input type="file" value="Choose" accept="image/*" (change)="onFileChanged($event)">-->
-<!--        <input type="button" (click)="onUpload()" value="upload">-->
-<!--      </div>-->
-<!--      <div class="card flex justify-content-center">-->
-<!--        <input type="file" value="Choose" accept="image/*" (change)="onFileChanged($event)">-->
-<!--        <input type="button" (click)="onUpload()" value="upload">-->
-<!--      </div>-->
-      <p-button type="submit" icon="pi pi-check" label="Add" styleClass="p-button-text"></p-button>
-      <p-button (click)="close()" icon="pi pi-times" label="Cancel" styleClass="p-button-text"></p-button>
-
-    </form>
-  </p-dialog>
-  <p-dialog [hidden]="header!='Edit product'" (onHide)="onClose($event)" header="{{header}}" [(visible)]="visible"
+  <p-dialog (onHide)="onClose($event)" header="{{header}}" [(visible)]="visible"
             [style]="{width: '50vw'}">
-    <h1>Edit {{selectedProduct!.name}}</h1>
-    <form [formGroup]="newEditForm" (ngSubmit)="onEditSubmit(selectedProduct!.id)">
+    <h1 *ngIf="header=='Edit product'">{{selectedProduct?.name}}</h1>
+    <form [formGroup]="newEditForm" (ngSubmit)="onSubmit()">
+
       <div class="flex flex-column gap-2">
         <label htmlFor="title" class="block font-bold mb-2">Title</label>
         <input pInputText id="title" formControlName="name"/>
         <label class="block font-bold mb-2">Category</label>
-        <p-dropdown formControlName="category" [options]="categoriesList" placeholder="{{selectedProduct?.category}}"></p-dropdown>
+        <p-dropdown formControlName="category" [options]="categoriesList" optionLabel="name">
+          <ng-template let-category>
+            {{category.name}}
+          </ng-template>
+        </p-dropdown>
         <label htmlFor="price" class="block font-bold mb-2">Price</label>
         <p-inputNumber style="width: 100%" formControlName="price" inputId="currency-us" mode="currency" currency="USD"
                        locale="en-US"></p-inputNumber>
@@ -58,14 +22,16 @@
         <label htmlFor="description" class="block font-bold mb-2">Description</label>
         <input pInputText id="description" formControlName="description"/>
       </div>
-      <p-button type="submit" icon="pi pi-check" label="Update" styleClass="p-button-text"></p-button>
+      <p-button *ngIf="header=='Edit product'" type="submit" icon="pi pi-check" label="Update" styleClass="p-button-text"></p-button>
+      <p-button *ngIf="header=='Add new product'" type="submit" icon="pi pi-check" label="Add" styleClass="p-button-text"></p-button>
       <p-button (click)="close()" icon="pi pi-times" label="Cancel" styleClass="p-button-text"></p-button>
     </form>
   </p-dialog>
+  //@ToDo do another component deleteModal
   <p-dialog [hidden]="header!='Delete'" header="{{header}}" [(visible)]="visible"
             [style]="{width: '50vw'}" (onHide)="onClose($event)">
     <h2>Are you sure you want to delete {{selectedProduct?.name}}?</h2>
-    <p-button (click)="delete(selectedProduct)" icon="pi pi-check" label="Yes" styleClass="p-button-text"></p-button>
+    <p-button (click)="delete(selectedProduct,$event)" icon="pi pi-check" label="Yes" styleClass="p-button-text"></p-button>
     <p-button (click)="close()" icon="pi pi-times" label="No" styleClass="p-button-text"></p-button>
   </p-dialog>
 </div>

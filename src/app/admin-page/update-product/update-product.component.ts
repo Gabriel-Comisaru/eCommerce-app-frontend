@@ -26,8 +26,8 @@ export class UpdateProductComponent implements OnInit {
   photos: any = [];
   selectedFile: any = [];
   message: string = '';
-  mockProductsList:any=[];
-  categoriesList:any=[];
+  mockProductsList: any = [];
+  categoriesList: any = [];
   uploadedFiles: any[] = [];
 
   constructor(private fb: FormBuilder,
@@ -48,12 +48,16 @@ export class UpdateProductComponent implements OnInit {
   ngOnInit() {
     this.mockProduct.getProducts()
       .subscribe(list => {
-      this.mockProductsList = list
+        this.mockProductsList = list
         console.log(this.mockProductsList)
 
-    });
+      });
     this.mockProduct.getCategories()
-      .subscribe(list=>this.categoriesList=list)
+      .subscribe(list => {
+        this.categoriesList = list
+        console.log(this.categoriesList)
+      })
+    console.log(this.selectedProduct)
 
   }
 
@@ -72,22 +76,25 @@ export class UpdateProductComponent implements OnInit {
     if (changes['show'].currentValue != changes['show'].previousValue) {
       this.visible = changes['show'].currentValue;
       this.newEditForm.controls.name.setValue(this.selectedProduct!.name)
-      this.newEditForm.controls.category.setValue(this.selectedProduct!.category)
+      let selectedCategory = this.categoriesList.filter((category: any) => category.id === this.selectedProduct?.categoryId)
+      this.newEditForm.controls.category.setValue(selectedCategory.length ? selectedCategory[0] : null)
       this.newEditForm.controls.price.setValue(this.selectedProduct!.price)
       this.newEditForm.controls.description.setValue(this.selectedProduct!.description)
       this.newEditForm.controls.stock.setValue(this.selectedProduct!.stock)
       this.newEditForm.controls.photos.setValue(this.selectedProduct!.photos)
+      console.log(this.selectedProduct)
     }
   }
+
   onClose(event: any) {
 
     this.newProductForm.controls.name.setValue('')
     this.newProductForm.controls.photos.setValue(null)
     this.newProductForm.controls.price.setValue(0)
-    this.newProductForm.controls.category.setValue('')
+    this.newProductForm.controls.category.setValue(null)
     this.newProductForm.controls.description.setValue('')
     this.newProductForm.controls.stock.setValue(0)
-    this.visible=false;
+    this.visible = false;
     this.closeEmitter.emit(this.visible)
   }
 
@@ -97,10 +104,20 @@ export class UpdateProductComponent implements OnInit {
       price: +this.newProductForm.controls.price.value!,
       photos: this.newProductForm.controls.photos.value,
       description: this.newProductForm.controls.description.value!,
-      category: this.newProductForm.controls.category.value!
+      categoryId: this.newProductForm.controls.category.value!,
     } as unknown as MockProductDetailed
-    this.mockProduct.saveProducts(product,this.newProductForm.controls.category)
-      .subscribe(()=>this.visible=false);
+    let selectedCategory = this.categoriesList.filter((category: any) => category.id === product.categoryId)
+    if (this.header === 'Add new product') {
+      this.mockProduct.saveProducts(product, selectedCategory.Id)
+        .subscribe(() => {
+          this.visible = false
+          this.mockProduct.getToken('admin','admin')
+        });
+      console.log(this.newEditForm.value)
+    } else {
+      this.mockProduct.updateProduct(product, product.id)
+        .subscribe(() => this.visible = false);
+    }
 
   }
 
@@ -139,8 +156,8 @@ export class UpdateProductComponent implements OnInit {
   //     );
   // }
 
-  onUpload(event:UploadEvent) {
-    for(let file of event.files) {
+  onUpload(event: UploadEvent) {
+    for (let file of event.files) {
       this.uploadedFiles.push(file);
     }
 
@@ -157,16 +174,17 @@ export class UpdateProductComponent implements OnInit {
     } as unknown as MockProductDetailed
     console.log(this.newEditForm.controls.name.value)
     this.mockProduct.updateProduct(updatedProduct, id)
-      .subscribe(() => this.visible=false)
+      .subscribe(() => this.visible = false)
   }
 
-  delete(selectedProduct: MockProductDetailed | undefined) {
+  delete(selectedProduct: MockProductDetailed | undefined,event:any) {
+    event.stopPropagation();
     this.deleteEmitter.emit(selectedProduct?.id);
-    this.visible=false;
+    this.visible = false;
   }
 
-  close(){
-    this.visible=false;
+  close() {
+    this.visible = false;
     this.closeEmitter.emit(this.visible)
   }
 }
