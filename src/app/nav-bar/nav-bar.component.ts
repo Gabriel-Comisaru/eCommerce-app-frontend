@@ -30,7 +30,11 @@ export class NavBarComponent {
         //   this.router.navigate(['/products']);
         // },
       },
-      { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
+      { label: 'Deals',
+        icon: 'pi pi-fw pi-percentage',
+        routerLink: '/categories',
+
+      },
     ];
 
     this.mockProductsService
