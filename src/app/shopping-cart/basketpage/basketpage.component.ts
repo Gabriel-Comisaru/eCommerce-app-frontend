@@ -2,6 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { MockProductModel } from "../../product-all/shared/mock-product.model";
 import { BasketService } from "../shared/basket.service";
 import { Product } from "../../home-page/shared/product.model";
+import {ProductsService} from "../../home-page/shared/products.service";
+import {MockProductsService} from "../../product-all/shared/mock-products.service";
+
+interface Item {
+  id: number;
+  name: string;
+  productId: number;
+  orderId: number;
+  quantity: number;
+
+}
 
 @Component({
   selector: 'app-basketpage',
@@ -15,31 +26,55 @@ export class BasketpageComponent implements OnInit {
   header = '';
   products: Array<Product> = [];
   public productQuantityMap: Map<string, number> = new Map<string, number>();
-  orderItems: any = [];
+  public itemNames: Map<number,string> = new Map<number, string>();
+  public categoryNames: Map<number,string> = new Map<number, string>();
+  public categories: any[] = [];
+  public itemNamesAny: any[] = [];
+
+  orderItems: Array<Item> = [];
 
   selectedProduct: any = [];
   rows: any = [5, 10, 15];
   row: any = 5;
 
-  constructor(private basketService: BasketService) { }
+  constructor(private basketService: BasketService,
+              private productService: MockProductsService
+  ) { }
 
   ngOnInit(): void {
-    this.basketItems = this.basketService.getBasketItems();
-    console.log(this.basketItems);
-    this.updateProductQuantityMap();
-    this.orderItems = this.basketService.getOrderItems();
-    console.log(this.basketService.getOrderItems());
-  }
+    // this.categoryService.getCategories().subscribe((list) => {
+    //   this.categories = list.map((category: any) => {
+    //     that.categoryNames.set(category.id, category.name);
+    //   })
+    // })
+    let that = this;
+    this.productService.getProducts().subscribe((list) => {
+      this.itemNamesAny = list.map((product: any) => {
+        that.itemNames.set(product.id, product.name);
+    });
+    });
+    console.log(this.itemNames);
+    setTimeout(() => {
+      this.basketService.getOrderItems().subscribe((list: any[]) => {
+        this.orderItems = list.map( (item: any) => {
+          return {
+            id: item.id,
+            name: this.itemNames.get(item.productId) || '',
+            productId: item.productId,
+            orderId: item.orderId,
+            quantity: item.quantity,
+          };
+        });
+        console.log(this.orderItems)
+      });
+
+    }, 500)
+
+    }
 
   deleteProduct(product: any, index: number, event: any) {
-    event.stopPropagation();
-    this.header = 'Delete';
-    this.selectedProduct = product;
-
-    if (index !== -1) {
-      this.basketService.deleteFromBasket(index);
-      this.updateProductQuantityMap();
-    }
+    console.log(product)
+    this.basketService.deleteOrderItem(product.id)
   }
 
   selectRows(event: any) {

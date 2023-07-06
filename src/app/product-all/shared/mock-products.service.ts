@@ -32,4 +32,7 @@ export class MockProductsService {
       }),
     );
   }
+  getSingleProduct(id: number): Observable<any> {
+    return this.httpClient.get<any>(`${this.url}/${id}`);
+  }
 }

@@ -10,15 +10,16 @@
       <th>Price</th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-product let-index="rowIndex">
+  <ng-template pTemplate="body" let-Item let-index="rowIndex">
     <tr  class="item">
-      <td *ngIf="isProductAvailable(product)"><img alt="image" [src]="product.photos[0]" style="max-width: 100px;max-height: 50px"></td>
-      <td *ngIf="isProductAvailable(product)">{{ product.name }}</td>
-      <td *ngIf="isProductAvailable(product)">{{ product.category }}</td>
-      <td *ngIf="isProductAvailable(product)">{{ getQuantity(product) }}</td>
-      <td *ngIf="isProductAvailable(product)">${{ product.price }}</td>
-      <td *ngIf="isProductAvailable(product)">
-        <p-button icon="pi pi-trash" label="Delete" (click)="deleteProduct(product, index, $event)"></p-button>
+<!--      <td *ngIf="isProductAvailable(product)"><img alt="image" [src]="product.photos[0]" style="max-width: 100px;max-height: 50px"></td>-->
+      <td >Not yet</td>
+      <td >{{ Item.name }}</td>
+      <td >{{ Item.id }}</td>
+      <td >{{ Item.quantity }}</td>
+      <td >$696969</td>
+      <td >
+        <p-button icon="pi pi-trash" label="Delete" (click)="deleteProduct(Item, index, $event)"></p-button>
       </td>
     </tr>
   </ng-template>
