@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, of, tap } from 'rxjs';
 import { Product } from './product.model';
+import { Review } from './review.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -10,6 +11,7 @@ export class ProductsService {
 
   // private productsUrl = 'https://dummyjson.com/products';
   private productsUrl = 'http://localhost:8080/api/products';
+  private reviewsUrl = 'http://localhost:8080/api/reviews';
 
   public shoppingCartObservable = new Subject<Product[]>();
   public favoriteProductsObservable = new Subject<Product[]>();
@@ -74,5 +76,13 @@ export class ProductsService {
   delete(id: number) {
     const url = `${this.productsUrl}/${id}`;
     return this.httpClient.delete(url);
+  }
+
+  saveReview(productId: number, review: Review, header: object) {
+    const reviews = `${this.reviewsUrl}/save/${productId}`
+    this.httpClient.post<any>(reviews, review, header).subscribe();
+    console.log(reviews);
+    console.log(header);
+    console.log(review);
   }
 }
