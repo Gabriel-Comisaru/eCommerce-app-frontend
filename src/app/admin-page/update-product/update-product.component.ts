@@ -29,21 +29,13 @@ export class UpdateProductComponent implements OnInit {
   mockProductsList: any = [];
   categoriesList: any = [];
   uploadedFiles: any[] = [];
+  token=''
 
   constructor(private fb: FormBuilder,
               private mockProduct: MockProductsService,
               private messageService: MessageService,
               private httpClient: HttpClient) {
   }
-
-  newEditForm = this.fb.group({
-    name: [''],
-    photos: [['']],
-    price: [0],
-    category: [''],
-    description: [''],
-    stock: [0],
-  })
 
   ngOnInit() {
     this.mockProduct.getProducts()
@@ -57,10 +49,9 @@ export class UpdateProductComponent implements OnInit {
         this.categoriesList = list
         console.log(this.categoriesList)
       })
-    console.log(this.selectedProduct)
-    const user =this.mockProduct.getToken('admin','admin')
-      .subscribe();
-    console.log(user)
+
+    this.mockProduct.getToken('admin','admin')
+      .subscribe(res=>this.token=res.token)
   }
 
 
@@ -68,7 +59,7 @@ export class UpdateProductComponent implements OnInit {
     name: [''],
     photos: [''],
     price: [0],
-    category: [''],
+    categoryId: [0],
     description: [''],
     stock: [0],
   })
@@ -77,13 +68,20 @@ export class UpdateProductComponent implements OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['show'].currentValue != changes['show'].previousValue) {
       this.visible = changes['show'].currentValue;
-      this.newEditForm.controls.name.setValue(this.selectedProduct!.name)
-      let selectedCategory = this.categoriesList.filter((category: any) => category.id === this.selectedProduct?.categoryId)
-      this.newEditForm.controls.category.setValue(selectedCategory.length ? selectedCategory[0] : null)
-      this.newEditForm.controls.price.setValue(this.selectedProduct!.price)
-      this.newEditForm.controls.description.setValue(this.selectedProduct!.description)
-      this.newEditForm.controls.stock.setValue(this.selectedProduct!.stock)
-      this.newEditForm.controls.photos.setValue(this.selectedProduct!.photos)
+      if(this.header==='Edit product') {
+        this.newProductForm.controls.name.setValue(this.selectedProduct!.name)
+        let selectedCategory = this.categoriesList.filter((category: any) => category.id === this.selectedProduct?.categoryId)
+        this.newProductForm.controls.categoryId.setValue(selectedCategory.length ? selectedCategory[0] : null)
+        this.newProductForm.controls.price.setValue(this.selectedProduct!.price)
+        this.newProductForm.controls.description.setValue(this.selectedProduct!.description)
+        this.newProductForm.controls.stock.setValue(this.selectedProduct!.stock)
+      }else if(this.header==="Add new product"){
+        this.newProductForm.controls.name.setValue('')
+        this.newProductForm.controls.categoryId.setValue(0)
+        this.newProductForm.controls.price.setValue(0)
+        this.newProductForm.controls.description.setValue('')
+        this.newProductForm.controls.stock.setValue(0)
+      }
       console.log(this.selectedProduct)
     }
   }
@@ -93,7 +91,7 @@ export class UpdateProductComponent implements OnInit {
     this.newProductForm.controls.name.setValue('')
     this.newProductForm.controls.photos.setValue(null)
     this.newProductForm.controls.price.setValue(0)
-    this.newProductForm.controls.category.setValue(null)
+    this.newProductForm.controls.categoryId.setValue(null)
     this.newProductForm.controls.description.setValue('')
     this.newProductForm.controls.stock.setValue(0)
     this.visible = false;
@@ -107,15 +105,16 @@ export class UpdateProductComponent implements OnInit {
       price: +this.newProductForm.controls.price.value!,
       photos: this.newProductForm.controls.photos.value,
       description: this.newProductForm.controls.description.value!,
-      categoryId: this.newProductForm.controls.category.value!,
+      categoryId: +this.newProductForm.controls.categoryId.value!,
     } as unknown as MockProductDetailed
+    console.log(this.newProductForm.value)
     let selectedCategory = this.categoriesList.filter((category: any) => category.id === product.categoryId)
     if (this.header === 'Add new product') {
-      this.mockProduct.saveProducts(product, product.categoryId)
+
+      this.mockProduct.saveProducts(product, product.categoryId,this.token)
         .subscribe(() => {
           this.visible = false
         });
-      console.log(this.newEditForm.value)
     } else {
       this.mockProduct.updateProduct(product, product.id)
         .subscribe(() => this.visible = false);
@@ -164,19 +163,6 @@ export class UpdateProductComponent implements OnInit {
     }
 
     this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
-  }
-
-  onEditSubmit(id: any) {
-    let updatedProduct: MockProductDetailed = {
-      title: this.newEditForm.controls.name.value,
-      price: this.newEditForm.controls.price.value,
-      stock: this.newEditForm.controls.stock.value,
-      description: this.newEditForm.controls.description.value,
-      category: this.newEditForm.controls.category.value,
-    } as unknown as MockProductDetailed
-    console.log(this.newEditForm.controls.name.value)
-    this.mockProduct.updateProduct(updatedProduct, id)
-      .subscribe(() => this.visible = false)
   }
 
   delete(selectedProduct: MockProductDetailed | undefined,event:any) {

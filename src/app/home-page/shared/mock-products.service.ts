@@ -25,11 +25,12 @@ export class MockProductsService {
     return this.httpClient.get<any>(url);
   }
 
-  saveProducts(product:any,categoryId:any):Observable<any>{
-    let token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY4ODU2NTY5MSwiZXhwIjoxNjg4NTgzNjkxfQ.Q8Ep2VbGYRqu4pW_EQPvVsL-P4RM1rzq_OsxQ_lHZsM'
+  saveProducts(product:any,categoryId:any,token:any):Observable<any>{
+
     let head_obj = new HttpHeaders().set('Authorization','bearer '+token)
     const url=`${this.urlProducts}/category/${categoryId}`
     return this.httpClient.post<any>(url,product,{headers:head_obj});
+
   }
 
   updateProduct(product:any,id:number):Observable<any>{

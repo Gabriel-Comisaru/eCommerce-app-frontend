@@ -3,16 +3,14 @@
   <p-dialog (onHide)="onClose($event)" header="{{header}}" [(visible)]="visible"
             [style]="{width: '50vw'}">
     <h1 *ngIf="header=='Edit product'">{{selectedProduct?.name}}</h1>
-    <form [formGroup]="newEditForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="newProductForm" (ngSubmit)="onSubmit()">
 
       <div class="flex flex-column gap-2">
         <label htmlFor="title" class="block font-bold mb-2">Title</label>
         <input pInputText id="title" formControlName="name"/>
         <label class="block font-bold mb-2">Category</label>
-        <p-dropdown formControlName="category" [options]="categoriesList.id" optionLabel="name">
-          <ng-template let-category>
-            {{category.name}}
-          </ng-template>
+        <p-dropdown formControlName="categoryId" optionValue="id" [options]="categoriesList" optionLabel="name">
+
         </p-dropdown>
         <label htmlFor="price" class="block font-bold mb-2">Price</label>
         <p-inputNumber style="width: 100%" formControlName="price" inputId="currency-us" mode="currency" currency="USD"
