@@ -51,7 +51,7 @@ export class MockProductsService {
       .set('Authorization',`Bearer ${token}`)
       .set('Content-Type', 'application/json')
     const url = `${this.urlProducts}/${id}`;
-    return this.httpClient.delete(url);
+    return this.httpClient.delete(url,{headers:head_obj});
   }
 
   getToken(username: string, password: string): Observable<any> {
