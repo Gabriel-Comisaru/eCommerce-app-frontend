@@ -3,7 +3,7 @@ import {FormBuilder} from "@angular/forms";
 import {MockProductsService} from "../../home-page/shared/mock-products.service";
 import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
 import {MessageService} from "primeng/api";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 
 interface UploadEvent {
   originalEvent: Event;
@@ -33,8 +33,7 @@ export class UpdateProductComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private mockProduct: MockProductsService,
-              private messageService: MessageService,
-              private httpClient: HttpClient) {
+              private messageService: MessageService) {
   }
 
   ngOnInit() {
@@ -108,7 +107,6 @@ export class UpdateProductComponent implements OnInit {
       categoryId: +this.newProductForm.controls.categoryId.value!,
     } as unknown as MockProductDetailed
     console.log(this.newProductForm.value)
-    let selectedCategory = this.categoriesList.filter((category: any) => category.id === product.categoryId)
     if (this.header === 'Add new product') {
 
       this.mockProduct.saveProducts(product, product.categoryId,this.token)
