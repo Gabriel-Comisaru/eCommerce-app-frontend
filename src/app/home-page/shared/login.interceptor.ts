@@ -7,32 +7,35 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, catchError, throwError, tap } from 'rxjs';
-import { MockProductsService } from './mock-products.service';
+import { ProductsService } from './products.service';
 
 @Injectable({ providedIn: 'root' })
 export class LoginInterceptor implements HttpInterceptor {
-  constructor(private productsService: MockProductsService) {}
+  constructor(private productsService: ProductsService) {}
 
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    console.log('intercepted');
-    const token = localStorage.getItem('token');
+    // console.log('intercepted');
+    // const token = localStorage.getItem('token');
 
-    if (token) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } else {
-      // getToken(username,password)
-      // hardcode yours
-      this.productsService
-        .getToken('test1', 'test1')
-        .pipe(tap((res) => localStorage.setItem('token', res)));
-    }
+    // if (token) {
+    //   console.log('if-true');
+    //   request = request.clone({
+    //     setHeaders: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   });
+    // } else {
+    //   // getToken(username,password)
+    //   // hardcode yours
+    //   console.log('if-true');
+    //   this.productsService;
+    //   // .getToken('test1', 'test1')
+    //   // .subscribe((res) => console.log(res?.token));
+    // }
+    // // nu pune requesturi in interceptor
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {

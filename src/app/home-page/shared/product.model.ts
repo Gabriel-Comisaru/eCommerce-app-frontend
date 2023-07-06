@@ -1,4 +1,4 @@
-import { Review } from "./review.model";
+import { Review } from './review.model';
 
 export interface Product {
   id: number;
@@ -11,5 +11,5 @@ export interface Product {
   description: string;
   stock: number;
   category: string;
-  isDeleted:boolean
+  isDeleted: boolean;
 }

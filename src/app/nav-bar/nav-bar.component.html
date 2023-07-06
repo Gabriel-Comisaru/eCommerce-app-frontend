@@ -21,7 +21,11 @@
   </div>
 
   <div class="navControlsContainer accountControls">
-    <p-button label="Clear storage" styleClass="p-button-link" (click)="clearStorage()"></p-button>
+    <p-button
+      label="Clear storage"
+      styleClass="p-button-link"
+      (click)="clearStorage()"
+    ></p-button>
     <a class="navBarItem" (click)="shoppingCart.toggle($event)"
       ><i
         class="pi pi-shopping-cart"

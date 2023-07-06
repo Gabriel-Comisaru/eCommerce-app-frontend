@@ -51,9 +51,7 @@ export class ProductsListCarouselComponent {
       'favoriteProducts',
       JSON.stringify(favoriteProductsList)
     );
-    this.productsService.favoriteProductsObservable.next(
-      favoriteProductsList
-    );
+    this.productsService.favoriteProductsObservable.next(favoriteProductsList);
   }
   getProductDetails(id: number) {
     this.router.navigate([`product-details/${id}`]);

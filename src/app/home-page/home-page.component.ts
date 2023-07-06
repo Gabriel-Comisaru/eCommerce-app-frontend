@@ -31,6 +31,7 @@ export class HomePageComponent {
       //   };
       // });
       this.productsList = list;
+      console.log(this.productsList);
 
       if (this.productsList) {
         this.productsWithDiscountApplied = this.productsList.filter(
