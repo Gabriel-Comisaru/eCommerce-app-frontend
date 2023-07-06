@@ -78,11 +78,11 @@ export class ProductsService {
     return this.httpClient.delete(url);
   }
 
-  saveReview(productId: number, review: Review, header: object) {
-    const reviews = `${this.reviewsUrl}/save/${productId}`
-    this.httpClient.post<any>(reviews, review, header).subscribe();
-    console.log(reviews);
+  saveReview(productId: number, review: Review, header: any) {
+    const url = `${this.reviewsUrl}/save/${productId}`;
+    console.log(url);
     console.log(header);
     console.log(review);
+    this.httpClient.post<any>(url, review, header).subscribe();
   }
 }
