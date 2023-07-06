@@ -74,7 +74,13 @@ export class BasketpageComponent implements OnInit {
 
   deleteProduct(product: any, index: number, event: any) {
     console.log(product)
-    this.basketService.deleteOrderItem(product.id)
+    console.log(index)
+    this.basketService.deleteOrderItem(product.id).subscribe((res) => {
+      console.log(index)
+      console.log(this.orderItems)
+    })
+
+    this.orderItems.splice(index, 1);
   }
 
   selectRows(event: any) {

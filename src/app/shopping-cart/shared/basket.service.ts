@@ -11,7 +11,7 @@ export class BasketService {
   constructor(private httpClient: HttpClient) {}
   private basketItems: MockProductModel[] = [];
   private url = 'http://localhost:8080';
-  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2QiLCJpYXQiOjE2ODg2NzM2NjQsImV4cCI6MTY4ODY5MTY2NH0.VBqxqIiD6zwRlu4B-DezHP9kDDAsDp1WCS27CnXBt_g';
+  private token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2QiLCJpYXQiOjE2ODg2NzU1OTUsImV4cCI6MTY4ODY5MzU5NX0.tbb_zCSDqZrm9FoC8kd9sUP3DqxNhP1zSB8t4B8ghB8';
 
   // createOrder(productId: number) {
   //   const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2QiLCJpYXQiOjE2ODg1NTQxODYsImV4cCI6MTY4ODU3MjE4Nn0.w2bw3CseLh-pfv-XmGiVdY7JwljAOWGrgBubUVbIiFk';
@@ -39,7 +39,7 @@ export class BasketService {
     const url = `${this.url}/api/orderItems/${productId}`; // Assuming the API endpoint is '/api/orderItems/{productId}'
     console.log('url ', url)
     console.log('headers ', headers)
-    return this.httpClient.delete(url, { headers: headers }).subscribe();
+    return this.httpClient.delete(url, { headers: headers })
 
   }
 

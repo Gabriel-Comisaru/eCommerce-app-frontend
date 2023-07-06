@@ -44,15 +44,15 @@ export class ProductDetailsComponent implements OnInit {
       this.discountedPrice = Math.round(
         product.price - product.price * (product.discountPercentage / 100)
       );
-      
+
       product.rating = this.reviewsValue;
       this.product = product;
       this.reviews = product.reviews;
-      this.authService.login('laur', 'laur').subscribe(res => {
+      this.authService.login('asd ', 'asd').subscribe(res => {
         this.authorization = `Bearer ${res.token}`;
         // this.authorization = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsYXVyIiwiaWF0IjoxNjg4NjQ1MzMyLCJleHAiOjE2ODg2NjMzMzJ9.TSWm64kA083bqlP3ly5-cwK_VXlqTq6dr84_oB_d-ko';
         console.log(res.token);
-        
+
       })
       // this.getImages();
     });
@@ -75,7 +75,7 @@ export class ProductDetailsComponent implements OnInit {
   // }
 
   onSubmit() {
-    const review: Review = 
+    const review: Review =
     {
       rating: this.reviewForm.controls.rating.value,
       title: this.reviewForm.controls.title.value,
@@ -85,9 +85,9 @@ export class ProductDetailsComponent implements OnInit {
       .set('Authorization', this.authorization)
       .set('Accept', '*/*')
       .set('Content-type', 'application/json');
-        
+
     this.productService.saveReview(this.product.id, review, { headers: header });
-    // this.product.reviews.push(review) 
+    // this.product.reviews.push(review)
     this.reviewForm.reset();
   }
 
@@ -108,5 +108,5 @@ export class ProductDetailsComponent implements OnInit {
     );
   }
 
-  
+
 }

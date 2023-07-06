@@ -40,8 +40,8 @@ export class ProductAllComponent implements OnInit {
             // debugger
             // setTimeout(function() {}, 1000);
             placeholder = category.name;
-            console.log(placeholder, 'placeholder...')
-            console.log(category.name, 'cat....name')
+            // console.log(placeholder, 'placeholder...')
+            // console.log(category.name, 'cat....name')
             return category.name;
           });
 
