@@ -13,7 +13,12 @@ export class MockProductsService {
   private urlCategories='http://localhost:8080/api/categories'
 
   getProducts(): Observable<any> {
-    return this.httpClient.get<any>(this.urlProducts);
+    // let token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY4ODY1MDgxOCwiZXhwIjoxNjg4NjY4ODE4fQ.jo81d4dXMoQM1ngtpmeTq8TQwVPaGR0BXLIQr4nbOi8'
+    // let head_obj = new HttpHeaders().set('Authorization',token)
+    //   .set('Access-Control-Allow-Origin','http://localhost:4200')
+    //
+    //  console.log(head_obj)
+    return this.httpClient.get<any>(this.urlProducts+'/lazy');
   }
 
   getCategories(){
@@ -26,8 +31,10 @@ export class MockProductsService {
   }
 
   saveProducts(product:any,categoryId:any,token:any):Observable<any>{
-
-    let head_obj = new HttpHeaders().set('Authorization','bearer '+token)
+    let head_obj = new HttpHeaders()
+      .set('Authorization',`Bearer ${token}`)
+      .set('Content-Type', 'application/json')
+      .set('Accept','*/*')
     const url=`${this.urlProducts}/category/${categoryId}`
     return this.httpClient.post<any>(url,product,{headers:head_obj});
 
@@ -38,7 +45,11 @@ export class MockProductsService {
     return this.httpClient.put<any>(url,product);
   }
 
-  delete(id:number){
+  delete(id:number,token:any){
+    console.log(token)
+    let head_obj = new HttpHeaders()
+      .set('Authorization',`Bearer ${token}`)
+      .set('Content-Type', 'application/json')
     const url = `${this.urlProducts}/${id}`;
     return this.httpClient.delete(url);
   }

@@ -165,6 +165,7 @@ export class UpdateProductComponent implements OnInit {
 
   delete(selectedProduct: MockProductDetailed | undefined,event:any) {
     event.stopPropagation();
+    this.mockProduct.delete(selectedProduct!.id,this.token);
     this.deleteEmitter.emit(selectedProduct?.id);
     this.visible = false;
   }
