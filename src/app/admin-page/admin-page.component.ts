@@ -17,6 +17,7 @@ export class AdminPageComponent implements OnInit {
   selectedProduct: any = [];
   rows: any = [5, 10, 15];
   row: any = 5;
+  token='';
 
   constructor(private mockProductsService: MockProductsService) {
   }
@@ -26,7 +27,8 @@ export class AdminPageComponent implements OnInit {
     this.header = 'Add new product'
   }
 
-  showDialogEditProduct(product: any) {
+  showDialogEditProduct(product: any,event:any) {
+    event.stopPropagation();
     this.visible = true;
     this.header = 'Edit product'
     this.selectedProduct = product;
@@ -48,6 +50,8 @@ export class AdminPageComponent implements OnInit {
       .subscribe(list => {
       this.mockProductsList = list
     });
+    this.mockProductsService.getToken('admin','admin')
+      .subscribe(res=>this.token=res.token)
   }
 
   delete() {

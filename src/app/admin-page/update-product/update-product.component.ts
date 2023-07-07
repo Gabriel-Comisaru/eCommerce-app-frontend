@@ -3,7 +3,6 @@ import {FormBuilder} from "@angular/forms";
 import {MockProductsService} from "../../home-page/shared/mock-products.service";
 import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
 import {MessageService} from "primeng/api";
-import {HttpClient} from "@angular/common/http";
 
 interface UploadEvent {
   originalEvent: Event;
@@ -30,6 +29,7 @@ export class UpdateProductComponent implements OnInit {
   categoriesList: any = [];
   uploadedFiles: any[] = [];
   token=''
+  deleteVisible: any;
 
   constructor(private fb: FormBuilder,
               private mockProduct: MockProductsService,
@@ -114,7 +114,7 @@ export class UpdateProductComponent implements OnInit {
           this.visible = false
         });
     } else {
-      this.mockProduct.updateProduct(product, product.id)
+      this.mockProduct.updateProduct(product, this.selectedProduct!.id,this.token)
         .subscribe(() => this.visible = false);
     }
 
@@ -155,6 +155,7 @@ export class UpdateProductComponent implements OnInit {
   //     );
   // }
 
+
   onUpload(event: UploadEvent) {
     for (let file of event.files) {
       this.uploadedFiles.push(file);
@@ -167,7 +168,7 @@ export class UpdateProductComponent implements OnInit {
     event.stopPropagation();
     this.mockProduct.delete(selectedProduct!.id,this.token);
     this.deleteEmitter.emit(selectedProduct?.id);
-    this.visible = false;
+    this.deleteVisible = false;
   }
 
   close() {

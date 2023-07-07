@@ -5,6 +5,8 @@
     <!--    <p-button (click)="showDialogEditProduct()" icon="pi pi-external-link" label="Edit product"></p-button>-->
     <app-update-product (deleteEmitter)="delete()" (closeEmitter)="onClose()" [selectedProduct]="selectedProduct"
                         [show]="visible" [header]="header"></app-update-product>
+    <app-delete-modal (deleteEmitter)="delete()" [selectedProduct]="selectedProduct"
+                      [header]="header"></app-delete-modal>
   </ng-template>
 </p-menubar>
 
@@ -22,7 +24,7 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-product>
-    <tr (click)="showDialogEditProduct(product)" class="item">
+    <tr (click)="showDialogEditProduct(product,$event)" class="item">
 <!--      <td><img alt="image" [src]="product.photos[0]" style="max-width: 100px;max-height: 50px"></td>-->
       <td>{{ product.name }}</td>
       <td>{{ product.categoryId }}</td>

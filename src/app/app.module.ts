@@ -26,6 +26,7 @@ import {DropdownModule} from "primeng/dropdown";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {InputNumberModule} from "primeng/inputnumber";
 import {PaginatorModule} from "primeng/paginator";
+import { DeleteModalComponent } from './admin-page/delete-modal/delete-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +36,7 @@ import {PaginatorModule} from "primeng/paginator";
     NavBarComponent,
     AdminPageComponent,
     UpdateProductComponent,
+    DeleteModalComponent,
   ],
   imports: [
     HttpClientModule,

@@ -26,7 +26,7 @@
     </form>
   </p-dialog>
   //@ToDo do another component deleteModal
-  <p-dialog [hidden]="header!='Delete'" header="{{header}}" [(visible)]="visible"
+  <p-dialog [hidden]="header!='Delete'" header="{{header}}" [(visible)]="deleteVisible"
             [style]="{width: '50vw'}" (onHide)="onClose($event)">
     <h2>Are you sure you want to delete {{selectedProduct?.name}}?</h2>
     <p-button (click)="delete(selectedProduct,$event)" icon="pi pi-check" label="Yes" styleClass="p-button-text"></p-button>
