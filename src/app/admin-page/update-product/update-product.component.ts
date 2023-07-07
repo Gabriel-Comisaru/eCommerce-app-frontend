@@ -102,10 +102,9 @@ export class UpdateProductComponent implements OnInit {
     const product: MockProductDetailed = {
       name: this.newProductForm.controls.name.value!,
       price: +this.newProductForm.controls.price.value!,
-      photos: this.newProductForm.controls.photos.value,
       description: this.newProductForm.controls.description.value!,
       categoryId: +this.newProductForm.controls.categoryId.value!,
-    } as unknown as MockProductDetailed
+    } as MockProductDetailed
     console.log(this.newProductForm.value)
     if (this.header === 'Add new product') {
 
@@ -114,7 +113,7 @@ export class UpdateProductComponent implements OnInit {
           this.visible = false
         });
     } else {
-      this.mockProduct.updateProduct(product, this.selectedProduct!.id,this.token)
+      this.mockProduct.updateProduct(this.selectedProduct, this.selectedProduct!.id,this.token)
         .subscribe(() => this.visible = false);
     }
 

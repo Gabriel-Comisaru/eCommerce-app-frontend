@@ -44,6 +44,8 @@ export class MockProductsService {
       .set('Content-Type', 'application/json')
       .set('Accept', '*/*')
     console.log(id)
+    console.log('product in PUT')
+    console.log(product)
     const url = `${this.urlProducts}/${id}`;
     return this.httpClient.put<any>(url, product, {headers: head_obj});
   }
