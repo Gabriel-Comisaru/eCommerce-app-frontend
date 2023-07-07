@@ -7,6 +7,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Review } from '../home-page/shared/review.model';
 import { AuthService } from '../helpers/auth.service';
 import { HttpHeaders } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
@@ -17,19 +18,15 @@ export class ProductDetailsComponent implements OnInit {
   product: Product = {} as Product;
   images: { url: string }[] = [];
   position: string = 'bottom';
-  reviewsValue: number = 5;
-  // addReviewValue: number = 0;
+  overallRating: number = 0;
   discountedPrice: number = 0;
   reviews: Review[] = [];
-  // token: string = '';
-
   reviewForm = this.fb.group({
     rating: new FormControl(0, {nonNullable: true}),
     title: new FormControl('', {nonNullable: true}),
     comment: new FormControl('', {nonNullable: true})
   })
-  authorization: string = '';
-
+  
   constructor(private productService: ProductsService,
     private activatedRoute: ActivatedRoute,
     private basketService: BasketService,
@@ -40,22 +37,18 @@ export class ProductDetailsComponent implements OnInit {
   ngOnInit(): void {
     const id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
     this.productService.getProduct(id).subscribe((product) => {
-      product.rating = Math.round(product.rating);
+      this.product = product;
       this.discountedPrice = Math.round(
         product.price - product.price * (product.discountPercentage / 100)
       );
-      
-      product.rating = this.reviewsValue;
-      this.product = product;
-      this.reviews = product.reviews;
-      this.authService.login('laur', 'laur').subscribe(res => {
-        this.authorization = `Bearer ${res.token}`;
-        // this.authorization = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsYXVyIiwiaWF0IjoxNjg4NjQ1MzMyLCJleHAiOjE2ODg2NjMzMzJ9.TSWm64kA083bqlP3ly5-cwK_VXlqTq6dr84_oB_d-ko';
-        console.log(res.token);
-        
-      })
+      product.rating = this.overallRating;
       // this.getImages();
+      // console.log(product);
     });
+    // console.log({ headers: this.authService.getHeader() });
+    this.productService.getProductReviews(id)
+      .subscribe(reviews => this.reviews = reviews);
+    this.calculateRating();
   }
 
   scrollToSection(id: string) {
@@ -81,13 +74,9 @@ export class ProductDetailsComponent implements OnInit {
       title: this.reviewForm.controls.title.value,
       comment: this.reviewForm.controls.comment.value
     }
-    let header = new HttpHeaders()
-      .set('Authorization', this.authorization)
-      .set('Accept', '*/*')
-      .set('Content-type', 'application/json');
-        
-    this.productService.saveReview(this.product.id, review, { headers: header });
-    // this.product.reviews.push(review) 
+    
+    this.productService.saveReview(this.product.id, review, this.authService.getHeader());
+    this.reviews.push(review);
     this.reviewForm.reset();
   }
 
@@ -108,5 +97,14 @@ export class ProductDetailsComponent implements OnInit {
     );
   }
 
+  calculateRating() {
+    let totalRating = 0;
+    for (let review of this.reviews) {
+      totalRating += review.rating
+      console.log(this.reviews);
+    }
+    this.overallRating = totalRating / this.reviews.length;
+    return this.overallRating;
+  }
   
 }
