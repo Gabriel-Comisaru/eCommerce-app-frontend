@@ -3,6 +3,7 @@ import {FormBuilder} from "@angular/forms";
 import {MockProductsService} from "../../home-page/shared/mock-products.service";
 import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
 import {MessageService} from "primeng/api";
+import {Router} from "@angular/router";
 
 interface UploadEvent {
   originalEvent: Event;
@@ -19,7 +20,11 @@ export class UpdateProductComponent implements OnInit {
   @Input() selectedProduct?: MockProductDetailed;
   @Input() show: any;
   @Input() header: any;
+  @Input() token:any;
   @Output() closeEmitter = new EventEmitter();
+  product:any;
+  @Output() savedProduct = new EventEmitter();
+
   visible = false;
   photos: any = [];
   selectedFile: any = [];
@@ -27,11 +32,12 @@ export class UpdateProductComponent implements OnInit {
   mockProductsList: any = [];
   categoriesList: any = [];
   uploadedFiles: any[] = [];
-  token=''
+
 
   constructor(private fb: FormBuilder,
               private mockProduct: MockProductsService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private router:Router) {
   }
 
   ngOnInit() {
@@ -46,9 +52,6 @@ export class UpdateProductComponent implements OnInit {
         this.categoriesList = list
         console.log(this.categoriesList)
       })
-
-    this.mockProduct.getToken('admin','admin')
-      .subscribe(res=>this.token=res.token)
   }
 
 
@@ -107,8 +110,11 @@ export class UpdateProductComponent implements OnInit {
     if (this.header === 'Add new product') {
 
       this.mockProduct.saveProducts(product, product.categoryId,this.token)
-        .subscribe(() => {
-          this.visible = false
+        .subscribe((item) => {
+          {
+            this.savedProduct.emit({product:product});
+            this.visible = false
+          }
         });
     } else {
       this.mockProduct.updateProduct(product, this.selectedProduct!.id,this.token)
@@ -161,11 +167,7 @@ export class UpdateProductComponent implements OnInit {
     this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
   }
 
-  delete(selectedProduct: MockProductDetailed | undefined,event:any) {
-    event.stopPropagation();
-    this.mockProduct.delete(selectedProduct!.id,this.token)
-      .subscribe();
-  }
+
 
   close() {
     this.visible = false;
