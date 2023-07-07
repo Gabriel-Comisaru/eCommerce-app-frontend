@@ -11,6 +11,7 @@ import {deleteFunction} from "./utilities/utilities";
 export class AdminPageComponent implements OnInit {
 
   visible = false;
+  deleteVisible=false;
   header = '';
   products: Array<MockProductDetailed> = [];
   mockProductsList = [];
@@ -28,16 +29,15 @@ export class AdminPageComponent implements OnInit {
   }
 
   showDialogEditProduct(product: any,event:any) {
-    event.stopPropagation();
     this.visible = true;
     this.header = 'Edit product'
     this.selectedProduct = product;
   }
 
   showDialogDeleteProduct(product: any, event: any) {
-    this.visible = true;
-    event.stopPropagation();
     this.header = 'Delete'
+    this.deleteVisible = true;
+    event.stopPropagation();
     this.selectedProduct = product;
   }
 
@@ -63,5 +63,9 @@ export class AdminPageComponent implements OnInit {
 
   selectRows(event: any) {
     this.row = +event.value;
+  }
+
+  onCloseDelete() {
+    this.deleteVisible=false;
   }
 }

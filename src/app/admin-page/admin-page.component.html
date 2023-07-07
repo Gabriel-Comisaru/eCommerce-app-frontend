@@ -3,13 +3,13 @@
     <p-button (click)="showDialogNewProduct()" icon="pi pi-plus" label="New product"></p-button>
     <!--    edit dialog bellow-->
     <!--    <p-button (click)="showDialogEditProduct()" icon="pi pi-external-link" label="Edit product"></p-button>-->
-    <app-update-product (deleteEmitter)="delete()" (closeEmitter)="onClose()" [selectedProduct]="selectedProduct"
+    <app-update-product  (closeEmitter)="onClose()" [selectedProduct]="selectedProduct"
                         [show]="visible" [header]="header"></app-update-product>
-    <app-delete-modal (deleteEmitter)="delete()" [selectedProduct]="selectedProduct"
-                      [header]="header"></app-delete-modal>
+
   </ng-template>
 </p-menubar>
-
+<app-delete-modal (closeEmitter)="onCloseDelete()" (deleteEmitter)="delete()"
+                  [deleteV]="deleteVisible" [header]="'Delete'"></app-delete-modal>
 <p-table [paginator]="true" [rows]="row" [rowsPerPageOptions]="rows" [value]="mockProductsList"
          [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
          [globalFilterFields]="['name']">

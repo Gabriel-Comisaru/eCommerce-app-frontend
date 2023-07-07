@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
 import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
 import {MockProductsService} from "../../home-page/shared/mock-products.service";
 
@@ -12,6 +12,7 @@ export class DeleteModalComponent {
   @Output() closeEmitter = new EventEmitter();
   @Input() selectedProduct?: MockProductDetailed;
   @Input() header: any;
+  @Input() deleteV:any;
   token = '';
   deleteVisible = false;
 
@@ -21,6 +22,11 @@ export class DeleteModalComponent {
   ngOnInit() {
     this.mockProductsService.getToken('admin', 'admin')
       .subscribe(res => this.token = res.token)
+  }
+
+  ngOnChanges(changes:SimpleChanges){
+    console.log(changes['deleteV'].currentValue)
+    this.deleteVisible=changes['deleteV'].currentValue;
   }
 
   delete(selectedProduct: MockProductDetailed | undefined, event: any) {

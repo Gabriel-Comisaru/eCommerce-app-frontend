@@ -20,7 +20,6 @@ export class UpdateProductComponent implements OnInit {
   @Input() show: any;
   @Input() header: any;
   @Output() closeEmitter = new EventEmitter();
-  @Output() deleteEmitter = new EventEmitter();
   visible = false;
   photos: any = [];
   selectedFile: any = [];
@@ -29,7 +28,6 @@ export class UpdateProductComponent implements OnInit {
   categoriesList: any = [];
   uploadedFiles: any[] = [];
   token=''
-  deleteVisible: any;
 
   constructor(private fb: FormBuilder,
               private mockProduct: MockProductsService,
@@ -65,8 +63,9 @@ export class UpdateProductComponent implements OnInit {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['show'].currentValue != changes['show'].previousValue) {
+    if (changes['show'].currentValue) {
       this.visible = changes['show'].currentValue;
+    }
       if(this.header==='Edit product') {
         this.newProductForm.controls.name.setValue(this.selectedProduct!.name)
         let selectedCategory = this.categoriesList.filter((category: any) => category.id === this.selectedProduct?.categoryId)
@@ -81,8 +80,7 @@ export class UpdateProductComponent implements OnInit {
         this.newProductForm.controls.description.setValue('')
         this.newProductForm.controls.stock.setValue(0)
       }
-      console.log(this.selectedProduct)
-    }
+
   }
 
   onClose(event: any) {
@@ -113,7 +111,7 @@ export class UpdateProductComponent implements OnInit {
           this.visible = false
         });
     } else {
-      this.mockProduct.updateProduct(this.selectedProduct, this.selectedProduct!.id,this.token)
+      this.mockProduct.updateProduct(product, this.selectedProduct!.id,this.token)
         .subscribe(() => this.visible = false);
     }
 
@@ -165,9 +163,8 @@ export class UpdateProductComponent implements OnInit {
 
   delete(selectedProduct: MockProductDetailed | undefined,event:any) {
     event.stopPropagation();
-    this.mockProduct.delete(selectedProduct!.id,this.token);
-    this.deleteEmitter.emit(selectedProduct?.id);
-    this.deleteVisible = false;
+    this.mockProduct.delete(selectedProduct!.id,this.token)
+      .subscribe();
   }
 
   close() {
