@@ -12,26 +12,22 @@ export class DeleteModalComponent {
   @Output() closeEmitter = new EventEmitter();
   @Input() selectedProduct?: MockProductDetailed;
   @Input() header: any;
-  @Input() deleteV:any;
-  token = '';
+  @Input() deleteV: any;
+  @Input() tokenDelete: any;
   deleteVisible = false;
 
   constructor(private mockProductsService: MockProductsService) {
   }
 
-  ngOnInit() {
-    this.mockProductsService.getToken('admin', 'admin')
-      .subscribe(res => this.token = res.token)
-  }
-
-  ngOnChanges(changes:SimpleChanges){
+  ngOnChanges(changes: SimpleChanges) {
     console.log(changes['deleteV'].currentValue)
-    this.deleteVisible=changes['deleteV'].currentValue;
+    this.deleteVisible = changes['deleteV'].currentValue;
   }
 
-  delete(selectedProduct: MockProductDetailed | undefined, event: any) {
-    event.stopPropagation();
-    this.mockProductsService.delete(selectedProduct!.id, this.token);
+  delete(selectedProduct: any) {
+    console.log(this.tokenDelete)
+    this.mockProductsService.delete(selectedProduct!.id, this.tokenDelete)
+      .subscribe();
     this.deleteEmitter.emit(selectedProduct?.id);
   }
 

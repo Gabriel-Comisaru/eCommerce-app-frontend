@@ -15,7 +15,7 @@ export class MockProductsService {
   private urlCategories = 'http://localhost:8080/api/categories'
 
   getProducts(): Observable<any> {
-    return this.httpClient.get<any>(this.urlProducts + '/lazy');
+    return this.httpClient.get<any>(this.urlProducts);
   }
 
   getCategories() {
@@ -47,8 +47,7 @@ export class MockProductsService {
     return this.httpClient.put<any>(url, product,{headers:head_obj});
   }
 
-  delete(id: number, token: any) {
-    console.log(token)
+  delete(id: number, token: any):Observable<any> {
     let head_obj = new HttpHeaders()
       .set('Authorization', `Bearer ${token}`)
       .set('Content-Type', 'application/json')
