@@ -4,6 +4,7 @@ import { Observable, Subject, of, tap } from 'rxjs';
 import { Product } from './product.model';
 import { Category } from './category.model';
 import { OrderItem } from './orderItem.model';
+import { Review } from './review.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -12,6 +13,7 @@ export class ProductsService {
 
   // private productsUrl = 'https://dummyjson.com/products';
   private productsUrl = 'http://localhost:8080/api/products';
+  private reviewsUrl = 'http://localhost:8080/api/reviews';
 
   public shoppingCartObservable = new Subject<Product[]>();
   public favoriteProductsObservable = new Subject<Product[]>();
@@ -104,4 +106,11 @@ export class ProductsService {
     return this.httpClient.post<OrderItem[]>(addProductToOrderUrl, productBody);
   }
   // do model for that id quantity productId orderId
+  saveReview(productId: number, review: Review, header: any) {
+    const url = `${this.reviewsUrl}/save/${productId}`;
+    console.log(url);
+    console.log(header);
+    console.log(review);
+    this.httpClient.post<any>(url, review, header).subscribe();
+  }
 }
