@@ -29,6 +29,7 @@ export class DeleteModalComponent {
     this.mockProductsService.delete(selectedProduct!.id)
       .subscribe();
     this.deleteEmitter.emit(selectedProduct?.id);
+
   }
 
   close() {
