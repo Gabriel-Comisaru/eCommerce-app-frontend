@@ -42,6 +42,7 @@ import { FiltersComponent } from './product-all/filters/filters.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.component';
 import { TableModule } from 'primeng/table';
+import { httpInterceptorProviders } from './helpers/http.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -97,7 +98,7 @@ import { TableModule } from 'primeng/table';
     SliderModule
   ],
 
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

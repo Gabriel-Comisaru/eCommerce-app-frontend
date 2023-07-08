@@ -10,13 +10,17 @@ const AUTH_API = 'http://localhost:8080/auth/';
 })
 
 export class AuthService {
-
+ 
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string): Observable<any> {
-    const post = this.http.post<any>(
-      AUTH_API + 'login' + `?username=${username}&password=${password}`, ''
-    );
+    const post = this.http.post<any>(`${AUTH_API}login?username=${username}&password=${password}`, '');
     return post;
+  }
+
+  setToken() {
+    this.login('laur', 'laur').subscribe(res => { //change username and password as needed
+      localStorage.setItem('authorization', `Bearer ${res.token}`)
+    });
   }
 }

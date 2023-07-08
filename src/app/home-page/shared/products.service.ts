@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, of, tap } from 'rxjs';
 import { Product } from './product.model';
+import { Review } from './review.model';
+import { AuthService } from 'src/app/helpers/auth.service';
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private authService: AuthService) {}
 
   // private productsUrl = 'https://dummyjson.com/products';
   private productsUrl = 'http://localhost:8080/api/products';
+  private reviewsUrl = 'http://localhost:8080/api/reviews';
 
   public shoppingCartObservable = new Subject<Product[]>();
   public favoriteProductsObservable = new Subject<Product[]>();
@@ -74,5 +77,16 @@ export class ProductsService {
   delete(id: number) {
     const url = `${this.productsUrl}/${id}`;
     return this.httpClient.delete(url);
+  }
+
+  saveReview(productId: number, review: Review) {
+    const url = `${this.reviewsUrl}/save/${productId}`;
+    this.httpClient.post<any>(url, review).subscribe();
+  }
+
+  //waiting for the route to be available
+  getProductReviews(productId: Number): Observable<any> {
+    const url = `${this.reviewsUrl}/product/${productId}`;
+    return this.httpClient.get<any>(url);
   }
 }

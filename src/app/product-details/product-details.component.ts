@@ -4,12 +4,11 @@ import { ProductsService } from '../home-page/shared/products.service';
 import { ActivatedRoute } from '@angular/router';
 import { BasketService } from '../shopping-cart/shared/basket.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Review } from '../home-page/shared/review.model';
+import { AuthService } from '../helpers/auth.service';
+import { HttpHeaders } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 
-interface Review {
-  rating: number,
-  title: string,
-  comment: string
-}
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
@@ -19,48 +18,37 @@ export class ProductDetailsComponent implements OnInit {
   product: Product = {} as Product;
   images: { url: string }[] = [];
   position: string = 'bottom';
-  reviewsValue: number = 5;
-  // addReviewValue: number = 0;
+  overallRating: number = 0;
   discountedPrice: number = 0;
   reviews: Review[] = [];
-
   reviewForm = this.fb.group({
     rating: new FormControl(0, {nonNullable: true}),
     title: new FormControl('', {nonNullable: true}),
     comment: new FormControl('', {nonNullable: true})
   })
-
+  
   constructor(private productService: ProductsService,
     private activatedRoute: ActivatedRoute,
     private basketService: BasketService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     const id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
     this.productService.getProduct(id).subscribe((product) => {
-      for(let review of this.reviews) {
-
-      }
-      product.rating = Math.round(product.rating);
+      this.product = product;
       this.discountedPrice = Math.round(
         product.price - product.price * (product.discountPercentage / 100)
       );
-      // this.product = {
-      //   id: product.id,
-      //   name: product.title,
-      //   photos: product.images,
-      //   price: product.price,
-      //   rating: rating,
-      //   reviews: ['No reviews available'],
-      //   discount: discountedPrice,
-      //   category: product.category,
-      //   description: product.description,
-      //   stock: product.stock,
-      // } as Product;
-      this.product = product;
+      product.rating = this.overallRating;
       // this.getImages();
     });
+    this.productService.getProductReviews(id)
+      .subscribe(reviews => {
+        this.reviews = reviews
+        this.calculateRating();
+      });
   }
 
   scrollToSection(id: string) {
@@ -68,12 +56,12 @@ export class ProductDetailsComponent implements OnInit {
     section.scrollIntoView({ behavior: 'smooth' });
   }
 
-  getImages() {
-    for (let photo of this.product.images) {
-      this.images.push({ url: photo });
-    }
-    this.images = [...this.images];
-  }
+  // getImages() {
+  //   for (let photo of this.product.images) {
+  //     this.images.push({ url: photo });
+  //   }
+  //   this.images = [...this.images];
+  // }
 
   // addToBasket(product: Product): void {
   //   this.basketService.addToBasket(product);
@@ -84,10 +72,11 @@ export class ProductDetailsComponent implements OnInit {
     {
       rating: this.reviewForm.controls.rating.value,
       title: this.reviewForm.controls.title.value,
-      comment: this.reviewForm.controls.comment.value,
+      comment: this.reviewForm.controls.comment.value
     }
-    this.reviews.push(review)
-    console.log(this.reviews);
+    
+    this.productService.saveReview(this.product.id, review);
+    this.reviews.push(review);
     this.reviewForm.reset();
   }
 
@@ -108,5 +97,16 @@ export class ProductDetailsComponent implements OnInit {
     );
   }
 
+  calculateRating() {
+    let totalRating = 0;
+    for (let review of this.reviews) {
+      totalRating += review.rating
+    }
+    console.log(totalRating);
+    console.log(this.reviews.length);
+    this.overallRating = Math.round(totalRating / this.reviews.length);
+    console.log(this.overallRating);
+    return this.overallRating;
+  }
   
 }
