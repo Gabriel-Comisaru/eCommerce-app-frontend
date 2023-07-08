@@ -109,7 +109,7 @@ export class UpdateProductComponent implements OnInit {
     console.log(this.newProductForm.value)
     if (this.header === 'Add new product') {
 
-      this.mockProduct.saveProducts(product, product.categoryId,this.token)
+      this.mockProduct.saveProducts(product, product.categoryId)
         .subscribe((item) => {
           {
             this.savedProduct.emit({product:product});

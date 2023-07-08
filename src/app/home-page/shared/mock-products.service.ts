@@ -27,37 +27,19 @@ export class MockProductsService {
     return this.httpClient.get<any>(url);
   }
 
-  saveProducts(product: any, categoryId: any, token: any): Observable<any> {
-    let head_obj = new HttpHeaders()
-      .set('Authorization', `Bearer ${token}`)
-      .set('Content-Type', 'application/json')
-      .set('Accept', '*/*')
+  saveProducts(product: any, categoryId: any): Observable<any> {
     const url = `${this.urlProducts}/category/${categoryId}`
-    return this.httpClient.post<any>(url, product, {headers: head_obj});
+    return this.httpClient.post<any>(url, product);
 
   }
 
   updateProduct(product: any, id: number, token: any): Observable<any> {
-
-    let head_obj = new HttpHeaders()
-      .set('Authorization', `Bearer ${token}`)
-      .set('Content-Type', 'application/json')
-      .set('Accept', '*/*')
     const url = `${this.urlProducts}/${id}`;
-    return this.httpClient.put<any>(url, product,{headers:head_obj});
+    return this.httpClient.put<any>(url, product);
   }
 
-  delete(id: number, token: any):Observable<any> {
-    let head_obj = new HttpHeaders()
-      .set('Authorization', `Bearer ${token}`)
-      .set('Content-Type', 'application/json')
+  delete(id: number):Observable<any> {
     const url = `${this.urlProducts}/${id}`;
-    return this.httpClient.delete(url, {headers: head_obj});
-  }
-
-  getToken(username: string, password: string): Observable<any> {
-    const loginUrl = `http://localhost:8080/auth/login?username=${username}&password=${password}`;
-    console.log(loginUrl)
-    return this.httpClient.post<any>(loginUrl, {responseType: 'text'});
+    return this.httpClient.delete(url);
   }
 }

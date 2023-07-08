@@ -50,8 +50,6 @@ export class AdminPageComponent implements OnInit {
       .subscribe(list => {
       this.mockProductsList = list
     });
-    this.mockProductsService.getToken('admin','admin')
-      .subscribe(res=>this.token=res.token)
   }
 
   // delete() {

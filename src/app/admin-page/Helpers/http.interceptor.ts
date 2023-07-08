@@ -9,7 +9,9 @@ export class HttpRequestInterceptor implements HttpInterceptor {
       setHeaders: {
         'Authorization': localStorage.getItem('authorization') ?? ''
       }
+
     });
+    console.log(req);
 
     return next.handle(req);
   }

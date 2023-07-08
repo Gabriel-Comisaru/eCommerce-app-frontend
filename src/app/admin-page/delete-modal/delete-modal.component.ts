@@ -26,7 +26,7 @@ export class DeleteModalComponent {
 
   delete(selectedProduct: any) {
     console.log(this.tokenDelete)
-    this.mockProductsService.delete(selectedProduct!.id, this.tokenDelete)
+    this.mockProductsService.delete(selectedProduct!.id)
       .subscribe();
     this.deleteEmitter.emit(selectedProduct?.id);
   }
