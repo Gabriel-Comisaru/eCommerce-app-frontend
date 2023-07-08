@@ -2,6 +2,15 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.6.
 
+## Project setup steps for the backend team
+
+1. Make sure you have Node JS and npm installed.
+2. Install the Angular CLI using the following command in the terminal:
+                               npm install -g @angular/cli
+3. Clone the project from GitHub and switch to the develop branch.
+4. Run npm install in the terminal, to get the necessary dependencies.
+5. Run ng serve in the terminal and follow any instructions that might appear, usually referring to port selection
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
