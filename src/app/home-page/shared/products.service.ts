@@ -79,17 +79,14 @@ export class ProductsService {
     return this.httpClient.delete(url);
   }
 
-  saveReview(productId: number, review: Review, header: any) {
+  saveReview(productId: number, review: Review) {
     const url = `${this.reviewsUrl}/save/${productId}`;
-    console.log(url);
-    console.log(header);
-    console.log(review);
-    this.httpClient.post<any>(url, review, header).subscribe();
+    this.httpClient.post<any>(url, review).subscribe();
   }
 
   //waiting for the route to be available
   getProductReviews(productId: Number): Observable<any> {
     const url = `${this.reviewsUrl}/product/${productId}`;
-    return this.httpClient.get<any>(url, this.authService.getHeader());
+    return this.httpClient.get<any>(url);
   }
 }
