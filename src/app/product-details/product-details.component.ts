@@ -43,12 +43,12 @@ export class ProductDetailsComponent implements OnInit {
       );
       product.rating = this.overallRating;
       // this.getImages();
-      // console.log(product);
     });
-    // console.log({ headers: this.authService.getHeader() });
     this.productService.getProductReviews(id)
-      .subscribe(reviews => this.reviews = reviews);
-    this.calculateRating();
+      .subscribe(reviews => {
+        this.reviews = reviews
+        this.calculateRating();
+      });
   }
 
   scrollToSection(id: string) {
@@ -56,12 +56,12 @@ export class ProductDetailsComponent implements OnInit {
     section.scrollIntoView({ behavior: 'smooth' });
   }
 
-  getImages() {
-    for (let photo of this.product.images) {
-      this.images.push({ url: photo });
-    }
-    this.images = [...this.images];
-  }
+  // getImages() {
+  //   for (let photo of this.product.images) {
+  //     this.images.push({ url: photo });
+  //   }
+  //   this.images = [...this.images];
+  // }
 
   // addToBasket(product: Product): void {
   //   this.basketService.addToBasket(product);
@@ -75,7 +75,7 @@ export class ProductDetailsComponent implements OnInit {
       comment: this.reviewForm.controls.comment.value
     }
     
-    this.productService.saveReview(this.product.id, review, this.authService.getHeader());
+    this.productService.saveReview(this.product.id, review);
     this.reviews.push(review);
     this.reviewForm.reset();
   }
@@ -101,9 +101,11 @@ export class ProductDetailsComponent implements OnInit {
     let totalRating = 0;
     for (let review of this.reviews) {
       totalRating += review.rating
-      console.log(this.reviews);
     }
-    this.overallRating = totalRating / this.reviews.length;
+    console.log(totalRating);
+    console.log(this.reviews.length);
+    this.overallRating = Math.round(totalRating / this.reviews.length);
+    console.log(this.overallRating);
     return this.overallRating;
   }
   

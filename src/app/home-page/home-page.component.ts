@@ -20,22 +20,7 @@ export class HomePageComponent {
     this.authService.setToken();
     // getting mock list of products and mapping it according to my interface
     this.productsService.getProducts().subscribe((list) => {
-      // this.ProductsList = list.products.map((product: any) => {
-      //   return {
-      //     id: product.id,
-      //     name: product.title,
-      //     photos: product.images,
-      //     price: product.price,
-      //     rating: Math.floor(product.rating),
-      //     reviews: ['No reviews available'],
-      //     discount: product.discountPercentage,
-      //     category: product.category,
-      //     description: product.description,
-      //     stock: product.stock,
-      //   };
-      // });
       this.productsList = list;
-
       if (this.productsList) {
         this.productsWithDiscountApplied = this.productsList.filter(
           (product) => product.discountPercentage > 0
