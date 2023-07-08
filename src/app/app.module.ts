@@ -44,6 +44,8 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.component';
 import { TableModule } from 'primeng/table';
 import { LoginInterceptor } from './home-page/shared/login.interceptor';
+import { httpInterceptorProviders } from './helpers/http.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -96,6 +98,7 @@ import { LoginInterceptor } from './home-page/shared/login.interceptor';
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoginInterceptor, multi: true },
+    httpInterceptorProviders,
   ],
   bootstrap: [AppComponent],
 })

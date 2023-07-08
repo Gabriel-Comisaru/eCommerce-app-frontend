@@ -10,7 +10,10 @@ import { AuthService } from 'src/app/helpers/auth.service';
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(private httpClient: HttpClient, private authService: AuthService) {}
+  constructor(
+    private httpClient: HttpClient,
+    private authService: AuthService
+  ) {}
 
   // private productsUrl = 'https://dummyjson.com/products';
   private productsUrl = 'http://localhost:8080/api/products';
@@ -90,17 +93,14 @@ export class ProductsService {
     return this.httpClient.post<OrderItem[]>(addProductToOrderUrl, productBody);
   }
   // do model for that id quantity productId orderId
-  saveReview(productId: number, review: Review, header: any) {
+  saveReview(productId: number, review: Review) {
     const url = `${this.reviewsUrl}/save/${productId}`;
-    console.log(url);
-    console.log(header);
-    console.log(review);
-    this.httpClient.post<any>(url, review, header).subscribe();
+    this.httpClient.post<any>(url, review).subscribe();
   }
 
   //waiting for the route to be available
   getProductReviews(productId: Number): Observable<any> {
     const url = `${this.reviewsUrl}/product/${productId}`;
-    return this.httpClient.get<any>(url, this.authService.getHeader());
+    return this.httpClient.get<any>(url);
   }
 }
