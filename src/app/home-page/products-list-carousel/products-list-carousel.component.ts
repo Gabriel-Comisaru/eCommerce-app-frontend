@@ -27,16 +27,15 @@ export class ProductsListCarouselComponent {
     this.dataLoaded = true;
   }
   addToCart(product: Product) {
-    const shoppingCartList: Product[] = JSON.parse(
-      localStorage.getItem('shoppingCart') || '[]'
-    );
-    if (shoppingCartList.some((element) => element.id === product.id)) {
-      //TODO change quantity
-    } else shoppingCartList.push(product);
-
-    localStorage.setItem('shoppingCart', JSON.stringify(shoppingCartList));
-    this.productsService.shoppingCartObservable.next(shoppingCartList);
-
+    //track shopping cart through local storage
+    // const shoppingCartList: Product[] = JSON.parse(
+    //   localStorage.getItem('shoppingCart') || '[]'
+    // );
+    // if (shoppingCartList.some((element) => element.id === product.id)) {
+    //   //TODO change quantity
+    // } else shoppingCartList.push(product);
+    // localStorage.setItem('shoppingCart', JSON.stringify(shoppingCartList));
+    // this.productsService.shoppingCartObservable.next(shoppingCartList);
     // if product already exists don't add it
   }
   addToFavorite(product: Product) {
@@ -70,41 +69,3 @@ export class ProductsListCarouselComponent {
 }
 // <!-- notificare ca am adaugat in cos -->
 // <!-- notificare ca am adaugat la favorite plus update badge-->
-// for login:
-//   login(username: string, password: string) {
-//     return this.http
-//       .post<any>(`${API_URL}/login`, {
-//         username,
-//         password,
-//       })
-//       .subscribe((user) => {
-//         localStorage.setItem('user', JSON.stringify(user));
-//         this.userSubject.next(user);
-//       });
-//   }
-
-//   interceptor:
-// @Injectable()
-// export class JwtInterceptor implements HttpInterceptor {
-//   constructor(private userService: UserService) {}
-
-//   intercept(
-//     request: HttpRequest<any>,
-//     next: HttpHandler
-//   ): Observable<HttpEvent<any>> {
-//     const userData = localStorage.getItem('user');
-//     const isApiUrl = request.url.startsWith(API_URL);
-//     if (userData && isApiUrl) {
-//       const userToken = JSON.parse(userData).token;
-//       request = request.clone({
-//         setHeaders: {
-
-//           Authorization: `Bearer ${userToken}`,
-//         },
-//       });
-//     }
-
-//     return next.handle(request);
-//   }
-// }
-// TODO: make it nicer, no magic strings, use constants or enums

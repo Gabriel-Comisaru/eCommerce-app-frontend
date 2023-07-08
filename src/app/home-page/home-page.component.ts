@@ -14,25 +14,17 @@ export class HomePageComponent {
   public isLoggedIn: boolean = true; //set to default true just for display purposes
   constructor(private productsService: ProductsService) {}
   ngOnInit() {
-    // getting mock list of products and mapping it according to my interface
+    // get token - on home page initialization which you will use by getting it from local storage
+    this.productsService
+      .getToken('test1', 'test1')
+      .subscribe((res) => localStorage.setItem('token', res.token));
+
+    // get a list of products
     this.productsService.getProducts().subscribe((list) => {
-      // this.ProductsList = list.products.map((product: any) => {
-      //   return {
-      //     id: product.id,
-      //     name: product.title,
-      //     photos: product.images,
-      //     price: product.price,
-      //     rating: Math.floor(product.rating),
-      //     reviews: ['No reviews available'],
-      //     discount: product.discountPercentage,
-      //     category: product.category,
-      //     description: product.description,
-      //     stock: product.stock,
-      //   };
-      // });
       this.productsList = list;
       console.log(this.productsList);
 
+      // apply filters for second and third carousel - will be moved in backend
       if (this.productsList) {
         this.productsWithDiscountApplied = this.productsList.filter(
           (product) => product.discountPercentage > 0
@@ -45,9 +37,3 @@ export class HomePageComponent {
     });
   }
 }
-
-// trebuie sa mai fac serviciul de search
-// si atunci cand fac searchul sa mi se modifice ruta
-
-//add to cart service
-//add to favorite service

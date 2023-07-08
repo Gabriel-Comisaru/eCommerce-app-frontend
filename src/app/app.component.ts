@@ -8,9 +8,5 @@ import { ProductsService } from './home-page/shared/products.service';
 export class AppComponent {
   constructor(private productsService: ProductsService) {}
 
-  ngOnInit() {
-    this.productsService
-      .getToken('test1', 'test1')
-      .subscribe((res) => localStorage.setItem('token', res.token));
-  }
+  ngOnInit() {}
 }

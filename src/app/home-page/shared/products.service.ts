@@ -14,7 +14,7 @@ export class ProductsService {
   // private productsUrl = 'https://dummyjson.com/products';
   private productsUrl = 'http://localhost:8080/api/products';
   private reviewsUrl = 'http://localhost:8080/api/reviews';
-
+  categoriesUrl = 'http://localhost:8080/api/categories';
   public shoppingCartObservable = new Subject<Product[]>();
   public favoriteProductsObservable = new Subject<Product[]>();
 
@@ -43,21 +43,7 @@ export class ProductsService {
   }
 
   // i want to add it in cartList or favoriteList
-  addProduct(product: Product, url: string): Observable<Product> {
-    return this.httpClient.post<Product>(url, product);
-  }
 
-  // searchItem(value: string): Observable<Product[]> {
-  //   if (!value.trim()) {
-  //     return of([]);
-  //   }
-  //   return this.httpClient
-  //     .get<Product>(`${this.ProductsUrl}/?search=${value}`)
-  //     .pipe(
-  //       tap(
-  //       )
-  //     );
-  // }
   getProduct(id: number): Observable<any | undefined> {
     const url = `${this.productsUrl}/${id}`;
     return this.httpClient.get(url);
@@ -77,8 +63,6 @@ export class ProductsService {
     return this.httpClient.delete(url);
   }
 
-  categoriesUrl = 'http://localhost:8080/api/categories';
-
   getToken(username: string, password: string): Observable<any> {
     const loginUrl = `http://localhost:8080/auth/login?username=${username}&password=${password}`;
     return this.httpClient.post<any>(loginUrl, '');
@@ -87,12 +71,11 @@ export class ProductsService {
   getCategories(): Observable<Category[]> {
     return this.httpClient.get<Category[]>(this.categoriesUrl);
   }
-  private basketContent: OrderItem[] = [];
+
   orderItemsUrl = 'http://localhost:8080/api/orderItems';
+
   getOrderItems(): Observable<OrderItem[]> {
-    return this.httpClient
-      .get<OrderItem[]>(this.orderItemsUrl)
-      .pipe(tap((orders) => (this.basketContent = [...orders])));
+    return this.httpClient.get<OrderItem[]>(this.orderItemsUrl);
   }
 
   addProductToOrder(
