@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import {CategoriesService} from "../../product-categories/shared/categories.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-filters',
@@ -21,7 +22,9 @@ export class FiltersComponent implements OnInit {
     step: 10
   };
 
-  constructor(private categoryService: CategoriesService) { }
+  constructor(private categoryService: CategoriesService,
+              private route: ActivatedRoute
+              ) { }
 
   ngOnInit(): void {
     this.selectedCategory = '' ;
@@ -36,6 +39,12 @@ export class FiltersComponent implements OnInit {
         };
       })
     })
+    console.log(this.categories)
+  console.log(this.route.snapshot.params['category'])
+    if(this.route.snapshot.params['category'] !== undefined) {
+      this.selectedCategory = this.route.snapshot.params['category'];
+      this.applyFilters()
+    }
   }
 
   applyFilters(): void {
