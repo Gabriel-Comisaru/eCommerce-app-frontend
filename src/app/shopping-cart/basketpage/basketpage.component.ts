@@ -11,6 +11,7 @@ interface Item {
   productId: number;
   orderId: number;
   quantity: number;
+  price: number;
 
 }
 
@@ -27,9 +28,13 @@ export class BasketpageComponent implements OnInit {
   products: Array<Product> = [];
   public productQuantityMap: Map<string, number> = new Map<string, number>();
   public itemNames: Map<number,string> = new Map<number, string>();
+  public itemPrices: Map<number,number> = new Map<number, number>();
   public categoryNames: Map<number,string> = new Map<number, string>();
   public categories: any[] = [];
+  //Placeholder
   public itemNamesAny: any[] = [];
+  //Placeholder
+  public itemPricesAny: any[] = [];
 
   orderItems: Array<Item> = [];
 
@@ -53,6 +58,11 @@ export class BasketpageComponent implements OnInit {
         that.itemNames.set(product.id, product.name);
     });
     });
+    this.productService.getProducts().subscribe((list) => {
+      this.itemPricesAny = list.map((product: any) => {
+        that.itemPrices.set(product.id, product.price);
+      })
+    });
     console.log(this.itemNames);
     setTimeout(() => {
       this.basketService.getOrderItems().subscribe((list: any[]) => {
@@ -63,6 +73,7 @@ export class BasketpageComponent implements OnInit {
             productId: item.productId,
             orderId: item.orderId,
             quantity: item.quantity,
+            price: this.itemPrices.get(item.productId) || 0
           };
         });
         console.log(this.orderItems)
@@ -101,6 +112,24 @@ export class BasketpageComponent implements OnInit {
       }
     });
   }
+  increment(Item: Item) {
+
+    Item.quantity += 1;
+    this.basketService.updateOrderQuantity(Item.id, Item.quantity)
+
+
+  }
+
+
+  decrement(Item: Item) {
+
+    if (Item.quantity > 1) {
+      Item.quantity -= 1;
+    }
+
+    this.basketService.updateOrderQuantity(Item.id, Item.quantity)
+
+  }
 
   getFirstIndex(product: any): number {
     return this.basketItems.findIndex((item) => item.name === product.name);
@@ -120,5 +149,10 @@ export class BasketpageComponent implements OnInit {
       totalPrice += item.price * this.getQuantity(item);
     });
     return totalPrice;
+  }
+
+  updateProductQuantity(Item: any) {
+    this.basketService.updateOrderQuantity(Item.id, Item.quantity)
+
   }
 }

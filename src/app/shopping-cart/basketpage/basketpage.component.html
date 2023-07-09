@@ -1,6 +1,7 @@
+<div class="mainDiv">
 <p-table [paginator]="true" [rows]="row" [rowsPerPageOptions]="rows" [value]="orderItems"
          [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
-         [globalFilterFields]="['name']">
+         [globalFilterFields]="['name']" [style]="{'margin-top': '20px'}">
   <ng-template pTemplate="header">
     <tr>
       <th>Image</th>
@@ -16,10 +17,16 @@
       <td >Not yet</td>
       <td >{{ Item.name }}</td>
       <td >{{ Item.id }}</td>
-      <td >{{ Item.quantity }}</td>
-      <td >$696969</td>
       <td >
-        <p-button icon="pi pi-trash" label="Delete" (click)="deleteProduct(Item, index, $event)"></p-button>
+        <p-button (onClick)="decrement(Item)" icon="pi pi-minus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
+        </p-button>
+        {{ Item.quantity }}
+        <p-button (onClick)="increment(Item)" icon="pi pi-plus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
+        </p-button>
+      </td>
+      <td >{{Item.price}} $</td>
+      <td >
+        <p-button icon="pi pi-trash" (click)="deleteProduct(Item, index, $event)"></p-button>
       </td>
     </tr>
   </ng-template>
@@ -39,3 +46,4 @@
     </tr>
   </ng-template>
 </p-table>
+</div>
