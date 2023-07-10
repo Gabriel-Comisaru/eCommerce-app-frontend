@@ -16,9 +16,9 @@ export class ProductsService {
   ) {}
 
   // private productsUrl = 'https://dummyjson.com/products';
-  private productsUrl = 'http://localhost:8080/api/products';
-  private categoriesUrl = 'http://localhost:8080/api/categories';
-  private reviewsUrl = 'http://localhost:8080/api/reviews';
+  private productsUrl = 'http://localhost:8081/api/products';
+  private categoriesUrl = 'http://localhost:8081/api/categories';
+  private reviewsUrl = 'http://localhost:8081/api/reviews';
 
   public shoppingCartObservable = new Subject<Product[]>();
   public favoriteProductsObservable = new Subject<Product[]>();
