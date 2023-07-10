@@ -5,9 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { BasketService } from '../shopping-cart/shared/basket.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Review } from '../home-page/shared/review.model';
-import { AuthService } from '../helpers/auth.service';
+
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import {AuthService} from "../services/auth.service";
 
 @Component({
   selector: 'app-product-details',
@@ -26,7 +27,7 @@ export class ProductDetailsComponent implements OnInit {
     title: new FormControl('', {nonNullable: true}),
     comment: new FormControl('', {nonNullable: true})
   })
-  
+
   constructor(private productService: ProductsService,
     private activatedRoute: ActivatedRoute,
     private basketService: BasketService,
@@ -68,13 +69,13 @@ export class ProductDetailsComponent implements OnInit {
   // }
 
   onSubmit() {
-    const review: Review = 
+    const review: Review =
     {
       rating: this.reviewForm.controls.rating.value,
       title: this.reviewForm.controls.title.value,
       comment: this.reviewForm.controls.comment.value
     }
-    
+
     this.productService.saveReview(this.product.id, review);
     this.reviews.push(review);
     this.reviewForm.reset();
@@ -105,5 +106,5 @@ export class ProductDetailsComponent implements OnInit {
     this.overallRating = Math.round(totalRating / this.reviews.length);
     return this.overallRating;
   }
-  
+
 }

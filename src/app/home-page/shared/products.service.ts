@@ -5,7 +5,8 @@ import { Product } from './product.model';
 import { Category } from './category.model';
 import { OrderItem } from './orderItem.model';
 import { Review } from './review.model';
-import { AuthService } from 'src/app/helpers/auth.service';
+import {AuthService} from "../../services/auth.service";
+
 @Injectable({
   providedIn: 'root',
 })

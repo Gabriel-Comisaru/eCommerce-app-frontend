@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductsService } from './shared/products.service';
 import { Product } from './shared/product.model';
-import { AuthService } from '../helpers/auth.service';
+import {AuthService} from "../services/auth.service";
 
 @Component({
   selector: 'app-home-page',
@@ -20,7 +20,9 @@ export class HomePageComponent {
   ) {}
 
   ngOnInit() {
-    this.authService.setToken();
+    //todo: commented out. check!!!
+    // this.authService.setToken();
+
     // getting mock list of products and mapping it according to my interface
     this.productsService.getProducts().subscribe((list) => {
       this.productsList = list.map((item: Product) => {

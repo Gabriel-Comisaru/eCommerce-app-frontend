@@ -97,4 +97,8 @@ export class NavBarComponent {
   clearStorage() {
     window.localStorage.clear();
   }
+
+  goToLoginPage() {
+    this.router.navigate(['login']);
+  }
 }
