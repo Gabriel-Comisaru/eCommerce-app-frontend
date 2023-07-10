@@ -1,22 +1,38 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProductDetailsComponent } from './product-details/product-details.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ButtonModule } from 'primeng/button';
+import { GalleriaModule } from 'primeng/galleria';
+import { StyleClassModule } from 'primeng/styleclass';
+import { CardModule } from 'primeng/card';
+import { RatingModule } from 'primeng/rating';
 import { HomePageComponent } from './home-page/home-page.component';
 import { CarouselModule } from 'primeng/carousel';
-
 import { TagModule } from 'primeng/tag';
-import { ButtonModule } from 'primeng/button';
 import { ProductsListCarouselComponent } from './home-page/products-list-carousel/products-list-carousel.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ProductCardComponent } from './home-page/product-card/product-card.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MenubarModule } from 'primeng/menubar';
+import { BadgeModule } from 'primeng/badge';
+
+import { SkeletonModule } from 'primeng/skeleton';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ProductStatusComponent } from './home-page/products-list-carousel/product-status/product-status.component';
+
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { UpdateProductComponent } from './admin-page/update-product/update-product.component';
+import { ProductAllComponent } from './product-all/product-all.component';
+import { SliderModule } from 'primeng/slider';
+import { ProductCategoriesComponent } from './product-categories/product-categories.component';
+import { ProductListComponent } from './product-all/product-list/product-list.component';
+import { FiltersComponent } from './product-all/filters/filters.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.component';
 import {DialogModule} from "primeng/dialog";
 import {FileUploadModule} from "primeng/fileupload";
 import {ToastModule} from "primeng/toast";
@@ -31,13 +47,21 @@ import {httpInterceptorProviders} from "./admin-page/Helpers/http.interceptor";
 @NgModule({
   declarations: [
     AppComponent,
+    ProductDetailsComponent,
     HomePageComponent,
     ProductsListCarouselComponent,
-    ProductCardComponent,
+
     NavBarComponent,
+    ProductStatusComponent,
     AdminPageComponent,
     UpdateProductComponent,
     DeleteModalComponent,
+    ProductAllComponent,
+    ProductListComponent,
+    FiltersComponent,
+    ProductCategoriesComponent,
+    ShoppingCartComponent,
+    BasketpageComponent,
   ],
   imports: [
     HttpClientModule,
@@ -48,11 +72,14 @@ import {httpInterceptorProviders} from "./admin-page/Helpers/http.interceptor";
     ButtonModule,
     TagModule,
     InputSwitchModule,
+    SkeletonModule,
+    RatingModule,
+    OverlayPanelModule,
+    BadgeModule,
+    ReactiveFormsModule,
     FormsModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     DialogModule,
-    ReactiveFormsModule,
     FileUploadModule,
     ToastModule,
     TableModule,
@@ -60,7 +87,17 @@ import {httpInterceptorProviders} from "./admin-page/Helpers/http.interceptor";
     DropdownModule,
     InputTextareaModule,
     InputNumberModule,
-    PaginatorModule
+    PaginatorModule,
+    SliderModule,
+    RatingModule,
+    CardModule,
+    GalleriaModule,
+    StyleClassModule,
+    PaginatorModule,
+    GalleriaModule,
+    RatingModule,
+    CardModule,
+    SliderModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

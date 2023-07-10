@@ -1,0 +1,15 @@
+<div class="product-all">
+  <div class="filters">
+    <app-filters
+      [categories]="categories"
+      (filtersApplied)="applyFilters($event)"
+      (filtersCleared)="clearFilters($event)"
+    ></app-filters>
+  </div>
+  <div class="product-list">
+    <app-product-list
+      [mockProduct]="mockProducts"
+      [lalalala]="lalalala"
+    ></app-product-list>
+  </div>
+</div>

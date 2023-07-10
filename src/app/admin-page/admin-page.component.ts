@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {MockProductsService} from "../home-page/shared/mock-products.service";
-import {MockProductDetailed} from "../home-page/shared/mockProduct.model";
-import {deleteFunction} from "./utilities/utilities";
+import {ProductsService} from "../home-page/shared/products.service";
+import {MockProductModel} from "../product-categories/shared/mock-product.model";
 
 @Component({
   selector: 'app-admin-page',
@@ -13,14 +12,14 @@ export class AdminPageComponent implements OnInit {
   visible = false;
   deleteVisible=false;
   header = '';
-  products: Array<MockProductDetailed> = [];
+  products: Array<MockProductModel> = [];
   mockProductsList:any = [];
   selectedProduct: any = [];
   rows: any = [5, 10, 15];
   row: any = 5;
   token='';
 
-  constructor(private mockProductsService: MockProductsService) {
+  constructor(private productsService: ProductsService) {
   }
 
   showDialogNewProduct() {
@@ -46,8 +45,8 @@ export class AdminPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mockProductsService.getProducts()
-      .subscribe(list => {
+    this.productsService.getProducts()
+      .subscribe((list:any )=> {
       this.mockProductsList = list
     });
   }

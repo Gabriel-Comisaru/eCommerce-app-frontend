@@ -1,0 +1,46 @@
+.categories-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  row-gap: 70px;
+  /*align-items: stretch;*/
+  max-width: 60%;
+  align-content: center;
+  justify-content: center;
+  margin: 0 auto;
+  padding-top: 25px;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+
+  width: 300px;
+  height: 300px;
+  margin-bottom: 20px;
+}
+
+.category-card:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  cursor: pointer;
+}
+.category-image {
+  height: 250px; /* Set a fixed height for the image container */
+  overflow: hidden;
+}
+.category-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.fit-image {
+  /*max-width: 250px;*/
+  /*max-height: 250px;*/
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}

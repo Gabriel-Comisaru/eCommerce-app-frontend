@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-
-import { MockProductsService } from './shared/mock-products.service';
-import { MockProductDetailed } from './shared/mockProduct.model';
+import { ProductsService } from './shared/products.service';
+import { Product } from './shared/product.model';
 import {AuthService} from "../admin-page/Helpers/auth.service";
 @Component({
   selector: 'app-home-page',
@@ -9,16 +8,33 @@ import {AuthService} from "../admin-page/Helpers/auth.service";
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent {
-  public mockProductsList!: MockProductDetailed[];
+  public productsList!: Product[];
+  public productsWithDiscountApplied: Product[] = [];
+  public mostSelledProducts: Product[] = [];
+  public isLoggedIn: boolean = true; //set to default true just for display purposes
 
-  constructor(private mockProductsService: MockProductsService,
-              private auth:AuthService) {}
+  constructor(private productsService: ProductsService, private authService: AuthService) {}
+
   ngOnInit() {
-    this.auth.setToken();
-
+    this.authService.setToken();
     // getting mock list of products and mapping it according to my interface
-    this.mockProductsService.getProducts().subscribe((list) => {
-      this.mockProductsList = list;
+    this.productsService.getProducts().subscribe((list) => {
+      this.productsList = list;
+      if (this.productsList) {
+        this.productsWithDiscountApplied = this.productsList.filter(
+          (product) => product.discountPercentage > 0
+        );
+
+        this.mostSelledProducts = this.productsList.filter(
+          (product) => product.price < 200
+        );
+      }
     });
   }
 }
+
+// trebuie sa mai fac serviciul de search
+// si atunci cand fac searchul sa mi se modifice ruta
+
+//add to cart service
+//add to favorite service

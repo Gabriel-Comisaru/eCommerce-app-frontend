@@ -1,0 +1,90 @@
+<div class="w-6 xl:w-8 lg:w-8 md:w-10 sm:w-full mx-auto">
+    <div class="card">
+        <h1 class="title">{{product.name}}</h1>
+        <p-rating [(ngModel)]="overallRating" [readonly]="true" [cancel]="false" (click)="scrollToSection('reviews')"></p-rating>
+        <!-- <p><em>Category: {{product.category}}</em></p> -->
+    </div>
+    <div class="gallery xl:flex lg:block md:block sm:block lg:justify-content-between md:justify-content-center sm:justify-content-center">
+        <div class="flex justify-content-center">
+            <p-galleria [value]="images" [circular]="true" [showIndicators]="true" [showItemNavigators]="true" [showThumbnails]="false" [containerStyle]="{ 'max-width': '640px' }">
+                <ng-template pTemplate="item" let-image>
+                    <img [src]="image.url" style="width: 100%; max-height: 500px; display: block;" />
+                </ng-template>
+            </p-galleria>
+        </div>
+    
+        <div class="delivery-details card flex justify-content-center">
+            <p-card class="my-auto" header="Delivery details" subheader="Stock: {{product.stock}}" [style]="{ width: '360px' }">
+                <p *ngIf="discountedPrice > 0"><span class="text-red-700 font-bold text-2xl font-italic">$ {{discountedPrice}}    </span><span class="text-base font-bold"><s>$ {{product.price}}</s></span></p>
+                <p><span class="text-red-700 text-2xl font-bold font-italic">$ {{product.price}}</span></p>
+                <p>
+                    Estimated delivery time at <em>*address*</em> is 7 days after completing the order.
+                </p>
+                <ng-template pTemplate="footer">
+                    <div class="justify-content-center">
+                        <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-success" label="Add to cart" icon="pi pi-shopping-cart"></p-button>
+                        <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-danger" label="Add to favorites" icon="pi pi-heart" (onClick)="addToFavorite(product)"></p-button>
+                        <p-button [style]="{ width: '100%', margin: '5px 0' }" (click)="scrollToSection('addReview')" label="Add a review" icon="pi pi-star"></p-button>
+                    </div>
+                </ng-template>
+            </p-card>
+        </div>
+        
+    </div>
+    
+    <div class="description w-full my-5">
+        <p-card header="Description">
+            <p>
+                {{product.description}}
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                quas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                quas!
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                quas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                quas!
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                quas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                quas!
+            </p>
+        </p-card>
+    </div>
+    <div id="reviews" class="reviews w-full my-5">
+        <p-card header="Reviews">
+            <!-- <p *ngIf="reviews.length === 0"><em>The product did not receive any reviews yet. Be the first to share your opinion!</em></p> -->
+            <div class="card" *ngFor="let review of reviews">
+                <p-rating [(ngModel)]="review.rating" [readonly]="true" [cancel]="false"></p-rating>
+                <h3>{{review.title}}</h3>
+                <p>
+                    {{review.comment}}
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                    quas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                    quas!
+                </p>
+                <div *ngIf="reviews.length > 1">
+                    <hr>
+                    <br>
+                </div>
+            </div>
+        </p-card>
+    </div>
+    <div id="addReview" class="add-review w-full my-5">
+        <form [formGroup]="reviewForm">
+            <p-card header="Add a review">
+                <div class="card">
+                    <p-rating [cancel]="false" formControlName="rating"></p-rating>
+                    <span class="p-float-label my-5">
+                        <input pInputText class="w-full max-w-full" id="reviewTitle" formControlName="title" type="text"/>
+                        <label htmlFor="reviewTitle">Title</label>
+                    </span>
+                    <span class="p-float-label my-5">
+                        <textarea class="w-full max-w-full" pInputTextarea id="reviewBody" rows="5" cols="60" formControlName="comment" type="text"></textarea>
+                        <label htmlFor="reviewBody">Enter your review</label>
+                    </span>
+                    <p-button label="Submit review" (click)="onSubmit()"></p-button>
+                </div>
+            </p-card>
+        </form>
+    </div>
+</div>

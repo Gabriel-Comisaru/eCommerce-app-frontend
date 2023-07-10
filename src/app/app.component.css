@@ -1,0 +1,23 @@
+.footer {
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.footerNavbar {
+  margin-top: 0.75rem;
+}
+
+.footerNavbarItem {
+  margin: 0 0.5rem;
+  padding: 0.15rem 0.25rem;
+  cursor: pointer;
+}
+
+.footerNavbarItem:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
