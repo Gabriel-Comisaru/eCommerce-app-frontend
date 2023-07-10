@@ -16,9 +16,9 @@ export class ProductsService {
   ) {}
 
   // private productsUrl = 'https://dummyjson.com/products';
-  private productsUrl = 'http://localhost:8080/api/products';
-  private categoriesUrl = 'http://localhost:8080/api/categories';
-  private reviewsUrl = 'http://localhost:8080/api/reviews';
+  private productsUrl = 'http://localhost:8081/api/products';
+  private categoriesUrl = 'http://localhost:8081/api/categories';
+  private reviewsUrl = 'http://localhost:8081/api/reviews';
 
   public shoppingCartObservable = new Subject<Product[]>();
   public favoriteProductsObservable = new Subject<Product[]>();
@@ -69,7 +69,7 @@ export class ProductsService {
   }
 
   getToken(username: string, password: string): Observable<any> {
-    const loginUrl = `http://localhost:8080/auth/login?username=${username}&password=${password}`;
+    const loginUrl = `http://localhost:8081/auth/login?username=${username}&password=${password}`;
     return this.httpClient.post<any>(loginUrl, '');
   }
 
@@ -77,7 +77,7 @@ export class ProductsService {
     return this.httpClient.get<Category[]>(this.categoriesUrl);
   }
 
-  orderItemsUrl = 'http://localhost:8080/api/orderItems';
+  orderItemsUrl = 'http://localhost:8081/api/orderItems';
 
   getOrderItems(): Observable<OrderItem[]> {
     return this.httpClient.get<OrderItem[]>(this.orderItemsUrl);
@@ -87,7 +87,7 @@ export class ProductsService {
     productId: number,
     quantity: number
   ): Observable<OrderItem[]> {
-    const addProductToOrderUrl = `http://localhost:8080/api/orderItems/${productId}`;
+    const addProductToOrderUrl = `http://localhost:8081/api/orderItems/${productId}`;
     const productBody = {
       quantity,
     };

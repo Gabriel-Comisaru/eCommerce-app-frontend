@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {MockProductModel} from "../../product-all/shared/mock-product.model";
+import { Product } from 'src/app/home-page/shared/product.model';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 
@@ -9,9 +9,9 @@ import {Observable} from "rxjs";
 export class BasketService {
 
   constructor(private httpClient: HttpClient) {}
-  private basketItems: MockProductModel[] = [];
+  private basketItems: Product[] = [];
   orderItems: any   = [];
-  private url = 'http://localhost:8080';
+  private url = 'http://localhost:8081';
 
 
   createOrder(productId: number) {

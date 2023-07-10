@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {MockProductModel} from "../product-all/shared/mock-product.model";
-import {MockProductsService} from "../product-all/shared/mock-products.service";
+import { Product } from '../home-page/shared/product.model';
 import {Router} from "@angular/router";
 import {CategoriesService} from "./shared/categories.service";
+import { ProductsService } from '../home-page/shared/products.service';
 
 @Component({
   selector: 'app-product-categories',
@@ -11,13 +11,13 @@ import {CategoriesService} from "./shared/categories.service";
 })
 export class ProductCategoriesComponent implements OnInit {
 
-  public mockProducts: MockProductModel[] = [];
+  public mockProducts: Product[] = [];
   // public categories: { category: string, image: string }[] = [];
   public categories: { categoryName: string, categoryId: number, productNo: number }[] = [];
 
 // public categories: string[] = [];
 
-  constructor(private productService: MockProductsService,
+  constructor(private productService: ProductsService,
               private router: Router,
               private categoryService: CategoriesService
   ) {

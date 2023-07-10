@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ProductsService } from './shared/products.service';
 import { Product } from './shared/product.model';
-import {AuthService} from "../admin-page/Helpers/auth.service";
+import { AuthService } from '../helpers/auth.service';
+
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',

@@ -43,7 +43,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { PaginatorModule } from 'primeng/paginator';
 import { DeleteModalComponent } from './admin-page/delete-modal/delete-modal.component';
-import { httpInterceptorProviders } from './admin-page/Helpers/http.interceptor';
+import { httpInterceptorProviders } from './helpers/http.interceptor';
 @NgModule({
   declarations: [
     AppComponent,

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MockProductModel } from "../../product-all/shared/mock-product.model";
 import { BasketService } from "../shared/basket.service";
 import { Product } from "../../home-page/shared/product.model";
 import {ProductsService} from "../../home-page/shared/products.service";
-import {MockProductsService} from "../../product-all/shared/mock-products.service";
+
 
 interface Item {
   id: number;
@@ -22,7 +21,7 @@ interface Item {
 })
 export class BasketpageComponent implements OnInit {
 
-  public basketItems: MockProductModel[] = [];
+  public basketItems: Product[] = [];
   visible = false;
   header = '';
   products: Array<Product> = [];
@@ -43,7 +42,7 @@ export class BasketpageComponent implements OnInit {
   row: any = 5;
 
   constructor(private basketService: BasketService,
-              private productService: MockProductsService
+              private productService: ProductsService
   ) { }
 
   ngOnInit(): void {

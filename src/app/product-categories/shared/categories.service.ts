@@ -9,7 +9,7 @@ export class CategoriesService {
   constructor(private httpClient: HttpClient) {}
 
   private mockProductsUrl = 'https://dummyjson.com/products';
-  private url = 'http://localhost:8080/api/categories'
+  private url = 'http://localhost:8081/api/categories'
 
   getMockProducts(): Observable<any> {
     return this.httpClient.get<any>(this.mockProductsUrl);
