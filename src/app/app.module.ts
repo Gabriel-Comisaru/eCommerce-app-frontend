@@ -10,7 +10,6 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { CardModule } from 'primeng/card';
 import { RatingModule } from 'primeng/rating';
 import { HomePageComponent } from './home-page/home-page.component';
-
 import { CarouselModule } from 'primeng/carousel';
 import { TagModule } from 'primeng/tag';
 import { ProductsListCarouselComponent } from './home-page/products-list-carousel/products-list-carousel.component';
@@ -27,25 +26,24 @@ import { ProductStatusComponent } from './home-page/products-list-carousel/produ
 
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { UpdateProductComponent } from './admin-page/update-product/update-product.component';
-import { DialogModule } from 'primeng/dialog';
-import { FileUploadModule } from 'primeng/fileupload';
-import { ToastModule } from 'primeng/toast';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { PaginatorModule } from 'primeng/paginator';
 import { ProductAllComponent } from './product-all/product-all.component';
 import { SliderModule } from 'primeng/slider';
-import { DropdownModule } from 'primeng/dropdown';
 import { ProductCategoriesComponent } from './product-categories/product-categories.component';
 import { ProductListComponent } from './product-all/product-list/product-list.component';
 import { FiltersComponent } from './product-all/filters/filters.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.component';
+import { DialogModule } from 'primeng/dialog';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
-import { LoginInterceptor } from './home-page/shared/login.interceptor';
-import { httpInterceptorProviders } from './helpers/http.interceptor';
-
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { PaginatorModule } from 'primeng/paginator';
+import { DeleteModalComponent } from './admin-page/delete-modal/delete-modal.component';
+import { httpInterceptorProviders } from './admin-page/Helpers/http.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +55,7 @@ import { httpInterceptorProviders } from './helpers/http.interceptor';
     ProductStatusComponent,
     AdminPageComponent,
     UpdateProductComponent,
+    DeleteModalComponent,
     ProductAllComponent,
     ProductListComponent,
     FiltersComponent,
@@ -94,8 +93,12 @@ import { httpInterceptorProviders } from './helpers/http.interceptor';
     CardModule,
     GalleriaModule,
     StyleClassModule,
+    PaginatorModule,
+    GalleriaModule,
+    RatingModule,
+    CardModule,
+    SliderModule,
   ],
-
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
 })

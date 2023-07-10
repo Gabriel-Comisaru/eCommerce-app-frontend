@@ -102,10 +102,7 @@ export class ProductDetailsComponent implements OnInit {
     for (let review of this.reviews) {
       totalRating += review.rating
     }
-    console.log(totalRating);
-    console.log(this.reviews.length);
     this.overallRating = Math.round(totalRating / this.reviews.length);
-    console.log(this.overallRating);
     return this.overallRating;
   }
   

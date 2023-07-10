@@ -17,6 +17,7 @@ export class ProductsService {
 
   // private productsUrl = 'https://dummyjson.com/products';
   private productsUrl = 'http://localhost:8080/api/products';
+  private categoriesUrl = 'http://localhost:8080/api/categories'
   private reviewsUrl = 'http://localhost:8080/api/reviews';
   categoriesUrl = 'http://localhost:8080/api/categories';
   public shoppingCartObservable = new Subject<Product[]>();
@@ -44,6 +45,10 @@ export class ProductsService {
 
   getProducts(): Observable<any> {
     return this.httpClient.get<any>(this.productsUrl);
+  }
+
+  getCategories(): Observable<any> {
+    return this.httpClient.get<any>(this.categoriesUrl);
   }
 
   // i want to add it in cartList or favoriteList

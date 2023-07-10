@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductsService} from "../home-page/shared/products.service";
-import {Product} from "../home-page/shared/product.model";
-import {deleteFunction} from "./utilities/utilities";
+import {MockProductModel} from "../product-categories/shared/mock-product.model";
 
 @Component({
   selector: 'app-admin-page',
@@ -11,12 +10,14 @@ import {deleteFunction} from "./utilities/utilities";
 export class AdminPageComponent implements OnInit {
 
   visible = false;
+  deleteVisible=false;
   header = '';
-  products: Array<Product> = [];
-  productsList = [];
+  products: Array<MockProductModel> = [];
+  mockProductsList:any = [];
   selectedProduct: any = [];
   rows: any = [5, 10, 15];
   row: any = 5;
+  token='';
 
   constructor(private productsService: ProductsService) {
   }
@@ -26,16 +27,16 @@ export class AdminPageComponent implements OnInit {
     this.header = 'Add new product'
   }
 
-  showDialogEditProduct(product: any) {
+  showDialogEditProduct(product: any,event:any) {
     this.visible = true;
     this.header = 'Edit product'
     this.selectedProduct = product;
   }
 
   showDialogDeleteProduct(product: any, event: any) {
-    this.visible = true;
-    event.stopPropagation();
     this.header = 'Delete'
+    this.deleteVisible = true;
+    event.stopPropagation();
     this.selectedProduct = product;
   }
 
@@ -44,32 +45,28 @@ export class AdminPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productsService.getProducts().subscribe((list) => {
-      this.productsList = list.products.map((product: any) => {
-        return {
-          id: product.id,
-          name: product.title,
-          photos: product.images,
-          price: product.price,
-          rating: product.rating,
-          reviews: ['No reviews available'],
-          discount: product.discount,
-          category: product.category,
-          description: product.description,
-          stock: product.stock,
-        };
-      });
+    this.productsService.getProducts()
+      .subscribe((list:any )=> {
+      this.mockProductsList = list
     });
   }
 
-  delete() {
-    deleteFunction(this.productsService, this.selectedProduct.id, this.products)
-      .subscribe((items: Array<any>) => {
-        this.products = items;
-      });
-  }
+  // delete() {
+  //   deleteFunction(this.mockProductsService, this.selectedProduct.id, this.products)
+  //     .subscribe((items: Array<any>) => {
+  //       this.products = items;
+  //     });
+  // }
 
   selectRows(event: any) {
     this.row = +event.value;
+  }
+
+  onCloseDelete() {
+    this.deleteVisible=false;
+  }
+
+  savedProduct($event:any) {
+  this.ngOnInit()
   }
 }
