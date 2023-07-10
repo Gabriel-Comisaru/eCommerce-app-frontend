@@ -1,9 +1,17 @@
-import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
-import {FormBuilder} from "@angular/forms";
-import {ProductsService} from "../../home-page/shared/products.service";
-import {Product} from "../../home-page/shared/product.model";
-import {MessageService} from "primeng/api";
-import {HttpClient} from "@angular/common/http";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
+
+import { Product } from 'src/app/home-page/shared/product.model';
+import { ProductsService } from 'src/app/home-page/shared/products.service';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -14,27 +22,31 @@ interface UploadEvent {
   selector: 'app-update-product',
   templateUrl: './update-product.component.html',
   styleUrls: ['./update-product.component.css'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class UpdateProductComponent implements OnInit {
   @Input() selectedProduct?: Product;
   @Input() show: any;
   @Input() header: any;
+  @Input() token: any;
   @Output() closeEmitter = new EventEmitter();
-  @Output() deleteEmitter = new EventEmitter();
-  categories:any=[];
+  product: any;
+  @Output() savedProduct = new EventEmitter();
+
   visible = false;
   images: any = [];
   selectedFile: any = [];
   message: string = '';
-  productsList:any=[];
+  mockProductsList: any = [];
+  categoriesList: any = [];
   uploadedFiles: any[] = [];
 
-  constructor(private fb: FormBuilder,
-              private product: ProductsService,
-              private messageService: MessageService,
-              private httpClient: HttpClient) {
-  }
+  constructor(
+    private fb: FormBuilder,
+    private productsService: ProductsService,
+    private messageService: MessageService,
+    private router: Router
+  ) {}
 
   newEditForm = this.fb.group({
     name: [''],
@@ -43,62 +55,87 @@ export class UpdateProductComponent implements OnInit {
     category: [''],
     description: [''],
     stock: [0],
-  })
+  });
 
   ngOnInit() {
-    this.product.getProducts().subscribe((list) => {
-      this.productsList = list.products.map((product: any) => {
-        this.categories=[...this.categories,product.category]
-        this.categories = this.categories.filter((el:any, i:any, a:any) => i === a.indexOf(el))
-      });
+    this.productsService.getProducts().subscribe((list: any) => {
+      this.mockProductsList = list;
+      console.log(this.mockProductsList);
+    });
+    this.productsService.getCategories().subscribe((list: any) => {
+      this.categoriesList = list;
+      console.log(this.categoriesList);
     });
   }
-
 
   newProductForm = this.fb.group({
     name: [''],
     images: [''],
     price: [0],
-    category: [''],
+    categoryId: [0],
     description: [''],
     stock: [0],
-  })
-
+  });
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['show'].currentValue != changes['show'].previousValue) {
+    if (changes['show'].currentValue) {
       this.visible = changes['show'].currentValue;
-      this.newEditForm.controls.name.setValue(this.selectedProduct!.name)
-      this.newEditForm.controls.category.setValue(this.selectedProduct!.category)
-      this.newEditForm.controls.price.setValue(this.selectedProduct!.price)
-      this.newEditForm.controls.description.setValue(this.selectedProduct!.description)
-      this.newEditForm.controls.stock.setValue(this.selectedProduct!.stock)
-      this.newEditForm.controls.images.setValue(this.selectedProduct!.images)
+    }
+    if (this.header === 'Edit product') {
+      this.newProductForm.controls.name.setValue(this.selectedProduct!.name);
+      let selectedCategory = this.categoriesList.filter(
+        (category: any) => category.id === this.selectedProduct?.categoryId
+      );
+      this.newProductForm.controls.categoryId.setValue(
+        selectedCategory.length ? selectedCategory[0] : null
+      );
+      this.newProductForm.controls.price.setValue(this.selectedProduct!.price);
+      this.newProductForm.controls.description.setValue(
+        this.selectedProduct!.description
+      );
+      this.newProductForm.controls.stock.setValue(this.selectedProduct!.stock);
+    } else if (this.header === 'Add new product') {
+      this.newProductForm.controls.name.setValue('');
+      this.newProductForm.controls.categoryId.setValue(0);
+      this.newProductForm.controls.price.setValue(0);
+      this.newProductForm.controls.description.setValue('');
+      this.newProductForm.controls.stock.setValue(0);
     }
   }
-  onClose(event: any) {
 
-    this.newProductForm.controls.name.setValue('')
-    this.newProductForm.controls.images.setValue(null)
-    this.newProductForm.controls.price.setValue(0)
-    this.newProductForm.controls.category.setValue('')
-    this.newProductForm.controls.description.setValue('')
-    this.newProductForm.controls.stock.setValue(0)
-    this.visible=false;
-    this.closeEmitter.emit(this.visible)
+  onClose(event: any) {
+    this.newProductForm.controls.name.setValue('');
+    this.newProductForm.controls.images.setValue(null);
+    this.newProductForm.controls.price.setValue(0);
+    this.newProductForm.controls.categoryId.setValue(null);
+    this.newProductForm.controls.description.setValue('');
+    this.newProductForm.controls.stock.setValue(0);
+    this.visible = false;
+    this.closeEmitter.emit(this.visible);
   }
 
   onSubmit() {
     const product: Product = {
       name: this.newProductForm.controls.name.value!,
       price: +this.newProductForm.controls.price.value!,
-      images: this.newProductForm.controls.images.value,
       description: this.newProductForm.controls.description.value!,
-      category: this.newProductForm.controls.category.value!
-    } as unknown as Product
-    this.product.saveProducts(product)
-      .subscribe(()=>this.visible=false);
-
+      categoryId: +this.newProductForm.controls.categoryId.value!,
+    } as unknown as Product;
+    console.log(this.newProductForm.value);
+    if (this.header === 'Add new product') {
+      this.productsService
+        .saveProducts(product, product.categoryId)
+        .subscribe((item: any) => {
+          {
+            this.savedProduct.emit({ product: product });
+            this.visible = false;
+          }
+        });
+    } else {
+      this.productsService
+        .updateProduct(product, this.selectedProduct!.id)
+        .subscribe(() => (this.visible = false));
+    }
   }
 
   onFileChanged(event: any) {
@@ -136,12 +173,16 @@ export class UpdateProductComponent implements OnInit {
   //     );
   // }
 
-  onUpload(event:UploadEvent) {
-    for(let file of event.files) {
+  onUpload(event: UploadEvent) {
+    for (let file of event.files) {
       this.uploadedFiles.push(file);
     }
 
-    this.messageService.add({severity: 'info', summary: 'File Uploaded', detail: ''});
+    this.messageService.add({
+      severity: 'info',
+      summary: 'File Uploaded',
+      detail: '',
+    });
   }
 
   onEditSubmit(id: any) {
@@ -151,19 +192,15 @@ export class UpdateProductComponent implements OnInit {
       stock: this.newEditForm.controls.stock.value,
       description: this.newEditForm.controls.description.value,
       category: this.newEditForm.controls.category.value,
-    } as unknown as Product
-    console.log(this.newEditForm.controls.name.value)
-    this.product.updateProduct(updatedProduct, id)
-      .subscribe(() => this.visible=false)
+    } as unknown as Product;
+    console.log(this.newEditForm.controls.name.value);
+    this.product
+      .updateProduct(updatedProduct, id)
+      .subscribe(() => (this.visible = false));
   }
 
-  delete(selectedProduct: Product | undefined) {
-    this.deleteEmitter.emit(selectedProduct?.id);
-    this.visible=false;
-  }
-
-  close(){
-    this.visible=false;
-    this.closeEmitter.emit(this.visible)
+  close() {
+    this.visible = false;
+    this.closeEmitter.emit(this.visible);
   }
 }

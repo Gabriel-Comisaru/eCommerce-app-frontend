@@ -2,6 +2,7 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { Product } from '../shared/product.model';
 import { ProductsService } from '../shared/products.service';
 import { Router } from '@angular/router';
+import { OrderItem } from '../shared/orderItem.model';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -14,8 +15,9 @@ export class ProductsListCarouselComponent {
     private router: Router
   ) {}
   @Input() productsToDisplay!: Product[];
-  @Input() ProductsList!: Product[];
+
   public dataLoaded: boolean = false;
+  private orderItems: OrderItem[] = [];
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -27,16 +29,23 @@ export class ProductsListCarouselComponent {
     this.dataLoaded = true;
   }
   addToCart(product: Product) {
-    const shoppingCartList: Product[] = JSON.parse(
-      localStorage.getItem('shoppingCart') || '[]'
-    );
-    if (shoppingCartList.some((element) => element.id === product.id)) {
-      //TODO change quantity
-    } else shoppingCartList.push(product);
+    // tb sa verific in lista de orderItems daca exista deja produsul asta
+    // cand adaug in cart am nevoie sa verific daca produsul exista deja, daca exista incrementeaza cantitatea ca cantitatea pe care o transmit, daca nu fa post request si updateaza-mi lista de produse.
+    // ca sa updatez lista de produse cred ca trebuie sa o fac manual, sa updatez eu frontendul????
+    // iar probabil la reload o sa se modifice din be
+    this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
+      console.log(res);
+    });
 
-    localStorage.setItem('shoppingCart', JSON.stringify(shoppingCartList));
-    this.productsService.shoppingCartObservable.next(shoppingCartList);
-
+    //track shopping cart through local storage
+    // const shoppingCartList: Product[] = JSON.parse(
+    //   localStorage.getItem('shoppingCart') || '[]'
+    // );
+    // if (shoppingCartList.some((element) => element.id === product.id)) {
+    //   //TODO change quantity
+    // } else shoppingCartList.push(product);
+    // localStorage.setItem('shoppingCart', JSON.stringify(shoppingCartList));
+    // this.productsService.shoppingCartObservable.next(shoppingCartList);
     // if product already exists don't add it
   }
   addToFavorite(product: Product) {
@@ -51,9 +60,7 @@ export class ProductsListCarouselComponent {
       'favoriteProducts',
       JSON.stringify(favoriteProductsList)
     );
-    this.productsService.favoriteProductsObservable.next(
-      favoriteProductsList
-    );
+    this.productsService.favoriteProductsObservable.next(favoriteProductsList);
   }
   getProductDetails(id: number) {
     this.router.navigate([`product-details/${id}`]);

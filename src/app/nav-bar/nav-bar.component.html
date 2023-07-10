@@ -21,16 +21,21 @@
   </div>
 
   <div class="navControlsContainer accountControls">
-    <p-button label="Clear storage" styleClass="p-button-link" (click)="clearStorage()"></p-button>
+    <p-button
+      label="Clear storage"
+      styleClass="p-button-link"
+      (click)="clearStorage()"
+    ></p-button>
     <a class="navBarItem" (click)="shoppingCart.toggle($event)"
       ><i
         class="pi pi-shopping-cart"
         pBadge
         severity="danger"
-        [value]="cartProductsList.length.toString()"
+        [value]="nbOfBasketProducts.toString()"
       ></i
       ><span>Basket</span></a
     >
+    <!-- [value]="basketContent.length.toString()" old basket badge setting -->
     <a class="navBarItem" (click)="favoriteItems.toggle($event)"
       ><i
         class="pi pi-heart"
@@ -96,7 +101,7 @@
         </tr>
         <tr *ngFor="let product of cartProductsList" class="contentRow">
           <td class="productContainer">
-            <img [src]="product.images[0]" alt="product photo" />
+<!--            <img [src]="product.images[0]" alt="product photo" />-->
             <span class="productName">{{ product.name }}</span>
           </td>
           <td>x{{ product.stock }}</td>
