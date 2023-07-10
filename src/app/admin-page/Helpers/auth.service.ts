@@ -19,7 +19,7 @@ export class AuthService {
   }
 
   setToken() {
-    this.login('admin', 'admin').subscribe(res => { //change username and password as needed
+    this.login('asd', 'asd').subscribe(res => { //change username and password as needed
       localStorage.setItem('authorization', `Bearer ${res.token}`)
       console.log(res.token)
     });
