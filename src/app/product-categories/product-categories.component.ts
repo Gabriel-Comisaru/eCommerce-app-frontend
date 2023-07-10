@@ -18,7 +18,7 @@ export class ProductCategoriesComponent implements OnInit {
               private router: Router) {}
 
   ngOnInit(): void {
-    this.productService.getMockProducts().subscribe((list) => {
+    this.productService.getProducts().subscribe((list:any) => {
       this.mockProducts = list.products.map((product: any) => {
         return {
           id: product.id,
