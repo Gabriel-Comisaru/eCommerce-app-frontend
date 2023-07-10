@@ -1,24 +1,24 @@
-import {Component, OnInit} from '@angular/core';
-import {MockProductModel} from "../product-all/shared/mock-product.model";
-import {MockProductsService} from "../product-all/shared/mock-products.service";
-import {Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ProductsService } from '../home-page/shared/products.service';
+import { Product } from '../home-page/shared/product.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-categories',
   templateUrl: './product-categories.component.html',
-  styleUrls: ['./product-categories.component.css']
+  styleUrls: ['./product-categories.component.css'],
 })
 export class ProductCategoriesComponent implements OnInit {
+  public mockProducts: Product[] = [];
+  public categories: { category: string; image: string }[] = [];
 
-  public mockProducts: MockProductModel[] = [];
-  public categories: { category: string, image: string }[] = [];
-
-
-  constructor(private productService: MockProductsService,
-              private router: Router) {}
+  constructor(
+    private productService: ProductsService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.productService.getMockProducts().subscribe((list) => {
+    this.productService.getProducts().subscribe((list) => {
       this.mockProducts = list.products.map((product: any) => {
         return {
           id: product.id,
@@ -35,21 +35,26 @@ export class ProductCategoriesComponent implements OnInit {
       });
 
       this.generateCategoryImages();
-
     });
   }
   generateCategoryImages(): void {
-    const categories = Array.from(new Set(this.mockProducts.map(product => product.category)));
+    const categories = Array.from(
+      new Set(this.mockProducts.map((product) => product.category))
+    );
 
-    this.categories = categories.map(category => {
-      const productsInCategory = this.mockProducts.filter(product => product.category === category);
-      const randomProduct = productsInCategory[Math.floor(Math.random() * productsInCategory.length)];
+    this.categories = categories.map((category) => {
+      const productsInCategory = this.mockProducts.filter(
+        (product) => product.category === category
+      );
+      const randomProduct =
+        productsInCategory[
+          Math.floor(Math.random() * productsInCategory.length)
+        ];
 
       return {
         category: category,
-        image: randomProduct?.photos[0] || '' // Use the first image of the random product, or an empty string if no product found
+        image: randomProduct?.images[0] || '', // Use the first image of the random product, or an empty string if no product found
       };
     });
   }
-
 }

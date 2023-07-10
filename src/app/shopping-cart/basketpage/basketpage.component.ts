@@ -1,16 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { MockProductModel } from "../../product-all/shared/mock-product.model";
-import { BasketService } from "../shared/basket.service";
-import { Product } from "../../home-page/shared/product.model";
+import { BasketService } from '../shared/basket.service';
+import { Product } from '../../home-page/shared/product.model';
 
 @Component({
   selector: 'app-basketpage',
   templateUrl: './basketpage.component.html',
-  styleUrls: ['./basketpage.component.css']
+  styleUrls: ['./basketpage.component.css'],
 })
 export class BasketpageComponent implements OnInit {
-
-  public basketItems: MockProductModel[] = [];
+  public basketItems: Product[] = [];
   visible = false;
   header = '';
   products: Array<Product> = [];
@@ -20,7 +18,7 @@ export class BasketpageComponent implements OnInit {
   rows: any = [5, 10, 15];
   row: any = 5;
 
-  constructor(private basketService: BasketService) { }
+  constructor(private basketService: BasketService) {}
 
   ngOnInit(): void {
     this.basketItems = this.basketService.getBasketItems();
@@ -52,7 +50,9 @@ export class BasketpageComponent implements OnInit {
     this.basketItems.forEach((item) => {
       const productName = item.name;
       if (!this.productQuantityMap.has(productName)) {
-        const count = this.basketItems.filter((prod) => prod.name === productName).length;
+        const count = this.basketItems.filter(
+          (prod) => prod.name === productName
+        ).length;
         this.productQuantityMap.set(productName, count);
       }
     });
@@ -68,7 +68,9 @@ export class BasketpageComponent implements OnInit {
 
   isProductAvailable(product: any): boolean {
     const firstIndex = this.getFirstIndex(product);
-    return firstIndex !== -1 && firstIndex === this.basketItems.indexOf(product);
+    return (
+      firstIndex !== -1 && firstIndex === this.basketItems.indexOf(product)
+    );
   }
   getTotalPrice(): number {
     let totalPrice = 0;

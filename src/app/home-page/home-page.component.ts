@@ -13,13 +13,19 @@ export class HomePageComponent {
   public mostSelledProducts: Product[] = [];
   public isLoggedIn: boolean = true; //set to default true just for display purposes
 
-  constructor(private productsService: ProductsService, private authService: AuthService) {}
+  constructor(
+    private productsService: ProductsService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.authService.setToken();
     // getting mock list of products and mapping it according to my interface
     this.productsService.getProducts().subscribe((list) => {
-      this.productsList = list;
+      this.productsList = list.map((item: Product) => {
+        return { ...item, rating: this.getAverageRating(item) };
+      });
+      console.log(this.productsList);
       if (this.productsList) {
         this.productsWithDiscountApplied = this.productsList.filter(
           (product) => product.discountPercentage > 0
@@ -31,10 +37,20 @@ export class HomePageComponent {
       }
     });
   }
+
+  getAverageRating(product: Product) {
+    // tb sa fac getproductreviews si de acolo iau fiecare rating
+    // ori am nevoie sa calculeze backendul average rating
+    //
+    //ori sa reviewurile intr un array in product
+    const initialValue = 0;
+    if (product.rating) {
+      const sumOfRatings = product.reviews.reduce(
+        (acc, currVal) => acc + currVal.rating,
+        initialValue
+      );
+      const averageRating = sumOfRatings / product.reviews.length;
+      product.rating = averageRating;
+    }
+  }
 }
-
-// trebuie sa mai fac serviciul de search
-// si atunci cand fac searchul sa mi se modifice ruta
-
-//add to cart service
-//add to favorite service
