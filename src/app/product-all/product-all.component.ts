@@ -1,27 +1,29 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 
-import { MockProductModel} from "./shared/mock-product.model";
-import { MockProductsService} from "./shared/mock-products.service";
-import {ActivatedRoute} from "@angular/router";
+import { Product } from '../home-page/shared/product.model';
+
+import { ActivatedRoute } from '@angular/router';
+import { ProductsService } from '../home-page/shared/products.service';
 
 @Component({
   selector: 'app-product-all',
   templateUrl: './product-all.component.html',
-  styleUrls: ['./product-all.component.css']
+  styleUrls: ['./product-all.component.css'],
 })
 export class ProductAllComponent implements OnInit {
-  @Input () selectedCategory!: string;
-  public mockProducts: MockProductModel[] = [];
+  @Input() selectedCategory!: string;
+  public mockProducts: Product[] = [];
   public categories: any[] = [];
-  public placeholder: MockProductModel[] = [];
+  public placeholder: Product[] = [];
   public lalalala: any[] = [];
 
-
-  constructor(private productService: MockProductsService,
-              private route: ActivatedRoute) {}
+  constructor(
+    private productService: ProductsService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.productService.getMockProducts().subscribe((list) => {
+    this.productService.getProducts().subscribe((list) => {
       this.mockProducts = list.products.map((product: any) => {
         return {
           id: product.id,
@@ -36,31 +38,34 @@ export class ProductAllComponent implements OnInit {
           stock: product.stock,
         };
       });
-      this.categories = Array.from(new Set(this.mockProducts.map(product => product.category)));
-      this.placeholder = this.mockProducts
-      this.route.paramMap.subscribe(params => {
+      this.categories = Array.from(
+        new Set(this.mockProducts.map((product) => product.category))
+      );
+      this.placeholder = this.mockProducts;
+      this.route.paramMap.subscribe((params) => {
         const category = params.get('category');
         if (category) {
           this.selectedCategory = category;
           this.applyFilters(this.selectedCategory);
-        }});
-    });
-    this.productService.randomMethod().subscribe((list) => {
-      this.lalalala = list.map((product: any) => {
-        return {
-          id: product.id,
-          name: product.title,
-          photos: product.images,
-          price: product.price,
-          reviews: ['Nothing yet'],
-          rating: product.rating,
-          discount: product.discount,
-          category: product.category,
-          description: product.description,
-          stock: product.stock,
-        };
+        }
       });
     });
+    // this.productService.randomMethod().subscribe((list:any) => {
+    //   this.lalalala = list.map((product: any) => {
+    //     return {
+    //       id: product.id,
+    //       name: product.title,
+    //       photos: product.images,
+    //       price: product.price,
+    //       reviews: ['Nothing yet'],
+    //       rating: product.rating,
+    //       discount: product.discount,
+    //       category: product.category,
+    //       description: product.description,
+    //       stock: product.stock,
+    //     };
+    //   });
+    // });
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedCategory']) {
@@ -72,13 +77,15 @@ export class ProductAllComponent implements OnInit {
     this.selectedCategory = selectedCategory;
     console.log('Selected Category:', this.selectedCategory);
     if (this.selectedCategory) {
-      this.mockProducts = this.placeholder.filter((product: MockProductModel) => product.category === this.selectedCategory);
+      this.mockProducts = this.placeholder.filter(
+        (product: Product) => product.category === this.selectedCategory
+      );
       console.log(this.mockProducts);
     } else {
       console.log('No selected category');
     }
   }
   clearFilters(selectedCategory: string) {
-    this.mockProducts = this.placeholder
+    this.mockProducts = this.placeholder;
   }
 }

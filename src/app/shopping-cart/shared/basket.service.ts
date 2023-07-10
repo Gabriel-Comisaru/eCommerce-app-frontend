@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { MockProductModel } from '../../product-all/shared/mock-product.model';
+import { Product } from 'src/app/home-page/shared/product.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BasketService {
-  private basketItems: MockProductModel[] = [];
+  private basketItems: Product[] = [];
 
   constructor() {}
 
-  addToBasket(product: MockProductModel): void {
+  addToBasket(product: Product): void {
     this.basketItems.push(product);
   }
 
-  getBasketItems(): MockProductModel[] {
+  getBasketItems(): Product[] {
     return this.basketItems;
   }
 

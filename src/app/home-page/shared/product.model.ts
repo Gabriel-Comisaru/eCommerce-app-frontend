@@ -11,5 +11,6 @@ export interface Product {
   description: string;
   stock: number;
   category: string;
+  categoryId: number;
   isDeleted: boolean;
 }
