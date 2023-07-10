@@ -16,7 +16,6 @@ export class AdminPageComponent implements OnInit {
   selectedProduct: any = [];
   rows: any = [5, 10, 15];
   row: any = 5;
-  token = '';
 
   constructor(private productsService: ProductsService) {}
 

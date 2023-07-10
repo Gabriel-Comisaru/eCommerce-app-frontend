@@ -75,8 +75,6 @@ export class NavBarComponent {
         (acc, currValue) => acc + currValue.quantity,
         0
       );
-
-      console.log(res);
     });
   }
 

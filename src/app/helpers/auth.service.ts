@@ -19,7 +19,7 @@ export class AuthService {
   }
 
   setToken() {
-    this.login('test1', 'test1').subscribe((res) => {
+    this.login('laur', 'laur').subscribe((res) => {
       //change username and password as needed
       localStorage.setItem('authorization', `Bearer ${res.token}`);
     });

@@ -6,8 +6,6 @@ import { BasketService } from '../shopping-cart/shared/basket.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Review } from '../home-page/shared/review.model';
 import { AuthService } from '../helpers/auth.service';
-import { HttpHeaders } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
@@ -63,9 +61,6 @@ export class ProductDetailsComponent implements OnInit {
   //   this.images = [...this.images];
   // }
 
-  // addToBasket(product: Product): void {
-  //   this.basketService.addToBasket(product);
-  // }
 
   onSubmit() {
     const review: Review = 

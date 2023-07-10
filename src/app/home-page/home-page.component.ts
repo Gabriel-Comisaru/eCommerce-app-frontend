@@ -26,7 +26,7 @@ export class HomePageComponent {
       this.productsList = list.map((item: Product) => {
         return { ...item, rating: this.getAverageRating(item) };
       });
-      console.log(this.productsList);
+     
       if (this.productsList) {
         this.productsWithDiscountApplied = this.productsList.filter(
           (product) => product.discountPercentage > 0
