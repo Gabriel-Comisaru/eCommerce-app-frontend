@@ -11,35 +11,33 @@ export class BasketService {
   constructor(private httpClient: HttpClient) {}
   private basketItems: Product[] = [];
   orderItems: any   = [];
-  private url = 'http://localhost:8081';
+  private url = 'http://localhost:8081/api';
 
 
   createOrder(productId: number) {
-    const headers = new HttpHeaders()
-      .set('Authorization', `${localStorage.getItem('authorization')}`)
-    const url = `${this.url}/api/orderItems/${productId}`;
-    this.httpClient.post(url, { "quantity": 1 }, { headers: headers }).subscribe()
-    this.orderItems.push(productId)
-    localStorage.setItem('orderItems', JSON.stringify(this.orderItems))
-    return
+    const url = `${this.url}/orderItems/${productId}`;
+    return this.httpClient.post(url, { "quantity": 1 }).subscribe()
+    // this.orderItems.push(productId)
+    // localStorage.setItem('orderItems', JSON.stringify(this.orderItems))
+
   }
 
   deleteOrderItem(productId: number) {
     // const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2QiLCJpYXQiOjE2ODg2NTc1MzksImV4cCI6MTY4ODY3NTUzOX0.q4tXfuEwGPIn9PsaBQlX_Q_PKI9P3NTsXCLE6O0RXyw';
-    const headers = new HttpHeaders()
-      .set('Authorization', `${localStorage.getItem('authorization')}`)
+    // const headers = new HttpHeaders()
+    //   .set('Authorization', `${localStorage.getItem('authorization')}`)
     console.log(productId)
-    const url = `${this.url}/api/orderItems/${productId}`;
-    console.log('url ', url)
-    console.log('headers ', headers)
-    return this.httpClient.delete(url, { headers: headers })
+    const url = `${this.url}/orderItems/${productId}`;
+    // console.log('url ', url)
+    // console.log('headers ', headers)
+    return this.httpClient.delete(url)
 
   }
 
   getOrderItems(): Observable<any> {
     // const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2QiLCJpYXQiOjE2ODg2NTc1MzksImV4cCI6MTY4ODY3NTUzOX0.q4tXfuEwGPIn9PsaBQlX_Q_PKI9P3NTsXCLE6O0RXyw'
     const headers = new HttpHeaders().set('Authorization', `${localStorage.getItem('authorization')}`);
-    const url = `${this.url}/api/orderItems`;
+    const url = `${this.url}/orderItems`;
     this.orderItems = this.httpClient.get<any>(url, { headers: headers });
     return this.httpClient.get<any>(url, { headers: headers })
   }
@@ -48,8 +46,8 @@ export class BasketService {
   updateOrderQuantity(productId: number, quantity: number) {
     const headers = new HttpHeaders().set('Authorization', `${localStorage.getItem('authorization')}`);
     const url = `${this.url}/api/orderItems/${productId}/quantity?quantity=${quantity}`;
-    console.log(url)
-    return this.httpClient.put(url, {}, { headers: headers }).subscribe();
+    // console.log(url)
+    return this.httpClient.put(url, {}).subscribe();
   }
 
 
