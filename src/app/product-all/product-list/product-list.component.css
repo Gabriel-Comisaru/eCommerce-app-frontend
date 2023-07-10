@@ -5,7 +5,7 @@
   row-gap: 10vh;
   align-items: stretch;
 }
-@media (max-width: 1200px) {
+@media (max-width: 1600px) {
   .product-list {
     grid-template-columns: repeat(3, minmax(0, 1fr)); /* Display 3 columns */
   }
