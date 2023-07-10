@@ -96,10 +96,7 @@ import { httpInterceptorProviders } from './helpers/http.interceptor';
     StyleClassModule,
   ],
 
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: LoginInterceptor, multi: true },
-    httpInterceptorProviders,
-  ],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

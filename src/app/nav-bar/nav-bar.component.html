@@ -31,10 +31,11 @@
         class="pi pi-shopping-cart"
         pBadge
         severity="danger"
-        [value]="basketContent.length.toString()"
+        [value]="nbOfBasketProducts.toString()"
       ></i
       ><span>Basket</span></a
     >
+    <!-- [value]="basketContent.length.toString()" old basket badge setting -->
     <a class="navBarItem" (click)="favoriteItems.toggle($event)"
       ><i
         class="pi pi-heart"

@@ -22,6 +22,7 @@ export class NavBarComponent {
   public productsCategories!: Category[];
   public categoryItems!: MenuItem[];
   public basketContent: OrderItem[] = [];
+  public nbOfBasketProducts: number = 0;
   public detailedBasketContent: detailedOrderItem[] = [];
   constructor(
     private router: Router,
@@ -68,13 +69,15 @@ export class NavBarComponent {
       .subscribe((response) => (this.favoriteProductsList = response));
     this.productsService.setInitialFavoriteProducts();
 
-    this.productsService
-      .getOrderItems()
+    this.productsService.getOrderItems().subscribe((res) => {
+      this.basketContent = [...res];
+      this.nbOfBasketProducts = this.basketContent.reduce(
+        (acc, currValue) => acc + currValue.quantity,
+        0
+      );
 
-      .subscribe((res) => {
-        this.basketContent = [...res];
-        console.log(res);
-      });
+      console.log(res);
+    });
   }
 
   goHome() {
