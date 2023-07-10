@@ -13,10 +13,10 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { CarouselModule } from 'primeng/carousel';
 import { TagModule } from 'primeng/tag';
 import { ProductsListCarouselComponent } from './home-page/products-list-carousel/products-list-carousel.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MenubarModule } from 'primeng/menubar';
 import { BadgeModule } from 'primeng/badge';
 
@@ -33,17 +33,17 @@ import { ProductListComponent } from './product-all/product-list/product-list.co
 import { FiltersComponent } from './product-all/filters/filters.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.component';
-import {DialogModule} from "primeng/dialog";
-import {FileUploadModule} from "primeng/fileupload";
-import {ToastModule} from "primeng/toast";
-import {TableModule} from "primeng/table";
-import {InputTextModule} from "primeng/inputtext";
-import {DropdownModule} from "primeng/dropdown";
-import {InputTextareaModule} from "primeng/inputtextarea";
-import {InputNumberModule} from "primeng/inputnumber";
-import {PaginatorModule} from "primeng/paginator";
+import { DialogModule } from 'primeng/dialog';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ToastModule } from 'primeng/toast';
+import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { PaginatorModule } from 'primeng/paginator';
 import { DeleteModalComponent } from './admin-page/delete-modal/delete-modal.component';
-import {httpInterceptorProviders} from "./admin-page/Helpers/http.interceptor";
+import { httpInterceptorProviders } from './admin-page/Helpers/http.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -97,7 +97,7 @@ import {httpInterceptorProviders} from "./admin-page/Helpers/http.interceptor";
     GalleriaModule,
     RatingModule,
     CardModule,
-    SliderModule
+    SliderModule,
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],
