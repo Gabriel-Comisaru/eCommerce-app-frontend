@@ -35,6 +35,9 @@ const routes: Routes = [
   {
     path: 'product-details/:id',
     component: ProductDetailsComponent
+  },{
+    path: 'testing',
+    component: BasketpageComponent
   }
 ];
 
