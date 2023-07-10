@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
-import {MockProductDetailed} from "../../home-page/shared/mockProduct.model";
-import {MockProductsService} from "../../home-page/shared/mock-products.service";
+import {MockProductModel} from "../../product-categories/shared/mock-product.model";
+import {ProductsService} from "../../home-page/shared/products.service";
+
 
 @Component({
   selector: 'app-delete-modal',
@@ -10,13 +11,13 @@ import {MockProductsService} from "../../home-page/shared/mock-products.service"
 export class DeleteModalComponent {
   @Output() deleteEmitter = new EventEmitter();
   @Output() closeEmitter = new EventEmitter();
-  @Input() selectedProduct?: MockProductDetailed;
+  @Input() selectedProduct?: MockProductModel;
   @Input() header: any;
   @Input() deleteV: any;
   @Input() tokenDelete: any;
   deleteVisible = false;
 
-  constructor(private mockProductsService: MockProductsService) {
+  constructor(private mockProductsService: ProductsService) {
   }
 
   ngOnChanges(changes: SimpleChanges) {
