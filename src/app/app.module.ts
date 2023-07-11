@@ -14,7 +14,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { CarouselModule } from 'primeng/carousel';
 import { TagModule } from 'primeng/tag';
 import { ProductsListCarouselComponent } from './home-page/products-list-carousel/products-list-carousel.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -44,10 +44,12 @@ import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.component';
 import { TableModule } from 'primeng/table';
 // import { httpInterceptorProviders } from './helpers/http.interceptor';
-import {LoginComponent} from "./login/login.component";
-import {AuthInterceptor} from "./services/auth.interceptor";
-import {PanelModule} from "primeng/panel";
-import {DeleteModalComponent} from "./admin-page/delete-modal/delete-modal.component";
+import { LoginComponent } from './login/login.component';
+import { AuthInterceptor } from './services/auth.interceptor';
+import { PanelModule } from 'primeng/panel';
+import { DeleteModalComponent } from './admin-page/delete-modal/delete-modal.component';
+import { RegisterComponent } from './register/register.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,7 +68,8 @@ import {DeleteModalComponent} from "./admin-page/delete-modal/delete-modal.compo
     ShoppingCartComponent,
     BasketpageComponent,
     DeleteModalComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     HttpClientModule,
@@ -104,7 +107,7 @@ import {DeleteModalComponent} from "./admin-page/delete-modal/delete-modal.compo
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    PanelModule,
+
     InputTextModule,
     ButtonModule,
     AppRoutingModule,
@@ -112,7 +115,7 @@ import {DeleteModalComponent} from "./admin-page/delete-modal/delete-modal.compo
   ],
 
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

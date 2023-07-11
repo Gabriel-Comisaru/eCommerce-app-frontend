@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductsService } from './shared/products.service';
 import { Product } from './shared/product.model';
-import {AuthService} from "../services/auth.service";
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home-page',
@@ -28,7 +28,7 @@ export class HomePageComponent {
       this.productsList = list.map((item: Product) => {
         return { ...item, rating: this.getAverageRating(item) };
       });
-     
+
       if (this.productsList) {
         this.productsWithDiscountApplied = this.productsList.filter(
           (product) => product.discountPercentage > 0
@@ -38,6 +38,8 @@ export class HomePageComponent {
           (product) => product.price < 200
         );
       }
+
+      console.log(this.productsList);
     });
   }
 

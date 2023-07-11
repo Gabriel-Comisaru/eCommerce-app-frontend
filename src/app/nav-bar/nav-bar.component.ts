@@ -9,6 +9,8 @@ import {
   detailedOrderItem,
 } from '../home-page/shared/orderItem.model';
 import { concatMap, of, switchMap, map } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -24,11 +26,23 @@ export class NavBarComponent {
   public basketContent: OrderItem[] = [];
   public nbOfBasketProducts: number = 0;
   public detailedBasketContent: detailedOrderItem[] = [];
+  // get logged user details
+  public userLoggedIn: any = JSON.parse(
+    localStorage.getItem('currentUser') || '{}'
+  );
+
   constructor(
     private router: Router,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private authService: AuthService,
+    private userService: UserService
   ) {}
   ngOnInit() {
+    console.log(this.userLoggedIn);
+
+    this.userService
+      .getLoggedUserObservable()
+      .subscribe((res) => (this.userLoggedIn = res));
     this.productsService.getCategories().subscribe((res) => {
       this.categoryItems = res.map((category) => {
         return {
@@ -98,5 +112,14 @@ export class NavBarComponent {
 
   goToLoginPage() {
     this.router.navigate(['login']);
+  }
+  logout() {
+    this.authService.logout();
+  }
+  register() {
+    this.authService.goToRegister();
+  }
+  isAuthenticated() {
+    return this.authService.isAuthenticated();
   }
 }

@@ -1,20 +1,20 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {map, Observable} from "rxjs";
-import {Router} from "@angular/router";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { UserService } from './user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
+  baseUrl = 'http://localhost:8081';
 
-
-  baseUrl='http://localhost:8081'
-
-  constructor(private httpClient: HttpClient,
-              private router: Router) {
-
-  }
+  constructor(
+    private httpClient: HttpClient,
+    private router: Router,
+    private userService: UserService
+  ) {}
 
   isAuthenticated(): boolean {
     return localStorage.getItem('token') !== null;
@@ -26,16 +26,18 @@ export class AuthService {
 
   login(username: string, password: string): Observable<any> {
     const formData: any = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
-    console.log('auth service')
-    return this.httpClient.post<any>(`${this.baseUrl}/auth/login`, formData).pipe(
-      map(data => {
-        localStorage.setItem('token', data.token)
-        this.router.navigate(['/']);
-        return data;
-      })
-    );
+    formData.append('username', username);
+    formData.append('password', password);
+    console.log('auth service');
+    return this.httpClient
+      .post<any>(`${this.baseUrl}/auth/login`, formData)
+      .pipe(
+        map((data) => {
+          localStorage.setItem('token', data.token);
+          this.router.navigate(['/']);
+          return data;
+        })
+      );
   }
 
   getToken(): any {
@@ -45,9 +47,15 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
+    this.userService.loggedUser.next({});
+    this.redirectToLogin();
   }
 
   redirectToLogin(): void {
     this.router.navigate(['login']);
+  }
+
+  goToRegister(): void {
+    this.router.navigate(['register']);
   }
 }

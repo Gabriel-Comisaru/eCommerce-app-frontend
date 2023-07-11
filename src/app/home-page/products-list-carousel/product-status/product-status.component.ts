@@ -9,13 +9,13 @@ export class ProductStatusComponent {
   @Input() product: any;
 
   get stock() {
-    return this.product.stock > 50
+    return this.product.unitsInStock > 50
       ? 'In stock'
-      : this.product.stock <= 50 && this.product.stock > 10
+      : this.product.unitsInStock <= 50 && this.product.unitsInStock > 10
       ? 'Limited stock'
-      : this.product.stock <= 10 && this.product.stock > 1
-      ? 'Last ' + this.product.stock + ' pieces'
-      : this.product.stock === 1
+      : this.product.unitsInStock <= 10 && this.product.unitsInStock > 1
+      ? 'Last ' + this.product.unitsInStock + ' pieces'
+      : this.product.unitsInStock === 1
       ? 'Last piece available'
       : 'Out of stock';
   }
