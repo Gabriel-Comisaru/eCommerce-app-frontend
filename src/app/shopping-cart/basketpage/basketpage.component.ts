@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BasketService } from "../shared/basket.service";
 import { Product } from "../../home-page/shared/product.model";
 import {ProductsService} from "../../home-page/shared/products.service";
+import {CategoriesService} from "../../product-categories/shared/categories.service";
 
 
 interface Item {
@@ -11,6 +12,7 @@ interface Item {
   orderId: number;
   quantity: number;
   price: number;
+  category: string;
 
 }
 
@@ -28,10 +30,12 @@ export class BasketpageComponent implements OnInit {
   public productQuantityMap: Map<string, number> = new Map<string, number>();
   public itemNames: Map<number,string> = new Map<number, string>();
   public itemPrices: Map<number,number> = new Map<number, number>();
-  public categoryNames: Map<number,string> = new Map<number, string>();
+  public itemCategories: Map<number,string> = new Map<number, string>();
   public categories: any[] = [];
   //Placeholder
   public itemNamesAny: any[] = [];
+  //Placeholder
+  public itemCategoriesAny: any[] = [];
   //Placeholder
   public itemPricesAny: any[] = [];
 
@@ -42,7 +46,8 @@ export class BasketpageComponent implements OnInit {
   row: any = 5;
 
   constructor(private basketService: BasketService,
-              private productService: ProductsService
+              private productService: ProductsService,
+              private categoryService: CategoriesService,
   ) { }
 
   ngOnInit(): void {
@@ -62,17 +67,25 @@ export class BasketpageComponent implements OnInit {
         that.itemPrices.set(product.id, product.price);
       })
     });
+    this.categoryService.getCategories().subscribe((list) => {
+      this.itemCategoriesAny = list.map((category: any) => {
+        that.itemCategories.set(category.id, category.name);
+      })
+    });
+
     console.log(this.itemNames);
     setTimeout(() => {
       this.basketService.getOrderItems().subscribe((list: any[]) => {
         this.orderItems = list.map( (item: any) => {
+          console.log(item)
           return {
             id: item.id,
             name: this.itemNames.get(item.productId) || '',
             productId: item.productId,
             orderId: item.orderId,
             quantity: item.quantity,
-            price: this.itemPrices.get(item.productId) || 0
+            price: this.itemPrices.get(item.productId) || 0,
+            category: this.itemCategories.get(item.categoryId) || ''
           };
         });
         console.log(this.orderItems)
@@ -85,7 +98,7 @@ export class BasketpageComponent implements OnInit {
   deleteProduct(product: any, index: number, event: any) {
     console.log(product)
     console.log(index)
-    this.basketService.deleteOrderItem(product.id).subscribe()
+    this.basketService.deleteOrderItem(product.id)
 
     // this.orderItems.splice(index, 1);
   }

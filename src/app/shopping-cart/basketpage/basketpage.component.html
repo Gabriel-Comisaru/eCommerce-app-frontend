@@ -16,7 +16,7 @@
 <!--      <td *ngIf="isProductAvailable(product)"><img alt="image" [src]="product.photos[0]" style="max-width: 100px;max-height: 50px"></td>-->
       <td >Not yet</td>
       <td >{{ Item.name }}</td>
-      <td >{{ Item.id }}</td>
+      <td >{{ Item.category }}</td>
       <td >
         <p-button (onClick)="decrement(Item)" icon="pi pi-minus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
         </p-button>

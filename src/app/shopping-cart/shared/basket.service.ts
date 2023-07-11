@@ -24,27 +24,25 @@ export class BasketService {
 
   deleteOrderItem(productId: number) {
     // const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2QiLCJpYXQiOjE2ODg2NTc1MzksImV4cCI6MTY4ODY3NTUzOX0.q4tXfuEwGPIn9PsaBQlX_Q_PKI9P3NTsXCLE6O0RXyw';
-    // const headers = new HttpHeaders()
-    //   .set('Authorization', `${localStorage.getItem('authorization')}`)
+    const headers = new HttpHeaders()
+      .set('access-control-allow-origin',"http://localhost:4200")
+      .set('access-control-allow-origin',"http://localhost:8081")
     console.log(productId)
     const url = `${this.url}/orderItems/${productId}`;
     // console.log('url ', url)
     // console.log('headers ', headers)
-    return this.httpClient.delete(url)
+    return this.httpClient.delete(url, {headers}).subscribe()
 
   }
 
   getOrderItems(): Observable<any> {
-    // const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2QiLCJpYXQiOjE2ODg2NTc1MzksImV4cCI6MTY4ODY3NTUzOX0.q4tXfuEwGPIn9PsaBQlX_Q_PKI9P3NTsXCLE6O0RXyw'
-    const headers = new HttpHeaders().set('Authorization', `${localStorage.getItem('authorization')}`);
     const url = `${this.url}/orderItems`;
-    this.orderItems = this.httpClient.get<any>(url, { headers: headers });
-    return this.httpClient.get<any>(url, { headers: headers })
+    this.orderItems = this.httpClient.get<any>(url);
+    return this.httpClient.get<any>(url)
   }
 
 
   updateOrderQuantity(productId: number, quantity: number) {
-    const headers = new HttpHeaders().set('Authorization', `${localStorage.getItem('authorization')}`);
     const url = `${this.url}/api/orderItems/${productId}/quantity?quantity=${quantity}`;
     // console.log(url)
     return this.httpClient.put(url, {}).subscribe();
