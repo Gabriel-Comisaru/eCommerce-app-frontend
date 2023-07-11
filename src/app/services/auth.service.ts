@@ -2,14 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {Router} from "@angular/router";
+import {BASE_URL_AUTH} from "../settings";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-
-  baseUrl='http://localhost:8081'
 
   constructor(private httpClient: HttpClient,
               private router: Router) {
@@ -29,7 +28,7 @@ export class AuthService {
     formData.append("username", username);
     formData.append("password", password);
     console.log('auth service')
-    return this.httpClient.post<any>(`${this.baseUrl}/auth/login`, formData).pipe(
+    return this.httpClient.post<any>(`${BASE_URL_AUTH}/login`, formData).pipe(
       map(data => {
         localStorage.setItem('token', data.token)
         this.router.navigate(['/']);
