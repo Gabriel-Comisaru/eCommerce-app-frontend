@@ -1,19 +1,17 @@
 <div class="card flex justify-content-center">
 
-  <p-dialog (onHide)="onClose($event)" header="{{header}}" [(visible)]="visible"
+  <p-dialog (onHide)="onClose()" header="{{header}}" [(visible)]="visible"
             [style]="{width: '50vw'}">
-    <h1 *ngIf="header=='Edit product'">{{selectedProduct?.name}}</h1>
+    <h1 *ngIf="header=='Edit product'">{{selectedProduct.name}}</h1>
     <form [formGroup]="newProductForm" (ngSubmit)="onSubmit()">
 
       <div class="flex flex-column gap-2">
         <label htmlFor="title" class="block font-bold mb-2">Title</label>
         <input pInputText id="title" formControlName="name"/>
         <label class="block font-bold mb-2">Category</label>
-        <p-dropdown formControlName="categoryId" optionValue="id" [options]="categoriesList" optionLabel="name">
-
-        </p-dropdown>
+        <p-dropdown formControlName="categoryId" optionValue="id" [options]="categoriesList" optionLabel="name"></p-dropdown>
         <label htmlFor="price" class="block font-bold mb-2">Price</label>
-        <p-inputNumber style="width: 100%" formControlName="price" inputId="currency-us" mode="currency" currency="USD"
+        <p-inputNumber [style]="{width: '100%'}" formControlName="price" inputId="currency-us" mode="currency" currency="USD"
                        locale="en-US"></p-inputNumber>
         <label htmlFor="stock" class="block font-bold mb-2">Stock</label>
         <input pInputText id="stock" formControlName="stock"/>

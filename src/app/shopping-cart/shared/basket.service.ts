@@ -1,31 +1,57 @@
 import { Injectable } from '@angular/core';
 import { Product } from 'src/app/home-page/shared/product.model';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root',
 })
 export class BasketService {
+
+  constructor(private httpClient: HttpClient) {}
   private basketItems: Product[] = [];
+  orderItems: any   = [];
+  private url = 'http://localhost:8081';
 
-  constructor() {}
 
-  addToBasket(product: Product): void {
-    this.basketItems.push(product);
+  createOrder(productId: number) {
+    const headers = new HttpHeaders()
+      .set('Authorization', `${localStorage.getItem('authorization')}`)
+    const url = `${this.url}/api/orderItems/${productId}`;
+    this.httpClient.post(url, { "quantity": 1 }, { headers: headers }).subscribe()
+    this.orderItems.push(productId)
+    localStorage.setItem('orderItems', JSON.stringify(this.orderItems))
+    return
   }
 
-  getBasketItems(): Product[] {
-    return this.basketItems;
+  deleteOrderItem(productId: number) {
+    // const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2QiLCJpYXQiOjE2ODg2NTc1MzksImV4cCI6MTY4ODY3NTUzOX0.q4tXfuEwGPIn9PsaBQlX_Q_PKI9P3NTsXCLE6O0RXyw';
+    const headers = new HttpHeaders()
+      .set('Authorization', `${localStorage.getItem('authorization')}`)
+    console.log(productId)
+    const url = `${this.url}/api/orderItems/${productId}`;
+    console.log('url ', url)
+    console.log('headers ', headers)
+    return this.httpClient.delete(url, { headers: headers })
+
   }
 
-  getBasketItemCount(): number {
-    return this.basketItems.length;
+  getOrderItems(): Observable<any> {
+    // const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2QiLCJpYXQiOjE2ODg2NTc1MzksImV4cCI6MTY4ODY3NTUzOX0.q4tXfuEwGPIn9PsaBQlX_Q_PKI9P3NTsXCLE6O0RXyw'
+    const headers = new HttpHeaders().set('Authorization', `${localStorage.getItem('authorization')}`);
+    const url = `${this.url}/api/orderItems`;
+    this.orderItems = this.httpClient.get<any>(url, { headers: headers });
+    return this.httpClient.get<any>(url, { headers: headers })
   }
-  log() {
-    console.log(this.basketItems);
+
+
+  updateOrderQuantity(productId: number, quantity: number) {
+    const headers = new HttpHeaders().set('Authorization', `${localStorage.getItem('authorization')}`);
+    const url = `${this.url}/api/orderItems/${productId}/quantity?quantity=${quantity}`;
+    console.log(url)
+    return this.httpClient.put(url, {}, { headers: headers }).subscribe();
   }
-  deleteFromBasket(index: number): void {
-    if (index >= 0 && index < this.basketItems.length) {
-      this.basketItems.splice(index, 1);
-    }
-  }
+
+
+
 }

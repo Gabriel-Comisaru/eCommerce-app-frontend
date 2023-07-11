@@ -25,7 +25,7 @@ interface UploadEvent {
   providers: [MessageService],
 })
 export class UpdateProductComponent implements OnInit {
-  @Input() selectedProduct?: Product;
+  @Input() selectedProduct!: Product;
   @Input() show: any;
   @Input() header: any;
   @Input() token: any;
@@ -37,7 +37,7 @@ export class UpdateProductComponent implements OnInit {
   images: any = [];
   selectedFile: any = [];
   message: string = '';
-  mockProductsList: any = [];
+  productsList: any = [];
   categoriesList: any = [];
   uploadedFiles: any[] = [];
 
@@ -59,12 +59,10 @@ export class UpdateProductComponent implements OnInit {
 
   ngOnInit() {
     this.productsService.getProducts().subscribe((list: any) => {
-      this.mockProductsList = list;
-      console.log(this.mockProductsList);
+      this.productsList = list;
     });
     this.productsService.getCategories().subscribe((list: any) => {
       this.categoriesList = list;
-      console.log(this.categoriesList);
     });
   }
 
@@ -78,32 +76,32 @@ export class UpdateProductComponent implements OnInit {
   });
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['show'].currentValue) {
+    if (changes['show']?.currentValue) {
       this.visible = changes['show'].currentValue;
     }
     if (this.header === 'Edit product') {
-      this.newProductForm.controls.name.setValue(this.selectedProduct!.name);
+      this.newProductForm.controls.name.setValue(this.selectedProduct.name);
       let selectedCategory = this.categoriesList.filter(
         (category: any) => category.id === this.selectedProduct?.categoryId
       );
       this.newProductForm.controls.categoryId.setValue(
         selectedCategory.length ? selectedCategory[0] : null
       );
-      this.newProductForm.controls.price.setValue(this.selectedProduct!.price);
+      this.newProductForm.controls.price.setValue(this.selectedProduct.price);
       this.newProductForm.controls.description.setValue(
-        this.selectedProduct!.description
+        this.selectedProduct.description
       );
-      this.newProductForm.controls.stock.setValue(this.selectedProduct!.stock);
+      this.newProductForm.controls.stock.setValue(this.selectedProduct.stock);
     } else if (this.header === 'Add new product') {
-      this.newProductForm.controls.name.setValue('');
-      this.newProductForm.controls.categoryId.setValue(0);
-      this.newProductForm.controls.price.setValue(0);
-      this.newProductForm.controls.description.setValue('');
-      this.newProductForm.controls.stock.setValue(0);
+      this.newProductForm.controls.name.value;
+      this.newProductForm.controls.categoryId.value;
+      this.newProductForm.controls.price.value;
+      this.newProductForm.controls.description.value;
+      this.newProductForm.controls.stock.value;
     }
   }
 
-  onClose(event: any) {
+  onClose() {
     this.newProductForm.controls.name.setValue('');
     this.newProductForm.controls.images.setValue(null);
     this.newProductForm.controls.price.setValue(0);
@@ -116,12 +114,12 @@ export class UpdateProductComponent implements OnInit {
 
   onSubmit() {
     const product: Product = {
-      name: this.newProductForm.controls.name.value!,
-      price: +this.newProductForm.controls.price.value!,
-      description: this.newProductForm.controls.description.value!,
-      categoryId: +this.newProductForm.controls.categoryId.value!,
-    } as unknown as Product;
-    console.log(this.newProductForm.value);
+      name: this.newProductForm.controls.name.value,
+      price: this.newProductForm.controls.price.value,
+      description: this.newProductForm.controls.description.value,
+      categoryId: this.newProductForm.controls.categoryId.value,
+    } as Product;
+    
     if (this.header === 'Add new product') {
       this.productsService
         .saveProducts(product, product.categoryId)
@@ -133,8 +131,10 @@ export class UpdateProductComponent implements OnInit {
         });
     } else {
       this.productsService
-        .updateProduct(product, this.selectedProduct!.id)
-        .subscribe(() => (this.visible = false));
+        .updateProduct(product, this.selectedProduct.id)
+        .subscribe(() => {
+          this.visible = false
+        });
     }
   }
 
@@ -173,31 +173,17 @@ export class UpdateProductComponent implements OnInit {
   //     );
   // }
 
-  onUpload(event: UploadEvent) {
-    for (let file of event.files) {
-      this.uploadedFiles.push(file);
-    }
+  // onUpload(event: UploadEvent) {
+  //   for (let file of event.files) {
+  //     this.uploadedFiles.push(file);
+  //   }
 
-    this.messageService.add({
-      severity: 'info',
-      summary: 'File Uploaded',
-      detail: '',
-    });
-  }
-
-  onEditSubmit(id: any) {
-    let updatedProduct: Product = {
-      title: this.newEditForm.controls.name.value,
-      price: this.newEditForm.controls.price.value,
-      stock: this.newEditForm.controls.stock.value,
-      description: this.newEditForm.controls.description.value,
-      category: this.newEditForm.controls.category.value,
-    } as unknown as Product;
-    console.log(this.newEditForm.controls.name.value);
-    this.product
-      .updateProduct(updatedProduct, id)
-      .subscribe(() => (this.visible = false));
-  }
+  //   this.messageService.add({
+  //     severity: 'info',
+  //     summary: 'File Uploaded',
+  //     detail: '',
+  //   });
+  // }
 
   close() {
     this.visible = false;

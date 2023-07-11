@@ -23,7 +23,7 @@
                 <ng-template pTemplate="footer">
                     <div class="justify-content-center">
                         <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-success" label="Add to cart" icon="pi pi-shopping-cart"></p-button>
-                        <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-danger" label="Add to favorites" icon="pi pi-heart" (onClick)="addToFavorite(product)"></p-button>
+                        <p-button [style]="{ width: '100%', margin: '5px 0' }" styleClass="p-button-danger" label="Add to favorites" icon="pi pi-heart" (click)="addToFavorite(product)"></p-button>
                         <p-button [style]="{ width: '100%', margin: '5px 0' }" (click)="scrollToSection('addReview')" label="Add a review" icon="pi pi-star"></p-button>
                     </div>
                 </ng-template>

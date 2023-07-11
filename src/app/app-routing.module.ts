@@ -6,12 +6,13 @@ import {ProductCategoriesComponent} from "./product-categories/product-categorie
 import {BasketpageComponent} from "./shopping-cart/basketpage/basketpage.component";
 import {AdminPageComponent} from "./admin-page/admin-page.component";
 import { ProductDetailsComponent } from './product-details/product-details.component';
+import {LoginComponent} from "./login/login.component";
 
 const routes: Routes = [
+
   {
-    path: '',
-    component: HomePageComponent,
-  },
+    path: 'login',
+    component: LoginComponent},
   {
     path: 'admin',
     component: AdminPageComponent,
@@ -35,7 +36,11 @@ const routes: Routes = [
   {
     path: 'product-details/:id',
     component: ProductDetailsComponent
-  }
+  },
+  {
+    path: '',
+    component: HomePageComponent,
+  },
 ];
 
 @NgModule({

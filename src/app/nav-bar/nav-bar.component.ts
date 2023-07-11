@@ -75,8 +75,6 @@ export class NavBarComponent {
         (acc, currValue) => acc + currValue.quantity,
         0
       );
-
-      console.log(res);
     });
   }
 
@@ -96,5 +94,9 @@ export class NavBarComponent {
 
   clearStorage() {
     window.localStorage.clear();
+  }
+
+  goToLoginPage() {
+    this.router.navigate(['login']);
   }
 }
