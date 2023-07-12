@@ -24,14 +24,15 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-product>
-    <tr (click)="showDialogEditProduct(product,$event)" class="item">
+    <tr  class="item">
 <!--      <td><img alt="image" [src]="product.photos[0]" style="max-width: 100px;max-height: 50px"></td>-->
       <td>{{ product.name }}</td>
       <td>{{ product.categoryId }}</td>
       <td>{{ product.stock }}</td>
-      <td>${{ product.price }}</td>
+      <td>{{ product.price }}</td>
       <td>
         <p-button icon="pi pi-trash" label="Delete" (click)="showDialogDeleteProduct(product,$event)"></p-button>
+        <p-button icon="pi pi-trash" class="editButton" label="Edit" (click)="showDialogEditProduct(product,$event)"></p-button>
       </td>
     </tr>
   </ng-template>
