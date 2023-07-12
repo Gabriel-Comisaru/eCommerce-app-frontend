@@ -47,14 +47,15 @@ export class HomePageComponent {
     // tb sa fac getproductreviews si de acolo iau fiecare rating
     // ori am nevoie sa calculeze backendul average rating
     //
-    //ori sa puna reviewurile intr un array in product
+    //ori sa reviewurile intr un array in product
     const initialValue = 0;
-
-    const sumOfRatings = product.reviews.reduce(
-      (acc, currVal) => acc + currVal.rating,
-      initialValue
-    );
-    const averageRating = sumOfRatings / product.reviews.length;
-    product.rating = averageRating;
+    if (product.rating) {
+      const sumOfRatings = product.reviews.reduce(
+        (acc, currVal) => acc + currVal.rating,
+        initialValue
+      );
+      const averageRating = sumOfRatings / product.reviews.length;
+      product.rating = averageRating;
+    }
   }
 }
