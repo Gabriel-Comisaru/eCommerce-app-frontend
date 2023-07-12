@@ -29,7 +29,8 @@ export class DeleteModalComponent {
   }
 
   delete(selectedProduct: any) {
-    this.productsService.delete(selectedProduct.id).subscribe();
+    this.productsService.delete(selectedProduct.id)
+      .subscribe(result => console.log(result));
     this.deleteEmitter.emit(selectedProduct.id);
   }
 

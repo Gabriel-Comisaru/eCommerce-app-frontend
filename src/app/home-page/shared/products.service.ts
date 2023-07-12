@@ -5,6 +5,7 @@ import { Product } from './product.model';
 import { Category } from './category.model';
 import { OrderItem } from './orderItem.model';
 import { Review } from './review.model';
+import {BASE_URL_API} from "../../settings";
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ import { Review } from './review.model';
 export class ProductsService {
   constructor(private httpClient: HttpClient) {}
 
-  private productsUrl = 'http://localhost:8081/api/products';
+  private productsUrl = `${BASE_URL_API}/products`;
   private categoriesUrl = 'http://localhost:8081/api/categories';
   private reviewsUrl = 'http://localhost:8081/api/reviews';
   private productCategoryUrl = 'http://localhost:8081/api/products/category';
@@ -60,12 +61,14 @@ export class ProductsService {
 
   updateProduct(product: any, id: number): Observable<any> {
     const url = `${this.productsUrl}/${id}`;
+    console.log("product-id to update: ",id)
+    console.log("product to update: ",product)
     return this.httpClient.put<any>(url, product);
   }
 
   delete(id: number) {
     const url = `${this.productsUrl}/${id}`;
-    return this.httpClient.delete(url);
+    return this.httpClient.delete<any>(url);
   }
 
   getCategories(): Observable<Category[]> {
@@ -103,7 +106,7 @@ export class ProductsService {
     const url = `http://localhost:8081/api/images/getById?id=${productId}`;
     return this.httpClient.get<any>(url);
   }
-  
+
   sendForm(formData:any, categoryId: number) {
     return this.httpClient.post<any>(`${this.productCategoryUrl}/${categoryId}`, formData).subscribe();
   }
