@@ -103,4 +103,8 @@ export class ProductsService {
     const url = `http://localhost:8081/api/images/getById?id=${productId}`;
     return this.httpClient.get<any>(url);
   }
+  
+  sendForm(formData:any, categoryId: number) {
+    return this.httpClient.post<any>(`${this.productCategoryUrl}/${categoryId}`, formData).subscribe();
+  }
 }

@@ -14,7 +14,7 @@
         </div>
     
         <div class="delivery-details card flex justify-content-center">
-            <p-card class="my-auto" header="Delivery details" subheader="Stock: {{product.stock}}" [style]="{ width: '360px' }">
+            <p-card class="my-auto" header="Delivery details" subheader="Stock: {{product.unitsInStock}}" [style]="{ width: '360px' }">
                 <p *ngIf="discountedPrice > 0"><span class="text-red-700 font-bold text-2xl font-italic">$ {{discountedPrice}}    </span><span class="text-base font-bold"><s>$ {{product.price}}</s></span></p>
                 <p><span *ngIf="discountedPrice === 0" class="text-red-700 text-2xl font-bold font-italic">$ {{product.price}}</span></p>
                 <p>

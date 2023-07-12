@@ -14,9 +14,12 @@
         <p-inputNumber [style]="{width: '100%'}" formControlName="price" inputId="currency-us" mode="currency" currency="USD"
                        locale="en-US"></p-inputNumber>
         <label htmlFor="stock" class="block font-bold mb-2">Stock</label>
-        <input pInputText id="stock" formControlName="stock"/>
+        <p-inputNumber [style]="{width: '100%'}" id="stock" formControlName="stock"/>
+        <label htmlFor="discount" class="block font-bold mb-2">Discount percentage</label>
+        <p-inputNumber [style]="{width: '100%'}" id="discount" [min]="0" [max]="100" formControlName="discount"/>
         <label htmlFor="description" class="block font-bold mb-2">Description</label>
         <input pInputText id="description" formControlName="description"/>
+        <p-fileUpload *ngIf="header=='Add new product'" mode="basic" chooseLabel="Choose" name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" accept="image/*" [maxFileSize]="1000000" (onUpload)="onUpload($event)"></p-fileUpload>
       </div>
       <p-button *ngIf="header=='Edit product'" type="submit" icon="pi pi-check" label="Update" styleClass="p-button-text"></p-button>
       <p-button *ngIf="header=='Add new product'" type="submit" icon="pi pi-check" label="Add" styleClass="p-button-text"></p-button>
