@@ -10,9 +10,7 @@ import { Review } from './review.model';
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(
-    private httpClient: HttpClient
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
   private productsUrl = 'http://localhost:8081/api/products';
   private categoriesUrl = 'http://localhost:8081/api/categories';
@@ -54,7 +52,10 @@ export class ProductsService {
   }
 
   saveProducts(product: any, categoryId: number): Observable<any> {
-    return this.httpClient.post<any>(`${this.productCategoryUrl}/${categoryId}`, product);
+    return this.httpClient.post<any>(
+      `${this.productCategoryUrl}/${categoryId}`,
+      product
+    );
   }
 
   updateProduct(product: any, id: number): Observable<any> {
@@ -95,6 +96,11 @@ export class ProductsService {
 
   getProductReviews(productId: Number): Observable<any> {
     const url = `${this.reviewsUrl}/product/${productId}`;
+    return this.httpClient.get<any>(url);
+  }
+
+  getProductImage(productId: Number): Observable<any> {
+    const url = `http://localhost:8081/api/images/getById?id=${productId}`;
     return this.httpClient.get<any>(url);
   }
 }

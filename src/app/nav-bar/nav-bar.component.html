@@ -88,6 +88,11 @@
   <ng-template pTemplate="content">
     <div class="overlay">
       <p-button
+        (click)="goToAccountDetailsPage()"
+        label="Account Details"
+        styleClass="p-button-text"
+      ></p-button>
+      <p-button
         (click)="logout()"
         label="Logout"
         styleClass="p-button-secondary p-button-text"

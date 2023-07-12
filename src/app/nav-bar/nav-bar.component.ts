@@ -122,4 +122,8 @@ export class NavBarComponent {
   isAuthenticated() {
     return this.authService.isAuthenticated();
   }
+
+  goToAccountDetailsPage() {
+    return this.router.navigate(['user-details']);
+  }
 }

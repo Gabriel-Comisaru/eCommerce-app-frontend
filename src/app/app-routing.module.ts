@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './services/auth.guard';
 import { AlreadyLoggedGuard } from './services/already-logged.guard';
+import { AccountDetailsComponent } from './account-details/account-details.component';
 
 const routes: Routes = [
   {
@@ -50,6 +51,11 @@ const routes: Routes = [
   {
     path: '',
     component: HomePageComponent,
+  },
+  {
+    path: 'user-details',
+    component: AccountDetailsComponent,
+    canActivate: [AuthGuard],
   },
 ];
 
