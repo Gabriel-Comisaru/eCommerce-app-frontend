@@ -6,8 +6,10 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
+
 import { catchError, Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
+import { BASE_URL_API } from '../settings';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     console.log('intercepted');
     const token = localStorage.getItem('token');
-    const isApiRequest = request.url.startsWith(this.apiBaseUrl);
+    const isApiRequest = request.url.startsWith(BASE_URL_API);
     if (token && isApiRequest) {
       request = request.clone({
         setHeaders: {
