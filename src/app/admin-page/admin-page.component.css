@@ -2,3 +2,7 @@
   background-color: coral;
   cursor:pointer;
 }
+
+.editButton{
+  margin-left: 10px;
+}

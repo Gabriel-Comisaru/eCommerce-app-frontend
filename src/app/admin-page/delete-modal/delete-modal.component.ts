@@ -16,7 +16,7 @@ import { ProductsService } from 'src/app/home-page/shared/products.service';
 export class DeleteModalComponent {
   @Output() deleteEmitter = new EventEmitter();
   @Output() closeEmitter = new EventEmitter();
-  @Input() selectedProduct!: Product;
+  @Input() selectedProduct?: Product;
   @Input() header: any;
   @Input() deleteV: any;
   @Input() tokenDelete: any;
