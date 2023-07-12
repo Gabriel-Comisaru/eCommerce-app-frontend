@@ -62,15 +62,23 @@
       <i class="pi pi-user"></i
       ><span style="white-space: nowrap">{{ userLoggedIn.username }}</span></a
     >
-
-    <div class="flex navBarItem">
-      <p-inputSwitch
-        [(ngModel)]="isAdmin"
-        id="adminMode"
-        class="flex"
-        (click)="goToAdminPage()"
-      ></p-inputSwitch>
-      <label for="adminMode" class="mx-2">Admin</label>
+    
+    <div class="flex navBarItem" *ngIf="isAuthenticated()">
+      <div *ngIf="isAdmin === false">
+        <p-button
+          [(ngModel)]="isAdmin"
+          id="adminMode"
+          (click)="goToAdminPage()"
+          styleClass="p-button-outlined"
+        >Admin mode off</p-button>
+      </div>
+      <div *ngIf="isAdmin === true">
+        <p-button
+          [(ngModel)]="isAdmin"
+          id="adminMode"
+          (click)="goToAdminPage()"
+        >Admin mode on</p-button>
+      </div>
     </div>
   </div>
 </nav>

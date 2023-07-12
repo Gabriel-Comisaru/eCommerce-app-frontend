@@ -38,8 +38,6 @@ export class HomePageComponent {
           (product) => product.price < 200
         );
       }
-
-      console.log(this.productsList);
     });
   }
 

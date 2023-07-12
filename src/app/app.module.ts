@@ -49,6 +49,7 @@ import { PanelModule } from 'primeng/panel';
 import { DeleteModalComponent } from './admin-page/delete-modal/delete-modal.component';
 import { RegisterComponent } from './register/register.component';
 import { AccountDetailsComponent } from './account-details/account-details.component';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @NgModule({
   declarations: [
@@ -103,6 +104,7 @@ import { AccountDetailsComponent } from './account-details/account-details.compo
     GalleriaModule,
     StyleClassModule,
     PanelModule,
+    ToggleButtonModule,
 
     BrowserModule,
     BrowserAnimationsModule,

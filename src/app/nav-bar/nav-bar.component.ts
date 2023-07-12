@@ -69,8 +69,6 @@ export class NavBarComponent {
       ];
     });
     this.isAdmin = false;
-    this.goToAdminPage();
-
     //subscribes to get nb of cart/favorite items
 
     // this.productsService
@@ -82,7 +80,7 @@ export class NavBarComponent {
       .getfavoriteProductsObservable()
       .subscribe((response) => (this.favoriteProductsList = response));
     this.productsService.setInitialFavoriteProducts();
-
+    
     this.productsService.getOrderItems().subscribe((res) => {
       this.basketContent = [...res];
       this.nbOfBasketProducts = this.basketContent.reduce(
@@ -98,10 +96,13 @@ export class NavBarComponent {
   goToBasketPage() {
     this.router.navigate(['basket']);
   }
+
   goToAdminPage() {
-    if (this.isAdmin) {
+    this.isAdmin = !this.isAdmin;
+    
+    if (this.isAdmin == true) {
       this.router.navigate(['admin']);
-    } else if (!this.isAdmin) {
+    } else {
       this.router.navigate(['']);
     }
   }
