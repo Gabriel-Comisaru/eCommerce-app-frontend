@@ -30,17 +30,6 @@ export class ProductAllComponent implements OnInit {
       that.productService.getProducts().subscribe((list) => {
         that.lalalala = list.map( (product: any) => {
           let placeholder = ''
-          that.categoryService.getCategoryById(product.categoryId).subscribe((category) => {
-            // debugger
-            // setTimeout(function() {}, 1000);
-            placeholder = category.name;
-            // console.log(placeholder, 'placeholder...')
-            // console.log(category.name, 'cat....name')
-            return category.name;
-          });
-
-          // debugger
-
           return {
             id: product.id,
             name: product.name,
@@ -68,16 +57,7 @@ export class ProductAllComponent implements OnInit {
         }
 
       });
-      if (that.route.snapshot.params['category']) {
-        // this.applyFilters(this.route.snapshot.params['category']);
-        // this.lalalala = this.placeholder.filter((product: Product) => product.categoryId === this.route.snapshot.params['category']);
-        // that.applyFilters2(that.route.snapshot.params['category']);
-      }
-    // if(this.route.snapshot.params) {
-    //   this.selectedCategory = this.route.snapshot.params['category'];
-    //   console.log(this.route.snapshot.params['category'])
-    //   this.applyFilters(this.route.snapshot.params['category'])
-    // }
+
     console.log(this.route.snapshot.params)
     console.log(this.route.snapshot.params['category'])
 

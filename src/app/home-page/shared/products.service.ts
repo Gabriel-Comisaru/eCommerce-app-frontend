@@ -47,7 +47,10 @@ export class ProductsService {
   getProducts(): Observable<any> {
     return this.httpClient.get<any>(this.productsUrl);
   }
-
+  getProductsByCat(categoryId: number) {
+    let url = `${this.productsUrl}/category/${categoryId}`;
+    return this.httpClient.get<any>(url);
+  }
   // i want to add it in cartList or favoriteList
 
   getProduct(id: number): Observable<any | undefined> {
