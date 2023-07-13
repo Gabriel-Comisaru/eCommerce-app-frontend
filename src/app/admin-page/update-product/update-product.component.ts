@@ -79,12 +79,12 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.controls.stock.setValue(this.selectedProduct.unitsInStock);
       this.productForm.controls.discount.setValue(this.selectedProduct.discountPercentage);
     } else if (this.header === 'Add new product') {
-      this.productForm.controls.name.value;
-      this.productForm.controls.categoryId.value;
-      this.productForm.controls.price.value;
-      this.productForm.controls.description.value;
-      this.productForm.controls.stock.value;
-      this.productForm.controls.discount.value;
+      this.productForm.controls.name.setValue('');
+      this.productForm.controls.categoryId.setValue(0);
+      this.productForm.controls.price.setValue(0);
+      this.productForm.controls.description.setValue('');
+      this.productForm.controls.stock.setValue(0);
+      this.productForm.controls.discount.setValue(0);
     }
   }
 
@@ -107,8 +107,8 @@ export class UpdateProductComponent implements OnInit {
       categoryId: this.productForm.controls.categoryId.value,
       unitsInStock: this.productForm.controls.stock.value,
       discountPercentage: this.productForm.controls.discount.value
-    } as unknown as Product;
-    
+    } as Product;
+
     if (this.header === 'Add new product') {
       const formData = new FormData();
       formData.append('name', String(this.productForm.controls.name.value));

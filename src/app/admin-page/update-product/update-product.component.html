@@ -4,7 +4,7 @@
             [style]="{width: '50vw'}">
     <h1 *ngIf="header=='Edit product'">{{selectedProduct.name}}</h1>
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-
+<!--@ToDO form validations-->
       <div class="flex flex-column gap-2">
         <label htmlFor="title" class="block font-bold mb-2">Title</label>
         <input pInputText id="title" formControlName="name"/>
