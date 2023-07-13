@@ -26,7 +26,7 @@
       styleClass="p-button-link"
       (click)="clearStorage()"
     ></p-button>
-    <a class="navBarItem" (click)="shoppingCart.toggle($event)"
+    <a class="navBarItem" (click)="shoppingCart.toggle($event);"
       ><i
         class="pi pi-shopping-cart"
         pBadge
@@ -62,7 +62,7 @@
       <i class="pi pi-user"></i
       ><span style="white-space: nowrap">{{ userLoggedIn.username }}</span></a
     >
-    
+
     <div class="flex navBarItem" *ngIf="isAuthenticated()">
       <div *ngIf="isAdmin === false">
         <p-button
@@ -137,13 +137,15 @@
           <th>Qty</th>
           <th>Price</th>
         </tr>
-        <tr *ngFor="let product of cartProductsList" class="contentRow">
+
+        <tr *ngFor="let product of orderItems | async" class="contentRow">
           <td class="productContainer">
             <!--            <img [src]="product.images[0]" alt="product photo" />-->
             <span class="productName">{{ product.name }}</span>
           </td>
-          <td>x{{ product.unitsInStock }}</td>
-          <td>${{ product.price }}</td>
+
+          <td>x{{ product.quantity }}</td>
+          <td>${{ getItemPrice(product) }}</td>
         </tr>
       </table>
       <p-button
