@@ -46,22 +46,15 @@ export class AdminPageComponent implements OnInit {
     });
   }
 
-  // delete() {
-  //   deleteFunction(this.mockProductsService, this.selectedProduct.id, this.products)
-  //     .subscribe((items: Array<any>) => {
-  //       this.products = items;
-  //     });
-  // }
-
-  selectRows(event: any) {
-    this.row = +event.value;
-  }
-
   onCloseDelete() {
     this.deleteVisible = false;
   }
 
   savedProduct($event: any) {
+    this.ngOnInit();
+  }
+
+  deletedProduct(event: Event) {
     this.ngOnInit();
   }
 }

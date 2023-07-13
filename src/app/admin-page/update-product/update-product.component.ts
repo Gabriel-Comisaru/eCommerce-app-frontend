@@ -119,11 +119,13 @@ export class UpdateProductComponent implements OnInit {
       formData.append('discountPercentage', String(this.productForm.controls.discount.value));
       this.productsService.sendForm(formData, this.productForm.controls.categoryId.value);
       this.visible = false;
+      this.savedProduct.emit();
     } else {
       this.productsService
         .updateProduct(product, this.selectedProduct.id)
         .subscribe(() => {
           this.visible = false;
+          this.savedProduct.emit();
         });
     }
   }

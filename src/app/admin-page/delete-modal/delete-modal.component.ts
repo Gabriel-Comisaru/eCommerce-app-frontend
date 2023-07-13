@@ -31,7 +31,7 @@ export class DeleteModalComponent {
   delete(selectedProduct: any) {
     this.productsService.delete(selectedProduct.id);
     this.deleteVisible = false;
-    this.deleteEmitter.emit(selectedProduct.id);    
+    this.deleteEmitter.emit();    
   }
 
   close() {
