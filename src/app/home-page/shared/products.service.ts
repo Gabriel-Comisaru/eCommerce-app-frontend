@@ -71,7 +71,7 @@ export class ProductsService {
 
   delete(id: number) {
     const url = `${this.productsUrl}/${id}`;
-    return this.httpClient.delete<any>(url);
+    return this.httpClient.delete(url, {responseType: 'text'}).subscribe();
   }
 
   getCategories(): Observable<Category[]> {

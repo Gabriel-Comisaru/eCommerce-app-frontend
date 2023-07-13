@@ -16,7 +16,7 @@ import { ProductsService } from 'src/app/home-page/shared/products.service';
 export class DeleteModalComponent {
   @Output() deleteEmitter = new EventEmitter();
   @Output() closeEmitter = new EventEmitter();
-  @Input() selectedProduct?: Product;
+  @Input() selectedProduct ?: Product;
   @Input() header: any;
   @Input() deleteV: any;
   @Input() tokenDelete: any;
@@ -29,9 +29,9 @@ export class DeleteModalComponent {
   }
 
   delete(selectedProduct: any) {
-    this.productsService.delete(selectedProduct.id)
-      .subscribe(result => console.log(result));
-    this.deleteEmitter.emit(selectedProduct.id);
+    this.productsService.delete(selectedProduct.id);
+    this.deleteVisible = false;
+    this.deleteEmitter.emit(selectedProduct.id);    
   }
 
   close() {
