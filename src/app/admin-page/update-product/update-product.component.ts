@@ -6,12 +6,12 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
+import {FormBuilder} from '@angular/forms';
+import {MessageService} from 'primeng/api';
+import {Router} from '@angular/router';
 
-import { Product } from 'src/app/home-page/shared/product.model';
-import { ProductsService } from 'src/app/home-page/shared/products.service';
+import {Product} from 'src/app/home-page/shared/product.model';
+import {ProductsService} from 'src/app/home-page/shared/products.service';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -46,7 +46,8 @@ export class UpdateProductComponent implements OnInit {
     private productsService: ProductsService,
     private messageService: MessageService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.productsService.getProducts().subscribe((list: any) => {
@@ -117,9 +118,9 @@ export class UpdateProductComponent implements OnInit {
       formData.append('categoryId', String(this.productForm.controls.categoryId.value));
       formData.append('unitsInStock', String(this.productForm.controls.stock.value));
       formData.append('discountPercentage', String(this.productForm.controls.discount.value));
-      this.productsService.sendForm(formData, this.productForm.controls.categoryId.value);
+      this.productsService.sendForm(formData, this.productForm.controls.categoryId.value)
+        .subscribe((res) => this.savedProduct.emit(res));
       this.visible = false;
-      this.savedProduct.emit();
     } else {
       this.productsService
         .updateProduct(product, this.selectedProduct.id)

@@ -111,6 +111,6 @@ export class ProductsService {
   }
 
   sendForm(formData:any, categoryId: number) {
-    return this.httpClient.post<any>(`${this.productCategoryUrl}/${categoryId}`, formData).subscribe();
+    return this.httpClient.post<any>(`${this.productCategoryUrl}/${categoryId}`, formData);
   }
 }

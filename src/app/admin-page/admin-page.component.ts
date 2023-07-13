@@ -50,9 +50,10 @@ export class AdminPageComponent implements OnInit {
     this.deleteVisible = false;
   }
 
-  savedProduct($event: any) {
-    this.ngOnInit();
+  savedProduct(event: any) {
+    this.productsList=[...this.productsList,event]
   }
+
 
   deletedProduct(event: Event) {
     this.ngOnInit();
