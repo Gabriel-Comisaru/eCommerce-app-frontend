@@ -92,6 +92,9 @@ export class BasketpageComponent implements OnInit {
       });
 
     }, 500)
+    this.orderItems.forEach((item: any) => {
+      this.productQuantityMap.set(item.name, item.quantity);
+    })
 
     }
 
@@ -125,7 +128,8 @@ export class BasketpageComponent implements OnInit {
 
     Item.quantity += 1;
     this.basketService.updateOrderQuantity(Item.id, Item.quantity)
-
+    this.updateProductQuantityMap()
+    this.updateProductQuantity(Item);
 
   }
 
@@ -137,6 +141,8 @@ export class BasketpageComponent implements OnInit {
     }
 
     this.basketService.updateOrderQuantity(Item.id, Item.quantity)
+    this.updateProductQuantityMap()
+    this.updateProductQuantity(Item);
 
   }
 
@@ -154,10 +160,13 @@ export class BasketpageComponent implements OnInit {
   }
   getTotalPrice(): number {
     let totalPrice = 0;
-    this.basketItems.forEach((item) => {
-      totalPrice += item.price * this.getQuantity(item);
+    this.orderItems.forEach((item) => {
+      totalPrice += item.price * item.quantity
     });
     return totalPrice;
+  }
+  getItemPrice(item: any){
+    return item.price * item.quantity;
   }
 
   updateProductQuantity(Item: any) {

@@ -24,7 +24,7 @@
         <p-button (onClick)="increment(Item)" icon="pi pi-plus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
         </p-button>
       </td>
-      <td >{{Item.price}} $</td>
+      <td >{{getItemPrice(Item)}} $</td>
       <td >
         <p-button icon="pi pi-trash" (click)="deleteProduct(Item, index, $event)"></p-button>
       </td>
