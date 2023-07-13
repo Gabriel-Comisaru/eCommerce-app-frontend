@@ -41,10 +41,10 @@ export class FiltersComponent implements OnInit {
     })
     console.log(this.categories)
   console.log(this.route.snapshot.params['category'])
-    if(this.route.snapshot.params['category'] !== undefined) {
-      this.selectedCategory = this.route.snapshot.params['category'];
-      this.applyFilters()
-    }
+    // if(this.route.snapshot.params['category'] !== undefined) {
+    //   this.selectedCategory = this.route.snapshot.params['category'];
+    //   this.applyFilters()
+    // }
   }
 
   applyFilters(): void {
