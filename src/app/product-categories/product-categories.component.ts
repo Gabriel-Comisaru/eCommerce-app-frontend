@@ -13,7 +13,7 @@ export class ProductCategoriesComponent implements OnInit {
 
   public mockProducts: Product[] = [];
   // public categories: { category: string, image: string }[] = [];
-  public categories: { categoryName: string, categoryId: number, productNo: number }[] = [];
+  public categories: any = [];
 
 // public categories: string[] = [];
 

@@ -11,8 +11,7 @@ export class AdminPageComponent implements OnInit {
   visible = false;
   deleteVisible = false;
   header = '';
-  products: Array<Product> = [];
-  mockProductsList: any = [];
+  productsList: any = [];
   selectedProduct: any = [];
   rows: any = [5, 10, 15];
   row: any = 5;
@@ -43,19 +42,8 @@ export class AdminPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.productsService.getProducts().subscribe((list: any) => {
-      this.mockProductsList = list;
+      this.productsList = list;
     });
-  }
-
-  // delete() {
-  //   deleteFunction(this.mockProductsService, this.selectedProduct.id, this.products)
-  //     .subscribe((items: Array<any>) => {
-  //       this.products = items;
-  //     });
-  // }
-
-  selectRows(event: any) {
-    this.row = +event.value;
   }
 
   onCloseDelete() {
@@ -63,6 +51,10 @@ export class AdminPageComponent implements OnInit {
   }
 
   savedProduct($event: any) {
+    this.ngOnInit();
+  }
+
+  deletedProduct(event: Event) {
     this.ngOnInit();
   }
 }

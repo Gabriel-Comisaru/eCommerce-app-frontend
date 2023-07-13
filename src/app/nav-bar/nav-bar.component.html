@@ -26,7 +26,7 @@
       styleClass="p-button-link"
       (click)="clearStorage()"
     ></p-button>
-    <a class="navBarItem" (click)="shoppingCart.toggle($event)"
+    <a class="navBarItem" (click)="shoppingCart.toggle($event);"
       ><i
         class="pi pi-shopping-cart"
         pBadge
@@ -46,19 +46,39 @@
       ><span>Favorite</span></a
     >
 
-    <a class="navBarItem" (click)="myAccount.toggle($event)">
+    <a
+      class="navBarItem"
+      (click)="myAccount.toggle($event)"
+      *ngIf="!isAuthenticated()"
+    >
       <i class="pi pi-user"></i
       ><span style="white-space: nowrap">My Account</span></a
     >
+    <a
+      class="navBarItem"
+      (click)="userOptions.toggle($event)"
+      *ngIf="isAuthenticated()"
+    >
+      <i class="pi pi-user"></i
+      ><span style="white-space: nowrap">{{ userLoggedIn.username }}</span></a
+    >
 
-    <div class="flex navBarItem">
-      <p-inputSwitch
-        [(ngModel)]="isAdmin"
-        id="adminMode"
-        class="flex"
-        (click)="goToAdminPage()"
-      ></p-inputSwitch>
-      <label for="adminMode" class="mx-2">Admin</label>
+    <div class="flex navBarItem" *ngIf="isAuthenticated()">
+      <div *ngIf="isAdmin === false">
+        <p-button
+          [(ngModel)]="isAdmin"
+          id="adminMode"
+          (click)="goToAdminPage()"
+          styleClass="p-button-outlined"
+        >Admin mode off</p-button>
+      </div>
+      <div *ngIf="isAdmin === true">
+        <p-button
+          [(ngModel)]="isAdmin"
+          id="adminMode"
+          (click)="goToAdminPage()"
+        >Admin mode on</p-button>
+      </div>
     </div>
   </div>
 </nav>
@@ -72,6 +92,22 @@
   </p-menubar>
 </nav>
 
+<p-overlayPanel #userOptions>
+  <ng-template pTemplate="content">
+    <div class="overlay">
+      <p-button
+        (click)="goToAccountDetailsPage()"
+        label="Account Details"
+        styleClass="p-button-text"
+      ></p-button>
+      <p-button
+        (click)="logout()"
+        label="Logout"
+        styleClass="p-button-secondary p-button-text"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-overlayPanel>
 <p-overlayPanel #myAccount>
   <ng-template pTemplate="content">
     <div class="overlay">
@@ -84,6 +120,7 @@
       <p-button
         label="I don't have an account"
         styleClass="p-button-link"
+        (click)="register()"
       ></p-button>
       <p-button label="Forgot Password" styleClass="p-button-link"></p-button>
     </div>
@@ -100,13 +137,15 @@
           <th>Qty</th>
           <th>Price</th>
         </tr>
-        <tr *ngFor="let product of cartProductsList" class="contentRow">
+
+        <tr *ngFor="let product of orderItems | async" class="contentRow">
           <td class="productContainer">
-<!--            <img [src]="product.images[0]" alt="product photo" />-->
+            <!--            <img [src]="product.images[0]" alt="product photo" />-->
             <span class="productName">{{ product.name }}</span>
           </td>
-          <td>x{{ product.stock }}</td>
-          <td>${{ product.price }}</td>
+
+          <td>x{{ product.quantity }}</td>
+          <td>${{ getItemPrice(product) }}</td>
         </tr>
       </table>
       <p-button
@@ -132,7 +171,7 @@
             <img [src]="product.images[0]" alt="product photo" />
             <span class="productName">{{ product.name }}</span>
           </td>
-          <td>x{{ product.stock }}</td>
+          <td>x{{ product.unitsInStock }}</td>
           <td>${{ product.price }}</td>
         </tr>
       </table>

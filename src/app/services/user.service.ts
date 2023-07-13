@@ -1,22 +1,25 @@
-import {Injectable} from '@angular/core';
-import {User} from "../models/user.model";
-import {Observable, of} from "rxjs";
-import {HttpClient} from "@angular/common/http";
-import {BASE_URL_API} from "../settings";
+import { Injectable } from '@angular/core';
+import { User } from '../models/user.model';
+import { BehaviorSubject, Observable, Subject, of, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
+  constructor(private http: HttpClient) {}
 
+  private apiBaseURL = 'http://localhost:8081/api';
 
-  constructor(private http: HttpClient) {
+  public loggedUser = new Subject();
+
+  getLoggedUserObservable() {
+    return this.loggedUser.asObservable();
   }
-
 
   getLoggedInUser(): Observable<User> {
-    return this.http.get<User>(`${BASE_URL_API}/users/loggedInUser`);
+    return this.http
+      .get<User>(`${this.apiBaseURL}/users/loggedInUser`)
+      .pipe(tap((res) => this.loggedUser.next(res)));
   }
-
-
 }
