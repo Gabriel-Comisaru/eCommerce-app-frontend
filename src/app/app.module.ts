@@ -50,8 +50,9 @@ import { DeleteModalComponent } from './admin-page/delete-modal/delete-modal.com
 import { RegisterComponent } from './register/register.component';
 import { AccountDetailsComponent } from './account-details/account-details.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-import {NgOptimizedImage} from "@angular/common";
-import {ImageModule} from "primeng/image";
+import { NgOptimizedImage } from '@angular/common';
+import { ImageModule } from 'primeng/image';
+import { FloorPipe } from './home-page/shared/floor.pipe';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import {ImageModule} from "primeng/image";
     LoginComponent,
     RegisterComponent,
     AccountDetailsComponent,
+    FloorPipe,
   ],
   imports: [
     HttpClientModule,

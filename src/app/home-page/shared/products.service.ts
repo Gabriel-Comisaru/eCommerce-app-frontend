@@ -5,7 +5,7 @@ import { Product } from './product.model';
 import { Category } from './category.model';
 import { OrderItem } from './orderItem.model';
 import { Review } from './review.model';
-import {BASE_URL_API} from "../../settings";
+import { BASE_URL_API } from '../../settings';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +17,9 @@ export class ProductsService {
   private categoriesUrl = 'http://localhost:8081/api/categories';
   private reviewsUrl = 'http://localhost:8081/api/reviews';
   private productCategoryUrl = 'http://localhost:8081/api/products/category';
-  private imageUrl = 'http://localhost:8081/api/images/upload'
+  private imageUrl = 'http://localhost:8081/api/images/upload';
 
+  private orderItemsUrl = 'http://localhost:8081/api/orderItems';
   public shoppingCartObservable = new Subject<Product[]>();
   public favoriteProductsObservable = new Subject<Product[]>();
 
@@ -70,14 +71,12 @@ export class ProductsService {
 
   delete(id: number) {
     const url = `${this.productsUrl}/${id}`;
-    return this.httpClient.delete(url, {responseType: 'text'});
+    return this.httpClient.delete(url, { responseType: 'text' });
   }
 
   getCategories(): Observable<Category[]> {
     return this.httpClient.get<Category[]>(this.categoriesUrl);
   }
-
-  orderItemsUrl = 'http://localhost:8081/api/orderItems';
 
   getOrderItems(): Observable<OrderItem[]> {
     return this.httpClient.get<OrderItem[]>(this.orderItemsUrl);
@@ -104,9 +103,9 @@ export class ProductsService {
     return this.httpClient.get<any>(url);
   }
 
-  saveImage(image:any,id:number):Observable<any>{
-    const url = `${this.imageUrl}/${id}`
-    return this.httpClient.post(url,image);
+  saveImage(image: any, id: number): Observable<any> {
+    const url = `${this.imageUrl}/${id}`;
+    return this.httpClient.post(url, image);
   }
 
   getProductImage(productImageName: string): Observable<any> {
@@ -124,7 +123,10 @@ export class ProductsService {
     return this.httpClient.get<any>(url);
   }
 
-  sendForm(formData:any, categoryId: number) {
-    return this.httpClient.post<any>(`${this.productCategoryUrl}/${categoryId}`, formData);
+  sendForm(formData: any, categoryId: number) {
+    return this.httpClient.post<any>(
+      `${this.productCategoryUrl}/${categoryId}`,
+      formData
+    );
   }
 }

@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private router: Router
   ) {}
+  public loginError: boolean = false;
 
   ngOnInit() {
     this.loginForm = new FormGroup({
