@@ -1,1 +1,43 @@
-<p>register works!</p>
+<form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+  <p-panel header="register form">
+    <div
+      class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid"
+      style="margin: 10px 0px"
+    >
+      <div class="ui-grid-row" *ngFor="let field of registerFormFields">
+        <div class="ui-grid-col-2">{{ field.fieldName }}:</div>
+        <div class="ui-grid-col-6">
+          <input
+            pInputText
+            type="text"
+            [formControlName]="field.controlName"
+            class="form-control"
+            name="username"
+          />
+        </div>
+        <div class="ui-grid-col-4">
+          <!-- i need instead of username - variable field.controlName -->
+          <!-- <div
+            [hidden]="errorCondition(field.controlName)"
+            class="alert alert-danger"
+          >
+            username is required
+          </div> -->
+        </div>
+      </div>
+
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-2"></div>
+        <div class="ui-grid-col-6">
+          <button
+            pButton
+            type="submit"
+            label="Submit"
+            [disabled]="!registerForm.valid"
+          ></button>
+        </div>
+        <div class="ui-grid-col-4"></div>
+      </div>
+    </div>
+  </p-panel>
+</form>
