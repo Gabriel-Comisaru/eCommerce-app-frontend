@@ -64,14 +64,12 @@ export class ProductsService {
 
   updateProduct(product: any, id: number): Observable<any> {
     const url = `${this.productsUrl}/${id}`;
-    console.log("product-id to update: ",id)
-    console.log("product to update: ",product)
     return this.httpClient.put<any>(url, product);
   }
 
   delete(id: number) {
     const url = `${this.productsUrl}/${id}`;
-    return this.httpClient.delete(url, {responseType: 'text'}).subscribe();
+    return this.httpClient.delete(url, {responseType: 'text'});
   }
 
   getCategories(): Observable<Category[]> {
