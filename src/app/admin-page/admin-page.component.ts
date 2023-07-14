@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ProductsService } from '../home-page/shared/products.service';
-import { Product } from '../home-page/shared/product.model';
+import {Component, OnInit} from '@angular/core';
+import {ProductsService} from '../home-page/shared/products.service';
+import {Product} from '../home-page/shared/product.model';
+import {deleteFunction} from "./utilities/utilities";
+import {Review} from "../home-page/shared/review.model";
 
 @Component({
   selector: 'app-admin-page',
@@ -16,7 +18,8 @@ export class AdminPageComponent implements OnInit {
   rows: any = [5, 10, 15];
   row: any = 5;
 
-  constructor(private productsService: ProductsService) {}
+  constructor(private productsService: ProductsService) {
+  }
 
   showDialogNewProduct() {
     this.visible = true;
@@ -50,11 +53,24 @@ export class AdminPageComponent implements OnInit {
     this.deleteVisible = false;
   }
 
-  savedProduct($event: any) {
-    this.ngOnInit();
+  savedProduct(event: any) {
+    this.productsList = [...this.productsList, event]
+  }
+
+  updatedProduct(event: any) {
+    this.productsList = this.productsList.map((item: any) => {
+      if (item.id === event.id) {
+        return {...event}
+      }
+      return item;
+    })
   }
 
   deletedProduct(event: Event) {
-    this.ngOnInit();
+    // this.productsList=this.productsList.filter((item:any)=>item.event!=event)
+    deleteFunction(this.productsService, +event, this.productsList)
+      .subscribe((items: Array<Product>) => {
+        this.productsList = items;
+      });
   }
 }
