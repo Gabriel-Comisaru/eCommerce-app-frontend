@@ -46,6 +46,7 @@ export class AdminPageComponent implements OnInit {
   ngOnInit(): void {
     this.productsService.getProducts().subscribe((list: any) => {
       this.productsList = list;
+      this.productsList = this.productsList.sort((a: any, b: any) => a.name > b.name ? 1 : -1)
     });
   }
 
@@ -70,5 +71,9 @@ export class AdminPageComponent implements OnInit {
     this.productsService.delete(+event)
       .subscribe(() => this.productsList = this.productsList
         .filter((item: any) => item.id != +event))
+  }
+
+  handleMissingImg(event: ErrorEvent) {
+    (event!.target as HTMLImageElement).src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'
   }
 }
