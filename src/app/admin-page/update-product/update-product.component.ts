@@ -36,7 +36,7 @@ export class UpdateProductComponent implements OnInit {
 
   visible = false;
   images: any = [];
-  selectedFile: any = [];
+  selectedFile! : File;
   message: string = '';
   productsList: any = [];
   categoriesList: any = [];
@@ -65,7 +65,8 @@ export class UpdateProductComponent implements OnInit {
     categoryId: ['',[Validators.required]],
     description: ['',[Validators.required]],
     stock: ['',[Validators.required]],
-    discount: ['',[Validators.pattern('^[0-9]*$'),Validators.required]]
+    discount: ['',[Validators.pattern('^[0-9]*$'),Validators.required]],
+    image:['']
   });
 
   ngOnChanges(changes: SimpleChanges) {
@@ -80,6 +81,7 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.controls.description.setValue(this.selectedProduct.description.toString());
       this.productForm.controls.stock.setValue(this.selectedProduct.unitsInStock.toString());
       this.productForm.controls.discount.setValue(this.selectedProduct.discountPercentage.toString());
+      this.productForm.controls.image.setValue('');
     } else if (this.header === 'Add new product') {
       this.productForm.controls.name.setValue('');
       this.productForm.controls.categoryId.setValue('');
@@ -108,8 +110,9 @@ export class UpdateProductComponent implements OnInit {
       description: this.productForm.controls.description.value,
       categoryId: +this.productForm.controls.categoryId.value,
       unitsInStock: +this.productForm.controls.stock.value,
-      discountPercentage: +this.productForm.controls.discount.value
-    } as Product;
+      discountPercentage: +this.productForm.controls.discount.value,
+      imagesName:this.selectedFile.name
+    } as unknown as Product;
 
     if (this.header === 'Add new product') {
       const formData = new FormData();
@@ -119,6 +122,7 @@ export class UpdateProductComponent implements OnInit {
       formData.append('categoryId', String(this.productForm.controls.categoryId.value));
       formData.append('unitsInStock', String(this.productForm.controls.stock.value));
       formData.append('discountPercentage', String(this.productForm.controls.discount.value));
+      formData.append('image', this.selectedFile);
       this.productsService.sendForm(formData, +this.productForm.controls.categoryId.value)
         .subscribe((res) => this.savedProduct.emit(res));
       this.visible = false;
@@ -134,27 +138,14 @@ export class UpdateProductComponent implements OnInit {
 
   onFileChanged(event: any) {
     this.selectedFile = event.target.files[0];
-    // this.photos.push(this.file);
-    // this.productForm.controls.photos.setValue(this.photos)
-    // console.log(this.productForm.controls.photos.value)
-    // this.productForm.patchValue({
-    //   photos: file
-    // });
-    // console.log('asta e this.photos'+this.photos)
-    // // this.productForm.get('photos')!.updateValueAndValidity()
-    // const reader = new FileReader();
-    // reader.onload = () => {
-    //   this.imageURL = reader.result as string;
-    // }
-    // reader.readAsDataURL(file)
-    // this.uploadedFiles.push(event);
-    // this.messageService.add({severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode'});
-    // console.log(this.productForm.controls.photos.value);
   }
 
-  onUpload(event: UploadEvent) {
+  onUpload() {
     const uploadImageData = new FormData();
     uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
+
+    this.productsService.saveImage(uploadImageData,this.selectedProduct.id)
+      .subscribe();
   }
 
   // onUpload(event: UploadEvent) {
