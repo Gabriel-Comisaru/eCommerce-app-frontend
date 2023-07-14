@@ -46,6 +46,7 @@ export class AdminPageComponent implements OnInit {
   ngOnInit(): void {
     this.productsService.getProducts().subscribe((list: any) => {
       this.productsList = list;
+      this.productsList = this.productsList.sort((a: any, b: any) => a.name > b.name ? 1 : -1)
     });
   }
 
