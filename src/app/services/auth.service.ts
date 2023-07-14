@@ -58,4 +58,26 @@ export class AuthService {
   goToRegister(): void {
     this.router.navigate(['register']);
   }
+  register(
+    first_name: string,
+    last_name: string,
+    username: string,
+    email: string,
+    password: string
+  ): Observable<any> {
+    const formData: any = new FormData();
+    const url = `${this.baseUrl}/auth/register`;
+    formData.append('first_name', first_name);
+    formData.append('last_name', last_name);
+    formData.append('username', username);
+    formData.append('email', email);
+    formData.append('password', password);
+    return this.httpClient.post<any>(url, formData).pipe(
+      map((data) => {
+        localStorage.setItem('token', data.token);
+        this.router.navigate(['/']);
+        return data;
+      })
+    );
+  }
 }

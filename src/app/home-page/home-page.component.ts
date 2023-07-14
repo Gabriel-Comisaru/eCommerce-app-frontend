@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ProductsService } from './shared/products.service';
 import { Product } from './shared/product.model';
 import { AuthService } from '../services/auth.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -13,6 +14,7 @@ export class HomePageComponent {
   public productsWithDiscountApplied: Product[] = [];
   public mostSelledProducts: Product[] = [];
   public isLoggedIn: boolean = true; //set to default true just for display purposes
+  public imageToShow!: any;
 
   constructor(
     private productsService: ProductsService,
@@ -20,11 +22,15 @@ export class HomePageComponent {
   ) {}
 
   ngOnInit() {
-    //todo: commented out. check!!!
-    // this.authService.setToken();
+    // this.productsService.getProductImage('cat.jpeg').subscribe((response) => {
+    //   this.createImageFromBlob(response);
+    // });
 
-    // getting mock list of products and mapping it according to my interface
-    this.productsService.getProducts().subscribe((list) => {
+    combineLatest(
+      this.productsService.getProducts(),
+      this.productsService.getAllReviews()
+    ).subscribe((res) => {
+      const [list, reviews] = res;
       this.productsList = list.map((item: Product) => {
         return { ...item, rating: this.getAverageRating(item) };
       });
@@ -38,9 +44,21 @@ export class HomePageComponent {
           (product) => product.price < 200
         );
       }
-
-      console.log(this.productsList);
     });
+  }
+
+  createImageFromBlob(image: Blob) {
+    let reader = new FileReader();
+    reader.addEventListener(
+      'load',
+      () => {
+        this.imageToShow = reader.result;
+      },
+      false
+    );
+    if (image) {
+      reader.readAsDataURL(image);
+    }
   }
 
   getAverageRating(product: Product) {

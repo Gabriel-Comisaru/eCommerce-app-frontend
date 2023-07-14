@@ -23,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    console.log('intercepted');
+    // console.log('intercepted');
     const token = localStorage.getItem('token');
     const isApiRequest = request.url.startsWith(BASE_URL_API);
     if (token && isApiRequest) {
@@ -36,10 +36,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          localStorage.removeItem('token');
-          this.authService.redirectToLogin();
-        }
+        // if (error.status === 401) {
+        //   localStorage.removeItem('token');
+        //   this.authService.redirectToLogin();
+        // }
         return throwError(error);
       })
     );

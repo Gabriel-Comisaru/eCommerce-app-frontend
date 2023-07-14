@@ -83,13 +83,16 @@ export class NavBarComponent {
       .subscribe((response) => (this.favoriteProductsList = response));
     this.productsService.setInitialFavoriteProducts();
 
-    this.productsService.getOrderItems().subscribe((res) => {
-      this.basketContent = [...res];
-      this.nbOfBasketProducts = this.basketContent.reduce(
-        (acc, currValue) => acc + currValue.quantity,
-        0
-      );
-    });
+    // get list of items from cart only if the user is logged
+    if (this.authService.isAuthenticated()) {
+      this.productsService.getOrderItems().subscribe((res) => {
+        this.basketContent = [...res];
+        this.nbOfBasketProducts = this.basketContent.reduce(
+          (acc, currValue) => acc + currValue.quantity,
+          0
+        );
+      });
+    }
   }
 
   goHome() {

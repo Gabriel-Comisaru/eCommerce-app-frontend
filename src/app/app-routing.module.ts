@@ -43,6 +43,7 @@ const routes: Routes = [
   {
     path: 'basket',
     component: BasketpageComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'product-details/:id',

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { Product } from './product.model';
 import { Category } from './category.model';
@@ -99,8 +99,18 @@ export class ProductsService {
     return this.httpClient.get<any>(url);
   }
 
-  getProductImage(productId: Number): Observable<any> {
-    const url = `http://localhost:8081/api/images/getById?id=${productId}`;
+  getProductImage(productImageName: string): Observable<any> {
+    const url = `http://localhost:8081/api/images/download?name=${productImageName}`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        Accept: 'image/jpeg',
+      }),
+      responseType: 'blob', // This tells angular to parse it as a blob, default is json
+    };
+    return this.httpClient.get<any>(url, httpOptions as any);
+  }
+  getAllReviews(): Observable<any> {
+    const url = 'http://localhost:8081/api/reviews';
     return this.httpClient.get<any>(url);
   }
 }
