@@ -15,7 +15,6 @@ import { BASE_URL_API } from '../settings';
   providedIn: 'root',
 })
 export class AuthInterceptor implements HttpInterceptor {
-
   constructor(private authService: AuthService) {}
 
   intercept(
@@ -34,10 +33,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          localStorage.removeItem('token');
-          this.authService.redirectToLogin();
-        }
+        // if (error.status === 401) {
+        //   localStorage.removeItem('token');
+        //   this.authService.redirectToLogin();
+        // }
         return throwError(error);
       })
     );

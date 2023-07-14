@@ -1,5 +1,6 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { Product } from '../shared/product.model';
+
 import { ProductsService } from '../shared/products.service';
 import { Router } from '@angular/router';
 import { OrderItem } from '../shared/orderItem.model';
@@ -18,21 +19,58 @@ export class ProductsListCarouselComponent {
 
   public dataLoaded: boolean = false;
   private orderItems: OrderItem[] = [];
+  public productsToDisplayWithImages!: Product[];
+  imageToShow!: any;
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.productsToDisplay && this.productsToDisplay.length > 0) {
       this.dataLoadingStatus();
     }
+
+    if (!changes['productsToDisplay'].firstChange) {
+      // console.log(this.productsToDisplay);
+      // this.productsToDisplay.forEach((product) => {
+      // if (product.imagesName.length > 0) {
+      // this.productsService
+      //   .getProductImage(product.imagesName[0])
+      //   .subscribe((response) =>
+      //     this.createImageFromBlob(response, product.productImage)
+      //   );
+
+      this.productsToDisplayWithImages = this.productsToDisplay.map(
+        (product) => {
+          if (product.imagesName.length > 0) {
+            const url = `http://localhost:8081/api/images/download?name=${product.imagesName[0]}`;
+
+            return { ...product, productImage: url };
+          }
+          return product;
+        }
+      );
+      // }
+      // });
+    }
   }
+
+  // createImageFromBlob(image: Blob, store: any) {
+  //   let reader = new FileReader();
+  //   reader.addEventListener(
+  //     'load',
+  //     () => {
+  //       store = reader.result;
+  //     },
+  //     false
+  //   );
+  //   if (image) {
+  //     reader.readAsDataURL(image);
+  //   }
+  // }
+
   dataLoadingStatus() {
     this.dataLoaded = true;
   }
   addToCart(product: Product) {
-    // tb sa verific in lista de orderItems daca exista deja produsul asta
-    // cand adaug in cart am nevoie sa verific daca produsul exista deja, daca exista incrementeaza cantitatea ca cantitatea pe care o transmit, daca nu fa post request si updateaza-mi lista de produse.
-    // ca sa updatez lista de produse cred ca trebuie sa o fac manual, sa updatez eu frontendul????
-    // iar probabil la reload o sa se modifice din be
     this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
     });
 
@@ -74,6 +112,10 @@ export class ProductsListCarouselComponent {
       : stock === 1
       ? 'Last piece available'
       : 'Out of stock';
+  }
+
+  handleMissingImage(event: Event) {
+    (event.target as HTMLImageElement).style.display = 'none';
   }
 }
 // <!-- notificare ca am adaugat in cos -->

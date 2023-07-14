@@ -1,11 +1,13 @@
-
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { PrimeIcons, MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { Product } from '../home-page/shared/product.model';
 import { ProductsService } from '../home-page/shared/products.service';
 import { Category } from '../home-page/shared/category.model';
-import { OrderItem, detailedOrderItem } from '../home-page/shared/orderItem.model';
+import {
+  OrderItem,
+  detailedOrderItem,
+} from '../home-page/shared/orderItem.model';
 import { concatMap, of, switchMap, map } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
@@ -83,7 +85,11 @@ export class NavBarComponent {
           // },
         },
         { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
-        { label: 'All Categories', icon: 'pi pi-th-large', routerLink: '/categories' },
+        {
+          label: 'All Categories',
+          icon: 'pi pi-th-large',
+          routerLink: '/categories',
+        },
       ];
     });
     this.isAdmin = false;
@@ -102,50 +108,51 @@ export class NavBarComponent {
       .subscribe((response) => (this.favoriteProductsList = response));
     this.productsService.setInitialFavoriteProducts();
 
-    this.productsService.getOrderItems().subscribe((res) => {
-      this.basketContent = [...res];
-      this.nbOfBasketProducts = this.basketContent.reduce(
-        (acc, currValue) => acc + currValue.quantity,
-        0
-      );
-    });
-
-    let that = this;
-    this.productService.getProducts().subscribe((list) => {
-      this.itemNamesAny = list.map((product: any) => {
-        that.itemNames.set(product.id, product.name);
+    if (this.authService.isAuthenticated()) {
+      this.productsService.getOrderItems().subscribe((res) => {
+        this.basketContent = [...res];
+        this.nbOfBasketProducts = this.basketContent.reduce(
+          (acc, currValue) => acc + currValue.quantity,
+          0
+        );
       });
-    });
-    this.productService.getProducts().subscribe((list) => {
-      this.itemPricesAny = list.map((product: any) => {
-        that.itemPrices.set(product.id, product.price);
-      });
-    });
-    this.categoryService.getCategories().subscribe((list: any[]) => {
-      this.itemCategoriesAny = list.map((category: any) => {
-        that.itemCategories.set(category.id, category.name);
-      });
-    });
-
-    console.log(this.itemNames);
-    setTimeout(() => {
-      this.basketService.getOrderItems().subscribe((list: any[]) => {
-        const orderItems = list.map((item: any) => {
-          console.log(item);
-          return {
-            id: item.id,
-            name: this.itemNames.get(item.productId) || '',
-            productId: item.productId,
-            orderId: item.orderId,
-            quantity: item.quantity,
-            price: this.itemPrices.get(item.productId) || 0,
-            category: this.itemCategories.get(item.categoryId) || '',
-          };
+      let that = this;
+      this.productService.getProducts().subscribe((list) => {
+        this.itemNamesAny = list.map((product: any) => {
+          that.itemNames.set(product.id, product.name);
         });
-        this.orderItems.next(orderItems); // Emit the order items
-        console.log(orderItems);
       });
-    }, 500);
+      this.productService.getProducts().subscribe((list) => {
+        this.itemPricesAny = list.map((product: any) => {
+          that.itemPrices.set(product.id, product.price);
+        });
+      });
+      this.categoryService.getCategories().subscribe((list: any[]) => {
+        this.itemCategoriesAny = list.map((category: any) => {
+          that.itemCategories.set(category.id, category.name);
+        });
+      });
+
+      console.log(this.itemNames);
+      setTimeout(() => {
+        this.basketService.getOrderItems().subscribe((list: any[]) => {
+          const orderItems = list.map((item: any) => {
+            console.log(item);
+            return {
+              id: item.id,
+              name: this.itemNames.get(item.productId) || '',
+              productId: item.productId,
+              orderId: item.orderId,
+              quantity: item.quantity,
+              price: this.itemPrices.get(item.productId) || 0,
+              category: this.itemCategories.get(item.categoryId) || '',
+            };
+          });
+          this.orderItems.next(orderItems); // Emit the order items
+          console.log(orderItems);
+        });
+      }, 500);
+    }
   }
 
   loadData() {
@@ -237,8 +244,8 @@ export class NavBarComponent {
     return this.authService.isAuthenticated();
   }
 
-  goToAccountDetailsPage(){
-  return this.router.navigate(['user-details']);
+  goToAccountDetailsPage() {
+    return this.router.navigate(['user-details']);
   }
 
   getItemPrice(product: any) {

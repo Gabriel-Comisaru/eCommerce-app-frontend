@@ -3,7 +3,7 @@ import { Review } from './review.model';
 export interface Product {
   id: number;
   name: string;
-  images: string[];
+  imagesName: string[];
   price: number;
   rating: number;
   reviews: Review[];
@@ -13,4 +13,5 @@ export interface Product {
   category: string;
   categoryId: number;
   isDeleted: boolean;
+  productImage: any;
 }
