@@ -28,7 +28,6 @@ export class AuthService {
     const formData: any = new FormData();
     formData.append('username', username);
     formData.append('password', password);
-    console.log('auth service');
     return this.httpClient
       .post<any>(`${this.baseUrl}/auth/login`, formData)
       .pipe(

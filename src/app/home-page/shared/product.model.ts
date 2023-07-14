@@ -9,7 +9,7 @@ export interface Product {
   reviews: Review[];
   discountPercentage: number;
   description: string;
-  stock: number;
+  unitsInStock: number;
   category: string;
   categoryId: number;
   isDeleted: boolean;
