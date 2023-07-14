@@ -72,4 +72,8 @@ export class AdminPageComponent implements OnInit {
       .subscribe(() => this.productsList = this.productsList
         .filter((item: any) => item.id != +event))
   }
+
+  handleMissingImg(event: ErrorEvent) {
+    (event!.target as HTMLImageElement).src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'
+  }
 }

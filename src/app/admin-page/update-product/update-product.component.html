@@ -19,7 +19,7 @@
         <label htmlFor="description" class="block font-bold mb-2">Description*</label>
         <textarea pInputTextarea rows="5" cols="30" id="description" formControlName="description"></textarea>
         <input type="file" (change)="onFileChanged($event)" accept="image/*">
-        <button (click)="onUpload()">Upload</button>
+<!--        <button (click)="onUpload()">Upload</button>-->
       </div>
       <p-button [disabled]="!productForm.valid" *ngIf="header=='Edit product'" type="submit" icon="pi pi-check" label="Update" styleClass="p-button-text"></p-button>
       <p-button [disabled]="!productForm.valid" *ngIf="header=='Add new product'" type="submit" icon="pi pi-check" label="Add" styleClass="p-button-text"></p-button>

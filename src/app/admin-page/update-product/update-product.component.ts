@@ -66,7 +66,7 @@ export class UpdateProductComponent implements OnInit {
     description: ['',[Validators.required]],
     stock: ['',[Validators.required]],
     discount: ['',[Validators.pattern('^[0-9]*$'),Validators.required]],
-    image:['']
+    image:['',[Validators.required]]
   });
 
   ngOnChanges(changes: SimpleChanges) {
@@ -138,6 +138,7 @@ export class UpdateProductComponent implements OnInit {
 
   onFileChanged(event: any) {
     this.selectedFile = event.target.files[0];
+    this.productForm.controls.image.setValue(this.selectedFile.toString())
   }
 
   onUpload() {
