@@ -16,7 +16,6 @@
   <ng-template pTemplate="header">
     <tr>
       <th>#</th>
-      <th>id</th>
 <!--      <th>Image</th>-->
       <th>Name</th>
       <th>Category</th>
@@ -28,7 +27,6 @@
   <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
     <tr  class="item" [pSelectableRow]="product" [pSelectableRowIndex]="rowIndex">
       <td>{{rowIndex+1}}</td>
-      <td>{{ product.id }}</td>
 <!--      <td><img alt="image" [src]="product.images" style="max-width: 100px;max-height: 50px"></td>-->
       <td>{{ product.name }}</td>
       <td>{{ product.categoryName }}</td>
