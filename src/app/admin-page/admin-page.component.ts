@@ -67,10 +67,8 @@ export class AdminPageComponent implements OnInit {
   }
 
   deletedProduct(event: Event) {
-    // this.productsList=this.productsList.filter((item:any)=>item.event!=event)
-    deleteFunction(this.productsService, +event, this.productsList)
-      .subscribe((items: Array<Product>) => {
-        this.productsList = items;
-      });
+    this.productsService.delete(+event)
+      .subscribe(() => this.productsList = this.productsList
+        .filter((item: any) => item.id != +event))
   }
 }

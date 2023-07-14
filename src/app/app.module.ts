@@ -50,6 +50,8 @@ import { DeleteModalComponent } from './admin-page/delete-modal/delete-modal.com
 import { RegisterComponent } from './register/register.component';
 import { AccountDetailsComponent } from './account-details/account-details.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import {NgOptimizedImage} from "@angular/common";
+import {ImageModule} from "primeng/image";
 
 @NgModule({
   declarations: [
@@ -115,6 +117,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     ButtonModule,
     AppRoutingModule,
     HttpClientModule,
+    NgOptimizedImage,
+    ImageModule,
   ],
 
   providers: [
