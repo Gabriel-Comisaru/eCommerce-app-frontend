@@ -31,10 +31,7 @@ export class HomePageComponent {
       this.productsService.getAllReviews()
     ).subscribe((res) => {
       const [list, reviews] = res;
-      this.productsList = list.map((item: Product) => {
-        return { ...item, rating: this.getAverageRating(item) };
-      });
-
+      this.productsList = list;
       if (this.productsList) {
         this.productsWithDiscountApplied = this.productsList.filter(
           (product) => product.discountPercentage > 0
@@ -61,19 +58,19 @@ export class HomePageComponent {
     }
   }
 
-  getAverageRating(product: Product) {
-    // tb sa fac getproductreviews si de acolo iau fiecare rating
-    // ori am nevoie sa calculeze backendul average rating
-    //
-    //ori sa reviewurile intr un array in product
-    const initialValue = 0;
-    if (product.rating) {
-      const sumOfRatings = product.reviews.reduce(
-        (acc, currVal) => acc + currVal.rating,
-        initialValue
-      );
-      const averageRating = sumOfRatings / product.reviews.length;
-      product.rating = averageRating;
-    }
-  }
+  // getAverageRating(product: Product) {
+  //   // tb sa fac getproductreviews si de acolo iau fiecare rating
+  //   // ori am nevoie sa calculeze backendul average rating
+  //   //
+  //   //ori sa reviewurile intr un array in product
+  //   const initialValue = 0;
+  //   if (product.rating) {
+  //     const sumOfRatings = product.reviews.reduce(
+  //       (acc, currVal) => acc + currVal.rating,
+  //       initialValue
+  //     );
+  //     const averageRating = sumOfRatings / product.reviews.length;
+  //     product.rating = averageRating;
+  //   }
+  // }
 }

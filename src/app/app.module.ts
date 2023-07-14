@@ -50,6 +50,7 @@ import { DeleteModalComponent } from './admin-page/delete-modal/delete-modal.com
 import { RegisterComponent } from './register/register.component';
 import { AccountDetailsComponent } from './account-details/account-details.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { FloorPipe } from './home-page/shared/floor.pipe';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     LoginComponent,
     RegisterComponent,
     AccountDetailsComponent,
+    FloorPipe,
   ],
   imports: [
     HttpClientModule,

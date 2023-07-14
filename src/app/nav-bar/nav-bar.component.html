@@ -26,7 +26,7 @@
       styleClass="p-button-link"
       (click)="clearStorage()"
     ></p-button>
-    <a class="navBarItem" (click)="shoppingCart.toggle($event);"
+    <a class="navBarItem" (click)="shoppingCart.toggle($event)"
       ><i
         class="pi pi-shopping-cart"
         pBadge
@@ -70,14 +70,13 @@
           id="adminMode"
           (click)="goToAdminPage()"
           styleClass="p-button-outlined"
-        >Admin mode off</p-button>
+          >Admin mode off</p-button
+        >
       </div>
       <div *ngIf="isAdmin === true">
-        <p-button
-          [(ngModel)]="isAdmin"
-          id="adminMode"
-          (click)="goToAdminPage()"
-        >Admin mode on</p-button>
+        <p-button [(ngModel)]="isAdmin" id="adminMode" (click)="goToAdminPage()"
+          >Admin mode on</p-button
+        >
       </div>
     </div>
   </div>
@@ -168,7 +167,7 @@
         </tr>
         <tr *ngFor="let product of favoriteProductsList" class="contentRow">
           <td class="productContainer">
-            <img [src]="product.imagesName[0]" alt="product photo" />
+            <img [src]="product.productImage" alt="product photo" />
             <span class="productName">{{ product.name }}</span>
           </td>
           <td>x{{ product.unitsInStock }}</td>

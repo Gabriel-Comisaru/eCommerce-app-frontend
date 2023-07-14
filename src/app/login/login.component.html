@@ -23,7 +23,7 @@
             "
             class="alert alert-danger"
           >
-            username is required
+            Username is required
           </div>
         </div>
       </div>
@@ -63,5 +63,15 @@
         <div class="ui-grid-col-4"></div>
       </div>
     </div>
+    <div class="ui-grid-col-4">
+      <div *ngIf="loginError" class="alert alert-danger">
+        Login credentials are incorrect. Please try again!
+      </div>
+    </div>
   </p-panel>
 </form>
+<!-- invalid password - make errors based on error response
+error.message: "Something went wrong" cand e userul gresit
+
+error.message: "Invalid Credentials" -when user is right password is wrong
+-->

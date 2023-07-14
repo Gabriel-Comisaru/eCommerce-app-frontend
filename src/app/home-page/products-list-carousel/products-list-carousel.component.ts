@@ -4,6 +4,7 @@ import { Product } from '../shared/product.model';
 import { ProductsService } from '../shared/products.service';
 import { Router } from '@angular/router';
 import { OrderItem } from '../shared/orderItem.model';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -21,6 +22,7 @@ export class ProductsListCarouselComponent {
   private orderItems: OrderItem[] = [];
   public productsToDisplayWithImages!: Product[];
   imageToShow!: any;
+
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -40,12 +42,17 @@ export class ProductsListCarouselComponent {
 
       this.productsToDisplayWithImages = this.productsToDisplay.map(
         (product) => {
+          //TODO REFACTOR THE MAP
           if (product.imagesName.length > 0) {
             const url = `http://localhost:8081/api/images/download?name=${product.imagesName[0]}`;
 
-            return { ...product, productImage: url };
+            return {
+              ...product,
+              roundedRating: Math.floor(product.rating),
+              productImage: url,
+            };
           }
-          return product;
+          return { ...product, roundedRating: Math.floor(product.rating) };
         }
       );
       // }
@@ -72,6 +79,7 @@ export class ProductsListCarouselComponent {
   }
   addToCart(product: Product) {
     this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
+      console.log(res);
     });
 
     //track shopping cart through local storage

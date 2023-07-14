@@ -75,11 +75,12 @@
             </h4>
           </div>
           <p-rating
-            [(ngModel)]="product.rating"
+            [(ngModel)]="product.roundedRating"
             [readonly]="true"
             [cancel]="false"
           ></p-rating>
 
+          <div>({{ product.rating.toFixed(2) }})</div>
           <div class="stockAndPrice">
             <!-- <p-tag
               [value]="getStock(product.stock)"
