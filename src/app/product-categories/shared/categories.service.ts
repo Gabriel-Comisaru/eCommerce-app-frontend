@@ -1,12 +1,13 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {catchError, Observable, tap, throwError} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoriesService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+  }
 
   private mockProductsUrl = 'https://dummyjson.com/products';
   private url = 'http://localhost:8081/api/categories'
@@ -30,6 +31,7 @@ export class CategoriesService {
       }),
     );
   }
+
   getCategoryById(id: number): Observable<any> {
     return this.httpClient.get<any>(`${this.url}/${id}`).pipe(
       tap((data: any) => {

@@ -34,7 +34,6 @@ export class ProductsListCarouselComponent {
     // ca sa updatez lista de produse cred ca trebuie sa o fac manual, sa updatez eu frontendul????
     // iar probabil la reload o sa se modifice din be
     this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
-      console.log(res);
     });
 
     //track shopping cart through local storage
