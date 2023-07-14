@@ -14,6 +14,10 @@ import { AccountDetailsComponent } from './account-details/account-details.compo
 
 const routes: Routes = [
   {
+    path: '',
+    component: HomePageComponent,
+  },
+  {
     path: 'login',
     component: LoginComponent,
     canActivate: [AlreadyLoggedGuard],
@@ -49,10 +53,7 @@ const routes: Routes = [
     path: 'product-details/:id',
     component: ProductDetailsComponent,
   },
-  {
-    path: '',
-    component: HomePageComponent,
-  },
+
   {
     path: 'user-details',
     component: AccountDetailsComponent,
