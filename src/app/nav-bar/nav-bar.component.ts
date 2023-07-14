@@ -108,50 +108,51 @@ export class NavBarComponent {
       .subscribe((response) => (this.favoriteProductsList = response));
     this.productsService.setInitialFavoriteProducts();
 
-    this.productsService.getOrderItems().subscribe((res) => {
-      this.basketContent = [...res];
-      this.nbOfBasketProducts = this.basketContent.reduce(
-        (acc, currValue) => acc + currValue.quantity,
-        0
-      );
-    });
-
-    let that = this;
-    this.productService.getProducts().subscribe((list) => {
-      this.itemNamesAny = list.map((product: any) => {
-        that.itemNames.set(product.id, product.name);
+    if (this.authService.isAuthenticated()) {
+      this.productsService.getOrderItems().subscribe((res) => {
+        this.basketContent = [...res];
+        this.nbOfBasketProducts = this.basketContent.reduce(
+          (acc, currValue) => acc + currValue.quantity,
+          0
+        );
       });
-    });
-    this.productService.getProducts().subscribe((list) => {
-      this.itemPricesAny = list.map((product: any) => {
-        that.itemPrices.set(product.id, product.price);
-      });
-    });
-    this.categoryService.getCategories().subscribe((list: any[]) => {
-      this.itemCategoriesAny = list.map((category: any) => {
-        that.itemCategories.set(category.id, category.name);
-      });
-    });
-
-    console.log(this.itemNames);
-    setTimeout(() => {
-      this.basketService.getOrderItems().subscribe((list: any[]) => {
-        const orderItems = list.map((item: any) => {
-          console.log(item);
-          return {
-            id: item.id,
-            name: this.itemNames.get(item.productId) || '',
-            productId: item.productId,
-            orderId: item.orderId,
-            quantity: item.quantity,
-            price: this.itemPrices.get(item.productId) || 0,
-            category: this.itemCategories.get(item.categoryId) || '',
-          };
+      let that = this;
+      this.productService.getProducts().subscribe((list) => {
+        this.itemNamesAny = list.map((product: any) => {
+          that.itemNames.set(product.id, product.name);
         });
-        this.orderItems.next(orderItems); // Emit the order items
-        console.log(orderItems);
       });
-    }, 500);
+      this.productService.getProducts().subscribe((list) => {
+        this.itemPricesAny = list.map((product: any) => {
+          that.itemPrices.set(product.id, product.price);
+        });
+      });
+      this.categoryService.getCategories().subscribe((list: any[]) => {
+        this.itemCategoriesAny = list.map((category: any) => {
+          that.itemCategories.set(category.id, category.name);
+        });
+      });
+
+      console.log(this.itemNames);
+      setTimeout(() => {
+        this.basketService.getOrderItems().subscribe((list: any[]) => {
+          const orderItems = list.map((item: any) => {
+            console.log(item);
+            return {
+              id: item.id,
+              name: this.itemNames.get(item.productId) || '',
+              productId: item.productId,
+              orderId: item.orderId,
+              quantity: item.quantity,
+              price: this.itemPrices.get(item.productId) || 0,
+              category: this.itemCategories.get(item.categoryId) || '',
+            };
+          });
+          this.orderItems.next(orderItems); // Emit the order items
+          console.log(orderItems);
+        });
+      }, 500);
+    }
   }
 
   loadData() {
