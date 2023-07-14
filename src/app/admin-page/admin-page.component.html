@@ -3,7 +3,7 @@
     <p-button (click)="showDialogNewProduct()" icon="pi pi-plus" label="New product"></p-button>
     <!--    edit dialog bellow-->
     <!--    <p-button (click)="showDialogEditProduct()" icon="pi pi-external-link" label="Edit product"></p-button>-->
-    <app-update-product (savedProduct)="savedProduct($event)" (closeEmitter)="onClose()" [selectedProduct]="selectedProduct"
+    <app-update-product (savedProduct)="savedProduct($event)" (updatedProduct)="updatedProduct($event)" (closeEmitter)="onClose()" [selectedProduct]="selectedProduct"
                         [show]="visible" [header]="header"></app-update-product>
 
   </ng-template>
@@ -15,6 +15,8 @@
          [globalFilterFields]="['name']">
   <ng-template pTemplate="header">
     <tr>
+      <th>#</th>
+      <th>id</th>
 <!--      <th>Image</th>-->
       <th>Name</th>
       <th>Category</th>
@@ -23,16 +25,18 @@
       <th>Action</th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-product>
-    <tr  class="item">
-<!--      <td><img alt="image" [src]="product.photos[0]" style="max-width: 100px;max-height: 50px"></td>-->
+  <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+    <tr  class="item" [pSelectableRow]="product" [pSelectableRowIndex]="rowIndex">
+      <td>{{rowIndex+1}}</td>
+      <td>{{ product.id }}</td>
+<!--      <td><img alt="image" [src]="product.images" style="max-width: 100px;max-height: 50px"></td>-->
       <td>{{ product.name }}</td>
-      <td>{{ product.categoryId }}</td>
-      <td>{{ product.stock }}</td>
-      <td>{{ product.price }}</td>
+      <td>{{ product.categoryName }}</td>
+      <td>{{ product.unitsInStock }}</td>
+      <td>${{ product.price }}</td>
       <td>
         <p-button icon="pi pi-trash" label="Delete" (click)="showDialogDeleteProduct(product,$event)"></p-button>
-        <p-button icon="pi pi-trash" class="editButton" label="Edit" (click)="showDialogEditProduct(product,$event)"></p-button>
+        <p-button icon="pi pi-file-edit" class="editButton" label="Edit" (click)="showDialogEditProduct(product,$event)"></p-button>
       </td>
     </tr>
   </ng-template>

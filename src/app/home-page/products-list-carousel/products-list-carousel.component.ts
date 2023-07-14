@@ -72,7 +72,6 @@ export class ProductsListCarouselComponent {
   }
   addToCart(product: Product) {
     this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
-      console.log(res);
     });
 
     //track shopping cart through local storage
