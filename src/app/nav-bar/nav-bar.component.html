@@ -168,7 +168,7 @@
         </tr>
         <tr *ngFor="let product of favoriteProductsList" class="contentRow">
           <td class="productContainer">
-            <img [src]="product.images[0]" alt="product photo" />
+            <img [src]="product.imagesName[0]" alt="product photo" />
             <span class="productName">{{ product.name }}</span>
           </td>
           <td>x{{ product.unitsInStock }}</td>

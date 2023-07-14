@@ -25,7 +25,7 @@
 
   <p-carousel
     *ngIf="dataLoaded"
-    [value]="productsToDisplay"
+    [value]="productsToDisplayWithImages"
     [numVisible]="5"
     [numScroll]="5"
     [circular]="true"
@@ -45,21 +45,22 @@
             class="absolute mostSelledPosition"
           ></p-tag>
           <p-tag
-            *ngIf="product.discount && product.discount > 0"
+            *ngIf="product.discountPercentage && product.discountPercentage > 0"
             severity="danger"
             value="Limited offer"
             class="absolute limitedOfferPosition"
           ></p-tag>
           <p-tag
-            *ngIf="product.discount && product.discount > 0"
+            *ngIf="product.discountPercentage && product.discountPercentage > 0"
             severity="danger"
-            [value]="'-' + product.discount.toFixed(0) + '%'"
+            [value]="'-' + product.discountPercentage.toFixed(0) + '%'"
             class="absolute discountApplied"
           >
           </p-tag>
           <img
-            [src]="product.images"
+            [src]="product.productImage"
             [alt]="product.name"
+            (error)="handleMissingImage($event)"
             class="w-full h-12rem max-h-full shadow-2 productImage"
           />
         </div>
@@ -96,14 +97,17 @@
             ></p-tag> -->
             <app-product-status [product]="product"></app-product-status>
             <h5 class="mt-0 mb-1 productPrice">
-              <span [ngClass]="{ oldPrice: product.discount !== 0 }">
+              <span [ngClass]="{ oldPrice: product.discountPercentage !== 0 }">
                 {{ "$" + product.price }} </span
-              ><span *ngIf="product.discount !== 0" class="discountedPrice">
+              ><span
+                *ngIf="product.discountPercentage !== 0"
+                class="discountedPrice"
+              >
                 {{
                   "$" +
                     (
                       product.price -
-                      (product.price * product.discount) / 100
+                      (product.price * product.discountPercentage) / 100
                     ).toFixed(0)
                 }}</span
               >
