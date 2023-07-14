@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("login form")
     this.loginForm = new FormGroup({
       'username': new FormControl('', Validators.required),
       'password': new FormControl('', Validators.required)
@@ -36,16 +35,13 @@ export class LoginComponent implements OnInit {
       this.authService.login(val.username, val.password)
         .subscribe({
           next: (data) => {
-            console.log('User logged in')
             this.userService.getLoggedInUser().subscribe(
               (user) => {
                 localStorage.setItem('currentUser', JSON.stringify(user))
-                console.log("crt user:", user)
               }
             )
           },
           error: (data) => {
-            console.log('Error Encountered!')
             alert('Cannot login!')
           }
         });
