@@ -43,7 +43,7 @@ export class ProductsListCarouselComponent {
       this.productsToDisplayWithImages = this.productsToDisplay.map(
         (product) => {
           //TODO REFACTOR THE MAP
-          if (product.imagesName.length > 0) {
+          if (product.imagesName.length > 0 && product.imagesName[0].length > 0) {
             const url = `http://localhost:8081/api/images/download?name=${product.imagesName[0]}`;
 
             return {

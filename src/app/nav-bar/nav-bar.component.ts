@@ -94,7 +94,7 @@ export class NavBarComponent {
     });
     this.isAdmin = false;
     //subscribes to get nb of cart/favorite items
-    this.goToAdminPage();
+    // this.goToAdminPage();
 
     // Subscribes to get the number of cart/favorite items
 

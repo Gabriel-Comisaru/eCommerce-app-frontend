@@ -53,7 +53,7 @@
           <p-tag
             *ngIf="product.discountPercentage && product.discountPercentage > 0"
             severity="danger"
-            [value]="'-' + product.discountPercentage.toFixed(0) + '%'"
+            [value]="'-' + product.discountPercentage?.toFixed(0) + '%'"
             class="absolute discountApplied"
           >
           </p-tag>
@@ -80,7 +80,7 @@
             [cancel]="false"
           ></p-rating>
 
-          <div>({{ product.rating.toFixed(2) }})</div>
+          <div>({{ product.rating?.toFixed(2) }})</div>
           <div class="stockAndPrice">
             <!-- <p-tag
               [value]="getStock(product.stock)"
