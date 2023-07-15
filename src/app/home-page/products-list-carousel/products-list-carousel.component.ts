@@ -123,7 +123,8 @@ export class ProductsListCarouselComponent {
   }
 
   handleMissingImage(event: Event) {
-    (event.target as HTMLImageElement).style.display = 'none';
+    (event.target as HTMLImageElement).src =
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
   }
 }
 // <!-- notificare ca am adaugat in cos -->

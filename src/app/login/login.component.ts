@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     private userService: UserService,
     private router: Router
   ) {}
-  public loginError: boolean = false;
+  public loginErrorCause!: string;
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -40,7 +40,20 @@ export class LoginComponent implements OnInit {
           });
         },
         error: (data) => {
-          alert('Cannot login!');
+          console.log('Cannot login!');
+          console.log(data);
+          switch (data.error.message) {
+            case 'Something went wrong': {
+              this.loginErrorCause = 'username';
+              break;
+            }
+            case 'Invalid Credentials': {
+              this.loginErrorCause = 'password';
+              break;
+            }
+            default:
+              this.loginErrorCause = 'unknown';
+          }
         },
       });
     }

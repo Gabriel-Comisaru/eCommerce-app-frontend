@@ -28,18 +28,34 @@ export class RegisterComponent {
     controlName: string;
     validators: any;
   }> = [
-    { fieldName: 'First name', controlName: 'first_name', validators: [] },
-    { fieldName: 'Last name', controlName: 'last_name', validators: [] },
+    {
+      fieldName: 'First name',
+      controlName: 'first_name',
+      validators: [Validators.minLength(2), Validators.maxLength(15)],
+    },
+    {
+      fieldName: 'Last name',
+      controlName: 'last_name',
+      validators: [Validators.minLength(2), Validators.maxLength(15)],
+    },
     {
       fieldName: 'Username',
       controlName: 'username',
       validators: [Validators.required],
     },
-    { fieldName: 'Email', controlName: 'email', validators: [] },
+    {
+      fieldName: 'Email',
+      controlName: 'email',
+      validators: [Validators.email, Validators.required],
+    },
     {
       fieldName: 'Password',
       controlName: 'password',
-      validators: [Validators.required],
+      validators: [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(20),
+      ],
     },
   ];
 

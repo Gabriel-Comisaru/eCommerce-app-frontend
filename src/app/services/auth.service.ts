@@ -46,6 +46,8 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
+    // favoriteProducts doesn t update in real time
+    localStorage.removeItem('favoriteProducts');
     this.userService.loggedUser.next({});
     this.redirectToLogin();
   }
