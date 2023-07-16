@@ -11,7 +11,9 @@ import { BASE_URL_API } from '../../settings';
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient,
+
+  ) {}
 
   private productsUrl = `${BASE_URL_API}/products`;
   private categoriesUrl = 'http://localhost:8081/api/categories';
@@ -41,6 +43,9 @@ export class ProductsService {
   }
   getfavoriteProductsObservable(): Observable<Product[]> {
     return this.favoriteProductsObservable.asObservable();
+  }
+  getOrders(): Observable<any> {
+    return this.httpClient.get<any>(this.orderItemsUrl);
   }
 
   getProducts(): Observable<any> {
@@ -79,6 +84,14 @@ export class ProductsService {
   }
 
   getOrderItems(): Observable<OrderItem[]> {
+
+
+
+
+
+
+
+
     return this.httpClient.get<OrderItem[]>(this.orderItemsUrl);
   }
 

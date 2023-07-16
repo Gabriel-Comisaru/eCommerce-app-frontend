@@ -44,7 +44,7 @@ export class NavBarComponent {
   public itemCategoriesAny: any[] = [];
   // Placeholder
   public itemPricesAny: any[] = [];
-  orderItems: Subject<any[]> = new Subject<any[]>();
+  orderItems:any = [];
 
   constructor(
     private router: Router,
@@ -108,6 +108,10 @@ export class NavBarComponent {
       .subscribe((response) => (this.favoriteProductsList = response));
     this.productsService.setInitialFavoriteProducts();
 
+    this.productsService
+      .getOrderItems()
+      .subscribe((res) => (this.basketContent = [...res]));
+
     if (this.authService.isAuthenticated()) {
       this.productsService.getOrderItems().subscribe((res) => {
         this.basketContent = [...res];
@@ -148,65 +152,10 @@ export class NavBarComponent {
               category: this.itemCategories.get(item.categoryId) || '',
             };
           });
-          this.orderItems.next(orderItems); // Emit the order items
-          console.log(orderItems);
+          // this.orderItems.next(orderItems); // Emit the order items
         });
       }, 500);
     }
-  }
-
-  loadData() {
-    this.productsService
-      .getfavoriteProductsObservable()
-      .subscribe((response) => (this.favoriteProductsList = response));
-    this.productsService.setInitialFavoriteProducts();
-
-    this.productsService.getOrderItems().subscribe((res) => {
-      this.basketContent = [...res];
-      this.nbOfBasketProducts = this.basketContent.reduce(
-        (acc, currValue) => acc + currValue.quantity,
-        0
-      );
-
-      console.log(res);
-    });
-
-    let that = this;
-    this.productService.getProducts().subscribe((list) => {
-      this.itemNamesAny = list.map((product: any) => {
-        that.itemNames.set(product.id, product.name);
-      });
-    });
-    this.productService.getProducts().subscribe((list) => {
-      this.itemPricesAny = list.map((product: any) => {
-        that.itemPrices.set(product.id, product.price);
-      });
-    });
-    this.categoryService.getCategories().subscribe((list: any[]) => {
-      this.itemCategoriesAny = list.map((category: any) => {
-        that.itemCategories.set(category.id, category.name);
-      });
-    });
-
-    console.log(this.itemNames);
-    setTimeout(() => {
-      this.basketService.getOrderItems().subscribe((list: any[]) => {
-        const orderItems = list.map((item: any) => {
-          console.log(item);
-          return {
-            id: item.id,
-            name: this.itemNames.get(item.productId) || '',
-            productId: item.productId,
-            orderId: item.orderId,
-            quantity: item.quantity,
-            price: this.itemPrices.get(item.productId) || 0,
-            category: this.itemCategories.get(item.categoryId) || '',
-          };
-        });
-        this.orderItems.next(orderItems); // Emit the order items
-        console.log(orderItems);
-      });
-    }, 500);
   }
 
   goHome() {
@@ -220,7 +169,7 @@ export class NavBarComponent {
   goToAdminPage() {
     this.isAdmin = !this.isAdmin;
 
-    if (this.isAdmin == true) {
+    if (this.isAdmin) {
       this.router.navigate(['admin']);
     } else {
       this.router.navigate(['']);

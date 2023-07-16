@@ -15,8 +15,8 @@ export class BasketService {
 
 
   createOrder(productId: number) {
-    const url = `${this.url}/orderItems/${productId}`;
-    return this.httpClient.post(url, { "quantity": 1 }).subscribe()
+    const url = `${this.url}/orderItems/${productId}?quantity=1`;
+    return this.httpClient.post(url, {}).subscribe()
     // this.orderItems.push(productId)
     // localStorage.setItem('orderItems', JSON.stringify(this.orderItems))
 

@@ -137,7 +137,7 @@
           <th>Price</th>
         </tr>
 
-        <tr *ngFor="let product of orderItems | async" class="contentRow">
+        <tr *ngFor="let product of orderItems" class="contentRow">
           <td class="productContainer">
             <!--            <img [src]="product.images[0]" alt="product photo" />-->
             <span class="productName">{{ product.name }}</span>
