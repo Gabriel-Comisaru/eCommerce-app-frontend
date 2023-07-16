@@ -202,4 +202,12 @@ export class NavBarComponent {
   getItemPrice(product: any) {
     return product.price * product.quantity;
   }
+
+  getOrderItemLength() {
+    let noOfBasketProducts = 0;
+    this.orderItems.forEach((item: any) => {
+      noOfBasketProducts += item.quantity;
+    });
+    return noOfBasketProducts;
+  }
 }

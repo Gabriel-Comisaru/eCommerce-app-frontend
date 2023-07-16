@@ -44,7 +44,9 @@ export class BasketService {
   updateOrderQuantity(productId: number, quantity: number) {
     const url = `${this.url}/orderItems/${productId}/quantity?quantity=${quantity}`;
     // console.log(url)
-    return this.httpClient.put(url, {}).subscribe();
+    this.httpClient.put(url, {}).subscribe();
+    this.NavBarComponent.loadBasketContent();
+    return
   }
 
 
