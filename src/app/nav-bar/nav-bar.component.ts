@@ -8,12 +8,13 @@ import {
   OrderItem,
   detailedOrderItem,
 } from '../home-page/shared/orderItem.model';
-import { concatMap, of, switchMap, map } from 'rxjs';
+import {concatMap, of, switchMap, map, Observable} from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { BasketService } from '../shopping-cart/shared/basket.service';
 import { CategoriesService } from '../product-categories/shared/categories.service';
 import { Subject } from 'rxjs';
+import {observableToBeFn} from "rxjs/internal/testing/TestScheduler";
 
 @Component({
   selector: 'app-nav-bar',
@@ -44,7 +45,7 @@ export class NavBarComponent {
   public itemCategoriesAny: any[] = [];
   // Placeholder
   public itemPricesAny: any[] = [];
-  orderItems:any = [];
+  public orderItems:any= [];
 
   constructor(
     private router: Router,
@@ -54,7 +55,10 @@ export class NavBarComponent {
     private basketService: BasketService,
     private productService: ProductsService,
     private categoryService: CategoriesService
-  ) {}
+  ) {
+    this.basketService.NavBarComponent = this;
+
+  }
 
   ngOnInit() {
     console.log(this.userLoggedIn);
@@ -120,43 +124,41 @@ export class NavBarComponent {
           0
         );
       });
-      let that = this;
-      this.productService.getProducts().subscribe((list) => {
-        this.itemNamesAny = list.map((product: any) => {
-          that.itemNames.set(product.id, product.name);
-        });
-      });
-      this.productService.getProducts().subscribe((list) => {
-        this.itemPricesAny = list.map((product: any) => {
-          that.itemPrices.set(product.id, product.price);
-        });
-      });
-      this.categoryService.getCategories().subscribe((list: any[]) => {
-        this.itemCategoriesAny = list.map((category: any) => {
-          that.itemCategories.set(category.id, category.name);
-        });
-      });
 
-      console.log(this.itemNames);
-      setTimeout(() => {
-        this.basketService.getOrderItems().subscribe((list: any[]) => {
-          const orderItems = list.map((item: any) => {
-            console.log(item);
-            return {
-              id: item.id,
-              name: this.itemNames.get(item.productId) || '',
-              productId: item.productId,
-              orderId: item.orderId,
-              quantity: item.quantity,
-              price: this.itemPrices.get(item.productId) || 0,
-              category: this.itemCategories.get(item.categoryId) || '',
-            };
-          });
-          // this.orderItems.next(orderItems); // Emit the order items
-        });
-      }, 500);
+      this.loadBasketContent()
     }
   }
+  loadBasketContent() {
+    //extracting the name and the price of the products
+    this.productService.getProducts().subscribe((list) => {
+      this.itemNamesAny = list.map((product: any) => {
+        this.itemNames.set(product.id, product.name);
+        this.itemPrices.set(product.id, product.price);
+
+      });
+    });
+
+
+    console.log(this.itemNames);
+    setTimeout(() => {
+      this.basketService.getOrderItems().subscribe((list: any[]) => {
+        this.orderItems = list.map((item: any) => {
+          return {
+            id: item.id,
+            name: this.itemNames.get(item.productId) || '',
+            productId: item.productId,
+            orderId: item.orderId,
+            quantity: item.quantity,
+            price: this.itemPrices.get(item.productId) || 0,
+          };
+        });
+
+        // this.orderItems.next(orderItems);
+      });
+    }, 1);
+    console.log(this.orderItems);
+  }
+
 
   goHome() {
     this.router.navigate(['']);

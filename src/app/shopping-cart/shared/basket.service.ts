@@ -1,14 +1,17 @@
-import { Injectable } from '@angular/core';
+import {Injectable, Optional} from '@angular/core';
 import { Product } from 'src/app/home-page/shared/product.model';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {NavBarComponent} from "../../nav-bar/nav-bar.component";
 
 @Injectable({
   providedIn: 'root',
 })
 export class BasketService {
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient,
+              @Optional() public NavBarComponent: NavBarComponent,
+              ) {}
   private basketItems: Product[] = [];
   orderItems: any   = [];
   private url = 'http://localhost:8081/api';
@@ -16,7 +19,9 @@ export class BasketService {
 
   createOrder(productId: number) {
     const url = `${this.url}/orderItems/${productId}?quantity=1`;
-    return this.httpClient.post(url, {}).subscribe()
+    return this.httpClient.post(url, {}).subscribe(() => {
+      this.NavBarComponent.loadBasketContent();
+    });
     // this.orderItems.push(productId)
     // localStorage.setItem('orderItems', JSON.stringify(this.orderItems))
 

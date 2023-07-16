@@ -31,7 +31,7 @@
         class="pi pi-shopping-cart"
         pBadge
         severity="danger"
-        [value]="nbOfBasketProducts.toString()"
+        [value]="orderItems.length"
       ></i
       ><span>Basket</span></a
     >
@@ -54,6 +54,11 @@
       <i class="pi pi-user"></i
       ><span style="white-space: nowrap">My Account</span></a
     >
+    <a
+      class="navBarItem"
+      (click)="loadBasketContent()"
+      *ngIf="isAuthenticated()"
+      style="white-space: nowrap">load basket</a>
     <a
       class="navBarItem"
       (click)="userOptions.toggle($event)"
