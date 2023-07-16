@@ -67,6 +67,7 @@ export class NavBarComponent {
         return {
           label: category.name,
           icon: 'pi pi-fw pi-bars',
+          routerLink: `/products/${category.id}`,
         };
       });
       this.categoryItems.push({
@@ -213,7 +214,11 @@ export class NavBarComponent {
   }
 
   goToBasketPage() {
-    this.router.navigate(['basket']);
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['basket']);
+    } else {
+      this.router.navigate(['login']);
+    }
   }
 
   goToAdminPage() {

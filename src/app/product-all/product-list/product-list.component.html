@@ -1,37 +1,45 @@
 <div class="product-list" *ngIf="lalalala != null">
-  <p-card *ngFor="let product of lalalala" class="product-card" (click)="getProductDetails(product.id, $event)">
-    <ng-template pTemplate="title" class="product-title">
-
-    </ng-template>
+  <p-card
+    *ngFor="let product of lalalala"
+    class="product-card"
+    (click)="getProductDetails(product.id, $event)"
+  >
+    <ng-template pTemplate="title" class="product-title"> </ng-template>
 
     <ng-template pTemplate="content">
       <div class="product-image">
         <!-- <img [src]="product.photos[0]" alt="Product Image" class="fit-image"> -->
       </div>
-      <div class="title-container"
-           style="
-            overflow: hidden !important;
+      <div
+        class="title-container"
+        style="
+          overflow: hidden !important;
           text-overflow: ellipsis !important;
-            white-space: nowrap !important;
-
-           "
+          white-space: nowrap !important;
+        "
       >
         {{ product.name }}
       </div>
 
-
-<!--      <p class="product-description">{{ product.description }}</p>-->
+      <!--      <p class="product-description">{{ product.description }}</p>-->
 
       <div class="product-rating">
         <p-rating [(ngModel)]="product.rating" [readonly]="true"></p-rating>
       </div>
-      <div class="pricing">
-        {{ product.price }} $
-      </div>
+      <div class="pricing">{{ product.price }} $</div>
     </ng-template>
     <ng-template pTemplate="footer">
-      <p-button icon="pi pi-heart" class="favorite-button"></p-button>
-      <p-button class="add-to-cart-button" style="float: right" (click)="addToBasket(product, $event)">Add to Cart</p-button>
+      <p-button
+        icon="pi pi-heart"
+        class="favorite-button"
+        (click)="addToFavorite(product, $event)"
+      ></p-button>
+      <p-button
+        class="add-to-cart-button"
+        style="float: right"
+        (click)="addToBasket(product, $event)"
+        >Add to Cart</p-button
+      >
     </ng-template>
   </p-card>
 </div>
@@ -39,4 +47,3 @@
 <div *ngIf="lalalala.length < 1">
   <h1>There are no products to fit this category</h1>
 </div>
-
