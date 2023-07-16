@@ -44,10 +44,6 @@ export class ProductDetailsComponent implements OnInit {
       product.rating = this.overallRating;
       this.getImages();
     });
-    this.productService.getProductReviews(id).subscribe((reviews) => {
-      this.reviews = reviews;
-      this.calculateRating();
-    });
   }
 
   scrollToSection(id: string) {
@@ -57,7 +53,9 @@ export class ProductDetailsComponent implements OnInit {
 
   getImages() {
     for (let image of this.product.imagesName) {
-      this.images.push(`http://localhost:8081/api/images/download?name=${image}`);
+      this.images.push(
+        `http://localhost:8081/api/images/download?name=${image}`
+      );
     }
     this.images = [...this.images];
   }
