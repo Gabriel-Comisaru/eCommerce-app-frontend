@@ -31,7 +31,7 @@
       <td>{{rowIndex+1}}</td>
 
       <td>
-        <p-image width="100px" src="http://localhost:8081/api/images/download?name={{product.imagesName[0]}}" ></p-image>
+        <img *ngIf="product.imagesName[0]" width="100px" src="http://localhost:8081/api/images/download?name={{product.imagesName[0]}}" (error)="handleMissingImg($event)" >
       </td>
 <!--      <td><img alt="image" [src]="product.images" style="max-width: 100px;max-height: 50px"></td>-->
       <td>{{ product.name }}</td>

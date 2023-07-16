@@ -17,7 +17,7 @@ export class ProductsService {
   private categoriesUrl = 'http://localhost:8081/api/categories';
   private reviewsUrl = 'http://localhost:8081/api/reviews';
   private productCategoryUrl = 'http://localhost:8081/api/products/category';
-  private imageUrl = 'http://localhost:8081/api/images/upload';
+  private imageUrl = 'http://localhost:8081/api/images/upload'
 
   private orderItemsUrl = 'http://localhost:8081/api/orderItems';
   public shoppingCartObservable = new Subject<Product[]>();
@@ -103,9 +103,9 @@ export class ProductsService {
     return this.httpClient.get<any>(url);
   }
 
-  saveImage(image: any, id: number): Observable<any> {
-    const url = `${this.imageUrl}/${id}`;
-    return this.httpClient.post(url, image);
+  saveImage(image:any,id:number):Observable<any>{
+    const url = `${this.imageUrl}/${id}`
+    return this.httpClient.post(url,image);
   }
 
   getProductImage(productImageName: string): Observable<any> {

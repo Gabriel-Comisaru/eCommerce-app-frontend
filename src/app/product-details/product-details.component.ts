@@ -14,7 +14,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class ProductDetailsComponent implements OnInit {
   product: Product = {} as Product;
-  images: { url: string }[] = [];
+  images: String[] = [];
   position: string = 'bottom';
   overallRating: number = 0;
   discountedPrice: number = 0;
@@ -42,7 +42,7 @@ export class ProductDetailsComponent implements OnInit {
         product.price - product.price * (product.discountPercentage / 100)
       );
       product.rating = this.overallRating;
-      // this.getImages();
+      this.getImages();
     });
     this.productService.getProductReviews(id).subscribe((reviews) => {
       this.reviews = reviews;
@@ -55,12 +55,12 @@ export class ProductDetailsComponent implements OnInit {
     section.scrollIntoView({ behavior: 'smooth' });
   }
 
-  // getImages() {
-  //   for (let photo of this.product.images) {
-  //     this.images.push({ url: photo });
-  //   }
-  //   this.images = [...this.images];
-  // }
+  getImages() {
+    for (let image of this.product.imagesName) {
+      this.images.push(`http://localhost:8081/api/images/download?name=${image}`);
+    }
+    this.images = [...this.images];
+  }
 
   onSubmit() {
     if (this.authService.isAuthenticated()) {
