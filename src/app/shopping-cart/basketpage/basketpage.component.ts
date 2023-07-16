@@ -73,11 +73,11 @@ export class BasketpageComponent implements OnInit {
       })
     });
 
-    console.log(this.itemNames);
+    // console.log(this.itemNames);
     setTimeout(() => {
       this.basketService.getOrderItems().subscribe((list: any[]) => {
         this.orderItems = list.map( (item: any) => {
-          console.log(item)
+          // console.log(item)
           return {
             id: item.id,
             name: this.itemNames.get(item.productId) || '',
@@ -88,7 +88,7 @@ export class BasketpageComponent implements OnInit {
             category: this.itemCategories.get(item.categoryId) || ''
           };
         });
-        console.log(this.orderItems)
+        // console.log(this.orderItems)
       });
 
     }, 500)

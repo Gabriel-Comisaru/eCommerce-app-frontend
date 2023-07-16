@@ -30,7 +30,7 @@ export class ProductListComponent implements  OnInit{
 
     // this.basketService.addToBasket(product);
     // this.basketService.log();
-    console.log(product.id);
+    // console.log(product.id);
     this.basketService.createOrder(product.id)
   }
 

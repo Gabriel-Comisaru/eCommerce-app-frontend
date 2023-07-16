@@ -139,7 +139,7 @@ export class NavBarComponent {
     });
 
 
-    console.log(this.itemNames);
+    // console.log(this.itemNames);
     setTimeout(() => {
       this.basketService.getOrderItems().subscribe((list: any[]) => {
         this.orderItems = list.map((item: any) => {
@@ -156,7 +156,7 @@ export class NavBarComponent {
         // this.orderItems.next(orderItems);
       });
     }, 1);
-    console.log(this.orderItems);
+    // console.log(this.orderItems);
   }
 
 
