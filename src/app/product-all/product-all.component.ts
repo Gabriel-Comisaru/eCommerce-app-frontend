@@ -36,9 +36,13 @@ export class ProductAllComponent implements OnInit {
   loadProducts(): void {
     this.productService.getProducts().subscribe((list) => {
       this.lalalala = list.map((item: any) => {
+        const url = `http://localhost:8081/api/images/download?name=${item.imagesName[0]}`;
+
         return {
           ...item,
-          rating: 0
+          rating: 0,
+          productImage: url,
+
         };
       });
 
@@ -48,10 +52,11 @@ export class ProductAllComponent implements OnInit {
           item.reviews = reviews;
           item.rating = this.calculateRating(item.reviews);
           this.placeholder = this.lalalala;
-
+          console.log(item)
         });
       });
     });
+
     if(this.route.snapshot) {
       this.applyFilters(this.route.snapshot.params)
     }
