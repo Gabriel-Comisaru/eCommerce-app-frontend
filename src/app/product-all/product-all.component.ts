@@ -16,13 +16,11 @@ export class ProductAllComponent implements OnInit {
   public mockProducts: Product[] = [];
   public categories: any[] = [];
   public placeholder: any = [];
-  overallRating: any = 0;
   public filteredList: any[] = [];
   public totalRows: number = 0;
 
   constructor(private productService: ProductsService,
               private route: ActivatedRoute,
-              private categoryService: CategoriesService
               ) {}
 
   ngOnInit(): void {
@@ -38,7 +36,6 @@ export class ProductAllComponent implements OnInit {
           ...item,
           rating: 0,
           productImage: url,
-
         };
       });
       // Retrieve reviews for each item and update the rating
@@ -56,19 +53,30 @@ export class ProductAllComponent implements OnInit {
     if(this.route.snapshot) {
       this.applyFilters(this.route.snapshot.params)
     }
+
   }
 
   applyFilters(selectedCategory: any) {
     this.selectedCategory = selectedCategory;
     if (typeof this.selectedCategory === 'string') {
       this.filteredList = this.placeholder.filter((product: Product) => product.categoryId == this.selectedCategory);
-    }else if (typeof this.selectedCategory === 'object'){
-      this.filteredList = this.placeholder.filter((product: Product) => product.categoryId === this.selectedCategory.id);
-    }
-    else {
+    } else if (typeof this.selectedCategory === 'object') {
+      this.productService.getProductsByCat(this.selectedCategory.id).subscribe((products) => {
+        this.filteredList = products.map((item: any) => {
+          // Map the properties as needed
+          const url = `http://localhost:8081/api/images/download?name=${item.imagesName[0]}`;
+          return {
+            ...item,
+            rating: 0,
+            productImage: url,
+          };
+        });
+      });
+    } else {
       console.log('No selected category');
     }
   }
+
   calculateRating(reviews: Review[]): number {
     let totalRating = 0;
     for (let review of reviews) {
