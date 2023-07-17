@@ -1,9 +1,9 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
-import { Product } from '../home-page/shared/product.model';
+import {Component, Input, OnInit} from '@angular/core';
+import {Product} from '../home-page/shared/product.model';
 import {ActivatedRoute} from "@angular/router";
 import {CategoriesService} from "../product-categories/shared/categories.service";
-import { ProductsService } from '../home-page/shared/products.service';
-import {observable, Observable, Subscription} from "rxjs";
+import {ProductsService} from '../home-page/shared/products.service';
+import {Review} from "../home-page/shared/review.model";
 
 @Component({
   selector: 'app-product-all',
@@ -14,11 +14,11 @@ export class ProductAllComponent implements OnInit {
   @Input () selectedCategory!: any;
   public mockProducts: Product[] = [];
   public categories: any[] = [];
-  public placeholder: any[] = [];
-  public allProds: any = [];
+  public placeholder: any = [];
+  overallRating: any = 0;
   public lalalala: any[] = [];
   public categoryNames: Map<number,string> = new Map<number, string>()
-
+  reviews: Review[] = [];
 
   constructor(private productService: ProductsService,
               private route: ActivatedRoute,
@@ -39,31 +39,17 @@ export class ProductAllComponent implements OnInit {
     let that = this;
 
       that.productService.getProducts().subscribe((list) => {
-        that.lalalala = Array.from(list).map( (product: any) => {
-          let placeholder = ''
-          return {
-            id: product.id,
-            name: product.name,
-            photos: product.images,
-            price: product.price,
-            reviews: ['Nothing yet'],
-            rating: product.rating,
-            discount: product.discount,
-            categoryId: product.categoryId,
-            description: product.description,
-            stock: product.stock,
-            userId: product.userId
+        that.lalalala = list.map((item: any) => {
 
-          };
         });
-        console.log('Product ---', that.lalalala);
-
-        that.placeholder = that.lalalala;
-        if (this.route.snapshot.params['category']) {
-          this.applyFilters(this.route.snapshot.params['category']);
-          this.selectedCategory = this.route.snapshot.params['category'];
-        }
       });
+
+      this.lalalala.forEach((item: any) => {
+        this.productService.getProductReviews(item.id).subscribe((reviews) => {
+          item.reviews = reviews;
+          this.calculateRating();
+        })
+      })
 
     console.log(this.route.snapshot.params)
     console.log(this.route.snapshot.params['category'])
@@ -71,6 +57,7 @@ export class ProductAllComponent implements OnInit {
 
 
   }
+
   applyFilters(selectedCategory: any) {
     this.selectedCategory = selectedCategory;
     console.log(this.selectedCategory, 'this is the selected category')
@@ -87,6 +74,13 @@ export class ProductAllComponent implements OnInit {
     else {
       console.log('No selected category');
     }
+  }
+  calculateRating() {
+    let totalRating = 0;
+    for (let review of this.reviews) {
+      totalRating += review.rating
+    }
+    return Math.round(totalRating / this.reviews.length);
   }
 
   clearFilters(selectedCategory: string) {
