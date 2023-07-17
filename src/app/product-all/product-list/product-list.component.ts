@@ -13,7 +13,7 @@ import {BehaviorSubject} from "rxjs";
 })
 export class ProductListComponent implements OnInit {
   @Input() mockProduct!: Product[];
-  @Input() lalalala!: Product[];
+  @Input() filteredList!: Product[];
   @Input() totalRows!: number;
   totalRows$?: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
