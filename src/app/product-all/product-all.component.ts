@@ -93,6 +93,7 @@ export class ProductAllComponent implements OnInit {
     this.selectedCategory = selectedCategory.selectedCategory;
     console.log('Selected Category:', this.selectedCategory.id);
       this.filteredList = this.placeholder;
+      this.totalRows = this.filteredList.length
       console.log(this.route.snapshot.params)
       this.router.navigate(['/products']);
 
