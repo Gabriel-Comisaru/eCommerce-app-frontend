@@ -56,4 +56,5 @@ export class ProductListComponent implements OnInit {
       this.router.navigate(['login']);
     }
   }
+
 }

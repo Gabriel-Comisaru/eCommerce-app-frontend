@@ -39,6 +39,7 @@
   padding-right: 10px;
   overflow: inherit;
   margin-top: 5vh;
+  padding-bottom: 5vh;
   box-sizing: border-box; /* Include padding and border in the width calculation */
 }
 

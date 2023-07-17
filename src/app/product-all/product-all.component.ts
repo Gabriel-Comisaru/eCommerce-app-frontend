@@ -26,41 +26,44 @@ export class ProductAllComponent implements OnInit {
               ) {}
 
   ngOnInit(): void {
+   this.loadProducts();
+   console.log(this.placeholder);
+   console.log(this.lalalala);
+
+
+  }
+
+  loadProducts(): void {
     this.productService.getProducts().subscribe((list) => {
       this.lalalala = list.map((item: any) => {
-        console.log(item, 'this is the item');
         return {
           ...item,
-          rating: 0 // Assign initial value for the 'rating' property
+          rating: 0
         };
       });
 
       // Retrieve reviews for each item and update the rating
       this.lalalala.forEach((item: any) => {
         this.productService.getProductReviews(item.id).subscribe((reviews) => {
-          console.log(reviews, 'this is the reviews');
           item.reviews = reviews;
-          item.rating = this.calculateRating(item.reviews); // Update the 'rating' property
+          item.rating = this.calculateRating(item.reviews);
+          this.placeholder = this.lalalala;
+
         });
       });
     });
+    if(this.route.snapshot) {
+      this.applyFilters(this.route.snapshot.params)
+    }
 
-    console.log(this.route.snapshot.params);
-    console.log(this.route.snapshot.params['category']);
+
   }
-
   applyFilters(selectedCategory: any) {
     this.selectedCategory = selectedCategory;
-    console.log(this.selectedCategory, 'this is the selected category')
-    console.log(typeof selectedCategory, 'this is the type of selected category')
     if (typeof this.selectedCategory === 'string') {
-      console.log(this.placeholder, 'this is the placeholder')
-      console.log(this.lalalala, 'this is the list before filtering')
       this.lalalala = this.placeholder.filter((product: Product) => product.categoryId == this.selectedCategory);
-      console.log(this.lalalala, 'filtering by number')
     }else if (typeof this.selectedCategory === 'object'){
       this.lalalala = this.placeholder.filter((product: Product) => product.categoryId === this.selectedCategory.categoryId);
-      console.log(this.lalalala, 'filtering by object')
     }
     else {
       console.log('No selected category');
