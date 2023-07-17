@@ -8,13 +8,13 @@ import {
   OrderItem,
   detailedOrderItem,
 } from '../home-page/shared/orderItem.model';
-import {concatMap, of, switchMap, map, Observable} from 'rxjs';
+import { concatMap, of, switchMap, map, Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { BasketService } from '../shopping-cart/shared/basket.service';
 import { CategoriesService } from '../product-categories/shared/categories.service';
 import { Subject } from 'rxjs';
-import {observableToBeFn} from "rxjs/internal/testing/TestScheduler";
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 @Component({
   selector: 'app-nav-bar',
@@ -45,7 +45,7 @@ export class NavBarComponent {
   public itemCategoriesAny: any[] = [];
   // Placeholder
   public itemPricesAny: any[] = [];
-  public orderItems:any= [];
+  public orderItems: any = [];
 
   constructor(
     private router: Router,
@@ -57,7 +57,6 @@ export class NavBarComponent {
     private categoryService: CategoriesService
   ) {
     this.basketService.NavBarComponent = this;
-
   }
 
   ngOnInit() {
@@ -107,16 +106,16 @@ export class NavBarComponent {
     //   .subscribe((response) => (this.cartProductsList = response));
     // this.productsService.setInitialCartProducts();
 
-    this.productsService
-      .getfavoriteProductsObservable()
-      .subscribe((response) => (this.favoriteProductsList = response));
-    this.productsService.setInitialFavoriteProducts();
-
-    this.productsService
-      .getOrderItems()
-      .subscribe((res) => (this.basketContent = [...res]));
-
     if (this.authService.isAuthenticated()) {
+      this.productsService
+        .getfavoriteProductsObservable()
+        .subscribe((response) => (this.favoriteProductsList = response));
+      this.productsService.setInitialFavoriteProducts();
+
+      this.productsService
+        .getOrderItems()
+        .subscribe((res) => (this.basketContent = [...res]));
+
       this.productsService.getOrderItems().subscribe((res) => {
         this.basketContent = [...res];
         this.nbOfBasketProducts = this.basketContent.reduce(
@@ -125,7 +124,7 @@ export class NavBarComponent {
         );
       });
 
-      this.loadBasketContent()
+      this.loadBasketContent();
     }
   }
   loadBasketContent() {
@@ -134,10 +133,8 @@ export class NavBarComponent {
       this.itemNamesAny = list.map((product: any) => {
         this.itemNames.set(product.id, product.name);
         this.itemPrices.set(product.id, product.price);
-
       });
     });
-
 
     // console.log(this.itemNames);
     setTimeout(() => {
@@ -158,7 +155,6 @@ export class NavBarComponent {
     }, 1);
     // console.log(this.orderItems);
   }
-
 
   goHome() {
     this.router.navigate(['']);
