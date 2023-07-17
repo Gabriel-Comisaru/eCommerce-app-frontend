@@ -3,18 +3,7 @@ import { BasketService } from "../shared/basket.service";
 import { Product } from "../../home-page/shared/product.model";
 import {ProductsService} from "../../home-page/shared/products.service";
 import {CategoriesService} from "../../product-categories/shared/categories.service";
-
-
-interface Item {
-  id: number;
-  name: string;
-  productId: number;
-  orderId: number;
-  quantity: number;
-  price: number;
-  category: string;
-
-}
+import { Item } from "../shared/item.model";
 
 @Component({
   selector: 'app-basketpage',
@@ -22,8 +11,16 @@ interface Item {
   styleUrls: ['./basketpage.component.css']
 })
 export class BasketpageComponent implements OnInit {
+  constructor(private basketService: BasketService,
+              private productService: ProductsService,
+              private categoryService: CategoriesService,
+
+  ) { }
+
 
   public basketItems: Product[] = [];
+  loading: boolean = true;
+
   header = '';
   products: Array<Product> = [];
   public productQuantityMap: Map<string, number> = new Map<string, number>();
@@ -31,33 +28,27 @@ export class BasketpageComponent implements OnInit {
   public itemPrices: Map<number,number> = new Map<number, number>();
   public itemCategories: Map<number,string> = new Map<number, string>();
   public categories: any[] = [];
+
   //Placeholder
   public itemNamesAny: any[] = [];
   //Placeholder
   public itemCategoriesAny: any[] = [];
-  //Placeholder
-  public itemPricesAny: any[] = [];
+
 
   orderItems: Array<Item> = [];
   rows: any = [5, 10, 15];
   row: any = 5;
 
-  constructor(private basketService: BasketService,
-              private productService: ProductsService,
-              private categoryService: CategoriesService,
-  ) { }
 
   ngOnInit(): void {
+    this.loading = true;
     let that = this;
     this.productService.getProducts().subscribe((list) => {
       this.itemNamesAny = list.map((product: any) => {
         that.itemNames.set(product.id, product.name);
-    });
-    });
-    this.productService.getProducts().subscribe((list) => {
-      this.itemPricesAny = list.map((product: any) => {
         that.itemPrices.set(product.id, product.price);
-      })
+
+      });
     });
     this.categoryService.getCategories().subscribe((list) => {
       this.itemCategoriesAny = list.map((category: any) => {
@@ -87,6 +78,7 @@ export class BasketpageComponent implements OnInit {
     this.orderItems.forEach((item: any) => {
       this.productQuantityMap.set(item.name, item.quantity);
     })
+    this.loading = false;
     }
 
   deleteProduct(product: any, index: number, event: any) {

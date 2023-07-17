@@ -20,6 +20,10 @@ export class ProductListComponent implements OnInit {
     private authService: AuthService,
     private mockproductService: CategoriesService
   ) {}
+  displayedRows = 6;
+  incrementRows = 6;
+  totalRows = 0;
+
 
   filterList(category: string) {
     console.log('Selected Category:', category);
@@ -44,6 +48,7 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.lalalala);
+    this.totalRows = this.lalalala.length;
     this.mockproductService.getCategories().subscribe();
   }
   getProductDetails(id: number, event: any) {
@@ -56,5 +61,9 @@ export class ProductListComponent implements OnInit {
       this.router.navigate(['login']);
     }
   }
+  loadMoreRows(): void {
+    this.displayedRows += this.incrementRows;
+  }
+
 
 }

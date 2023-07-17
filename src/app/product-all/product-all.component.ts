@@ -12,6 +12,7 @@ import {Review} from "../home-page/shared/review.model";
 })
 export class ProductAllComponent implements OnInit {
   @Input () selectedCategory!: any;
+  loading: boolean = true;
   public mockProducts: Product[] = [];
   public categories: any[] = [];
   public placeholder: any = [];
@@ -26,11 +27,8 @@ export class ProductAllComponent implements OnInit {
               ) {}
 
   ngOnInit(): void {
+   this.loading = true;
    this.loadProducts();
-   console.log(this.placeholder);
-   console.log(this.lalalala);
-
-
   }
 
   loadProducts(): void {
@@ -52,7 +50,7 @@ export class ProductAllComponent implements OnInit {
           item.reviews = reviews;
           item.rating = this.calculateRating(item.reviews);
           this.placeholder = this.lalalala;
-          console.log(item)
+          this.loading = false;
         });
       });
     });

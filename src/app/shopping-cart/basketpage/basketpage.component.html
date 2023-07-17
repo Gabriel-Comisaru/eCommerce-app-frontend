@@ -11,25 +11,28 @@
       <th>Price</th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-Item let-index="rowIndex">
+  <ng-template pTemplate="body" let-ItemModel let-index="rowIndex">
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+    </div>
     <tr  class="item">
-<!--      <td *ngIf="isProductAvailable(product)"><img alt="image" [src]="product.photos[0]" style="max-width: 100px;max-height: 50px"></td>-->
-      <td >Not yet</td>
-      <td >{{ Item.name }}</td>
-      <td >{{ Item.category }}</td>
-      <td >
-        <p-button (onClick)="decrement(Item)" icon="pi pi-minus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
+      <td>Not yet</td>
+      <td>{{ ItemModel.name }}</td>
+      <td>{{ ItemModel.category }}</td>
+      <td>
+        <p-button (onClick)="decrement(ItemModel)" icon="pi pi-minus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
         </p-button>
-        {{ Item.quantity }}
-        <p-button (onClick)="increment(Item)" icon="pi pi-plus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
+        {{ ItemModel.quantity }}
+        <p-button (onClick)="increment(ItemModel)" icon="pi pi-plus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
         </p-button>
       </td>
-      <td class="itemPrice">{{getItemPrice(Item)}} $</td>
-      <td >
-        <p-button icon="pi pi-trash" (click)="deleteProduct(Item, index, $event)"></p-button>
+      <td class="itemPrice">{{ getItemPrice(ItemModel) }} $</td>
+      <td>
+        <p-button icon="pi pi-trash" (click)="deleteProduct(ItemModel, index, $event)"></p-button>
       </td>
     </tr>
   </ng-template>
+
   <ng-template pTemplate="footer">
     <tr>
       <td></td>
@@ -47,3 +50,4 @@
   </ng-template>
 </p-table>
 </div>
+
