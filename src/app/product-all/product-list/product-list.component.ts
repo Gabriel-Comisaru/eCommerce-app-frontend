@@ -30,9 +30,8 @@ export class ProductListComponent implements OnInit {
   incrementRows = 6;
 
   ngOnInit(): void {
-    console.log(this.lalalala.length, this.displayedRows)
+    console.log(this.totalRows, this.displayedRows)
     this.mockproductService.getCategories().subscribe();
-    this.totalRows$?.next(this.lalalala.length);
   }
 
   addToBasket(product: Product, event: any): void {

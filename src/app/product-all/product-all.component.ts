@@ -52,11 +52,10 @@ export class ProductAllComponent implements OnInit {
           item.rating = this.calculateRating(item.reviews);
           this.placeholder = this.lalalala;
           this.loading = false;
-
+          this.totalRows = this.lalalala.length;
         });
       });
     });
-    this.totalRows = this.lalalala.length;
 
     if(this.route.snapshot) {
       this.applyFilters(this.route.snapshot.params)
