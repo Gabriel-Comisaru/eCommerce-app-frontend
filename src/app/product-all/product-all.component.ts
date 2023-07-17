@@ -18,9 +18,7 @@ export class ProductAllComponent implements OnInit {
   public placeholder: any = [];
   overallRating: any = 0;
   public lalalala: any[] = [];
-  public categoryNames: Map<number,string> = new Map<number, string>()
   public totalRows: number = 0;
-  reviews: Review[] = [];
 
   constructor(private productService: ProductsService,
               private route: ActivatedRoute,
@@ -36,7 +34,6 @@ export class ProductAllComponent implements OnInit {
     this.productService.getProducts().subscribe((list) => {
       this.lalalala = list.map((item: any) => {
         const url = `http://localhost:8081/api/images/download?name=${item.imagesName[0]}`;
-
         return {
           ...item,
           rating: 0,
@@ -44,7 +41,6 @@ export class ProductAllComponent implements OnInit {
 
         };
       });
-
       // Retrieve reviews for each item and update the rating
       this.lalalala.forEach((item: any) => {
         this.productService.getProductReviews(item.id).subscribe((reviews) => {
@@ -60,15 +56,14 @@ export class ProductAllComponent implements OnInit {
     if(this.route.snapshot) {
       this.applyFilters(this.route.snapshot.params)
     }
-
-
   }
+  
   applyFilters(selectedCategory: any) {
     this.selectedCategory = selectedCategory;
     if (typeof this.selectedCategory === 'string') {
       this.lalalala = this.placeholder.filter((product: Product) => product.categoryId == this.selectedCategory);
     }else if (typeof this.selectedCategory === 'object'){
-      this.lalalala = this.placeholder.filter((product: Product) => product.categoryId === this.selectedCategory.categoryId);
+      this.lalalala = this.placeholder.filter((product: Product) => product.categoryId === this.selectedCategory.id);
     }
     else {
       console.log('No selected category');
@@ -85,7 +80,7 @@ export class ProductAllComponent implements OnInit {
 
   clearFilters(selectedCategory: string) {
     this.selectedCategory = selectedCategory;
-    console.log('Selected Category:', this.selectedCategory.categoryId);
+    console.log('Selected Category:', this.selectedCategory.id);
       this.lalalala = this.placeholder;
       console.log(this.lalalala);
       console.log('No selected category');

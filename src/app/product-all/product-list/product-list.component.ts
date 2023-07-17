@@ -26,7 +26,7 @@ export class ProductListComponent implements OnInit {
     this.totalRows$?.next(0);
   }
 
-  displayedRows = 6;
+  displayedRows = 8;
   incrementRows = 6;
 
   ngOnInit(): void {
