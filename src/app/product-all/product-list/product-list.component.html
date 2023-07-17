@@ -8,15 +8,11 @@
 
     <ng-template pTemplate="content">
       <div class="product-image">
-         <img [src]="product.productImage" alt="Product Image" class="fit-image">
+         <img [src]="product.productImage" alt="Image not available" class="fit-image2">
       </div>
       <div
         class="title-container"
-        style="
-          overflow: hidden !important;
-          text-overflow: ellipsis !important;
-          white-space: nowrap !important;
-        "
+        [ngClass]="{ 'title-container-long': product.name.length > 20 }"
       >
         {{ product.name }}
       </div>
