@@ -1,4 +1,15 @@
+
+<div class="sorting">
+  <p-dropdown
+    [options]="sortOptions"
+    [(ngModel)]="selectedSortOption"
+    (onChange)="sortProducts($event)"
+    placeholder="Sort by"
+  ></p-dropdown>
+
+</div>
 <div class="product-list" *ngIf="filteredList != null">
+
   <p-card
     *ngFor="let product of filteredList.slice(0, displayedRows)"
     class="product-card"

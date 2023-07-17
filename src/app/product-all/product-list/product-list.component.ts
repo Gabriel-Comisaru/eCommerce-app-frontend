@@ -28,6 +28,8 @@ export class ProductListComponent implements OnInit {
 
   displayedRows = 8;
   incrementRows = 6;
+  sortOptions: string[] = ['Price', 'Name'];
+  selectedSortOption: string = ''
 
   ngOnInit(): void {
     console.log(this.totalRows, this.displayedRows)
@@ -59,4 +61,17 @@ export class ProductListComponent implements OnInit {
     this.totalRows$?.next(this.displayedRows);
   }
 
+  sortProducts($event: any) {
+    this.selectedSortOption = $event.target.value;
+    if (this.selectedSortOption === 'Price') {
+      this.mockProduct.sort((a, b) => {
+        return a.price - b.price;
+      });
+    } else if (this.selectedSortOption === 'Name') {
+      this.mockProduct.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+    }
+
+  }
 }

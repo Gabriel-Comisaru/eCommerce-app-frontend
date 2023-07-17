@@ -100,3 +100,7 @@
   -webkit-line-clamp: 1 !important;
   overflow: hidden;
 }
+
+.sorting {
+  margin-bottom: 2vh !important;
+}
