@@ -180,7 +180,7 @@ export class NavBarComponent {
   }
 
   getItemPrice(product: any) {
-    return product.price * product.quantity;
+    return (product.price * product.quantity).toFixed(2);
   }
 
   getOrderItemLength() {

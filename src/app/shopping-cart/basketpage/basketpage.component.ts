@@ -158,15 +158,15 @@ export class BasketpageComponent implements OnInit {
     const firstIndex = this.getFirstIndex(product);
     return firstIndex !== -1 && firstIndex === this.basketItems.indexOf(product);
   }
-  getTotalPrice(): number {
+  getTotalPrice(): string {
     let totalPrice = 0;
     this.orderItems.forEach((item) => {
       totalPrice += item.price * item.quantity
     });
-    return totalPrice;
+    return totalPrice.toFixed(2);
   }
   getItemPrice(item: any){
-    return item.price * item.quantity;
+    return (item.price * item.quantity).toFixed(2);
   }
 
   updateProductQuantity(Item: any) {
