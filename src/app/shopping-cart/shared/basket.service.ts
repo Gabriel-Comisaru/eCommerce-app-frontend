@@ -1,26 +1,26 @@
-import {Injectable, Optional} from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import { Product } from 'src/app/home-page/shared/product.model';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {NavBarComponent} from "../../nav-bar/nav-bar.component";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { NavBarComponent } from '../../nav-bar/nav-bar.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BasketService {
-
-  constructor(private httpClient: HttpClient,
-              @Optional() public NavBarComponent: NavBarComponent,
-              ) {}
+  constructor(
+    private httpClient: HttpClient,
+    @Optional() public NavBarComponent: NavBarComponent
+  ) {}
   private basketItems: Product[] = [];
-  orderItems: any   = [];
+  orderItems: any = [];
   private url = 'http://localhost:8081/api';
-
 
   createOrder(productId: number) {
     const url = `${this.url}/orderItems/${productId}?quantity=1`;
     return this.httpClient.post(url, {}).subscribe(() => {
       this.NavBarComponent.loadBasketContent();
+      console.log(NavBarComponent);
     });
   }
 
@@ -29,26 +29,22 @@ export class BasketService {
     // return this.httpClient.delete(url).subscribe(() => {
     //   this.NavBarComponent.loadBasketContent();
     // });
-    this.httpClient.delete(url).subscribe(() => {})
+    this.httpClient.delete(url).subscribe(() => {});
     this.NavBarComponent.loadBasketContent();
-    return
+    return;
   }
 
   getOrderItems(): Observable<any> {
     const url = `${this.url}/orderItems`;
     this.orderItems = this.httpClient.get<any>(url);
-    return this.httpClient.get<any>(url)
+    return this.httpClient.get<any>(url);
   }
-
 
   updateOrderQuantity(productId: number, quantity: number) {
     const url = `${this.url}/orderItems/${productId}/quantity?quantity=${quantity}`;
     // console.log(url)
     this.httpClient.put(url, {}).subscribe();
     this.NavBarComponent.loadBasketContent();
-    return
+    return;
   }
-
-
-
 }

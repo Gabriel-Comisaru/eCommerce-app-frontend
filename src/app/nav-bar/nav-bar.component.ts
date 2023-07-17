@@ -97,32 +97,12 @@ export class NavBarComponent {
       ];
     });
     this.isAdmin = false;
-    //subscribes to get nb of cart/favorite items
-
-    // Subscribes to get the number of cart/favorite items
-
-    // this.productsService
-    //   .getShopingCartObservable()
-    //   .subscribe((response) => (this.cartProductsList = response));
-    // this.productsService.setInitialCartProducts();
 
     if (this.authService.isAuthenticated()) {
       this.productsService
         .getfavoriteProductsObservable()
         .subscribe((response) => (this.favoriteProductsList = response));
       this.productsService.setInitialFavoriteProducts();
-
-      this.productsService
-        .getOrderItems()
-        .subscribe((res) => (this.basketContent = [...res]));
-
-      this.productsService.getOrderItems().subscribe((res) => {
-        this.basketContent = [...res];
-        this.nbOfBasketProducts = this.basketContent.reduce(
-          (acc, currValue) => acc + currValue.quantity,
-          0
-        );
-      });
 
       this.loadBasketContent();
     }

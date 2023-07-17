@@ -23,7 +23,7 @@
       >
         <ng-template pTemplate="item" let-image>
           <img
-            [src]="image.url"
+            [src]="image"
             style="width: 100%; max-height: 500px; display: block"
           />
         </ng-template>
@@ -62,7 +62,6 @@
               styleClass="p-button-success"
               label="Add to cart"
               icon="pi pi-shopping-cart"
-              (click)="addToCart(product)"
             ></p-button>
             <p-button
               [style]="{ width: '100%', margin: '5px 0' }"
@@ -135,61 +134,40 @@
         <div *ngIf="reviews.length > 1">
           <hr />
           <br />
-          <div
-            class="gallery xl:flex lg:block md:block sm:block lg:justify-content-between md:justify-content-center sm:justify-content-center"
-          >
-            <div class="flex justify-content-center">
-              <p-galleria
-                [value]="images"
-                [circular]="true"
-                [showIndicators]="true"
-                [showItemNavigators]="true"
-                [showThumbnails]="false"
-                [containerStyle]="{ 'max-width': '640px' }"
-              >
-                <ng-template pTemplate="item" let-image>
-                  <img
-                    [src]="image"
-                    style="width: 100%; max-height: 500px; display: block"
-                  />
-                </ng-template>
-              </p-galleria>
-            </div>
-          </div>
-        </div>
-        <div id="addReview" class="add-review w-full my-5">
-          <form [formGroup]="reviewForm">
-            <p-card header="Add a review">
-              <div class="card">
-                <p-rating [cancel]="false" formControlName="rating"></p-rating>
-                <span class="p-float-label my-5">
-                  <input
-                    pInputText
-                    class="w-full max-w-full"
-                    id="reviewTitle"
-                    formControlName="title"
-                    type="text"
-                  />
-                  <label htmlFor="reviewTitle">Title</label>
-                </span>
-                <span class="p-float-label my-5">
-                  <textarea
-                    class="w-full max-w-full"
-                    pInputTextarea
-                    id="reviewBody"
-                    rows="5"
-                    cols="60"
-                    formControlName="comment"
-                    type="text"
-                  ></textarea>
-                  <label htmlFor="reviewBody">Enter your review</label>
-                </span>
-                <p-button label="Submit review" (click)="onSubmit()"></p-button>
-              </div>
-            </p-card>
-          </form>
         </div>
       </div>
     </p-card>
+  </div>
+  <div id="addReview" class="add-review w-full my-5">
+    <form [formGroup]="reviewForm">
+      <p-card header="Add a review">
+        <div class="card">
+          <p-rating [cancel]="false" formControlName="rating"></p-rating>
+          <span class="p-float-label my-5">
+            <input
+              pInputText
+              class="w-full max-w-full"
+              id="reviewTitle"
+              formControlName="title"
+              type="text"
+            />
+            <label htmlFor="reviewTitle">Title</label>
+          </span>
+          <span class="p-float-label my-5">
+            <textarea
+              class="w-full max-w-full"
+              pInputTextarea
+              id="reviewBody"
+              rows="5"
+              cols="60"
+              formControlName="comment"
+              type="text"
+            ></textarea>
+            <label htmlFor="reviewBody">Enter your review</label>
+          </span>
+          <p-button label="Submit review" (click)="onSubmit()"></p-button>
+        </div>
+      </p-card>
+    </form>
   </div>
 </div>
