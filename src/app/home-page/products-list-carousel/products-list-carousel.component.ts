@@ -5,6 +5,7 @@ import { ProductsService } from '../shared/products.service';
 import { Router } from '@angular/router';
 import { OrderItem } from '../shared/orderItem.model';
 import { FormGroup } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -14,13 +15,15 @@ import { FormGroup } from '@angular/forms';
 export class ProductsListCarouselComponent {
   constructor(
     private productsService: ProductsService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
   @Input() productsToDisplay!: Product[];
 
   public dataLoaded: boolean = false;
   private orderItems: OrderItem[] = [];
   public productsToDisplayWithImages!: Product[];
+
   imageToShow!: any;
 
   ngOnInit() {}
@@ -78,10 +81,13 @@ export class ProductsListCarouselComponent {
     this.dataLoaded = true;
   }
   addToCart(product: Product) {
-    this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
-      console.log(res);
-    });
-
+    if (this.authService.isAuthenticated()) {
+      this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
+        console.log(res);
+      });
+    } else {
+      this.router.navigate(['login']);
+    }
     //track shopping cart through local storage
     // const shoppingCartList: Product[] = JSON.parse(
     //   localStorage.getItem('shoppingCart') || '[]'
@@ -94,18 +100,24 @@ export class ProductsListCarouselComponent {
     // if product already exists don't add it
   }
   addToFavorite(product: Product) {
-    const favoriteProductsList: Product[] = JSON.parse(
-      localStorage.getItem('favoriteProducts') || '[]'
-    );
-    if (favoriteProductsList.some((element) => element.id === product.id)) {
-      //TODO change quantity
-    } else favoriteProductsList.push(product);
+    if (this.authService.isAuthenticated()) {
+      const favoriteProductsList: Product[] = JSON.parse(
+        localStorage.getItem('favoriteProducts') || '[]'
+      );
+      if (favoriteProductsList.some((element) => element.id === product.id)) {
+        //TODO change quantity
+      } else favoriteProductsList.push(product);
 
-    localStorage.setItem(
-      'favoriteProducts',
-      JSON.stringify(favoriteProductsList)
-    );
-    this.productsService.favoriteProductsObservable.next(favoriteProductsList);
+      localStorage.setItem(
+        'favoriteProducts',
+        JSON.stringify(favoriteProductsList)
+      );
+      this.productsService.favoriteProductsObservable.next(
+        favoriteProductsList
+      );
+    } else {
+      this.router.navigate(['login']);
+    }
   }
   getProductDetails(id: number) {
     this.router.navigate([`product-details/${id}`]);
@@ -123,7 +135,8 @@ export class ProductsListCarouselComponent {
   }
 
   handleMissingImage(event: Event) {
-    (event.target as HTMLImageElement).style.display = 'none';
+    (event.target as HTMLImageElement).src =
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
   }
 }
 // <!-- notificare ca am adaugat in cos -->

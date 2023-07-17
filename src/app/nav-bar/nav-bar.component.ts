@@ -71,6 +71,7 @@ export class NavBarComponent {
         return {
           label: category.name,
           icon: 'pi pi-fw pi-bars',
+          routerLink: `/products/${category.id}`,
         };
       });
       this.categoryItems.push({
@@ -98,7 +99,6 @@ export class NavBarComponent {
     });
     this.isAdmin = false;
     //subscribes to get nb of cart/favorite items
-    // this.goToAdminPage();
 
     // Subscribes to get the number of cart/favorite items
 
@@ -165,7 +165,11 @@ export class NavBarComponent {
   }
 
   goToBasketPage() {
-    this.router.navigate(['basket']);
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['basket']);
+    } else {
+      this.router.navigate(['login']);
+    }
   }
 
   goToAdminPage() {

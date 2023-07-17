@@ -64,8 +64,14 @@
       </div>
     </div>
     <div class="ui-grid-col-4">
-      <div *ngIf="loginError" class="alert alert-danger">
+      <div *ngIf="loginErrorCause === 'username'" class="alert alert-danger">
         Login credentials are incorrect. Please try again!
+      </div>
+      <div *ngIf="loginErrorCause === 'password'" class="alert alert-danger">
+        Password is incorrect. Please try again!
+      </div>
+      <div *ngIf="loginErrorCause === 'unknown'" class="alert alert-danger">
+        CHAOS!!!
       </div>
     </div>
   </p-panel>

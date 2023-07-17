@@ -13,16 +13,35 @@
             [formControlName]="field.controlName"
             class="form-control"
             name="username"
+            autocomplete="off"
           />
         </div>
         <div class="ui-grid-col-4">
           <!-- i need instead of username - variable field.controlName -->
-          <!-- <div
-            [hidden]="errorCondition(field.controlName)"
+          <div
+            [hidden]="errorRequired(field.controlName)"
             class="alert alert-danger"
           >
-            username is required
-          </div> -->
+            {{ field.fieldName }} is required
+          </div>
+          <div
+            *ngIf="
+              field.controlName === 'first_name' ||
+              field.controlName === 'last_name'
+            "
+            [hidden]="!errorLength(field.controlName)"
+          >
+            {{ field.fieldName }} must have between 2 and 15 characters
+            <!-- how can i dinamically change 2 and 15? -->
+          </div>
+
+          <div
+            *ngIf="field.controlName === 'email'"
+            [hidden]="errorEmail(field.controlName)"
+          >
+            That's not a valid email address.
+          </div>
+          <div *ngIf="field.controlName === 'password'"></div>
         </div>
       </div>
 

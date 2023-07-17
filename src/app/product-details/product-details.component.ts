@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../home-page/shared/product.model';
 import { ProductsService } from '../home-page/shared/products.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BasketService } from '../shopping-cart/shared/basket.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Review } from '../home-page/shared/review.model';
-import {AuthService} from "../services/auth.service";
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-product-details',
@@ -20,16 +20,18 @@ export class ProductDetailsComponent implements OnInit {
   discountedPrice: number = 0;
   reviews: Review[] = [];
   reviewForm = this.fb.group({
-    rating: new FormControl(0, {nonNullable: true}),
-    title: new FormControl('', {nonNullable: true}),
-    comment: new FormControl('', {nonNullable: true})
-  })
+    rating: new FormControl(0, { nonNullable: true }),
+    title: new FormControl('', { nonNullable: true }),
+    comment: new FormControl('', { nonNullable: true }),
+  });
 
-  constructor(private productService: ProductsService,
+  constructor(
+    private productService: ProductsService,
     private activatedRoute: ActivatedRoute,
     private basketService: BasketService,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -42,11 +44,6 @@ export class ProductDetailsComponent implements OnInit {
       product.rating = this.overallRating;
       this.getImages();
     });
-    this.productService.getProductReviews(id)
-      .subscribe(reviews => {
-        this.reviews = reviews
-        this.calculateRating();
-      });
   }
 
   scrollToSection(id: string) {
@@ -56,49 +53,61 @@ export class ProductDetailsComponent implements OnInit {
 
   getImages() {
     for (let image of this.product.imagesName) {
-      this.images.push(`http://localhost:8081/api/images/download?name=${image}`);
+      this.images.push(
+        `http://localhost:8081/api/images/download?name=${image}`
+      );
     }
     this.images = [...this.images];
   }
 
-
   onSubmit() {
-    const review: Review =
-    {
-      rating: this.reviewForm.controls.rating.value,
-      title: this.reviewForm.controls.title.value,
-      comment: this.reviewForm.controls.comment.value
-    }
+    if (this.authService.isAuthenticated()) {
+      const review: Review = {
+        rating: this.reviewForm.controls.rating.value,
+        title: this.reviewForm.controls.title.value,
+        comment: this.reviewForm.controls.comment.value,
+      };
 
-    this.productService.saveReview(this.product.id, review);
-    this.reviews.push(review);
-    this.reviewForm.reset();
+      this.productService.saveReview(this.product.id, review);
+      this.reviews.push(review);
+      this.reviewForm.reset();
+    } else {
+      this.router.navigate(['login']);
+    }
   }
 
   addToFavorite(product: Product) {
-    const favoriteProductsList: Product[] = JSON.parse(
-      localStorage.getItem('favoriteProducts') || '[]'
-    );
-    if (favoriteProductsList.some((element) => element.id === product.id)) {
+    if (this.authService.isAuthenticated()) {
+      const favoriteProductsList: Product[] = JSON.parse(
+        localStorage.getItem('favoriteProducts') || '[]'
+      );
+      if (favoriteProductsList.some((element) => element.id === product.id)) {
+      } else favoriteProductsList.push(product);
 
-    } else favoriteProductsList.push(product);
-
-    localStorage.setItem(
-      'favoriteProducts',
-      JSON.stringify(favoriteProductsList)
-    );
-    this.productService.favoriteProductsObservable.next(
-      favoriteProductsList
-    );
+      localStorage.setItem(
+        'favoriteProducts',
+        JSON.stringify(favoriteProductsList)
+      );
+      this.productService.favoriteProductsObservable.next(favoriteProductsList);
+    } else {
+      this.router.navigate(['login']);
+    }
   }
 
   calculateRating() {
     let totalRating = 0;
     for (let review of this.reviews) {
-      totalRating += review.rating
+      totalRating += review.rating;
     }
     this.overallRating = Math.round(totalRating / this.reviews.length);
     return this.overallRating;
   }
 
+  addToCart(product: Product) {
+    if (this.authService.isAuthenticated()) {
+      //write logic to add product to cart
+    } else {
+      this.router.navigate(['login']);
+    }
+  }
 }
