@@ -1,9 +1,9 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
-import { Product } from '../home-page/shared/product.model';
+import {Component, Input, OnInit} from '@angular/core';
+import {Product} from '../home-page/shared/product.model';
 import {ActivatedRoute} from "@angular/router";
 import {CategoriesService} from "../product-categories/shared/categories.service";
-import { ProductsService } from '../home-page/shared/products.service';
-import {observable, Observable, Subscription} from "rxjs";
+import {ProductsService} from '../home-page/shared/products.service';
+import {Review} from "../home-page/shared/review.model";
 
 @Component({
   selector: 'app-product-all',
@@ -14,11 +14,11 @@ export class ProductAllComponent implements OnInit {
   @Input () selectedCategory!: any;
   public mockProducts: Product[] = [];
   public categories: any[] = [];
-  public placeholder: any[] = [];
-  public allProds: any = [];
+  public placeholder: any = [];
+  overallRating: any = 0;
   public lalalala: any[] = [];
   public categoryNames: Map<number,string> = new Map<number, string>()
-
+  reviews: Review[] = [];
 
   constructor(private productService: ProductsService,
               private route: ActivatedRoute,
@@ -26,51 +26,29 @@ export class ProductAllComponent implements OnInit {
               ) {}
 
   ngOnInit(): void {
-    // if (this.route.snapshot.params['category']) {
-    //   this.allProds = this.productService.getProductsByCat(this.route.snapshot.params['category']).subscribe()
-    //   this.lalalala, this.placeholder = this.allProds
-    //
-    // } else {
-    //   this.allProds = this.productService.getProducts().subscribe()
-    //   this.lalalala, this.placeholder = this.allProds
-    // }
-
-
-    let that = this;
-
-      that.productService.getProducts().subscribe((list) => {
-        that.lalalala = Array.from(list).map( (product: any) => {
-          let placeholder = ''
-          return {
-            id: product.id,
-            name: product.name,
-            photos: product.images,
-            price: product.price,
-            reviews: ['Nothing yet'],
-            rating: product.rating,
-            discount: product.discount,
-            categoryId: product.categoryId,
-            description: product.description,
-            stock: product.stock,
-            userId: product.userId
-
-          };
-        });
-        console.log('Product ---', that.lalalala);
-
-        that.placeholder = that.lalalala;
-        if (this.route.snapshot.params['category']) {
-          this.applyFilters(this.route.snapshot.params['category']);
-          this.selectedCategory = this.route.snapshot.params['category'];
-        }
+    this.productService.getProducts().subscribe((list) => {
+      this.lalalala = list.map((item: any) => {
+        console.log(item, 'this is the item');
+        return {
+          ...item,
+          rating: 0 // Assign initial value for the 'rating' property
+        };
       });
 
-    console.log(this.route.snapshot.params)
-    console.log(this.route.snapshot.params['category'])
+      // Retrieve reviews for each item and update the rating
+      this.lalalala.forEach((item: any) => {
+        this.productService.getProductReviews(item.id).subscribe((reviews) => {
+          console.log(reviews, 'this is the reviews');
+          item.reviews = reviews;
+          item.rating = this.calculateRating(item.reviews); // Update the 'rating' property
+        });
+      });
+    });
 
-
-
+    console.log(this.route.snapshot.params);
+    console.log(this.route.snapshot.params['category']);
   }
+
   applyFilters(selectedCategory: any) {
     this.selectedCategory = selectedCategory;
     console.log(this.selectedCategory, 'this is the selected category')
@@ -88,6 +66,14 @@ export class ProductAllComponent implements OnInit {
       console.log('No selected category');
     }
   }
+  calculateRating(reviews: Review[]): number {
+    let totalRating = 0;
+    for (let review of reviews) {
+      totalRating += review.rating;
+    }
+    return Math.round(totalRating / reviews.length);
+  }
+
 
   clearFilters(selectedCategory: string) {
     this.selectedCategory = selectedCategory;
