@@ -41,15 +41,12 @@ export class ProductCategoriesComponent implements OnInit {
   }
 
   async getFirstProductImageUrl(productIds: any): Promise<string | undefined> {
-    console.log(productIds)
     if (productIds && productIds.length > 0) {
       const firstProductId = productIds[0];
       const firstProduct = await this.productService.getProduct(firstProductId).toPromise();
-      console.log(firstProduct)
       if (firstProduct && firstProduct.imagesName && firstProduct.imagesName.length > 0) {
         const imageName = firstProduct.imagesName[0];
         const imageUrl = `http://localhost:8081/api/images/download?name=${imageName}`;
-        console.log(imageUrl);
         return imageUrl;
       }
     }
@@ -58,6 +55,6 @@ export class ProductCategoriesComponent implements OnInit {
   }
 
   navigateToProducts(category: any): void {
-    this.router.navigate(['/products'], { queryParams: { category: category } });
+    this.router.navigate(['/products'], { queryParams: { categoryId: category } });
   }
 }

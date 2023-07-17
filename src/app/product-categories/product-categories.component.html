@@ -1,5 +1,5 @@
 <div class="categories-list">
-  <p-card *ngFor="let category of categories"  [routerLink]="['/products', category.categoryId]"class="category-card"
+  <p-card *ngFor="let category of categories" (click)="navigateToProducts(category.categoryId)" class="category-card"
 
   >
     <ng-template pTemplate="title">

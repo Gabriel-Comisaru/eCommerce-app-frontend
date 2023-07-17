@@ -28,7 +28,6 @@ export class ProductAllComponent implements OnInit {
    this.loading = true;
    this.loadProducts();
   }
-
   loadProducts(): void {
     this.productService.getProducts().subscribe((list) => {
       this.filteredList = list.map((item: any) => {
@@ -39,7 +38,6 @@ export class ProductAllComponent implements OnInit {
           productImage: url,
         };
       });
-      // Retrieve reviews for each item and update the rating
       this.filteredList.forEach((item: any) => {
         this.productService.getProductReviews(item.id).subscribe((reviews) => {
           item.reviews = reviews;
@@ -47,36 +45,41 @@ export class ProductAllComponent implements OnInit {
           this.placeholder = this.filteredList;
           this.loading = false;
           this.totalRows = this.filteredList.length;
+          if(this.route.snapshot.queryParams['categoryId']) {
+            console.log('am filtrat prin parametruuuuu', this.filteredList)
+            const categoryId = this.route.snapshot.queryParams['categoryId'];
+            this.filteredList = this.placeholder.filter((product: Product) => product.categoryId == categoryId);
+          }
         });
       });
     });
-
-    if(this.route.snapshot) {
-      this.applyFilters(this.route.snapshot.params)
-    }
-
   }
 
-  applyFilters(filters: any) {
-    const selectedCategoryId = filters.categoryId;
+
+  applyFilters(filters: any): void {
+    console.log(filters);
+    const selectedCategoryId = filters.categoryId
+    console.log(selectedCategoryId);
     const priceMin = filters.priceMin;
     const priceMax = filters.priceMax;
 
-    // Apply the filters
     if (selectedCategoryId) {
+      console.log(this.filteredList)
+
       this.filteredList = this.placeholder.filter((product: Product) => product.categoryId == selectedCategoryId);
+      console.log('am filtrat prin parametru')
     } else {
       this.filteredList = this.placeholder;
     }
 
     if (priceMin && priceMax) {
+      console.log('am filtrat prin pret')
       this.filteredList = this.filteredList.filter((product: Product) => {
         const price = product.price;
         return price >= priceMin && price <= priceMax;
       });
     }
 
-    // Update the total rows and displayed rows
     this.totalRows = this.filteredList.length;
   }
 
@@ -89,13 +92,14 @@ export class ProductAllComponent implements OnInit {
   }
 
 
-  clearFilters(selectedCategory: any) {
-    this.selectedCategory = selectedCategory.selectedCategory;
-    console.log('Selected Category:', this.selectedCategory.id);
-      this.filteredList = this.placeholder;
-      this.totalRows = this.filteredList.length
-      console.log(this.route.snapshot.params)
-      this.router.navigate(['/products']);
+  clearFilters(): void {
+    this.selectedCategory = null;
+    this.filteredList = this.placeholder;
+    this.totalRows = this.filteredList.length;
 
-    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: null
+    });
+  }
 }
