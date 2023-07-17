@@ -31,3 +31,11 @@
 .full-width-button {
   width: 100%;
 }
+
+#priceRange {
+  margin-top: 2vh;
+  padding-top: 2vh!important;
+}
+.price-range-value {
+  margin-bottom: 1vh;
+}

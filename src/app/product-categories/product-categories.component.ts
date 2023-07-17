@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from '../home-page/shared/product.model';
-import {Router} from "@angular/router";
-import {CategoriesService} from "./shared/categories.service";
+import { Router } from '@angular/router';
+import { CategoriesService } from './shared/categories.service';
 import { ProductsService } from '../home-page/shared/products.service';
 
 @Component({
@@ -11,74 +11,53 @@ import { ProductsService } from '../home-page/shared/products.service';
 })
 export class ProductCategoriesComponent implements OnInit {
 
-  public mockProducts: Product[] = [];
-  // public categories: { category: string, image: string }[] = [];
-  public categories: any = [];
+  public categories: any[] = [];
 
-// public categories: string[] = [];
-
-  constructor(private productService: ProductsService,
-              private router: Router,
-              private categoryService: CategoriesService
-  ) {
-  }
+  constructor(
+    private productService: ProductsService,
+    private router: Router,
+    private categoryService: CategoriesService
+  ) {}
 
   ngOnInit(): void {
-
-    this.categoryService.getCategories().subscribe((list) => {
-      this.categories = list.map((category: any) => {
-        return {
-          categoryId: category.id,
-          categoryName: category.name,
-          productNo: category.productIds.length
-          // image: category.image
-        };
-      })
-    })
-
+    this.loadData();
   }
 
+  async loadData(): Promise<void> {
+    const list = await this.categoryService.getCategories().toPromise();
+    this.categories = await Promise.all(list.map(async (category: any) => {
+      const categoryId = category.id;
+      const categoryName = category.name;
+      const productNo = category.productIds.length;
+      const productIds = category.productIds;
+      const image = await this.getFirstProductImageUrl(productIds);
+      return {
+        categoryId,
+        categoryName,
+        productNo,
+        image
+      };
+    }));
+  }
 
-  navigateToProducts(category: any) {
-    this.router.navigate(['/products'], {queryParams: {category: category}});
-  };
+  async getFirstProductImageUrl(productIds: any): Promise<string | undefined> {
+    console.log(productIds)
+    if (productIds && productIds.length > 0) {
+      const firstProductId = productIds[0];
+      const firstProduct = await this.productService.getProduct(firstProductId).toPromise();
+      console.log(firstProduct)
+      if (firstProduct && firstProduct.imagesName && firstProduct.imagesName.length > 0) {
+        const imageName = firstProduct.imagesName[0];
+        const imageUrl = `http://localhost:8081/api/images/download?name=${imageName}`;
+        console.log(imageUrl);
+        return imageUrl;
+      }
+    }
+
+    return undefined;
+  }
+
+  navigateToProducts(category: any): void {
+    this.router.navigate(['/products'], { queryParams: { category: category } });
+  }
 }
-// import { Component, OnInit } from '@angular/core';
-// import { MockProductModel } from "../product-all/shared/mock-product.model";
-// import { MockProductsService } from "../product-all/shared/mock-products.service";
-// import { Router } from "@angular/router";
-// import { CategoriesService } from "./shared/categories.service";
-//
-// @Component({
-//   selector: 'app-product-categories',
-//   templateUrl: './product-categories.component.html',
-//   styleUrls: ['./product-categories.component.css']
-// })
-// export class ProductCategoriesComponent implements OnInit {
-//
-//   public mockProducts: MockProductModel[] = [];
-//   public categories: { categoryName: string, categoryId: number, productNo: number }[] = [];
-//
-//   constructor(
-//     private productService: MockProductsService,
-//     private router: Router,
-//     private categoryService: CategoriesService
-//   ) {}
-//
-//   ngOnInit(): void {
-//     this.categoryService.getCategories().subscribe((list) => {
-//       this.categories = list.map((category: any) => {
-//         return {
-//           categoryId: category.id,
-//           categoryName: category.name,
-//           productNo: category.productIds.length
-//         };
-//       });
-//     });
-//   }
-//
-//   navigateToProducts(categoryId: number) {
-//     this.router.navigate(['/products'], { queryParams: { category: categoryId } });
-//   }
-//
-// }

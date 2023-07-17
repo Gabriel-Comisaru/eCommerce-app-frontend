@@ -57,26 +57,27 @@ export class ProductAllComponent implements OnInit {
 
   }
 
-  applyFilters(selectedCategory: any) {
-    this.selectedCategory = selectedCategory;
-    if (typeof this.selectedCategory === 'number') {
-      this.filteredList = this.placeholder.filter((product: Product) => product.categoryId == this.selectedCategory);
-    } else if (typeof this.selectedCategory === 'object') {
-      console.log(this.selectedCategory)
-      this.productService.getProductsByCat(this.selectedCategory.category).subscribe((products) => {
-        this.filteredList = products.map((item: any) => {
-          // Map the properties as needed
-          const url = `http://localhost:8081/api/images/download?name=${item.imagesName[0]}`;
-          return {
-            ...item,
-            rating: 0,
-            productImage: url,
-          };
-        });
-      });
+  applyFilters(filters: any) {
+    const selectedCategoryId = filters.categoryId;
+    const priceMin = filters.priceMin;
+    const priceMax = filters.priceMax;
+
+    // Apply the filters
+    if (selectedCategoryId) {
+      this.filteredList = this.placeholder.filter((product: Product) => product.categoryId == selectedCategoryId);
     } else {
-      console.log('No selected category');
+      this.filteredList = this.placeholder;
     }
+
+    if (priceMin && priceMax) {
+      this.filteredList = this.filteredList.filter((product: Product) => {
+        const price = product.price;
+        return price >= priceMin && price <= priceMax;
+      });
+    }
+
+    // Update the total rows and displayed rows
+    this.totalRows = this.filteredList.length;
   }
 
   calculateRating(reviews: Review[]): number {
@@ -88,12 +89,11 @@ export class ProductAllComponent implements OnInit {
   }
 
 
-  clearFilters(selectedCategory: string) {
-    this.selectedCategory = selectedCategory;
+  clearFilters(selectedCategory: any) {
+    this.selectedCategory = selectedCategory.selectedCategory;
     console.log('Selected Category:', this.selectedCategory.id);
       this.filteredList = this.placeholder;
       console.log(this.route.snapshot.params)
-
       this.router.navigate(['/products']);
 
     }

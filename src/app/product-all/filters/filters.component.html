@@ -10,7 +10,7 @@
 
   <div class="filter-item">
     <label for="priceRange">Price Range:</label>
-    <span class="price-range-value">{{selectedPriceRange[0]}} - {{selectedPriceRange[1]}}</span>
+    <div class="price-range-value">{{selectedPriceRange[0]}} - {{selectedPriceRange[1]}}</div>
     <p-slider id="priceRange" [(ngModel)]="selectedPriceRange" [range]="true" [min]="0" [max]="1000" [step]="10"></p-slider>
   </div>
     <span class="p-buttonset">
