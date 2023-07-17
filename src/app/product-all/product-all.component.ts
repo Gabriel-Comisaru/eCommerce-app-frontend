@@ -42,13 +42,15 @@ export class ProductAllComponent implements OnInit {
         this.productService.getProductReviews(item.id).subscribe((reviews) => {
           item.reviews = reviews;
           item.rating = this.calculateRating(item.reviews);
-          this.placeholder = this.filteredList;
+          this.placeholder.push(item)
           this.loading = false;
           this.totalRows = this.filteredList.length;
           if(this.route.snapshot.queryParams['categoryId']) {
             console.log('am filtrat prin parametruuuuu', this.filteredList)
             const categoryId = this.route.snapshot.queryParams['categoryId'];
+            console.log(this.placeholder, 'this is the part when placeholder')
             this.filteredList = this.placeholder.filter((product: Product) => product.categoryId == categoryId);
+
           }
         });
       });
