@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Product} from '../home-page/shared/product.model';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CategoriesService} from "../product-categories/shared/categories.service";
 import {ProductsService} from '../home-page/shared/products.service';
 import {Review} from "../home-page/shared/review.model";
@@ -12,47 +12,41 @@ import {Review} from "../home-page/shared/review.model";
 })
 export class ProductAllComponent implements OnInit {
   @Input () selectedCategory!: any;
+  loading: boolean = true;
   public mockProducts: Product[] = [];
   public categories: any[] = [];
   public placeholder: any = [];
-  overallRating: any = 0;
-  public lalalala: any[] = [];
-  public categoryNames: Map<number,string> = new Map<number, string>()
-  reviews: Review[] = [];
+  public filteredList: any[] = [];
+  public totalRows: number = 0;
 
   constructor(private productService: ProductsService,
               private route: ActivatedRoute,
-              private categoryService: CategoriesService
+              private router: Router
               ) {}
 
   ngOnInit(): void {
+   this.loading = true;
    this.loadProducts();
-   console.log(this.placeholder);
-   console.log(this.lalalala);
-
-
   }
 
   loadProducts(): void {
     this.productService.getProducts().subscribe((list) => {
-      this.lalalala = list.map((item: any) => {
+      this.filteredList = list.map((item: any) => {
         const url = `http://localhost:8081/api/images/download?name=${item.imagesName[0]}`;
-
         return {
           ...item,
           rating: 0,
           productImage: url,
-
         };
       });
-
       // Retrieve reviews for each item and update the rating
-      this.lalalala.forEach((item: any) => {
+      this.filteredList.forEach((item: any) => {
         this.productService.getProductReviews(item.id).subscribe((reviews) => {
           item.reviews = reviews;
           item.rating = this.calculateRating(item.reviews);
-          this.placeholder = this.lalalala;
-          console.log(item)
+          this.placeholder = this.filteredList;
+          this.loading = false;
+          this.totalRows = this.filteredList.length;
         });
       });
     });
@@ -61,19 +55,30 @@ export class ProductAllComponent implements OnInit {
       this.applyFilters(this.route.snapshot.params)
     }
 
-
   }
+
   applyFilters(selectedCategory: any) {
     this.selectedCategory = selectedCategory;
-    if (typeof this.selectedCategory === 'string') {
-      this.lalalala = this.placeholder.filter((product: Product) => product.categoryId == this.selectedCategory);
-    }else if (typeof this.selectedCategory === 'object'){
-      this.lalalala = this.placeholder.filter((product: Product) => product.categoryId === this.selectedCategory.categoryId);
-    }
-    else {
+    if (typeof this.selectedCategory === 'number') {
+      this.filteredList = this.placeholder.filter((product: Product) => product.categoryId == this.selectedCategory);
+    } else if (typeof this.selectedCategory === 'object') {
+      console.log(this.selectedCategory)
+      this.productService.getProductsByCat(this.selectedCategory.category).subscribe((products) => {
+        this.filteredList = products.map((item: any) => {
+          // Map the properties as needed
+          const url = `http://localhost:8081/api/images/download?name=${item.imagesName[0]}`;
+          return {
+            ...item,
+            rating: 0,
+            productImage: url,
+          };
+        });
+      });
+    } else {
       console.log('No selected category');
     }
   }
+
   calculateRating(reviews: Review[]): number {
     let totalRating = 0;
     for (let review of reviews) {
@@ -85,9 +90,11 @@ export class ProductAllComponent implements OnInit {
 
   clearFilters(selectedCategory: string) {
     this.selectedCategory = selectedCategory;
-    console.log('Selected Category:', this.selectedCategory.categoryId);
-      this.lalalala = this.placeholder;
-      console.log(this.lalalala);
-      console.log('No selected category');
-  }
+    console.log('Selected Category:', this.selectedCategory.id);
+      this.filteredList = this.placeholder;
+      console.log(this.route.snapshot.params)
+
+      this.router.navigate(['/products']);
+
+    }
 }

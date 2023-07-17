@@ -12,8 +12,8 @@ export class FiltersComponent implements OnInit {
   // @Input() categories!: string[];
   @Output() filtersApplied: EventEmitter<string> = new EventEmitter<string>();
   @Output() filtersCleared: EventEmitter<string> = new EventEmitter<string>();
-  public categories: { categoryName: string, categoryId : number}[] = [];
-  selectedCategory!: string;
+  public categories: any[] = [];
+  selectedCategory!: any;
   selectedPriceRange!: [number, number];
 
   priceRangeOptions: any = {
@@ -26,29 +26,30 @@ export class FiltersComponent implements OnInit {
               private route: ActivatedRoute
               ) { }
 
+
   ngOnInit(): void {
-    // this.selectedCategory = this.route.snapshot.params['category'] || '' ;
     this.selectedPriceRange = [0, 1000];
     this.categoryService.getCategories().subscribe((list) => {
-      this.categories = list.map((category: any) => {
-        return {
-          categoryId: category.id,
-          categoryName: category.name,
-          // productNo: category.productIds.length
-          // image: category.image
-        };
-      })
-    })
-    console.log(this.categories)
-  console.log(this.route.snapshot.params['category'])
-    // if(this.route.snapshot.params['category'] !== undefined) {
-    //   this.selectedCategory = this.route.snapshot.params['category'];
-    //   this.applyFilters()
-    // }
+      this.categories = list;
+      const categoryIdParam = this.route.snapshot.params['category'];
+      console.log(this.route.snapshot.params['category']);
+      if (categoryIdParam) {
+        const selectedCategory = this.categories.find((category: any) => category.id == categoryIdParam);
+        console.log(selectedCategory)
+        this.selectedCategory = selectedCategory ? selectedCategory.name : '';
+      }
+    });
+    console.log(this.selectedCategory)
+
+  }
+  onCategoryChange(category: any) {
+    this.selectedCategory = category;
+    console.log(this.selectedCategory)
   }
 
+
   applyFilters(): void {
-    this.filtersApplied.emit(this.selectedCategory);
+    this.filtersApplied.emit(this.selectedCategory.id);
     console.log(this.categories)
 
   }

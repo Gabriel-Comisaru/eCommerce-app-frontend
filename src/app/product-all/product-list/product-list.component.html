@@ -1,6 +1,6 @@
-<div class="product-list" *ngIf="lalalala != null">
+<div class="product-list" *ngIf="filteredList != null">
   <p-card
-    *ngFor="let product of lalalala"
+    *ngFor="let product of filteredList.slice(0, displayedRows)"
     class="product-card"
     (click)="getProductDetails(product.id, $event)"
   >
@@ -8,15 +8,11 @@
 
     <ng-template pTemplate="content">
       <div class="product-image">
-         <img [src]="product.productImage" alt="Product Image" class="fit-image">
+         <img [src]="product.productImage" alt="Image not available" class="fit-image2">
       </div>
       <div
         class="title-container"
-        style="
-          overflow: hidden !important;
-          text-overflow: ellipsis !important;
-          white-space: nowrap !important;
-        "
+        [ngClass]="{ 'title-container-long': product.name.length > 20 }"
       >
         {{ product.name }}
       </div>
@@ -42,7 +38,10 @@
     </ng-template>
   </p-card>
 </div>
+<div class="load-more-button" *ngIf="displayedRows < totalRows">
+  <button pButton (click)="loadMoreRows()" style="" >Load More</button>
+</div>
 
-<div *ngIf="lalalala.length < 1">
+<div *ngIf="filteredList.length < 1">
   <h1>There are no products to fit this category</h1>
 </div>

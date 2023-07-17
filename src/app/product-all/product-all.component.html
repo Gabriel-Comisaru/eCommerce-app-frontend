@@ -8,7 +8,12 @@
   <div class="product-list">
     <app-product-list
       [mockProduct]="mockProducts"
-      [lalalala]="lalalala"
+      [filteredList]="filteredList"
+      [totalRows]="totalRows"
     ></app-product-list>
   </div>
+
+</div>
+<div *ngIf="loading" class="loading">
+  <div class="spinner"></div>
 </div>
