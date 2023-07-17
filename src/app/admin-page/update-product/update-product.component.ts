@@ -8,15 +8,8 @@ import {
 } from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MessageService} from 'primeng/api';
-import {Router} from '@angular/router';
-
 import {Product} from 'src/app/home-page/shared/product.model';
 import {ProductsService} from 'src/app/home-page/shared/products.service';
-
-interface UploadEvent {
-  originalEvent: Event;
-  files: File[];
-}
 
 @Component({
   selector: 'app-update-product',
@@ -37,16 +30,12 @@ export class UpdateProductComponent implements OnInit {
   visible = false;
   images: any = [];
   selectedFile!: File;
-  message: string = '';
   productsList: any = [];
   categoriesList: any = [];
-  uploadedFiles: any[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private productsService: ProductsService,
-    private messageService: MessageService,
-    private router: Router
+    private productsService: ProductsService
   ) {
   }
 
@@ -62,12 +51,22 @@ export class UpdateProductComponent implements OnInit {
   productForm = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
     price: ['', [Validators.required]],
-    categoryId: ['',[Validators.required]],
+    categoryId: ['', [Validators.required]],
     description: ['', [Validators.required]],
     stock: ['', [Validators.required]],
     discount: ['', [Validators.pattern('^[0-9]*$'), Validators.required]],
-    image: [[''], [Validators.required]]
+    imagesName: [[null], [Validators.required]]
   });
+
+  resetFormValues() {
+    this.productForm.controls.name.reset()
+    this.productForm.controls.categoryId.reset()
+    this.productForm.controls.price.reset()
+    this.productForm.controls.description.reset()
+    this.productForm.controls.stock.reset()
+    this.productForm.controls.discount.reset()
+    this.productForm.controls.imagesName.reset()
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['show']?.currentValue) {
@@ -82,26 +81,14 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.controls.description.setValue(this.selectedProduct.description.toString());
       this.productForm.controls.stock.setValue(this.selectedProduct.unitsInStock.toString());
       this.productForm.controls.discount.setValue(this.selectedProduct.discountPercentage.toString());
-      this.productForm.controls.image.setValue(this.selectedProduct.imagesName);
-      console.log(this.productForm)
     } else if (this.header === 'Add new product') {
-      this.productForm.controls.name.setValue('');
-      this.productForm.controls.categoryId.setValue('');
+      this.resetFormValues()
       this.productForm.controls.categoryId.enable();
-      this.productForm.controls.price.setValue('');
-      this.productForm.controls.description.setValue('');
-      this.productForm.controls.stock.setValue('');
-      this.productForm.controls.discount.setValue('');
     }
   }
 
   onClose() {
-    this.productForm.controls.name.setValue('');
-    this.productForm.controls.price.setValue('');
-    this.productForm.controls.categoryId.setValue('');
-    this.productForm.controls.description.setValue('');
-    this.productForm.controls.stock.setValue('');
-    this.productForm.controls.discount.setValue('');
+    this.resetFormValues()
     this.visible = false;
     this.closeEmitter.emit(this.visible);
   }
@@ -114,9 +101,7 @@ export class UpdateProductComponent implements OnInit {
       categoryId: +this.productForm.controls.categoryId.value,
       unitsInStock: +this.productForm.controls.stock.value,
       discountPercentage: +this.productForm.controls.discount.value,
-      imagesName: this.productForm.controls.image.value
-    } as unknown as Product;
-
+    } as Product;
 
     const formData = new FormData();
     formData.append('name', String(this.productForm.controls.name.value));
@@ -128,14 +113,16 @@ export class UpdateProductComponent implements OnInit {
     formData.append('image', this.selectedFile);
     if (this.header === 'Add new product') {
       this.productsService.sendForm(formData, +this.productForm.controls.categoryId.value)
-        .subscribe((res) => this.savedProduct.emit(res));
+        .subscribe((res) => {
+          this.savedProduct.emit(res)
+          console.log(res)
+        });
       this.visible = false;
+
     } else {
-      console.log(product)
       this.productsService
         .updateProduct(product, this.selectedProduct.id)
         .subscribe((res) => {
-          console.log(res)
           this.visible = false;
           this.updatedProduct.emit(res);
         });
@@ -143,28 +130,17 @@ export class UpdateProductComponent implements OnInit {
   }
 
   onFileChanged(event: any) {
-    this.productForm.controls.image.setValue(event.target.files[0]);
+    this.selectedFile = event.target.files[0];
+    console.log(this.selectedFile)
   }
 
-  onUpload() {
+  onUpload(id: number) {
     const uploadImageData = new FormData();
-    uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
+    uploadImageData.append('imagesName', this.selectedFile, this.selectedFile.name);
 
-    this.productsService.saveImage(uploadImageData, this.selectedProduct.id)
+    this.productsService.saveImage(uploadImageData, id)
       .subscribe();
   }
-
-  // onUpload(event: UploadEvent) {
-  //   for (let file of event.files) {
-  //     this.uploadedFiles.push(file);
-  //   }
-
-  //   this.messageService.add({
-  //     severity: 'info',
-  //     summary: 'File Uploaded',
-  //     detail: '',
-  //   });
-  // }
 
   close() {
     this.visible = false;
