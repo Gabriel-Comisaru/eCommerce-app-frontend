@@ -28,8 +28,8 @@ export class ProductListComponent implements OnInit {
 
   displayedRows = 8;
   incrementRows = 6;
-  sortOptions: string[] = ['Price', 'Name'];
-  selectedSortOption: string = ''
+  sortOptions: string[] = ['Price', 'Name', 'Default'];
+  selectedSortOption: string = 'Default'
 
   ngOnInit(): void {
     console.log(this.totalRows, this.displayedRows)
@@ -61,15 +61,20 @@ export class ProductListComponent implements OnInit {
     this.totalRows$?.next(this.displayedRows);
   }
 
-  sortProducts($event: any) {
-    this.selectedSortOption = $event.target.value;
+  sortProducts() {
+    console.log(this.selectedSortOption, 'asdasd')
     if (this.selectedSortOption === 'Price') {
-      this.mockProduct.sort((a, b) => {
+      console.log('price')
+      this.filteredList.sort((a, b) => {
         return a.price - b.price;
       });
     } else if (this.selectedSortOption === 'Name') {
-      this.mockProduct.sort((a, b) => {
+      this.filteredList.sort((a, b) => {
         return a.name.localeCompare(b.name);
+      });
+    } else if (this.selectedSortOption === 'Default') {
+      this.filteredList.sort((a, b) => {
+        return a.id - b.id;
       });
     }
 
