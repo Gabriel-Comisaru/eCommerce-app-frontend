@@ -24,7 +24,6 @@ interface Item {
 export class BasketpageComponent implements OnInit {
 
   public basketItems: Product[] = [];
-  visible = false;
   header = '';
   products: Array<Product> = [];
   public productQuantityMap: Map<string, number> = new Map<string, number>();
@@ -40,8 +39,6 @@ export class BasketpageComponent implements OnInit {
   public itemPricesAny: any[] = [];
 
   orderItems: Array<Item> = [];
-
-  selectedProduct: any = [];
   rows: any = [5, 10, 15];
   row: any = 5;
 
@@ -51,11 +48,6 @@ export class BasketpageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.categoryService.getCategories().subscribe((list) => {
-    //   this.categories = list.map((category: any) => {
-    //     that.categoryNames.set(category.id, category.name);
-    //   })
-    // })
     let that = this;
     this.productService.getProducts().subscribe((list) => {
       this.itemNamesAny = list.map((product: any) => {
@@ -95,7 +87,6 @@ export class BasketpageComponent implements OnInit {
     this.orderItems.forEach((item: any) => {
       this.productQuantityMap.set(item.name, item.quantity);
     })
-
     }
 
   deleteProduct(product: any, index: number, event: any) {
@@ -104,10 +95,6 @@ export class BasketpageComponent implements OnInit {
     this.basketService.deleteOrderItem(product.id)
 
     this.orderItems.splice(index, 1);
-  }
-
-  selectRows(event: any) {
-    this.row = +event.value;
   }
 
   checkout() {
@@ -124,8 +111,8 @@ export class BasketpageComponent implements OnInit {
       }
     });
   }
-  increment(Item: Item) {
 
+  increment(Item: Item) {
     Item.quantity += 1;
     this.basketService.updateOrderQuantity(Item.id, Item.quantity)
     this.updateProductQuantityMap()
@@ -133,31 +120,16 @@ export class BasketpageComponent implements OnInit {
 
   }
 
-
   decrement(Item: Item) {
-
     if (Item.quantity > 1) {
       Item.quantity -= 1;
     }
-
     this.basketService.updateOrderQuantity(Item.id, Item.quantity)
     this.updateProductQuantityMap()
     this.updateProductQuantity(Item);
 
   }
 
-  getFirstIndex(product: any): number {
-    return this.basketItems.findIndex((item) => item.name === product.name);
-  }
-
-  getQuantity(product: any): number {
-    return this.productQuantityMap.get(product.name) || 0;
-  }
-
-  isProductAvailable(product: any): boolean {
-    const firstIndex = this.getFirstIndex(product);
-    return firstIndex !== -1 && firstIndex === this.basketItems.indexOf(product);
-  }
   getTotalPrice(): string {
     let totalPrice = 0;
     this.orderItems.forEach((item) => {
