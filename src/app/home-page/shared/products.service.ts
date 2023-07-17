@@ -11,27 +11,20 @@ import { BASE_URL_API } from '../../settings';
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(private httpClient: HttpClient,
-
-  ) {}
+  constructor(private httpClient: HttpClient) {}
 
   private productsUrl = `${BASE_URL_API}/products`;
   private categoriesUrl = 'http://localhost:8081/api/categories';
   private reviewsUrl = 'http://localhost:8081/api/reviews';
   private productCategoryUrl = 'http://localhost:8081/api/products/category';
-  private imageUrl = 'http://localhost:8081/api/images/upload'
+  private imageUrl = 'http://localhost:8081/api/images/upload';
 
   private orderItemsUrl = 'http://localhost:8081/api/orderItems';
-  public shoppingCartObservable = new Subject<Product[]>();
+  // public shoppingCartObservable = new Subject<Product[]>();
+  public shoppingCartObservable = new Subject<OrderItem[]>();
   public favoriteProductsObservable = new Subject<Product[]>();
 
-  setInitialCartProducts() {
-    const localStorageCartList = JSON.parse(
-      localStorage.getItem('shoppingCart') || '[]'
-    );
-    this.shoppingCartObservable.next(localStorageCartList);
-  }
-  getShopingCartObservable(): Observable<Product[]> {
+  getShopingCartObservable(): Observable<OrderItem[]> {
     return this.shoppingCartObservable.asObservable();
   }
 
@@ -84,14 +77,6 @@ export class ProductsService {
   }
 
   getOrderItems(): Observable<OrderItem[]> {
-
-
-
-
-
-
-
-
     return this.httpClient.get<OrderItem[]>(this.orderItemsUrl);
   }
 
@@ -99,7 +84,7 @@ export class ProductsService {
     productId: number,
     quantity: number
   ): Observable<OrderItem[]> {
-    const addProductToOrderUrl = `http://localhost:8081/api/orderItems/${productId}`;
+    const addProductToOrderUrl = `http://localhost:8081/api/orderItems/${productId}?quantity=${quantity}`;
     const productBody = {
       quantity,
     };
@@ -116,9 +101,9 @@ export class ProductsService {
     return this.httpClient.get<any>(url);
   }
 
-  saveImage(image:any,id:number):Observable<any>{
-    const url = `${this.imageUrl}/${id}`
-    return this.httpClient.post(url,image);
+  saveImage(image: any, id: number): Observable<any> {
+    const url = `${this.imageUrl}/${id}`;
+    return this.httpClient.post(url, image);
   }
 
   getProductImage(productImageName: string): Observable<any> {

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { OrderItem } from '../shared/orderItem.model';
 import { FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -16,7 +17,8 @@ export class ProductsListCarouselComponent {
   constructor(
     private productsService: ProductsService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private basketService: BasketService
   ) {}
   @Input() productsToDisplay!: Product[];
 
@@ -46,7 +48,10 @@ export class ProductsListCarouselComponent {
       this.productsToDisplayWithImages = this.productsToDisplay.map(
         (product) => {
           //TODO REFACTOR THE MAP
-          if (product.imagesName.length > 0 && product.imagesName[0].length > 0) {
+          if (
+            product.imagesName.length > 0 &&
+            product.imagesName[0].length > 0
+          ) {
             const url = `http://localhost:8081/api/images/download?name=${product.imagesName[0]}`;
 
             return {
@@ -82,9 +87,12 @@ export class ProductsListCarouselComponent {
   }
   addToCart(product: Product) {
     if (this.authService.isAuthenticated()) {
-      this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
-        console.log(res);
-      });
+      // this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
+      //   this.productsService.shoppingCartObservable.next(res);
+      //   console.log(res);
+      // });
+
+      this.basketService.createOrder(product.id);
     } else {
       this.router.navigate(['login']);
     }
