@@ -26,6 +26,7 @@ export class UpdateProductComponent implements OnInit {
   product: any;
   @Output() savedProduct = new EventEmitter();
   @Output() updatedProduct = new EventEmitter();
+  loading:boolean=false;
 
   visible = false;
   images: any = [];
@@ -112,17 +113,23 @@ export class UpdateProductComponent implements OnInit {
     formData.append('discountPercentage', String(this.productForm.controls.discount.value));
     formData.append('image', this.selectedFile);
     if (this.header === 'Add new product') {
+      this.loading=true;
       this.productsService.sendForm(formData, +this.productForm.controls.categoryId.value)
         .subscribe((res) => {
+          this.loading=false;
+          this.visible = false;
           this.savedProduct.emit(res)
           console.log(res)
         });
-      this.visible = false;
+
 
     } else {
+      this.loading=true;
       this.productsService
         .updateProduct(product, this.selectedProduct.id)
         .subscribe((res) => {
+          this.loading=false;
+
           this.visible = false;
           this.updatedProduct.emit(res);
         });
