@@ -1,8 +1,6 @@
 <div class="filters">
   <h2>Filters</h2>
   <div class="filter-item">
-<!--    <label for="category">Category:</label>-->
-<!--    <p-dropdown id="category" [options]="categories" [(ngModel)]="selectedCategory" [placeholder]="'All'"></p-dropdown>-->
     <p-dropdown id="category" [options]="categories" [(ngModel)]="selectedCategory" optionLabel="categoryName" [placeholder]="'All'">
       <ng-template let-category pTemplate="item">
         {{category.categoryName}}
@@ -15,8 +13,10 @@
     <span class="price-range-value">{{selectedPriceRange[0]}} - {{selectedPriceRange[1]}}</span>
     <p-slider id="priceRange" [(ngModel)]="selectedPriceRange" [range]="true" [min]="0" [max]="1000" [step]="10"></p-slider>
   </div>
-
-  <p-button label="Apply Filters" styleClass="p-button-info p-button-sm" (click)="applyFilters()"></p-button>
-  <p-button label="Clear Filters" styleClass="p-button-danger p-button-sm" (click)="clearFilters()"></p-button>
-
+    <span class="p-buttonset">
+      <button pButton pRipple label="Apply Filters" (click)="applyFilters()"></button>
+      <button pButton pRipple label="Clear" style="background-color: #ee4f27;
+            border-color: #ee4f27;
+            " (click)="clearFilters()"></button>
+    </span>
 </div>
