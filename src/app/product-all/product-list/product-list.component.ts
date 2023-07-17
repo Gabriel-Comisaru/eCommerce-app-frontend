@@ -4,6 +4,7 @@ import { BasketService } from '../../shopping-cart/shared/basket.service';
 import { CategoriesService } from '../../product-categories/shared/categories.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-product-list',
@@ -13,44 +14,37 @@ import { AuthService } from 'src/app/services/auth.service';
 export class ProductListComponent implements OnInit {
   @Input() mockProduct!: Product[];
   @Input() lalalala!: Product[];
+  @Input() totalRows!: number;
+  totalRows$?: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor(
     private basketService: BasketService,
     private router: Router,
     private authService: AuthService,
     private mockproductService: CategoriesService
-  ) {}
+  ) {
+    this.totalRows$?.next(0);
+  }
+
   displayedRows = 6;
   incrementRows = 6;
-  totalRows = 0;
 
-
-  filterList(category: string) {
-    console.log('Selected Category:', category);
-    category
-      ? this.mockProduct.filter(
-          (product: Product) => product.category === category
-        ) && console.log(this.mockProduct)
-      : this.mockProduct && console.log('aaa');
+  ngOnInit(): void {
+    console.log(this.lalalala.length, this.displayedRows)
+    this.mockproductService.getCategories().subscribe();
+    this.totalRows$?.next(this.lalalala.length);
   }
+
   addToBasket(product: Product, event: any): void {
     if (this.authService.isAuthenticated()) {
       event.stopPropagation();
-
-      // this.basketService.addToBasket(product);
-      // this.basketService.log();
-      // console.log(product.id);
       this.basketService.createOrder(product.id);
     } else {
       this.router.navigate(['login']);
     }
   }
 
-  ngOnInit(): void {
-    console.log(this.lalalala);
-    this.totalRows = this.lalalala.length;
-    this.mockproductService.getCategories().subscribe();
-  }
+
   getProductDetails(id: number, event: any) {
     event.stopPropagation();
     this.router.navigate([`product-details/${id}`]);
@@ -63,7 +57,7 @@ export class ProductListComponent implements OnInit {
   }
   loadMoreRows(): void {
     this.displayedRows += this.incrementRows;
+    this.totalRows$?.next(this.displayedRows);
   }
-
 
 }

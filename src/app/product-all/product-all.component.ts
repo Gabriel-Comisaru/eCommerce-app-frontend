@@ -19,6 +19,7 @@ export class ProductAllComponent implements OnInit {
   overallRating: any = 0;
   public lalalala: any[] = [];
   public categoryNames: Map<number,string> = new Map<number, string>()
+  public totalRows: number = 0;
   reviews: Review[] = [];
 
   constructor(private productService: ProductsService,
@@ -51,9 +52,11 @@ export class ProductAllComponent implements OnInit {
           item.rating = this.calculateRating(item.reviews);
           this.placeholder = this.lalalala;
           this.loading = false;
+
         });
       });
     });
+    this.totalRows = this.lalalala.length;
 
     if(this.route.snapshot) {
       this.applyFilters(this.route.snapshot.params)
