@@ -67,6 +67,7 @@
       <div *ngIf="isAdmin === false">
         <p-button
           [(ngModel)]="isAdmin"
+          ngDefaultControl
           id="adminMode"
           (click)="goToAdminPage()"
           styleClass="p-button-outlined"
@@ -74,7 +75,7 @@
         >
       </div>
       <div *ngIf="isAdmin === true">
-        <p-button [(ngModel)]="isAdmin" id="adminMode" (click)="goToAdminPage()"
+        <p-button [(ngModel)]="isAdmin" ngDefaultControl id="adminMode" (click)="goToAdminPage()"
           >Admin mode on</p-button
         >
       </div>
