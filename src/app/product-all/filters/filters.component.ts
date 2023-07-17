@@ -27,7 +27,7 @@ export class FiltersComponent implements OnInit {
               ) { }
 
   ngOnInit(): void {
-    this.selectedCategory = '' ;
+    this.selectedCategory = this.route.snapshot.params['category'] || '' ;
     this.selectedPriceRange = [0, 1000];
     this.categoryService.getCategories().subscribe((list) => {
       this.categories = list.map((category: any) => {

@@ -27,7 +27,9 @@
   margin-top: 10px;
   flex: 1;
 }
-
+.add-to-cart-button {
+  float: right;
+}
 .product-title {
   overflow: hidden;
   text-overflow: ellipsis;
