@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Product} from '../home-page/shared/product.model';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {CategoriesService} from "../product-categories/shared/categories.service";
 import {ProductsService} from '../home-page/shared/products.service';
 import {Review} from "../home-page/shared/review.model";
@@ -21,6 +21,7 @@ export class ProductAllComponent implements OnInit {
 
   constructor(private productService: ProductsService,
               private route: ActivatedRoute,
+              private router: Router
               ) {}
 
   ngOnInit(): void {
@@ -58,10 +59,11 @@ export class ProductAllComponent implements OnInit {
 
   applyFilters(selectedCategory: any) {
     this.selectedCategory = selectedCategory;
-    if (typeof this.selectedCategory === 'string') {
+    if (typeof this.selectedCategory === 'number') {
       this.filteredList = this.placeholder.filter((product: Product) => product.categoryId == this.selectedCategory);
     } else if (typeof this.selectedCategory === 'object') {
-      this.productService.getProductsByCat(this.selectedCategory.id).subscribe((products) => {
+      console.log(this.selectedCategory)
+      this.productService.getProductsByCat(this.selectedCategory.category).subscribe((products) => {
         this.filteredList = products.map((item: any) => {
           // Map the properties as needed
           const url = `http://localhost:8081/api/images/download?name=${item.imagesName[0]}`;
@@ -90,7 +92,9 @@ export class ProductAllComponent implements OnInit {
     this.selectedCategory = selectedCategory;
     console.log('Selected Category:', this.selectedCategory.id);
       this.filteredList = this.placeholder;
-      console.log(this.filteredList);
-      console.log('No selected category');
-  }
+      console.log(this.route.snapshot.params)
+
+      this.router.navigate(['/products']);
+
+    }
 }

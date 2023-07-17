@@ -94,3 +94,9 @@
   justify-content: center;
   align-items: center;
 }
+.product-title .title-container {
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 1 !important;
+  overflow: hidden;
+}
