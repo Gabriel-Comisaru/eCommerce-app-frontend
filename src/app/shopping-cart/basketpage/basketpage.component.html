@@ -1,5 +1,5 @@
 <div class="mainDiv">
-<p-table [paginator]="true" [rows]="row" [rowsPerPageOptions]="rows" [value]="orderItems"
+<p-table [paginator]="true" [rows]="row" [rowsPerPageOptions]="rows" [value]="orderedItems"
          [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
          [globalFilterFields]="['name']" [style]="{'margin-top': '20px'}">
   <ng-template pTemplate="header">
@@ -17,20 +17,20 @@
     </div>
     <tr  class="item">
       <td>Not yet</td>
-      <td>{{ ItemModel.name }} : {{ ItemModel.availableStock }}</td>
+      <td>{{ ItemModel.name }} : {{ ItemModel.stock }}</td>
       <td>{{ ItemModel.category }}</td>
       <td>
         <p-button (onClick)="decrement(ItemModel)" icon="pi pi-minus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
         </p-button>
         {{ ItemModel.quantity }}
         <p-button (onClick)="increment(ItemModel)"
-                  [disabled]="ItemModel.quantity >= ItemModel.availableStock"
+                  [disabled]="ItemModel.quantity >= ItemModel.stock"
                   icon="pi pi-plus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
         </p-button>
       </td>
       <td class="itemPrice">{{ getItemPrice(ItemModel) }} $</td>
       <td>
-        <p-button icon="pi pi-trash" (click)="deleteProduct(ItemModel, index, $event)"></p-button>
+        <p-button icon="pi pi-trash" (click)="deleteProduct(ItemModel, $event)"></p-button>
       </td>
     </tr>
   </ng-template>
