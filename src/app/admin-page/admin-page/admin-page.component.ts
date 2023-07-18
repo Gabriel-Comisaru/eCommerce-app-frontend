@@ -14,14 +14,16 @@ export class AdminPageComponent {
   }
 
   ngOnInit(){
-    this.router.navigate(['admin'])
+    // this.router.navigate([`admin`])
   }
 
-  goToProducts(){
+  goToProducts(event:any){
       this.router.navigate(['products'],{relativeTo:this.route})
+    console.log(event)
   }
 
   goToOrders() {
     this.router.navigate(['orders'],{relativeTo:this.route})
   }
+
 }

@@ -1,9 +1,9 @@
 <p-menubar>
   <ng-template pTemplate="start">
     <div class="flex flex-wrap gap-3">
-      <p-radioButton (click)="goToProducts()" name="list" value="productsList" [(ngModel)]="listName"></p-radioButton>
+      <p-radioButton (click)="goToProducts($event)" name="list" value="productsList" [(ngModel)]="listName"></p-radioButton>
       <label class="ml-2">Products List</label>
-      <p-radioButton  (click)="goToOrders()" name="list" value="ordersList" [(ngModel)]="listName"></p-radioButton>
+      <p-radioButton (click)="goToOrders()" name="list" value="ordersList" [(ngModel)]="listName"></p-radioButton>
       <label class="ml-2">Orders List</label>
     </div>
   </ng-template>
