@@ -1,5 +1,5 @@
 <div class="categories-list">
-  <p-card *ngFor="let category of categories"  [routerLink]="['/products', category.categoryId]"class="category-card"
+  <p-card *ngFor="let category of categories" (click)="navigateToProducts(category.categoryId)" class="category-card"
 
   >
     <ng-template pTemplate="title">
@@ -7,23 +7,9 @@
     </ng-template>
     <ng-template pTemplate="content">
       <div class="category-image">
-<!--        <img [src]="category.image" alt="Category Image" class="fit-image">-->
-<!--        {{category.categoryId}}-->
+        <img src="{{category.image}}" alt="Image not available"  class="fit-image">
       </div>
     </ng-template>
   </p-card>
 </div>
 
-
-<!--<div class="categories-list">-->
-<!--  <p-card *ngFor="let category of categories" (click)="navigateToProducts(category.categoryId)" class="category-card">-->
-<!--    <ng-template pTemplate="title">-->
-<!--      {{ category.categoryName }}-->
-<!--    </ng-template>-->
-<!--    <ng-template pTemplate="content">-->
-<!--      <div class="category-image">-->
-<!--        &lt;!&ndash; Category image goes here &ndash;&gt;-->
-<!--      </div>-->
-<!--    </ng-template>-->
-<!--  </p-card>-->
-<!--</div>-->

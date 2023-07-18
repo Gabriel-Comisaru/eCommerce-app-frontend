@@ -23,9 +23,11 @@
         <input *ngIf="header=='Add new product'" type="file" (change)="onFileChanged($event)"
                accept="image/*">
       </div>
-      <p-button [disabled]="!productForm.valid" *ngIf="header=='Edit product'" type="submit" icon="pi pi-check"
-                label="Update" styleClass="p-button-text"></p-button>
-      <p-button [disabled]="!productForm.valid" *ngIf="header=='Add new product'" type="submit" icon="pi pi-check"
+
+      <p-button [disabled]="!productForm.valid || !productForm.dirty" [loading]="loading" *ngIf="header=='Edit product'" type="submit" icon="pi pi-check"
+                label="Update" styleClass="p-button-text p-button-success"></p-button>
+      <p-button [disabled]="!productForm.valid" *ngIf="header=='Add new product'" [loading]="loading" type="submit" icon="pi pi-check"
+
                 label="Add" styleClass="p-button-text p-button-success"></p-button>
       <p-button (click)="close()" icon="pi pi-times" label="Cancel"
                 styleClass="p-button-text p-button-danger"></p-button>

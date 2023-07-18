@@ -23,28 +23,19 @@
   margin-bottom: 5px;
 }
 
-.apply-button {
-  display: block;
-  width: 100%;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-}
-
-.apply-button:hover {
-  background-color: #0056b3;
-}
-
-.apply-button:focus {
-  outline: none;
-}
-
 .p-button-sm{
   margin-right: 10px!important;
   width: 20px;
+}
+
+.full-width-button {
+  width: 100%;
+}
+
+#priceRange {
+  margin-top: 2vh;
+  padding-top: 2vh!important;
+}
+.price-range-value {
+  margin-bottom: 1vh;
 }

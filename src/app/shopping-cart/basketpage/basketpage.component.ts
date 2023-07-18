@@ -3,16 +3,9 @@ import { BasketService } from '../shared/basket.service';
 import { Product } from '../../home-page/shared/product.model';
 import { ProductsService } from '../../home-page/shared/products.service';
 import { CategoriesService } from '../../product-categories/shared/categories.service';
-
-interface Item {
-  id: number;
-  name: string;
-  productId: number;
-  orderId: number;
-  quantity: number;
-  price: number;
-  category: string;
-}
+import { Item } from '../shared/item.model';
+import { forkJoin } from 'rxjs';
+import { combineLatest } from 'rxjs/internal/operators/combineLatest';
 
 @Component({
   selector: 'app-basketpage',
@@ -20,98 +13,72 @@ interface Item {
   styleUrls: ['./basketpage.component.css'],
 })
 export class BasketpageComponent implements OnInit {
+  constructor(
+    private basketService: BasketService,
+    private productService: ProductsService
+  ) {}
+
   public basketItems: Product[] = [];
-  visible = false;
-  header = '';
-  products: Array<Product> = [];
+
+  public products: any = [];
+  public orderItemProducts: any = [];
+  public orderedItems: any = [];
+
+  loading: boolean = true;
+
+  //Map the current quantity of each product
   public productQuantityMap: Map<string, number> = new Map<string, number>();
+  //map the properties of each product
   public itemNames: Map<number, string> = new Map<number, string>();
   public itemPrices: Map<number, number> = new Map<number, number>();
   public itemCategories: Map<number, string> = new Map<number, string>();
-  public categories: any[] = [];
+  public itemStock: Map<number, number> = new Map<number, number>();
+
   //Placeholder
   public itemNamesAny: any[] = [];
-  //Placeholder
-  public itemCategoriesAny: any[] = [];
-  //Placeholder
-  public itemPricesAny: any[] = [];
+  public lalalala: any[] = [];
 
-  orderItems: Array<Item> = [];
-
-  selectedProduct: any = [];
   rows: any = [5, 10, 15];
   row: any = 5;
 
-  constructor(
-    private basketService: BasketService,
-    private productService: ProductsService,
-    private categoryService: CategoriesService
-  ) {}
-
   ngOnInit(): void {
-    // this.categoryService.getCategories().subscribe((list) => {
-    //   this.categories = list.map((category: any) => {
-    //     that.categoryNames.set(category.id, category.name);
-    //   })
-    // })
-    let that = this;
-    this.productService.getProducts().subscribe((list) => {
-      this.itemNamesAny = list.map((product: any) => {
-        that.itemNames.set(product.id, product.name);
-      });
-    });
-    this.productService.getProducts().subscribe((list) => {
-      this.itemPricesAny = list.map((product: any) => {
-        that.itemPrices.set(product.id, product.price);
-      });
-    });
-    this.categoryService.getCategories().subscribe((list) => {
-      this.itemCategoriesAny = list.map((category: any) => {
-        that.itemCategories.set(category.id, category.name);
+    this.loading = true;
+
+    const productSubscriber = this.productService.getProducts();
+    const orderSubscriber = this.basketService.getOrderItems();
+
+    forkJoin([productSubscriber, orderSubscriber]).subscribe((res: any) => {
+      [this.products, this.orderItemProducts] = res;
+      this.products.forEach((product: any) => {
+        let item = this.orderItemProducts.filter((orderItem: any) => {
+          if (orderItem.productId === product.id) {
+            this.orderedItems.push({
+              id: orderItem.id,
+              name: product.name,
+              category: product.categoryName,
+              price: product.price,
+              image: product.imagesName[0],
+              quantity: orderItem.quantity,
+              stock: product.unitsInStock,
+            });
+          }
+        });
       });
     });
 
-    // console.log(this.itemNames);
-    setTimeout(() => {
-      this.basketService.getOrderItems().subscribe((list: any[]) => {
-        this.orderItems = list.map((item: any) => {
-          // console.log(item)
-          return {
-            id: item.id,
-            name: this.itemNames.get(item.productId) || '',
-            productId: item.productId,
-            orderId: item.orderId,
-            quantity: item.quantity,
-            price: this.itemPrices.get(item.productId) || 0,
-            category: this.itemCategories.get(item.categoryId) || '',
-          };
-        });
-        // console.log(this.orderItems)
-      });
-    }, 500);
-    this.orderItems.forEach((item: any) => {
-      this.productQuantityMap.set(item.name, item.quantity);
-    });
+    this.loading = false;
   }
 
-  deleteProduct(product: any, index: number, event: any) {
-    // console.log(product);
-    // product is actually orderItemId
-    // console.log(index);
+  deleteProduct(product: any, event: any) {
     this.basketService.deleteOrderItem(product.id).subscribe((res) => {
-      //console.log();
-      console.log(res === 'OrderItem deleted');
+      this.orderedItems = this.orderedItems.filter(
+        (item: any) => item.id !== product.id
+      );
       this.productService.shoppingCartObservable.next({
         ...product,
         action: 'delete',
       });
     });
-
-    this.orderItems.splice(index, 1);
-  }
-
-  selectRows(event: any) {
-    this.row = +event.value;
   }
 
   checkout() {
@@ -140,39 +107,27 @@ export class BasketpageComponent implements OnInit {
   decrement(Item: Item) {
     if (Item.quantity > 1) {
       Item.quantity -= 1;
+    } else if (Item.quantity === 1) {
+      this.deleteProduct(Item, null);
     }
-
     this.basketService.updateOrderQuantity(Item.id, Item.quantity);
     this.updateProductQuantityMap();
     this.updateProductQuantity(Item);
   }
 
-  getFirstIndex(product: any): number {
-    return this.basketItems.findIndex((item) => item.name === product.name);
-  }
-
-  getQuantity(product: any): number {
-    return this.productQuantityMap.get(product.name) || 0;
-  }
-
-  isProductAvailable(product: any): boolean {
-    const firstIndex = this.getFirstIndex(product);
-    return (
-      firstIndex !== -1 && firstIndex === this.basketItems.indexOf(product)
-    );
-  }
-  getTotalPrice(): number {
+  getTotalPrice(): string {
     let totalPrice = 0;
-    this.orderItems.forEach((item) => {
+    this.orderedItems.forEach((item: any) => {
       totalPrice += item.price * item.quantity;
     });
-    return totalPrice;
+    return totalPrice.toFixed(2);
   }
+
   getItemPrice(item: any) {
-    return item.price * item.quantity;
+    return (item.price * item.quantity).toFixed(2);
   }
 
   updateProductQuantity(Item: any) {
-    this.basketService.updateOrderQuantity(Item.id, Item.quantity);
+    this.basketService.updateOrderQuantity(Item.id, Item.quantity).subscribe();
   }
 }

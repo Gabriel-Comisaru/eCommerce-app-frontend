@@ -2,13 +2,18 @@
   <div class="filters">
     <app-filters
       (filtersApplied)="applyFilters($event)"
-      (filtersCleared)="clearFilters($event)"
+      (filtersCleared)="clearFilters()"
     ></app-filters>
   </div>
   <div class="product-list">
     <app-product-list
       [mockProduct]="mockProducts"
-      [lalalala]="lalalala"
+      [filteredList]="filteredList"
+      [totalRows]="totalRows"
     ></app-product-list>
   </div>
+
+</div>
+<div *ngIf="loading" class="loading">
+  <div class="spinner"></div>
 </div>
