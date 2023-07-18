@@ -17,7 +17,7 @@
     </div>
     <tr  class="item">
       <td>Not yet</td>
-      <td>{{ ItemModel.name }}</td>
+      <td>{{ ItemModel.name }} : {{ ItemModel.availableStock }}</td>
       <td>{{ ItemModel.category }}</td>
       <td>
         <p-button (onClick)="decrement(ItemModel)" icon="pi pi-minus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">

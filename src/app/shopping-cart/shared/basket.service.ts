@@ -12,39 +12,27 @@ export class BasketService {
     private httpClient: HttpClient,
     @Optional() public NavBarComponent: NavBarComponent
   ) {}
-  private basketItems: Product[] = [];
-  orderItems: any = [];
+
+
   private url = 'http://localhost:8081/api';
 
   createOrder(productId: number) {
     const url = `${this.url}/orderItems/${productId}?quantity=1`;
-    return this.httpClient.post(url, {}).subscribe(() => {
-      this.NavBarComponent.loadBasketContent();
-      console.log(NavBarComponent);
-    });
+    return this.httpClient.post(url, {});
   }
 
   deleteOrderItem(productId: number) {
     const url = `${this.url}/orderItems/${productId}`;
-    // return this.httpClient.delete(url).subscribe(() => {
-    //   this.NavBarComponent.loadBasketContent();
-    // });
-    this.httpClient.delete(url).subscribe(() => {});
-    this.NavBarComponent.loadBasketContent();
-    return;
+    return this.httpClient.delete(url, {responseType: 'text'})
   }
 
   getOrderItems(): Observable<any> {
     const url = `${this.url}/orderItems`;
-    this.orderItems = this.httpClient.get<any>(url);
     return this.httpClient.get<any>(url);
   }
 
   updateOrderQuantity(productId: number, quantity: number) {
     const url = `${this.url}/orderItems/${productId}/quantity?quantity=${quantity}`;
-    // console.log(url)
-    this.httpClient.put(url, {}).subscribe();
-    this.NavBarComponent.loadBasketContent();
-    return;
+    return this.httpClient.put(url, {});
   }
 }

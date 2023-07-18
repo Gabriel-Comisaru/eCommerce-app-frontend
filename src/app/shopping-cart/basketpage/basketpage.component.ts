@@ -27,6 +27,7 @@ export class BasketpageComponent implements OnInit {
   public itemNames: Map<number,string> = new Map<number, string>();
   public itemPrices: Map<number,number> = new Map<number, number>();
   public itemCategories: Map<number,string> = new Map<number, string>();
+  public itemStock: Map<number,number> = new Map<number, number>();
   public categories: any[] = [];
 
   //Placeholder
@@ -42,18 +43,14 @@ export class BasketpageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    let that = this;
     this.productService.getProducts().subscribe((list) => {
       this.itemNamesAny = list.map((product: any) => {
-        that.itemNames.set(product.id, product.name);
-        that.itemPrices.set(product.id, product.price);
+        this.itemNames.set(product.id, product.name);
+        this.itemPrices.set(product.id, product.price);
+        this.itemCategories.set(product.id, product.categoryName);
+        this.itemStock.set(product.id, product.stock);
 
       });
-    });
-    this.categoryService.getCategories().subscribe((list) => {
-      this.itemCategoriesAny = list.map((category: any) => {
-        that.itemCategories.set(category.id, category.name);
-      })
     });
 
     // console.log(this.itemNames);
@@ -68,12 +65,11 @@ export class BasketpageComponent implements OnInit {
             orderId: item.orderId,
             quantity: item.quantity,
             price: this.itemPrices.get(item.productId) || 0,
-            category: this.itemCategories.get(item.categoryId) || ''
+            category: this.itemCategories.get(item.categoryId) || '',
+            availableStock: this.itemStock.get(item.productId) || 0,
           };
         });
-        // console.log(this.orderItems)
       });
-
     }, 500)
     this.orderItems.forEach((item: any) => {
       this.productQuantityMap.set(item.name, item.quantity);
@@ -82,11 +78,10 @@ export class BasketpageComponent implements OnInit {
     }
 
   deleteProduct(product: any, index: number, event: any) {
-    console.log(product)
-    console.log(index)
-    this.basketService.deleteOrderItem(product.id)
-
-    this.orderItems.splice(index, 1);
+    this.basketService.deleteOrderItem(product.id).subscribe( (res) => {
+      this.orderItems.splice(index, 1);
+      }
+    )
   }
 
   checkout() {

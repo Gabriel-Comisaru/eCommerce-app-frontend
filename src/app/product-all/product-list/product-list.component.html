@@ -41,11 +41,15 @@
         icon="pi pi-heart"
         class="favorite-button"
         (click)="addToFavorite(product, $event)"
+        styleClass="p-button-success p-button-outlined"
       ></p-button>
       <p-button
         class="add-to-cart-button"
         (click)="addToBasket(product, $event)"
-        >Add to Cart</p-button
+        [disabled]="product.unitsInStock === 0"
+        [label]="product.unitsInStock === 0 ? 'Out of Stock' : 'Add to Cart'"
+        [styleClass]="product.unitsInStock === 0 ? 'p-button-danger' : 'p-button-info'"
+        ></p-button
       >
     </ng-template>
   </p-card>
