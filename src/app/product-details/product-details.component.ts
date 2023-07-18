@@ -16,7 +16,6 @@ export class ProductDetailsComponent implements OnInit {
   product: Product = {} as Product;
   images: String[] = [];
   position: string = 'bottom';
-  overallRating: number = 0;
   discountedPrice: number = 0;
   reviews: Review[] = [];
   reviewForm = this.fb.group({
@@ -41,9 +40,13 @@ export class ProductDetailsComponent implements OnInit {
       this.discountedPrice = Math.round(
         product.price - product.price * (product.discountPercentage / 100)
       );
-      product.rating = this.overallRating;
       this.getImages();
     });
+
+    this.productService.getProductReviews(id)
+      .subscribe(reviews => {
+        this.reviews = reviews
+      });
   }
 
   scrollToSection(id: string) {
@@ -94,14 +97,14 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  calculateRating() {
-    let totalRating = 0;
-    for (let review of this.reviews) {
-      totalRating += review.rating;
-    }
-    this.overallRating = Math.round(totalRating / this.reviews.length);
-    return this.overallRating;
-  }
+  // calculateRating() {
+  //   let totalRating = 0;
+  //   for (let review of this.reviews) {
+  //     totalRating += review.rating;
+  //   }
+  //   this.overallRating = Math.round(totalRating / this.reviews.length);
+  //   return this.overallRating;
+  // }
 
   addToCart(product: Product) {
     if (this.authService.isAuthenticated()) {
