@@ -12,6 +12,7 @@ import {AuthGuard} from './services/auth.guard';
 import {AlreadyLoggedGuard} from './services/already-logged.guard';
 import {AccountDetailsComponent} from './account-details/account-details.component';
 import {AdminPageComponent} from "./admin-page/admin-page/admin-page.component";
+import {AdminOrdersListComponent} from "./admin-page/admin-orders-list/admin-orders-list.component";
 
 const routes: Routes = [
   {
@@ -36,6 +37,11 @@ const routes: Routes = [
     {
       path: 'products',
       component: AdminProductListComponent,
+      canActivate: [AuthGuard],
+    },
+    {
+      path: 'orders',
+      component: AdminOrdersListComponent,
       canActivate: [AuthGuard],
     }
   ]

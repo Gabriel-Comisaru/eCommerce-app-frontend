@@ -56,6 +56,7 @@ import { FloorPipe } from './home-page/shared/floor.pipe';
 import {RippleModule} from "primeng/ripple";
 import { AdminPageComponent } from './admin-page/admin-page/admin-page.component';
 import {RadioButtonModule} from "primeng/radiobutton";
+import { AdminOrdersListComponent } from './admin-page/admin-orders-list/admin-orders-list.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import {RadioButtonModule} from "primeng/radiobutton";
     AccountDetailsComponent,
     FloorPipe,
     AdminPageComponent,
+    AdminOrdersListComponent,
   ],
   imports: [
     HttpClientModule,
