@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductsService } from 'src/app/home-page/shared/products.service';
 import { BehaviorSubject } from 'rxjs';
+import {OrderItem} from "../../home-page/shared/orderItem.model";
 
 @Component({
   selector: 'app-product-list',
@@ -40,13 +41,14 @@ export class ProductListComponent implements OnInit {
 
   addToBasket(product: Product, event: any): void {
     if (this.authService.isAuthenticated()) {
-      console.log(product, 'product=============');
-      event.stopPropagation();
-      this.basketService
-        .createOrder(product.id)
-        .subscribe((res: any) =>
-          this.productsService.shoppingCartObservable.next(res)
-        );
+      event.stopPropagation()
+      this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
+        this.productsService.shoppingCartObservable.next({
+          ...res,
+          action: 'add',
+        } as OrderItem);
+        console.log(res);
+      });
     } else {
       this.router.navigate(['login']);
     }
