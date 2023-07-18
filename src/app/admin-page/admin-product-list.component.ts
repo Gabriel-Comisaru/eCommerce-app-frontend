@@ -23,7 +23,7 @@ export class AdminProductListComponent implements OnInit {
     this.header = 'Add new product';
   }
 
-  showDialogEditProduct(product: any, event: any) {
+  showDialogEditProduct(product: any) {
     this.visible = true;
     this.header = 'Edit product';
     this.selectedProduct = product;
