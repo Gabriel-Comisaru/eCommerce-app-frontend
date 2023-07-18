@@ -13,27 +13,21 @@ import { Item } from "../shared/item.model";
 export class BasketpageComponent implements OnInit {
   constructor(private basketService: BasketService,
               private productService: ProductsService,
-              private categoryService: CategoriesService,
-
   ) { }
-
 
   public basketItems: Product[] = [];
   loading: boolean = true;
 
-  header = '';
-  products: Array<Product> = [];
+  //Map the current quantity of each product
   public productQuantityMap: Map<string, number> = new Map<string, number>();
+  //map the properties of each product
   public itemNames: Map<number,string> = new Map<number, string>();
   public itemPrices: Map<number,number> = new Map<number, number>();
   public itemCategories: Map<number,string> = new Map<number, string>();
   public itemStock: Map<number,number> = new Map<number, number>();
-  public categories: any[] = [];
 
   //Placeholder
   public itemNamesAny: any[] = [];
-  //Placeholder
-  public itemCategoriesAny: any[] = [];
 
 
   orderItems: Array<Item> = [];
@@ -53,11 +47,9 @@ export class BasketpageComponent implements OnInit {
       });
     });
 
-    // console.log(this.itemNames);
     setTimeout(() => {
       this.basketService.getOrderItems().subscribe((list: any[]) => {
         this.orderItems = list.map( (item: any) => {
-          // console.log(item)
           return {
             id: item.id,
             name: this.itemNames.get(item.productId) || '',
@@ -126,12 +118,12 @@ export class BasketpageComponent implements OnInit {
     });
     return totalPrice.toFixed(2);
   }
+
   getItemPrice(item: any){
     return (item.price * item.quantity).toFixed(2);
   }
 
   updateProductQuantity(Item: any) {
-    this.basketService.updateOrderQuantity(Item.id, Item.quantity)
-
+    this.basketService.updateOrderQuantity(Item.id, Item.quantity).subscribe()
   }
 }

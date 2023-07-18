@@ -1,6 +1,5 @@
 import { Injectable, Optional } from '@angular/core';
-import { Product } from 'src/app/home-page/shared/product.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { NavBarComponent } from '../../nav-bar/nav-bar.component';
 
@@ -33,6 +32,6 @@ export class BasketService {
 
   updateOrderQuantity(productId: number, quantity: number) {
     const url = `${this.url}/orderItems/${productId}/quantity?quantity=${quantity}`;
-    return this.httpClient.put(url, {});
+    return this.httpClient.put(url, {}, {responseType: 'text'});
   }
 }
