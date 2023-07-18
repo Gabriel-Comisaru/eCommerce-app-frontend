@@ -1,25 +1,55 @@
 <div class="mainDiv">
-  <div class="surface-card p-4 shadow-2 border-round  lg:w-6">
-    <div class="text-center mb-5">
-      <div class="text-900 text-3xl font-medium mb-3">Delivery Details</div>
+  <div class="surface-card p-4 shadow-1 border-1 lg:w-6">
+    <div class=" mb-5">
+      <div class="text-900 text-3xl font-medium">Delivery Details</div>
+      <p-divider></p-divider>
     </div>
-
-    <div>
-      <label for="email1" class="block text-900 font-medium mb-2">Email</label>
-      <input id="email1" type="text" placeholder="Email address" pInputText class="w-full mb-3">
-
-      <label for="password1" class="block text-900 font-medium mb-2">Password</label>
-      <input id="password1" type="password" placeholder="Password" pInputText class="w-full mb-3">
-
-      <div class="flex align-items-center justify-content-between mb-6">
-        <div class="flex align-items-center">
-          <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
-          <label for="rememberme1" class="text-900">Remember me</label>
-        </div>
-        <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
+    <div class="surface-card shadow-none clientDeets">
+      <div class="checkbox pt-3">
+        <p-checkbox class=""></p-checkbox>
       </div>
-
-      <button pButton pRipple label="Sign In" icon="pi pi-user" class="w-full"></button>
+      <p-divider layout="vertical" ></p-divider>
+      <div class="detailsContainer pt-2">
+        <button pButton pRipple label="Edit" class="p-button-outlined p-button-sm editBtn"></button>
+        <div class="">Name & Surname - 0777654894</div>
+        <div class="">Address - County - City</div>
+      </div>
     </div>
+    <div class="flex justify-between mt-5">
+      <button pButton pRipple label="Add New" class="p-button-outlined p-button-sm ml-2"></button>
+    </div>
+
+
+
+<!--    this is the end of the box-->
+    <div class="flex justify-between mt-5">
+      <button pButton pRipple label="Finish Order" class="w-full"></button>
+    </div>
+  </div>
+</div>
+
+
+<!--  asdadasdadasasdasdasdasdasdasdasdasdasda-->
+<div class="surface-card p-4 shadow-2 border-round  lg:w-6" hidden="hidden">
+  <div class="text-center mb-5">
+    <div class="text-900 text-3xl font-medium mb-3">Delivery Details</div>
+  </div>
+
+  <div>
+    <label for="email1" class="block text-900 font-medium mb-2">Email</label>
+    <input id="email1" type="text" placeholder="Email address" pInputText class="w-full mb-3">
+
+    <label for="password1" class="block text-900 font-medium mb-2">Password</label>
+    <input id="password1" type="password" placeholder="Password" pInputText class="w-full mb-3">
+
+    <div class="flex align-items-center justify-content-between mb-6">
+      <div class="flex align-items-center">
+        <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
+        <label for="rememberme1" class="text-900">Remember me</label>
+      </div>
+      <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
+    </div>
+
+    <button pButton pRipple label="Sign In" icon="pi pi-user" class="w-full"></button>
   </div>
 </div>
