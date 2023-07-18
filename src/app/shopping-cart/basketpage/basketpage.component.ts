@@ -48,7 +48,7 @@ export class BasketpageComponent implements OnInit {
         this.itemNames.set(product.id, product.name);
         this.itemPrices.set(product.id, product.price);
         this.itemCategories.set(product.id, product.categoryName);
-        this.itemStock.set(product.id, product.stock);
+        this.itemStock.set(product.id, product.unitsInStock);
 
       });
     });
@@ -110,6 +110,8 @@ export class BasketpageComponent implements OnInit {
   decrement(Item: Item) {
     if (Item.quantity > 1) {
       Item.quantity -= 1;
+    } else if (Item.quantity === 1) {
+      this.deleteProduct(Item, 0, null);
     }
     this.basketService.updateOrderQuantity(Item.id, Item.quantity)
     this.updateProductQuantityMap()

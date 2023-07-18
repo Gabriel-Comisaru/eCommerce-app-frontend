@@ -23,7 +23,9 @@
         <p-button (onClick)="decrement(ItemModel)" icon="pi pi-minus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
         </p-button>
         {{ ItemModel.quantity }}
-        <p-button (onClick)="increment(ItemModel)" icon="pi pi-plus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
+        <p-button (onClick)="increment(ItemModel)"
+                  [disabled]="ItemModel.quantity >= ItemModel.availableStock"
+                  icon="pi pi-plus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
         </p-button>
       </td>
       <td class="itemPrice">{{ getItemPrice(ItemModel) }} $</td>

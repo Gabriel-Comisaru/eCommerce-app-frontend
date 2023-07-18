@@ -38,8 +38,9 @@ export class ProductListComponent implements OnInit {
 
   addToBasket(product: Product, event: any): void {
     if (this.authService.isAuthenticated()) {
+      console.log(product, 'product=============')
       event.stopPropagation();
-      this.basketService.createOrder(product.id);
+      this.basketService.createOrder(product.id).subscribe();
     } else {
       this.router.navigate(['login']);
     }
