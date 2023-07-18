@@ -6,6 +6,7 @@ import { CategoriesService } from '../../product-categories/shared/categories.se
 import { Item } from '../shared/item.model';
 import { forkJoin } from 'rxjs';
 import { combineLatest } from 'rxjs/internal/operators/combineLatest';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-basketpage',
@@ -15,7 +16,8 @@ import { combineLatest } from 'rxjs/internal/operators/combineLatest';
 export class BasketpageComponent implements OnInit {
   constructor(
     private basketService: BasketService,
-    private productService: ProductsService
+    private productService: ProductsService,
+    private router: Router
   ) {}
 
   public basketItems: Product[] = [];
@@ -83,6 +85,7 @@ export class BasketpageComponent implements OnInit {
 
   checkout() {
     // Implement the checkout functionality here
+    this.router.navigate(['/order-data']);
   }
 
   updateProductQuantityMap(): void {

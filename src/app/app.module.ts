@@ -55,6 +55,7 @@ import { ImageModule } from 'primeng/image';
 import { FloorPipe } from './home-page/shared/floor.pipe';
 import {RippleModule} from "primeng/ripple";
 import { OrderDataComponent } from './shopping-cart/order-data/order-data.component';
+import {CheckboxModule} from "primeng/checkbox";
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import { OrderDataComponent } from './shopping-cart/order-data/order-data.compon
         NgOptimizedImage,
         ImageModule,
         RippleModule,
+        CheckboxModule,
     ],
 
   providers: [

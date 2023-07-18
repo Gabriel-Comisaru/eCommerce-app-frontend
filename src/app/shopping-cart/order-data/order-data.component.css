@@ -1,0 +1,17 @@
+.surface-card{
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #ccc;
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
+  /*display: flex;*/
+
+
+}
+.mainDiv {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
