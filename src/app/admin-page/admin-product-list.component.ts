@@ -1,15 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductsService} from '../home-page/shared/products.service';
-import {Product} from '../home-page/shared/product.model';
-import {deleteFunction} from "./utilities/utilities";
-import {Review} from "../home-page/shared/review.model";
 
 @Component({
   selector: 'app-admin-page',
-  templateUrl: './admin-page.component.html',
-  styleUrls: ['./admin-page.component.css'],
+  templateUrl: './admin-product-list.component.html',
+  styleUrls: ['./admin-product-list.component.css'],
 })
-export class AdminPageComponent implements OnInit {
+export class AdminProductListComponent implements OnInit {
   visible = false;
   deleteVisible = false;
   header = '';

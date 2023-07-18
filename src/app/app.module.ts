@@ -25,7 +25,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProductStatusComponent } from './home-page/products-list-carousel/product-status/product-status.component';
 
-import { AdminPageComponent } from './admin-page/admin-page.component';
+import { AdminProductListComponent } from './admin-page/admin-product-list.component';
 import { UpdateProductComponent } from './admin-page/update-product/update-product.component';
 import { DialogModule } from 'primeng/dialog';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -54,6 +54,8 @@ import { NgOptimizedImage } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { FloorPipe } from './home-page/shared/floor.pipe';
 import {RippleModule} from "primeng/ripple";
+import { AdminPageComponent } from './admin-page/admin-page/admin-page.component';
+import {RadioButtonModule} from "primeng/radiobutton";
 
 @NgModule({
   declarations: [
@@ -64,7 +66,7 @@ import {RippleModule} from "primeng/ripple";
 
     NavBarComponent,
     ProductStatusComponent,
-    AdminPageComponent,
+    AdminProductListComponent,
     UpdateProductComponent,
     ProductAllComponent,
     ProductListComponent,
@@ -77,53 +79,55 @@ import {RippleModule} from "primeng/ripple";
     RegisterComponent,
     AccountDetailsComponent,
     FloorPipe,
+    AdminPageComponent,
   ],
-    imports: [
-        HttpClientModule,
-        BrowserModule,
-        AppRoutingModule,
-        MenubarModule,
-        CarouselModule,
-        ButtonModule,
-        TagModule,
-        InputSwitchModule,
-        SkeletonModule,
-        RatingModule,
-        OverlayPanelModule,
-        BadgeModule,
-        ReactiveFormsModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        DialogModule,
-        FileUploadModule,
-        ToastModule,
-        TableModule,
-        InputTextModule,
-        DropdownModule,
-        InputTextareaModule,
-        InputNumberModule,
-        PaginatorModule,
-        SliderModule,
-        RatingModule,
-        CardModule,
-        GalleriaModule,
-        StyleClassModule,
-        PanelModule,
-        ToggleButtonModule,
+  imports: [
+    HttpClientModule,
+    BrowserModule,
+    AppRoutingModule,
+    MenubarModule,
+    CarouselModule,
+    ButtonModule,
+    TagModule,
+    InputSwitchModule,
+    SkeletonModule,
+    RatingModule,
+    OverlayPanelModule,
+    BadgeModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    DialogModule,
+    FileUploadModule,
+    ToastModule,
+    TableModule,
+    InputTextModule,
+    DropdownModule,
+    InputTextareaModule,
+    InputNumberModule,
+    PaginatorModule,
+    SliderModule,
+    RatingModule,
+    CardModule,
+    GalleriaModule,
+    StyleClassModule,
+    PanelModule,
+    ToggleButtonModule,
 
-        BrowserModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        ReactiveFormsModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
 
-        InputTextModule,
-        ButtonModule,
-        AppRoutingModule,
-        HttpClientModule,
-        NgOptimizedImage,
-        ImageModule,
-        RippleModule,
-    ],
+    InputTextModule,
+    ButtonModule,
+    AppRoutingModule,
+    HttpClientModule,
+    NgOptimizedImage,
+    ImageModule,
+    RippleModule,
+    RadioButtonModule,
+  ],
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
