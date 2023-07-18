@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { BasketService } from "../shared/basket.service";
-import { Product } from "../../home-page/shared/product.model";
+import {Component, OnInit} from '@angular/core';
+import {BasketService} from "../shared/basket.service";
+import {Product} from "../../home-page/shared/product.model";
 import {ProductsService} from "../../home-page/shared/products.service";
 import {CategoriesService} from "../../product-categories/shared/categories.service";
-import { Item } from "../shared/item.model";
+import {Item} from "../shared/item.model";
 import {forkJoin} from "rxjs";
 import {combineLatest} from "rxjs/internal/operators/combineLatest";
 
@@ -15,34 +15,36 @@ import {combineLatest} from "rxjs/internal/operators/combineLatest";
 export class BasketpageComponent implements OnInit {
   constructor(private basketService: BasketService,
               private productService: ProductsService,
-  ) { }
+  ) {
+  }
 
   public basketItems: Product[] = [];
 
   public products: any = [];
   public orderItemProducts: any = [];
-  public orderedItems: any =[];
+  public orderedItems: any = [];
 
   loading: boolean = true;
 
   //Map the current quantity of each product
   public productQuantityMap: Map<string, number> = new Map<string, number>();
   //map the properties of each product
-  public itemNames: Map<number,string> = new Map<number, string>();
-  public itemPrices: Map<number,number> = new Map<number, number>();
-  public itemCategories: Map<number,string> = new Map<number, string>();
-  public itemStock: Map<number,number> = new Map<number, number>();
+  public itemNames: Map<number, string> = new Map<number, string>();
+  public itemPrices: Map<number, number> = new Map<number, number>();
+  public itemCategories: Map<number, string> = new Map<number, string>();
+  public itemStock: Map<number, number> = new Map<number, number>();
 
   //Placeholder
   public itemNamesAny: any[] = [];
-public lalalala: any[] = [];
+  public lalalala: any[] = [];
 
-  orderItems: Array<Item> = [];
   rows: any = [5, 10, 15];
   row: any = 5;
 
 
   ngOnInit(): void {
+    this.loading = true;
+
     const productSubscriber = this.productService.getProducts();
     const orderSubscriber = this.basketService.getOrderItems();
 
@@ -51,8 +53,6 @@ public lalalala: any[] = [];
       this.products.forEach((product: any) => {
         let item = this.orderItemProducts.filter((orderItem: any) => {
           if (orderItem.productId === product.id) {
-            // console.log('==========================?===========condition met=======================================')
-            // console.log(orderItem.id, product.name, product.categoryName, product.price, product.imagesName[0], orderItem.quantity, product.unitsInStock)
             this.orderedItems.push({
               id: orderItem.id,
               name: product.name,
@@ -67,43 +67,12 @@ public lalalala: any[] = [];
       })
     })
 
-    this.loading = true;
-    this.productService.getProducts().subscribe((list) => {
-      this.itemNamesAny = list.map((product: any) => {
-        this.itemNames.set(product.id, product.name);
-        this.itemPrices.set(product.id, product.price);
-        this.itemCategories.set(product.id, product.categoryName);
-        this.itemStock.set(product.id, product.unitsInStock);
-      });
-    });
-
-    setTimeout(() => {
-      this.basketService.getOrderItems().subscribe((list: any[]) => {
-        this.orderItems = list.map( (item: any) => {
-          return {
-            id: item.id,
-            name: this.itemNames.get(item.productId) || '',
-            productId: item.productId,
-            orderId: item.orderId,
-            quantity: item.quantity,
-            price: this.itemPrices.get(item.productId) || 0,
-            category: this.itemCategories.get(item.categoryId) || '',
-            availableStock: this.itemStock.get(item.productId) || 0,
-          };
-          console.log(this.orderItems)
-        });
-      });
-    }, 500)
-    this.orderItems.forEach((item: any) => {
-      this.productQuantityMap.set(item.name, item.quantity);
-    })
     this.loading = false;
-    }
+  }
 
   deleteProduct(product: any, event: any) {
     this.basketService.deleteOrderItem(product.id).subscribe((res) => {
       this.orderedItems = this.orderedItems.filter((item: any) => item.id !== product.id);
-      this.getTotalPrice();
     })
   }
 
@@ -150,7 +119,7 @@ public lalalala: any[] = [];
     return totalPrice.toFixed(2);
   }
 
-  getItemPrice(item: any){
+  getItemPrice(item: any) {
     return (item.price * item.quantity).toFixed(2);
   }
 
