@@ -54,6 +54,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { FloorPipe } from './home-page/shared/floor.pipe';
 import {RippleModule} from "primeng/ripple";
+import { OrderDataComponent } from './shopping-cart/order-data/order-data.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import {RippleModule} from "primeng/ripple";
     RegisterComponent,
     AccountDetailsComponent,
     FloorPipe,
+    OrderDataComponent,
   ],
     imports: [
         HttpClientModule,
