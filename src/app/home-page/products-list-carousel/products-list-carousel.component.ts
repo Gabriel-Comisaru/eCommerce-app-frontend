@@ -26,8 +26,6 @@ export class ProductsListCarouselComponent {
   private orderItems: OrderItem[] = [];
   public productsToDisplayWithImages!: Product[];
 
-  imageToShow!: any;
-
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -87,12 +85,13 @@ export class ProductsListCarouselComponent {
   }
   addToCart(product: Product) {
     if (this.authService.isAuthenticated()) {
-      // this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
-      //   this.productsService.shoppingCartObservable.next(res);
-      //   console.log(res);
-      // });
-
-      this.basketService.createOrder(product.id);
+      this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
+        this.productsService.shoppingCartObservable.next({
+          ...res,
+          action: 'add',
+        } as OrderItem);
+        console.log(res);
+      });
     } else {
       this.router.navigate(['login']);
     }

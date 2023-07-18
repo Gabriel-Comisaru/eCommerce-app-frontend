@@ -4,6 +4,7 @@ import { BasketService } from '../../shopping-cart/shared/basket.service';
 import { CategoriesService } from '../../product-categories/shared/categories.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { ProductsService } from 'src/app/home-page/shared/products.service';
 
 @Component({
   selector: 'app-product-list',
@@ -18,7 +19,8 @@ export class ProductListComponent implements OnInit {
     private basketService: BasketService,
     private router: Router,
     private authService: AuthService,
-    private mockproductService: CategoriesService
+    private mockproductService: CategoriesService,
+    private productsService: ProductsService
   ) {}
 
   filterList(category: string) {
@@ -36,7 +38,12 @@ export class ProductListComponent implements OnInit {
       // this.basketService.addToBasket(product);
       // this.basketService.log();
       // console.log(product.id);
-      this.basketService.createOrder(product.id);
+      //this.basketService.createOrder(product.id);
+      this.productsService
+        .addProductToOrder(product.id, 1)
+        .subscribe((res) =>
+          this.productsService.shoppingCartObservable.next(res)
+        );
     } else {
       this.router.navigate(['login']);
     }

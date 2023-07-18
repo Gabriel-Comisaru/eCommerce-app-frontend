@@ -21,10 +21,10 @@ export class ProductsService {
 
   private orderItemsUrl = 'http://localhost:8081/api/orderItems';
   // public shoppingCartObservable = new Subject<Product[]>();
-  public shoppingCartObservable = new Subject<OrderItem[]>();
+  public shoppingCartObservable = new Subject<OrderItem>();
   public favoriteProductsObservable = new Subject<Product[]>();
 
-  getShopingCartObservable(): Observable<OrderItem[]> {
+  getShopingCartObservable(): Observable<any> {
     return this.shoppingCartObservable.asObservable();
   }
 
@@ -83,12 +83,12 @@ export class ProductsService {
   addProductToOrder(
     productId: number,
     quantity: number
-  ): Observable<OrderItem[]> {
+  ): Observable<OrderItem> {
     const addProductToOrderUrl = `http://localhost:8081/api/orderItems/${productId}?quantity=${quantity}`;
     const productBody = {
       quantity,
     };
-    return this.httpClient.post<OrderItem[]>(addProductToOrderUrl, productBody);
+    return this.httpClient.post<OrderItem>(addProductToOrderUrl, productBody);
   }
   // do model for that id quantity productId orderId
   saveReview(productId: number, review: Review) {

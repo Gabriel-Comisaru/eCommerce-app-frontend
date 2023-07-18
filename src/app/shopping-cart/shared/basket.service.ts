@@ -16,22 +16,23 @@ export class BasketService {
   orderItems: any = [];
   private url = 'http://localhost:8081/api';
 
-  createOrder(productId: number) {
-    const url = `${this.url}/orderItems/${productId}?quantity=1`;
-    return this.httpClient.post(url, {}).subscribe(() => {
-      this.NavBarComponent.loadBasketContent();
-      console.log(NavBarComponent);
-    });
-  }
+  // createOrder(productId: number) {
+  //   const url = `${this.url}/orderItems/${productId}?quantity=1`;
+  //   return this.httpClient.post(url, {}).subscribe((res) => {
+  //     this.NavBarComponent.loadBasketContent();
+  //   });
+  // }
 
   deleteOrderItem(productId: number) {
     const url = `${this.url}/orderItems/${productId}`;
     // return this.httpClient.delete(url).subscribe(() => {
     //   this.NavBarComponent.loadBasketContent();
     // });
-    this.httpClient.delete(url).subscribe(() => {});
-    this.NavBarComponent.loadBasketContent();
-    return;
+    return this.httpClient.delete(url, { responseType: 'text' });
+
+    // .subscribe(() => {});
+    // this.NavBarComponent.loadBasketContent();
+    // return;
   }
 
   getOrderItems(): Observable<any> {

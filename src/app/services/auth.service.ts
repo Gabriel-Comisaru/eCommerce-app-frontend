@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
+import { ProductsService } from '../home-page/shared/products.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,8 @@ export class AuthService {
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private productsService: ProductsService
   ) {}
 
   isAuthenticated(): boolean {
@@ -49,6 +51,7 @@ export class AuthService {
     // favoriteProducts doesn t update in real time
     localStorage.removeItem('favoriteProducts');
     this.userService.loggedUser.next({});
+
     this.redirectToLogin();
   }
 

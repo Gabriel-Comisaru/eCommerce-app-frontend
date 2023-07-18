@@ -8,7 +8,7 @@ import {
   OrderItem,
   detailedOrderItem,
 } from '../home-page/shared/orderItem.model';
-import { concatMap, of, switchMap, map, Observable } from 'rxjs';
+import { concatMap, of, switchMap, map, Observable, combineLatest } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { BasketService } from '../shopping-cart/shared/basket.service';
@@ -103,8 +103,51 @@ export class NavBarComponent {
         .getfavoriteProductsObservable()
         .subscribe((response) => (this.favoriteProductsList = response));
       this.productsService.setInitialFavoriteProducts();
-
+      // this.productsService.getShopingCartObservable().subscribe()
       this.loadBasketContent();
+
+      this.basketService
+        .getOrderItems()
+        .subscribe((res) => (this.orderItems = res));
+
+      this.productService.getShopingCartObservable().subscribe((res) => {
+        if (res.action === 'add') {
+          this.orderItems.push(res);
+        } else if (res.action === 'delete') {
+          this.orderItems = this.orderItems.filter(
+            (orderItem: OrderItem) => orderItem.id !== res.id
+          );
+          console.log(this.orderItems);
+        }
+
+        this.orderItems = this.orderItems.map((item: any) => {
+          return {
+            id: item.id,
+            name: this.itemNames.get(item.productId) || '',
+            productId: item.productId,
+            orderId: item.orderId,
+            quantity: item.quantity,
+            price: this.itemPrices.get(item.productId) || 0,
+          };
+        });
+      });
+
+      //   this.orderItems = allOrderItems.map((item: any) => {
+      //     return {
+      //       id: item.id,
+      //       name: this.itemNames.get(item.productId) || '',
+      //       productId: item.productId,
+      //       orderId: item.orderId,
+      //       quantity: item.quantity,
+      //       price: this.itemPrices.get(item.productId) || 0,
+      //     };
+      //   });
+      // });
+      // this.productService.getShopingCartObservable().subscribe((res) => {
+      //   this.orderItems.push(res);
+      //   console.log(this.orderItems);
+
+      // });
     }
   }
   loadBasketContent() {
@@ -116,23 +159,11 @@ export class NavBarComponent {
       });
     });
 
-    // console.log(this.itemNames);
-    setTimeout(() => {
-      this.basketService.getOrderItems().subscribe((list: any[]) => {
-        this.orderItems = list.map((item: any) => {
-          return {
-            id: item.id,
-            name: this.itemNames.get(item.productId) || '',
-            productId: item.productId,
-            orderId: item.orderId,
-            quantity: item.quantity,
-            price: this.itemPrices.get(item.productId) || 0,
-          };
-        });
+    // setTimeout(() => {
+    //   this.basketService.getOrderItems().subscribe((list: any[]) => {
 
-        // this.orderItems.next(orderItems);
-      });
-    }, 1);
+    //   });
+    // }, 1);
     // console.log(this.orderItems);
   }
 
