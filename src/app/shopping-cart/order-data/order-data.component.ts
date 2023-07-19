@@ -138,7 +138,7 @@ export class OrderDataComponent implements OnInit {
         console.log(response)
         this.basketService.deleteOrderItem(this.route.snapshot.queryParams['ids']).subscribe((response: any) => {
           console.log(response)
-          this.router.navigate(['/'])
+          this.router.navigate(['order-summary'])
         })
       })
   }
