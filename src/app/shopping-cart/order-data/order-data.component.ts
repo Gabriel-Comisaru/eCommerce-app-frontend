@@ -55,7 +55,7 @@ export class OrderDataComponent implements OnInit {
       city: 'Sector 1',
       address: 'Strada 2'
     }];
-  paymentType: string = '';
+  paymentType: string = 'cash';
 
   ngOnInit(): void {
     this.getCounties()
@@ -133,6 +133,8 @@ export class OrderDataComponent implements OnInit {
     this.userAddresses = this.userAddresses.filter((item: any) => item !== address);
   }
   //WORK IN PROGRESS
+  //Add Payment Method
+  //Add Delivery Address Id
   finishOrder() {
       this.basketService.createOrder(this.route.snapshot.queryParams['ids']).subscribe((response: any) => {
         console.log(response)
