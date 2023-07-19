@@ -37,6 +37,8 @@ export class ProductAllComponent implements OnInit {
           productImage: url,
         };
       });
+      this.placeholder = this.filteredList;
+      this.loading = false;
     });
   }
 
