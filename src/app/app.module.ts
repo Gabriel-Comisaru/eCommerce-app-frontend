@@ -57,6 +57,7 @@ import {RippleModule} from "primeng/ripple";
 import { OrderDataComponent } from './shopping-cart/order-data/order-data.component';
 import {CheckboxModule} from "primeng/checkbox";
 import {DividerModule} from "primeng/divider";
+import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-modal/new-adress-modal.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import {DividerModule} from "primeng/divider";
     AccountDetailsComponent,
     FloorPipe,
     OrderDataComponent,
+    NewAdressModalComponent,
   ],
   imports: [
     HttpClientModule,

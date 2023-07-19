@@ -25,20 +25,11 @@ export class BasketpageComponent implements OnInit {
   public products: any = [];
   public orderItemProducts: any = [];
   public orderedItems: any = [];
-
   loading: boolean = true;
 
   //Map the current quantity of each product
   public productQuantityMap: Map<string, number> = new Map<string, number>();
   //map the properties of each product
-  public itemNames: Map<number, string> = new Map<number, string>();
-  public itemPrices: Map<number, number> = new Map<number, number>();
-  public itemCategories: Map<number, string> = new Map<number, string>();
-  public itemStock: Map<number, number> = new Map<number, number>();
-
-  //Placeholder
-  public itemNamesAny: any[] = [];
-  public lalalala: any[] = [];
 
   rows: any = [5, 10, 15];
   row: any = 5;

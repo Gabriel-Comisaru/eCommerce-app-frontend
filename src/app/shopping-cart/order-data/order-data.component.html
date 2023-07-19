@@ -8,7 +8,7 @@
       <div class="checkbox pt-3">
         <p-checkbox class=""></p-checkbox>
       </div>
-      <p-divider layout="vertical" ></p-divider>
+      <p-divider layout="vertical"></p-divider>
       <div class="detailsContainer pt-2">
         <button pButton pRipple label="Edit" class="p-button-outlined p-button-sm editBtn"></button>
         <div class="">Name & Surname - 0777654894</div>
@@ -16,12 +16,12 @@
       </div>
     </div>
     <div class="flex justify-between mt-5">
-      <button pButton pRipple label="Add New" class="p-button-outlined p-button-sm ml-2"></button>
+      <p-button (click)="showDialog()" icon="pi pi-plus" styleClass="p-button-outlined ml-2"
+                label="New Address"></p-button>
     </div>
 
 
-
-<!--    this is the end of the box-->
+    <!--    this is the end of the box-->
     <div class="flex justify-between mt-5">
       <button pButton pRipple label="Finish Order" class="w-full"></button>
     </div>
@@ -29,27 +29,51 @@
 </div>
 
 
-<!--  asdadasdadasasdasdasdasdasdasdasdasdasda-->
-<div class="surface-card p-4 shadow-2 border-round  lg:w-6" hidden="hidden">
-  <div class="text-center mb-5">
-    <div class="text-900 text-3xl font-medium mb-3">Delivery Details</div>
-  </div>
+<p-dialog header="{{ header }}" [(visible)]="visible" [style]="{width: 'auto'}">
 
   <div>
-    <label for="email1" class="block text-900 font-medium mb-2">Email</label>
-    <input id="email1" type="text" placeholder="Email address" pInputText class="w-full mb-3">
-
-    <label for="password1" class="block text-900 font-medium mb-2">Password</label>
-    <input id="password1" type="password" placeholder="Password" pInputText class="w-full mb-3">
-
-    <div class="flex align-items-center justify-content-between mb-6">
-      <div class="flex align-items-center">
-        <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
-        <label for="rememberme1" class="text-900">Remember me</label>
+    <h3>Contact Details</h3>
+    <form [formGroup]="userAddressForm" (ngSubmit)="addNewAddress()">
+    <div class="userDetails">
+      <div class="mr-3 userName">
+        <label for="fullName" class="block  w-full font-medium mb-2">Full Name</label>
+        <input id="fullName" type="text" placeholder="eg. John Doe" pInputText class="w-full mb-3 br-3" formControlName="fullName" >
       </div>
-      <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
+      <div class="userPhone">
+        <label for="phone" class="block font-medium mb-2">Phone number</label>
+        <input id="phone" type="text" placeholder="eg. 0123123123" pInputText class="w-full mb-3"  formControlName="phone">
+      </div>
     </div>
+    <p-divider></p-divider>
+    <h3>Delivery Address</h3>
+      <div class="deliveryDetails">
+        <div class="countyCity flex-auto">
 
-    <button pButton pRipple label="Sign In" icon="pi pi-user" class="w-full"></button>
+          <div class="mr-3 county">
+            <label for="county" class="block font-medium mb-2">County</label>
+            <p-dropdown id="county" optionValue="auto" placeholder="Select a County"
+                        [options]="counties" optionLabel="nume" formControlName="county"
+                        (onChange)="getCities()" styleClass="mb-2"></p-dropdown>
+          </div>
+          <div class="mr-3 city">
+            <label for="city" class="block font-medium mb-2">City</label>
+            <p-dropdown id="city" optionValue="nume" placeholder="Select a City"
+                        [options]="cities" optionLabel="nume" styleClass="mb-2"
+                        formControlName="city"
+                       ></p-dropdown>
+          </div>
+        </div>
+        <div class="mr-3 Address">
+          <label for="address" class="block font-medium mb-2">Address</label>
+          <input id="address" type="text" placeholder="eg. 1234 Main St" pInputText class="w-full mb-3"
+          formControlName="address"
+          >
+        </div>
+
+      </div>
+      <button pButton pRipple label="Add new address" [loading]="loading" class="w-full"></button>
+    </form>
   </div>
-</div>
+</p-dialog>
+
+

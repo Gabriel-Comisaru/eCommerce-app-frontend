@@ -34,3 +34,14 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   /*font-family: "Noto Sans";*/
 }
+.userDetails {
+  display: flex;
+  /*display: inline-block;*/
+}
+
+label {
+  color: #888888;
+}
+.countyCity{
+  display: flex;
+}
