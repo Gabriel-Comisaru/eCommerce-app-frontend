@@ -3,10 +3,8 @@ import {
   EventEmitter,
   Input,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import {Product} from 'src/app/home-page/shared/product.model';
-import {ProductsService} from 'src/app/home-page/shared/products.service';
 
 @Component({
   selector: 'app-delete-modal',

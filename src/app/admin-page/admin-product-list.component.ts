@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductsService} from '../home-page/shared/products.service';
-import {Product} from "../home-page/shared/product.model";
 
 @Component({
   selector: 'app-admin-page',
