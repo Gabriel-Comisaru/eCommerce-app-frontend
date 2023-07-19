@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AdressServiceService} from "../shared/adress-service.service";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {CommonModule} from '@angular/common';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {ActivatedRoute, Router} from "@angular/router";
@@ -24,11 +24,11 @@ export class OrderDataComponent implements OnInit {
 
   userAddressForm = this.fb.group({
       id: [''],
-      fullName: [''],
-      phone: [''],
-      county: [''],
-      city: [''],
-      address: [''],
+      fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ],
+      phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      county: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50) ] ],
     }
   )
   loading: boolean = false;

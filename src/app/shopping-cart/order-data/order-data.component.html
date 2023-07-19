@@ -91,7 +91,7 @@
 
       </div>
       <div class="flex">
-        <button pButton pRipple label="{{ header }}" [loading]="loading" class="w-full p-button-outlined"></button>
+        <button pButton pRipple label="{{ header }}" [loading]="loading" [disabled]="!userAddressForm.valid" class="w-full p-button-outlined"></button>
         <button pButton pRipple label="Cancel" (click)="cancel(); $event.preventDefault()"
                 class="w-full p-button-danger p-button-text"></button>
       </div>
