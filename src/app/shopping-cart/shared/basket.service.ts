@@ -16,7 +16,17 @@ export class BasketService {
 
   createOrder(orderItemId: number): Observable<any> {
     const url = `${this.url}/orders/${orderItemId}`;
-    return this.httpClient.post(url, {}, { responseType: 'text' });
+    return this.httpClient.post(url, {}, { responseType: "json" });
+  }
+
+  getOrder(orderId: number): Observable<any> {
+    const url = `${this.url}/orders/${orderId}`;
+    return this.httpClient.get<any>(url);
+  }
+
+  getOrderForMe() {
+    const url = `${this.url}/orders`;
+    return this.httpClient.get(url, { responseType: 'json' });
   }
 
   deleteOrderItem(productId: number) {
@@ -33,4 +43,6 @@ export class BasketService {
     const url = `${this.url}/orderItems/${productId}/quantity?quantity=${quantity}`;
     return this.httpClient.put(url, {}, { responseType: 'text' });
   }
+
+
 }

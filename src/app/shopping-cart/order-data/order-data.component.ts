@@ -38,6 +38,7 @@ export class OrderDataComponent implements OnInit {
   counties: any = [];
   loadingDropdown: boolean = false;
   selectedAddress: number = 0
+  orderId: number = 0;
 
   userAddresses: any = [{
     id: 0,
@@ -137,10 +138,12 @@ export class OrderDataComponent implements OnInit {
   //Add Delivery Address Id
   finishOrder() {
       this.basketService.createOrder(this.route.snapshot.queryParams['ids']).subscribe((response: any) => {
-        console.log(response)
-        this.basketService.deleteOrderItem(this.route.snapshot.queryParams['ids']).subscribe((response: any) => {
-          console.log(response)
-          this.router.navigate(['order-summary'])
+        console.log(response, typeof response)
+        this.orderId = response.id;
+        this.basketService.deleteOrderItem(this.route.snapshot.queryParams['ids']).subscribe((response:any) => {
+          console.log(response,'asdasdasdasdasd', response.id, typeof response)
+          console.log(this.orderId)
+          this.router.navigate(['order-summary'], {queryParams: {orderid: this.orderId} })
         })
       })
   }
