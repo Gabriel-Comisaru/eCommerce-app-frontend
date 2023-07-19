@@ -1,5 +1,4 @@
 import { Injectable, Optional } from '@angular/core';
-import { Product } from 'src/app/home-page/shared/product.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { NavBarComponent } from '../../nav-bar/nav-bar.component';
@@ -14,11 +13,6 @@ export class BasketService {
   ) {}
 
   private url = 'http://localhost:8081/api';
-
-  createOrder(productId: number) {
-    const url = `${this.url}/orderItems/${productId}?quantity=1`;
-    return this.httpClient.post(url, {});
-  }
 
   deleteOrderItem(productId: number) {
     const url = `${this.url}/orderItems/${productId}`;
