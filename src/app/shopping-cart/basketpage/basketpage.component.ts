@@ -53,7 +53,6 @@ export class BasketpageComponent implements OnInit {
           }
         });
       });
-      this.orderedItemsIds = this.orderedItems.map((item: any) => item.id);
     });
 
     this.loading = false;
@@ -73,6 +72,7 @@ export class BasketpageComponent implements OnInit {
 
   checkout() {
     // Implement the checkout functionality here
+    this.orderedItemsIds = this.orderedItems.map((item: any) => item.id);
     this.router.navigate(['/order-data'], { queryParams: { ids: this.orderedItemsIds } });
   }
 
