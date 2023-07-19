@@ -11,6 +11,7 @@ import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './services/auth.guard';
 import { AlreadyLoggedGuard } from './services/already-logged.guard';
 import { AccountDetailsComponent } from './account-details/account-details.component';
+import {OrderDataComponent} from "./shopping-cart/order-data/order-data.component";
 
 const routes: Routes = [
   {
@@ -53,7 +54,10 @@ const routes: Routes = [
     path: 'product-details/:id',
     component: ProductDetailsComponent,
   },
-
+  {
+    path: 'order-data',
+    component: OrderDataComponent
+  },
   {
     path: 'user-details',
     component: AccountDetailsComponent,
