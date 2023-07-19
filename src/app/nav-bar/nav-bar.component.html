@@ -63,7 +63,10 @@
       ><span style="white-space: nowrap">{{ userLoggedIn.username }}</span></a
     >
 
-    <div class="flex navBarItem" *ngIf="isAuthenticated()">
+    <div
+      class="flex navBarItem"
+      *ngIf="isAuthenticated() && userLoggedIn.role === 'ADMIN'"
+    >
       <div *ngIf="isAdmin === false">
         <p-button
           [(ngModel)]="isAdmin"
@@ -75,7 +78,11 @@
         >
       </div>
       <div *ngIf="isAdmin === true">
-        <p-button [(ngModel)]="isAdmin" ngDefaultControl id="adminMode" (click)="goToAdminPage()"
+        <p-button
+          [(ngModel)]="isAdmin"
+          ngDefaultControl
+          id="adminMode"
+          (click)="goToAdminPage()"
           >Admin mode on</p-button
         >
       </div>

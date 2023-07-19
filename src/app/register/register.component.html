@@ -9,10 +9,10 @@
         <div class="ui-grid-col-6">
           <input
             pInputText
-            type="text"
+            [type]="field.controlType"
             [formControlName]="field.controlName"
             class="form-control"
-            name="username"
+            [name]="field.controlName"
             autocomplete="off"
           />
         </div>
@@ -43,6 +43,24 @@
           </div>
           <div *ngIf="field.controlName === 'password'"></div>
         </div>
+      </div>
+
+      <!-- ROLE FIELD -->
+      <div>
+        <div *ngFor="let option of registerRoleField.options">
+          <p-checkbox
+            name="group"
+            [value]="option.controlValue"
+            [formControlName]="registerRoleField.controlName"
+            [inputId]="option.label"
+            (onChange)="checkValue($event)"
+          ></p-checkbox>
+          <label [for]="option.label">{{ option.label }}</label>
+        </div>
+      </div>
+
+      <div>
+        <div *ngFor="let option"></div>
       </div>
 
       <div class="ui-grid-row">
