@@ -27,7 +27,7 @@ export class OrderDataComponent implements OnInit {
   visible: boolean = false;
   header: string = '';
   counties: any = [];
-
+  selectedAddress: any = [];
   ngOnInit(): void {
     this.getCounties()
     this.userAddressForm.controls.city.disable();
@@ -55,6 +55,21 @@ export class OrderDataComponent implements OnInit {
     this.header = 'Add new address';
   }
 
+  editAddress(address: any) {
+    this.visible = true;
+    this.header = 'Edit address';
+    this.selectedAddress = address;
+    this.userAddressForm.controls.fullName.setValue(address.fullName);
+    this.userAddressForm.controls.phone.setValue(address.phone);
+    this.userAddressForm.controls.city.enable();
+    this.userAddressForm.controls.county.setValue(address.county);
+    this.getCities();
+    setTimeout(() => {
+      this.userAddressForm.controls.city.setValue(address.city);
+    }, 1000);
+    this.userAddressForm.controls.address.setValue(address.address);
+
+  }
   addNewAddress() {
     console.log(this.userAddressForm.controls.fullName.value)
     console.log(this.userAddressForm.controls.phone.value)
@@ -62,5 +77,14 @@ export class OrderDataComponent implements OnInit {
     console.log(this.userAddressForm.controls.city.value)
     console.log(this.userAddressForm.controls.address.value)
     this.loading= true;
+  }
+  cancel() {
+    this.visible = false;
+    this.userAddressForm.controls.fullName.setValue('');
+    this.userAddressForm.controls.phone.setValue('');
+    this.userAddressForm.controls.county.setValue('');
+    this.userAddressForm.controls.city.setValue('');
+    this.userAddressForm.controls.address.setValue('');
+
   }
 }

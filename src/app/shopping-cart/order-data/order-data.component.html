@@ -10,18 +10,15 @@
       </div>
       <p-divider layout="vertical"></p-divider>
       <div class="detailsContainer pt-2">
-        <button pButton pRipple label="Edit" class="p-button-outlined p-button-sm editBtn"></button>
+        <button pButton pRipple label="Edit" (click)="editAddress({fullName: 'Dulap', phone: '07noidoi', county: 'VS', city: 'Banca', address: 'strada cioacelor' })" class="p-button-outlined p-button-sm editBtn"></button>
         <div class="">Name & Surname - 0777654894</div>
         <div class="">Address - County - City</div>
       </div>
     </div>
     <div class="flex justify-between mt-5">
-      <p-button (click)="showDialog()" icon="pi pi-plus" styleClass="p-button-outlined ml-2"
+      <p-button (click)="showDialog()" icon="pi pi-plus" styleClass="p-button-outlined p-button-sm ml-2"
                 label="New Address"></p-button>
     </div>
-
-
-    <!--    this is the end of the box-->
     <div class="flex justify-between mt-5">
       <button pButton pRipple label="Finish Order" class="w-full"></button>
     </div>
@@ -29,8 +26,9 @@
 </div>
 
 
-<p-dialog header="{{ header }}" [(visible)]="visible" [style]="{width: 'auto'}">
 
+
+<p-dialog header="{{ header }}" [(visible)]="visible" [style]="{width: 'auto'}">
   <div>
     <h3>Contact Details</h3>
     <form [formGroup]="userAddressForm" (ngSubmit)="addNewAddress()">
@@ -71,7 +69,7 @@
         </div>
 
       </div>
-      <button pButton pRipple label="Add new address" [loading]="loading" class="w-full"></button>
+      <button pButton pRipple label="{{ header }}" [loading]="loading" class="w-full"></button>
     </form>
   </div>
 </p-dialog>
