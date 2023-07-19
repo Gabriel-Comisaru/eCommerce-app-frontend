@@ -1,1 +1,40 @@
-<p>admin-orders-list works!</p>
+<p-table styleClass="p-datatable-sm" [pageLinks]="numberOfPages" [paginator]="true" [rows]="row"
+         [rowsPerPageOptions]="rows" [value]="orders"
+         [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
+         [globalFilterFields]="['name']">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Order Date</th>
+      <th>Delivery Date</th>
+      <th>Delivery Fee</th>
+      <th>Ordered Items</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-order let-rowIndex="rowIndex">
+    <tr class="item" [pSelectableRow]="order" [pSelectableRowIndex]="rowIndex">
+      <td>{{rowIndex + 1}}</td>
+      <td>{{ order.userName }}</td>
+      <td>{{ order.userEmail }}</td>
+      <td>{{ order.startDate }}</td>
+      <td>{{ order.deliveryDate }}</td>
+      <td>${{ order.deliveryPrice.toFixed(2) }}</td>
+      <td>{{order.orderItems}}</td>
+      <td>
+        <p-dropdown [filterBy]="order.id" (onChange)="changeStatus(order.id,order.status)"
+                    [options]="status" [(ngModel)]="order.status"
+                    appendTo="body"></p-dropdown>
+      </td>
+      <td>
+        <div class="card flex">
+          <p-button (click)="deleteOrder(order)" pTooltip="Delete" tooltipPosition="top" icon="pi pi-times"
+                    styleClass="p-button-danger p-button-sm"></p-button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

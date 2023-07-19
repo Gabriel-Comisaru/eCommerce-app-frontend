@@ -1,24 +1,28 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
-import { Product } from './product.model';
-import { Category } from './category.model';
-import { OrderItem } from './orderItem.model';
-import { Review } from './review.model';
-import { BASE_URL_API } from '../../settings';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable, Subject} from 'rxjs';
+import {Product} from './product.model';
+import {Category} from './category.model';
+import {OrderItem} from './orderItem.model';
+import {Review} from './review.model';
+import {BASE_URL_API} from '../../settings';
+import {observableToBeFn} from "rxjs/internal/testing/TestScheduler";
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+  }
 
   private productsUrl = `${BASE_URL_API}/products`;
+  private productsUrlDisplay = `${BASE_URL_API}/products/display`;
+  private appUsersUrl = 'http://localhost:8081/api/users';
   private categoriesUrl = 'http://localhost:8081/api/categories';
   private reviewsUrl = 'http://localhost:8081/api/reviews';
   private productCategoryUrl = 'http://localhost:8081/api/products/category';
   private imageUrl = 'http://localhost:8081/api/images/upload';
-
+  private ordersUrl = 'http://localhost:8081/api/orders'
   private orderItemsUrl = 'http://localhost:8081/api/orderItems';
   // public shoppingCartObservable = new Subject<Product[]>();
   public shoppingCartObservable = new Subject<OrderItem[]>();
@@ -34,20 +38,39 @@ export class ProductsService {
     );
     this.favoriteProductsObservable.next(localStorageCartList);
   }
+
+  getAllUsers(){
+    return this.httpClient.get<any>(this.appUsersUrl);
+  }
+
   getfavoriteProductsObservable(): Observable<Product[]> {
     return this.favoriteProductsObservable.asObservable();
   }
-  getOrders(): Observable<any> {
+
+  getOrdersItems(): Observable<any> {
     return this.httpClient.get<any>(this.orderItemsUrl);
+  }
+
+  getOrders(): Observable<any> {
+    const url = `${this.ordersUrl}/display`;
+    return this.httpClient.get<any>(url,{
+      params: new HttpParams().set('pageSize', '10')})
   }
 
   getProducts(): Observable<any> {
     return this.httpClient.get<any>(this.productsUrl);
   }
+
+  getProductsDisplay(): Observable<any> {
+    return this.httpClient.get<any>(this.productsUrlDisplay,{
+      params: new HttpParams().set('pageSize', '10')});
+  }
+
   getProductsByCat(categoryId: number): Observable<any> {
     let url = `${this.productsUrl}/category?categoryId=${categoryId}`;
     return this.httpClient.get<any>(url);
   }
+
   // i want to add it in cartList or favoriteList
 
   getProduct(id: number): Observable<any | undefined> {
@@ -67,9 +90,19 @@ export class ProductsService {
     return this.httpClient.put<any>(url, product);
   }
 
+  updateStatus(id:number,status:string): Observable<any> {
+    const url = `${this.ordersUrl}/${id}?status=${status}`;
+    return this.httpClient.put(url,status)
+  }
+
   delete(id: number) {
     const url = `${this.productsUrl}/${id}`;
-    return this.httpClient.delete(url, { responseType: 'text' });
+    return this.httpClient.delete(url, {responseType: 'text'});
+  }
+
+  deleteOrder(id: number) {
+    const url = `${this.ordersUrl}/${id}`;
+    return this.httpClient.delete(url, {responseType: 'text'});
   }
 
   getCategories(): Observable<Category[]> {
@@ -90,6 +123,7 @@ export class ProductsService {
     };
     return this.httpClient.post<OrderItem[]>(addProductToOrderUrl, productBody);
   }
+
   // do model for that id quantity productId orderId
   saveReview(productId: number, review: Review) {
     const url = `${this.reviewsUrl}/save/${productId}`;
@@ -116,6 +150,7 @@ export class ProductsService {
     };
     return this.httpClient.get<any>(url, httpOptions as any);
   }
+
   getAllReviews(): Observable<any> {
     const url = 'http://localhost:8081/api/reviews';
     return this.httpClient.get<any>(url);

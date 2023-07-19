@@ -5,8 +5,8 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { Product } from 'src/app/home-page/shared/product.model';
-import { ProductsService } from 'src/app/home-page/shared/products.service';
+import {Product} from 'src/app/home-page/shared/product.model';
+import {ProductsService} from 'src/app/home-page/shared/products.service';
 
 @Component({
   selector: 'app-delete-modal',
@@ -18,18 +18,14 @@ export class DeleteModalComponent {
   @Output() closeEmitter = new EventEmitter();
   @Input() selectedProduct ?: Product;
   @Input() header: any;
-  @Input() deleteV: any;
+  @Input() deleteVisible: any;
   @Input() tokenDelete: any;
-  deleteVisible = false;
 
-  constructor(private productsService: ProductsService) {}
-
-  ngOnChanges(changes: SimpleChanges) {
-    this.deleteVisible = changes['deleteV']?.currentValue;
+  constructor() {
   }
 
+
   delete(selectedProduct: any) {
-    // this.productsService.delete(selectedProduct.id);
     this.deleteVisible = false;
     this.deleteEmitter.emit(selectedProduct.id);
   }
