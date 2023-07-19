@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 
 @Component({
   selector: 'app-admin-page',
@@ -8,22 +8,31 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class AdminPageComponent {
 
-  listName!:string;
+  listName: any = [
+    {name: 'Products List'},
+    {name: 'Orders List'}
+  ]
 
-  constructor(private router:Router, private route:ActivatedRoute) {
+  selected!: any;
+
+  constructor(private router: Router,
+              private route: ActivatedRoute) {
   }
 
-  ngOnInit(){
-    // this.router.navigate([`admin`])
+  ngOnInit() {
+    this.selected = this.listName[0];
+    if (this.router.url.split('/')[2] == 'products') {
+      this.selected = this.listName[0];
+    } else if (this.router.url.split('/')[2] == 'orders') {
+      this.selected = this.listName[1];
+    } else {
+      this.selected = '';
+    }
   }
 
-  goToProducts(event:any){
-      this.router.navigate(['products'],{relativeTo:this.route})
-    console.log(event)
-  }
-
-  goToOrders() {
-    this.router.navigate(['orders'],{relativeTo:this.route})
+  goToProductsOrOrders() {
+    this.selected.name === 'Products List' ? this.router.navigate(['products'], {relativeTo: this.route})
+      : this.router.navigate(['orders'], {relativeTo: this.route})
   }
 
 }

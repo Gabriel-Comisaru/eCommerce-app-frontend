@@ -1,10 +1,11 @@
 <p-menubar>
   <ng-template pTemplate="start">
-    <div class="flex flex-wrap gap-3">
-      <p-radioButton (click)="goToProducts($event)" name="list" value="productsList" [(ngModel)]="listName"></p-radioButton>
-      <label class="ml-2">Products List</label>
-      <p-radioButton (click)="goToOrders()" name="list" value="ordersList" [(ngModel)]="listName"></p-radioButton>
-      <label class="ml-2">Orders List</label>
+    <div class="flex flex-row flex-wrap gap-3">
+      <div *ngFor="let name of listName" class="field-checkbox">
+        <p-radioButton styleClass="p-label-active" (click)="goToProductsOrOrders()" name="list" [value]="name"
+                       [(ngModel)]="selected"></p-radioButton>
+        <label [for]="name.key" class="ml-2">{{name.name}}</label>
+      </div>
     </div>
   </ng-template>
 </p-menubar>
