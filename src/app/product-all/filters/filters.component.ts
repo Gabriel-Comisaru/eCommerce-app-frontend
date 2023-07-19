@@ -70,6 +70,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CategoriesService } from "../../product-categories/shared/categories.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Categories} from "../shared/categories.model";
 
 @Component({
   selector: 'app-filters',
@@ -79,12 +80,14 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class FiltersComponent implements OnInit {
   @Output() filtersApplied: EventEmitter<any> = new EventEmitter<any>();
   @Output() filtersCleared: EventEmitter<any> = new EventEmitter<any>();
-  public categories: any[] = [];
-  selectedCategory: any;
+  public categories: Categories[] = [];
+  // public selectedCategory: number;
   selectedPriceRange!: [number, number];
+  public selectedCategory: any
 
   constructor(private categoryService: CategoriesService, private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+  ) { }
 
   ngOnInit(): void {
     this.selectedPriceRange = [0, 1000];
@@ -95,12 +98,8 @@ export class FiltersComponent implements OnInit {
     this.categoryService.getCategories().subscribe((list) => {
       this.categories = list;
       const categoryIdParam = this.route.snapshot.queryParams;
-      console.log(this.route.snapshot.queryParams, '----p-a-r-a-m-s--------------')
       if (categoryIdParam) {
-        console.log(categoryIdParam, '----p-a-r-a-m---------------')
         this.selectedCategory = this.categories.find((category: any) => category.id == categoryIdParam['categoryId']);
-        console.log(this.selectedCategory, '-----------------1---1--1-')
-        console.log(this.selectedCategory.id, '----------------333')
         this.filtersApplied.emit({
           categoryId: this.selectedCategory.id,
           priceMin: 0,
@@ -118,8 +117,6 @@ export class FiltersComponent implements OnInit {
     const selectedCategoryId = this.selectedCategory ? this.selectedCategory.id : '';
     const selectedPriceMin = this.selectedPriceRange[0];
     const selectedPriceMax = this.selectedPriceRange[1];
-    console.log(this.selectedCategory, '------====-----------------------')
-    console.log(selectedCategoryId, '-----------------in-apply-filter-')
 
     this.filtersApplied.emit({
       categoryId: selectedCategoryId,

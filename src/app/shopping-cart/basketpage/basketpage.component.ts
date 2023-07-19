@@ -7,6 +7,7 @@ import { Item } from '../shared/item.model';
 import { forkJoin } from 'rxjs';
 import { combineLatest } from 'rxjs/internal/operators/combineLatest';
 import {Router} from "@angular/router";
+import {OrderedItem} from "../shared/orderedItem.model";
 
 @Component({
   selector: 'app-basketpage',
@@ -20,17 +21,10 @@ export class BasketpageComponent implements OnInit {
     private router: Router
   ) {}
 
-  public basketItems: Product[] = [];
-
   public products: any = [];
   public orderItemProducts: any = [];
-  public orderedItems: any = [];
+  public orderedItems: OrderedItem[] = [];
   loading: boolean = true;
-
-  //Map the current quantity of each product
-  public productQuantityMap: Map<string, number> = new Map<string, number>();
-  //map the properties of each product
-
   rows: any = [5, 10, 15];
   row: any = 5;
 
@@ -42,6 +36,7 @@ export class BasketpageComponent implements OnInit {
 
     forkJoin([productSubscriber, orderSubscriber]).subscribe((res: any) => {
       [this.products, this.orderItemProducts] = res;
+      console.log(res)
       this.products.forEach((product: any) => {
         let item = this.orderItemProducts.filter((orderItem: any) => {
           if (orderItem.productId === product.id) {
@@ -79,22 +74,9 @@ export class BasketpageComponent implements OnInit {
     this.router.navigate(['/order-data']);
   }
 
-  updateProductQuantityMap(): void {
-    this.productQuantityMap.clear();
-    this.basketItems.forEach((item) => {
-      const productName = item.name;
-      if (!this.productQuantityMap.has(productName)) {
-        const count = this.basketItems.filter(
-          (prod) => prod.name === productName
-        ).length;
-        this.productQuantityMap.set(productName, count);
-      }
-    });
-  }
   increment(Item: Item) {
     Item.quantity += 1;
     this.basketService.updateOrderQuantity(Item.id, Item.quantity);
-    this.updateProductQuantityMap();
     this.updateProductQuantity(Item);
   }
 
@@ -105,7 +87,6 @@ export class BasketpageComponent implements OnInit {
       this.deleteProduct(Item, null);
     }
     this.basketService.updateOrderQuantity(Item.id, Item.quantity);
-    this.updateProductQuantityMap();
     this.updateProductQuantity(Item);
   }
 

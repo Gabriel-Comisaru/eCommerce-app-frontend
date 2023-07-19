@@ -18,6 +18,7 @@ export class ProductListComponent implements OnInit {
   @Input() filteredList!: Product[];
   @Input() totalRows!: number;
   totalRows$?: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  loading: boolean = true;
 
   constructor(
     private basketService: BasketService,
@@ -35,8 +36,15 @@ export class ProductListComponent implements OnInit {
   selectedSortOption: string = 'Default';
 
   ngOnInit(): void {
+
     console.log(this.totalRows, this.displayedRows);
-    this.mockproductService.getCategories().subscribe();
+    this.mockproductService.getCategories().subscribe(
+      (res) => {
+        this.loading = false;
+      }
+    );
+    console.log(this.totalRows)
+
   }
 
   addToBasket(product: Product, event: any): void {
