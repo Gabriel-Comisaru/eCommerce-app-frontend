@@ -58,6 +58,7 @@ import { OrderDataComponent } from './shopping-cart/order-data/order-data.compon
 import {CheckboxModule} from "primeng/checkbox";
 import {DividerModule} from "primeng/divider";
 import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-modal/new-adress-modal.component';
+import { RadioButtonModule } from "primeng/radiobutton";
 
 @NgModule({
   declarations: [
@@ -131,6 +132,7 @@ import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-m
     RippleModule,
     CheckboxModule,
     DividerModule,
+    RadioButtonModule,
   ],
 
   providers: [
