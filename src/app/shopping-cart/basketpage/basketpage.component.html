@@ -45,7 +45,7 @@
       <td><strong>${{ getTotalPrice() }}</strong></td>
       <td>
         <div class="checkout-button">
-          <p-button type="button" label="Checkout" (click)="checkout()"></p-button>
+          <p-button type="button" label="Checkout" (click)="checkout()" [disabled]="orderedItems.length < 1 "></p-button>
         </div>
 
       </td>

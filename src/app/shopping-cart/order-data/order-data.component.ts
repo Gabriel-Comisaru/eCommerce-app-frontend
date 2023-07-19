@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {AdressServiceService} from "../shared/adress-service.service";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {CommonModule} from '@angular/common';
-import { RadioButtonModule } from 'primeng/radiobutton';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {ActivatedRoute, Router} from "@angular/router";
+import {BasketService} from "../shared/basket.service";
 
 
 @Component({
@@ -13,11 +15,15 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 export class OrderDataComponent implements OnInit {
   constructor(
     private addressService: AdressServiceService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private basketService: BasketService,
+    private router: Router
   ) {
   }
 
   userAddressForm = this.fb.group({
+      id: [''],
       fullName: [''],
       phone: [''],
       county: [''],
@@ -30,9 +36,11 @@ export class OrderDataComponent implements OnInit {
   visible: boolean = false;
   header: string = '';
   counties: any = [];
-  selectedAddress: any = [];
   loadingDropdown: boolean = false;
+  selectedAddress: number = 0
+
   userAddresses: any = [{
+    id: 0,
     fullName: 'Ion Popescu',
     phone: '0745123456',
     county: 'B',
@@ -40,17 +48,19 @@ export class OrderDataComponent implements OnInit {
     address: 'Strada 1'
   },
     {
-        fullName: 'Ioana Popescu',
-        phone: '0723453456',
-        county: 'B',
-        city: 'Sector 1',
-        address: 'Strada 2'
+      id: 1,
+      fullName: 'Ioana Popescu',
+      phone: '0723453456',
+      county: 'B',
+      city: 'Sector 1',
+      address: 'Strada 2'
     }];
   paymentType: string = '';
+
   ngOnInit(): void {
     this.getCounties()
     this.userAddressForm.controls.city.disable();
-
+    console.log(this.route.snapshot.queryParams['ids'])
 
   }
 
@@ -94,9 +104,11 @@ export class OrderDataComponent implements OnInit {
     this.userAddressForm.controls.address.setValue(address.address);
 
   }
+
   addNewAddress() {
-    this.loading= true;
+    this.loading = true;
     this.userAddresses.push({
+      id: this.userAddresses.length,
       fullName: this.userAddressForm.controls.fullName.value,
       phone: this.userAddressForm.controls.phone.value,
       county: this.userAddressForm.controls.county.value,
@@ -105,9 +117,10 @@ export class OrderDataComponent implements OnInit {
     })
     this.cancel();
   }
+
   cancel() {
     this.visible = false;
-    this.loading= false;
+    this.loading = false;
     this.userAddressForm.controls.fullName.setValue('');
     this.userAddressForm.controls.phone.setValue('');
     this.userAddressForm.controls.county.setValue('');
@@ -118,5 +131,15 @@ export class OrderDataComponent implements OnInit {
 
   deleteAddress(address: any) {
     this.userAddresses = this.userAddresses.filter((item: any) => item !== address);
+  }
+  //WORK IN PROGRESS
+  finishOrder() {
+      this.basketService.createOrder(this.route.snapshot.queryParams['ids']).subscribe((response: any) => {
+        console.log(response)
+        this.basketService.deleteOrderItem(this.route.snapshot.queryParams['ids']).subscribe((response: any) => {
+          console.log(response)
+          this.router.navigate(['/'])
+        })
+      })
   }
 }

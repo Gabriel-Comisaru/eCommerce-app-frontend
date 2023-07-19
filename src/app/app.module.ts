@@ -59,6 +59,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import {DividerModule} from "primeng/divider";
 import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-modal/new-adress-modal.component';
 import { RadioButtonModule } from "primeng/radiobutton";
+import { OrderSummaryComponent } from './shopping-cart/order-summary/order-summary.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { RadioButtonModule } from "primeng/radiobutton";
     FloorPipe,
     OrderDataComponent,
     NewAdressModalComponent,
+    OrderSummaryComponent,
   ],
   imports: [
     HttpClientModule,

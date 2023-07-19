@@ -14,6 +14,11 @@ export class BasketService {
 
   private url = 'http://localhost:8081/api';
 
+  createOrder(orderItemId: number): Observable<any> {
+    const url = `${this.url}/orders/${orderItemId}`;
+    return this.httpClient.post(url, {}, { responseType: 'text' });
+  }
+
   deleteOrderItem(productId: number) {
     const url = `${this.url}/orderItems/${productId}`;
     return this.httpClient.delete(url, { responseType: 'text' });

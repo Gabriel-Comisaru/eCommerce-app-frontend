@@ -6,7 +6,7 @@
     </div>
     <div *ngFor="let address of userAddresses" class="surface-card shadow-none clientDeets">
       <div class="checkbox pt-3">
-        <p-checkbox class=""></p-checkbox>
+        <p-radioButton name="address{{address.id}}" value="{{address.id}}" [(ngModel)]="selectedAddress"></p-radioButton>
       </div>
       <p-divider layout="vertical"></p-divider>
       <div class="detailsContainer pt-2">
@@ -40,7 +40,7 @@
       </p-card>
     </div>
     <div class="flex justify-between mt-5">
-      <button pButton pRipple label="Finish Order" class="w-full"></button>
+      <button pButton pRipple label="Finish Order" (click)="finishOrder()" class="w-full"></button>
     </div>
   </div>
 </div>

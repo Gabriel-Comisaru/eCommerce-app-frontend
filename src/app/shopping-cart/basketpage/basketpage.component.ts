@@ -25,8 +25,9 @@ export class BasketpageComponent implements OnInit {
   public orderItemProducts: any = [];
   public orderedItems: OrderedItem[] = [];
   loading: boolean = true;
-  rows: any = [5, 10, 15];
-  row: any = 5;
+  rows: number[] = [5, 10, 15];
+  row: number = 5;
+  public orderedItemsIds: number[] = [];
 
   ngOnInit(): void {
     this.loading = true;
@@ -52,6 +53,7 @@ export class BasketpageComponent implements OnInit {
           }
         });
       });
+      this.orderedItemsIds = this.orderedItems.map((item: any) => item.id);
     });
 
     this.loading = false;
@@ -71,7 +73,7 @@ export class BasketpageComponent implements OnInit {
 
   checkout() {
     // Implement the checkout functionality here
-    this.router.navigate(['/order-data']);
+    this.router.navigate(['/order-data'], { queryParams: { ids: this.orderedItemsIds } });
   }
 
   increment(Item: Item) {
