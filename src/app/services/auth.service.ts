@@ -67,7 +67,8 @@ export class AuthService {
     last_name: string,
     username: string,
     email: string,
-    password: string
+    password: string,
+    role: string
   ): Observable<any> {
     const formData: any = new FormData();
     const url = `${this.baseUrl}/auth/register`;
@@ -76,6 +77,7 @@ export class AuthService {
     formData.append('username', username);
     formData.append('email', email);
     formData.append('password', password);
+    formData.append('role', role);
     return this.httpClient.post<any>(url, formData).pipe(
       map((data) => {
         localStorage.setItem('token', data.token);

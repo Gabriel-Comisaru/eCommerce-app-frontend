@@ -23,6 +23,7 @@ export class RegisterComponent {
   // is type assignation right?
 
   registerForm: FormGroup = new FormGroup({});
+
   // registerForm = this.fb.group({
   //   first_name: [
   //     '',
@@ -42,11 +43,14 @@ export class RegisterComponent {
   public registerFormFields: Array<{
     fieldName: string;
     controlName: string;
-    validators: any;
+    controlType: string;
+    validators?: any;
   }> = [
     {
       fieldName: 'First name',
       controlName: 'first_name',
+      controlType: 'text',
+
       validators: [
         Validators.minLength(2),
         Validators.maxLength(15),
@@ -56,6 +60,7 @@ export class RegisterComponent {
     {
       fieldName: 'Last name',
       controlName: 'last_name',
+      controlType: 'text',
       validators: [
         Validators.minLength(2),
         Validators.maxLength(15),
@@ -65,16 +70,19 @@ export class RegisterComponent {
     {
       fieldName: 'Username',
       controlName: 'username',
+      controlType: 'text',
       validators: [Validators.required],
     },
     {
       fieldName: 'Email',
       controlName: 'email',
+      controlType: 'text',
       validators: [Validators.email, Validators.required],
     },
     {
       fieldName: 'Password',
       controlName: 'password',
+      controlType: 'password',
       validators: [
         Validators.required,
         Validators.minLength(3),
@@ -83,6 +91,17 @@ export class RegisterComponent {
     },
   ];
 
+  registerRoleField = {
+    fieldName: 'Role',
+    controlType: 'checkbox',
+    name: 'roleType',
+    controlName: 'role',
+    options: [
+      { label: 'Admin', controlValue: 'ADMIN' },
+      { label: 'User', controlValue: 'USER' },
+    ],
+  };
+
   ngOnInit() {
     this.registerFormFields.forEach((field) =>
       this.registerForm.addControl(
@@ -90,9 +109,16 @@ export class RegisterComponent {
         new FormControl('', field.validators)
       )
     );
+    this.registerRoleField.options.forEach((field) => {
+      this.registerForm.addControl(
+        this.registerRoleField.controlName,
+        new FormControl('')
+      );
+    });
+
+    console.log(this.registerForm.controls);
   }
   errorRequired(fieldName: string) {
-    console.log(this.registerForm.controls);
     return (
       !this.registerForm.controls[
         fieldName as keyof typeof this.registerForm.controls
@@ -130,7 +156,8 @@ export class RegisterComponent {
       val.last_name &&
       val.username &&
       val.email &&
-      val.password
+      val.password &&
+      val.role[0]
     ) {
       this.authService
         .register(
@@ -138,7 +165,8 @@ export class RegisterComponent {
           val.last_name,
           val.username,
           val.email,
-          val.password
+          val.password,
+          val.role[0]
         )
         .subscribe({
           next: (data) =>
@@ -148,6 +176,11 @@ export class RegisterComponent {
             }),
         });
     }
+  }
+
+  checkValue(event: Event) {
+    console.log(event);
+    console.log(this.registerForm.controls);
   }
 }
 

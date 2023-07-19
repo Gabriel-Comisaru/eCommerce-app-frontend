@@ -18,8 +18,10 @@ export class UserService {
   }
 
   getLoggedInUser(): Observable<User> {
-    return this.http
-      .get<User>(`${this.apiBaseURL}/users/loggedInUser`)
-      .pipe(tap((res) => this.loggedUser.next(res)));
+    return this.http.get<User>(`${this.apiBaseURL}/users/loggedInUser`).pipe(
+      tap((res) => {
+        this.loggedUser.next(res);
+      })
+    );
   }
 }

@@ -165,3 +165,7 @@
   grid-template: 1fr/1fr 1fr 1fr;
   align-items: center;
 }
+
+.navBarItem {
+  cursor: pointer;
+}
