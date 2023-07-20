@@ -159,7 +159,8 @@
             ></textarea>
             <label htmlFor="reviewBody">Enter your review</label>
           </span>
-          <p-button label="Submit review" (click)="onSubmit()"></p-button>
+          <p *ngIf="!reviewForm.valid && reviewForm.touched" style="color: red;"><strong>Complete your review!</strong></p>
+          <p-button [disabled]="!reviewForm.valid" label="Submit review" (click)="onSubmit()"></p-button>
         </div>
       </p-card>
     </form>
