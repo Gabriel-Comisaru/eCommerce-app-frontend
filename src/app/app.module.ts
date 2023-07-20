@@ -70,7 +70,7 @@ import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-m
     ProductDetailsComponent,
     HomePageComponent,
     ProductsListCarouselComponent,
-
+    AdminOrdersListComponent,
     NavBarComponent,
     ProductStatusComponent,
     AdminProductListComponent,
