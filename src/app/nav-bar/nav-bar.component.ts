@@ -168,7 +168,7 @@ export class NavBarComponent {
     this.authService.logout();
   }
 
-  register() {
+  goToRegisterPage() {
     this.authService.goToRegister();
   }
 
