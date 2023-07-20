@@ -107,25 +107,13 @@ export class NavBarComponent {
         .subscribe((res) => (this.orderItems = res));
 
       this.productService.getShopingCartObservable().subscribe((res) => {
-        if (res.action === 'add') {
-          this.orderItems.push(res);
-        } else if (res.action === 'delete') {
+        if (res.productAction === 'add') {
+          this.orderItems.push(res.orderItem);
+        } else if (res.productAction === 'delete') {
           this.orderItems = this.orderItems.filter(
-            (orderItem: OrderItem) => orderItem.id !== res.id
+            (orderItem: OrderItem) => orderItem.id !== res.orderItem.id
           );
-          console.log(this.orderItems);
         }
-
-        this.orderItems = this.orderItems.map((item: any) => {
-          return {
-            id: item.id,
-            name: this.itemNames.get(item.productId) || '',
-            productId: item.productId,
-            orderId: item.orderId,
-            quantity: item.quantity,
-            price: this.itemPrices.get(item.productId) || 0,
-          };
-        });
       });
     }
   }
@@ -183,7 +171,7 @@ export class NavBarComponent {
   }
 
   getItemPrice(product: any) {
-    return (product.price * product.quantity).toFixed(2);
+    return (product.productPrice * product.quantity).toFixed(2);
   }
 
   getOrderItemLength() {

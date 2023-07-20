@@ -3,10 +3,11 @@ import { Product } from '../shared/product.model';
 
 import { ProductsService } from '../shared/products.service';
 import { Router } from '@angular/router';
-import { OrderItem } from '../shared/orderItem.model';
+import { OrderItem, actionOrderItem } from '../shared/orderItem.model';
 import { FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
+import { Order } from '../shared/order.model';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -73,10 +74,9 @@ export class ProductsListCarouselComponent {
     if (this.authService.isAuthenticated()) {
       this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
         this.productsService.shoppingCartObservable.next({
-          ...res,
-          action: 'add',
-        } as OrderItem);
-        console.log(res);
+          orderItem: res,
+          productAction: 'add',
+        });
       });
     } else {
       this.router.navigate(['login']);

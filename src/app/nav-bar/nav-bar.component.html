@@ -148,7 +148,7 @@
         <tr *ngFor="let product of orderItems" class="contentRow">
           <td class="productContainer">
             <!--            <img [src]="product.images[0]" alt="product photo" />-->
-            <span class="productName">{{ product.name }}</span>
+            <span class="productName">{{ product.productName }}</span>
           </td>
 
           <td>x{{ product.quantity }}</td>
@@ -163,6 +163,7 @@
     </div>
   </ng-template>
 </p-overlayPanel>
+
 <p-overlayPanel #favoriteItems class="favoriteItems">
   <ng-template pTemplate="content">
     <div class="overlay">

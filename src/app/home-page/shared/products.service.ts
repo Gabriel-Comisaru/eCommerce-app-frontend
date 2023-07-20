@@ -6,6 +6,7 @@ import { Category } from './category.model';
 import { OrderItem } from './orderItem.model';
 import { Review } from './review.model';
 import { BASE_URL_API } from '../../settings';
+import { Order } from './order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,10 +22,16 @@ export class ProductsService {
 
   private orderItemsUrl = 'http://localhost:8081/api/orderItems';
   // public shoppingCartObservable = new Subject<Product[]>();
-  public shoppingCartObservable = new Subject<OrderItem>();
+  public shoppingCartObservable = new Subject<{
+    orderItem: OrderItem;
+    productAction: string;
+  }>();
   public favoriteProductsObservable = new Subject<Product[]>();
 
-  getShopingCartObservable(): Observable<any> {
+  getShopingCartObservable(): Observable<{
+    orderItem: OrderItem;
+    productAction: string;
+  }> {
     return this.shoppingCartObservable.asObservable();
   }
 
@@ -84,11 +91,9 @@ export class ProductsService {
     productId: number,
     quantity: number
   ): Observable<OrderItem> {
-    const addProductToOrderUrl = `http://localhost:8081/api/orderItems/${productId}?quantity=${quantity}`;
-    const productBody = {
-      quantity,
-    };
-    return this.httpClient.post<OrderItem>(addProductToOrderUrl, productBody);
+    const addProductToOrderUrl = `http://localhost:8081/api/orders/${productId}?quantity=${quantity}`;
+
+    return this.httpClient.post<OrderItem>(addProductToOrderUrl, {});
   }
   // do model for that id quantity productId orderId
   saveReview(productId: number, review: Review) {
@@ -126,5 +131,9 @@ export class ProductsService {
       `${this.productCategoryUrl}/${categoryId}`,
       formData
     );
+  }
+  getCurrentBasket(): Observable<OrderItem[]> {
+    const url = 'http://localhost:8081/api/orders/me/basket';
+    return this.httpClient.get<OrderItem[]>(url);
   }
 }

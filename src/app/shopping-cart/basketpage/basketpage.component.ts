@@ -63,13 +63,14 @@ export class BasketpageComponent implements OnInit {
   }
 
   deleteProduct(product: any, event: any) {
+    console.log(product);
     this.basketService.deleteOrderItem(product.id).subscribe((res) => {
       this.orderedItems = this.orderedItems.filter(
         (item: any) => item.id !== product.id
       );
       this.productService.shoppingCartObservable.next({
-        ...product,
-        action: 'delete',
+        orderItem: product,
+        productAction: 'delete',
       });
     });
   }
