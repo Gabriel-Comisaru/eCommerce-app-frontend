@@ -42,6 +42,7 @@ export class AdminPageComponent {
 
   logOut() {
     this.authService.logout()
+    this.service.adminLeftAdminPage();
   }
 
   goBachToHomePage() {
