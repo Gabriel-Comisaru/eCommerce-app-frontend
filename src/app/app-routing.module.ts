@@ -1,3 +1,5 @@
+import {AdminProductListComponent} from './admin-page/admin-product-list.component';
+import {AdminOrdersListComponent} from "./admin-page/admin-orders-list/admin-orders-list.component";
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
@@ -32,6 +34,18 @@ const routes: Routes = [
     path: 'admin',
     component: AdminPageComponent,
     canActivate: [AuthGuard],
+  children:[
+    {
+      path: 'products',
+      component: AdminProductListComponent,
+      canActivate: [AuthGuard],
+    },
+    {
+      path: 'orders',
+      component: AdminOrdersListComponent,
+      canActivate: [AuthGuard],
+    }
+  ]
   },
   {
     path: 'products',
@@ -69,4 +83,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

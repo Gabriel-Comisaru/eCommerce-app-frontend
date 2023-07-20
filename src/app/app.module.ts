@@ -25,7 +25,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProductStatusComponent } from './home-page/products-list-carousel/product-status/product-status.component';
 
-import { AdminPageComponent } from './admin-page/admin-page.component';
+import { AdminProductListComponent } from './admin-page/admin-product-list.component';
 import { UpdateProductComponent } from './admin-page/update-product/update-product.component';
 import { DialogModule } from 'primeng/dialog';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -53,8 +53,12 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { NgOptimizedImage } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { FloorPipe } from './home-page/shared/floor.pipe';
+import {RippleModule} from "primeng/ripple";
+import { AdminPageComponent } from './admin-page/admin-page/admin-page.component';
+import {RadioButtonModule} from "primeng/radiobutton";
+import { AdminOrdersListComponent } from './admin-page/admin-orders-list/admin-orders-list.component';
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
-import { RippleModule } from 'primeng/ripple';
 import { OrderDataComponent } from './shopping-cart/order-data/order-data.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
@@ -69,7 +73,7 @@ import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-m
 
     NavBarComponent,
     ProductStatusComponent,
-    AdminPageComponent,
+    AdminProductListComponent,
     UpdateProductComponent,
     ProductAllComponent,
     ProductListComponent,
@@ -82,6 +86,8 @@ import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-m
     RegisterComponent,
     AccountDetailsComponent,
     FloorPipe,
+    AdminPageComponent,
+    AdminOrdersListComponent,
     OrderDataComponent,
     NewAdressModalComponent,
   ],
@@ -123,6 +129,15 @@ import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-m
     FormsModule,
     ReactiveFormsModule,
 
+        InputTextModule,
+        ButtonModule,
+        AppRoutingModule,
+        HttpClientModule,
+        NgOptimizedImage,
+        ImageModule,
+        RippleModule,
+        RadioButtonModule,
+        ConfirmDialogModule,
     InputTextModule,
     ButtonModule,
     AppRoutingModule,
@@ -132,7 +147,8 @@ import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-m
     RippleModule,
     CheckboxModule,
     DividerModule,
-  ],
+    ],
+
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

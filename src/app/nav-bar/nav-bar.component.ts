@@ -1,13 +1,14 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { PrimeIcons, MenuItem } from 'primeng/api';
-import { Router } from '@angular/router';
-import { Product } from '../home-page/shared/product.model';
-import { ProductsService } from '../home-page/shared/products.service';
-import { Category } from '../home-page/shared/category.model';
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {PrimeIcons, MenuItem} from 'primeng/api';
+import {Router} from '@angular/router';
+import {Product} from '../home-page/shared/product.model';
+import {ProductsService} from '../home-page/shared/products.service';
+import {Category} from '../home-page/shared/category.model';
 import {
   OrderItem,
   detailedOrderItem,
 } from '../home-page/shared/orderItem.model';
+import {AdminPageComponent} from "../admin-page/admin-page/admin-page.component";
 import { concatMap, of, switchMap, map, Observable, combineLatest } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
@@ -48,6 +49,10 @@ export class NavBarComponent {
   public itemPricesAny: any[] = [];
   public orderItems: any = [];
 
+  adminDashboard: boolean = false;
+
+  @ViewChild(AdminPageComponent) admin!: AdminPageComponent;
+
   constructor(
     private router: Router,
     private productsService: ProductsService,
@@ -61,6 +66,11 @@ export class NavBarComponent {
   }
 
   ngOnInit() {
+    this.productsService.checkIfAdminIsOnAdminPage
+      .subscribe((res:any) => {
+        this.adminDashboard = res
+        console.log('in navbar page', res)
+      })
     // used to get user's name
     this.userService
       .getLoggedUserObservable()
@@ -84,7 +94,7 @@ export class NavBarComponent {
           icon: 'pi pi-fw pi-bars',
           items: this.categoryItems,
         },
-        { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
+        {label: 'Deals', icon: 'pi pi-fw pi-percentage'},
         {
           label: 'All Categories',
           icon: 'pi pi-th-large',
@@ -117,6 +127,7 @@ export class NavBarComponent {
       });
     }
   }
+
   loadBasketContent() {
     //extracting the name and the price of the products
     this.productService.getProducts().subscribe((list) => {
@@ -140,13 +151,9 @@ export class NavBarComponent {
   }
 
   goToAdminPage() {
-    this.isAdmin = !this.isAdmin;
-
-    if (this.isAdmin) {
-      this.router.navigate(['admin']);
-    } else {
-      this.router.navigate(['']);
-    }
+    this.isAdmin = !this.isAdmin
+    this.productsService.adminIsOnAdminPage()
+    this.router.navigate(['admin/products']);
   }
 
   clearStorage() {
@@ -156,12 +163,15 @@ export class NavBarComponent {
   goToLoginPage() {
     this.router.navigate(['login']);
   }
+
   logout() {
     this.authService.logout();
   }
-  goToRegisterPage() {
+
+  register() {
     this.authService.goToRegister();
   }
+
   isAuthenticated() {
     return this.authService.isAuthenticated();
   }

@@ -35,6 +35,7 @@ export class AuthService {
       .post<any>(`${this.baseUrl}/auth/login`, formData)
       .pipe(
         map((data) => {
+          console.log(data)
           localStorage.setItem('token', data.token);
           this.router.navigate(['/']);
           return data;
