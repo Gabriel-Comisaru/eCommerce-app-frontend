@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductsService} from '../home-page/shared/products.service';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-admin-page',
   templateUrl: './admin-product-list.component.html',
   styleUrls: ['./admin-product-list.component.css'],
+  providers: [MessageService]
 })
 export class AdminProductListComponent implements OnInit {
   visible = false;
@@ -16,7 +18,8 @@ export class AdminProductListComponent implements OnInit {
   rows: any = [5, 15, 20];
   numberOfPages: any;
 
-  constructor(private productsService: ProductsService) {
+  constructor(private productsService: ProductsService,
+              private messageService: MessageService) {
   }
 
   showDialogNewProduct() {
@@ -56,9 +59,11 @@ export class AdminProductListComponent implements OnInit {
 
   savedProduct(event: any) {
     this.productsList = [...this.productsList, event]
+    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Product Saved'});
   }
 
   updatedProduct(event: any) {
+    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Product Updated'});
     this.productsList = this.productsList.map((item: any) => {
       if (item.id === event.id) {
         return {...event}
@@ -70,8 +75,11 @@ export class AdminProductListComponent implements OnInit {
   deletedProduct(event: Event) {
     this.deleteVisible = false;
     this.productsService.delete(+event)
-      .subscribe(() => this.productsList = this.productsList
-        .filter((item: any) => item.id != +event))
+      .subscribe(() => {
+        this.messageService.add({severity: 'success',icon:'trash', summary: 'Success', detail: 'Product deleted'});
+        this.productsList = this.productsList
+          .filter((item: any) => item.id != +event)
+      })
   }
 
   handleMissingImg(event: ErrorEvent) {

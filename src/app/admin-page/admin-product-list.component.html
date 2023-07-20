@@ -9,6 +9,7 @@
 <app-delete-modal (deleteEmitter)="deletedProduct($event)" (closeEmitter)="onCloseDelete()"
                   [selectedProduct]="selectedProduct"
                   [deleteVisible]="deleteVisible" [header]="'Delete'"></app-delete-modal>
+<p-toast></p-toast>
 <p-table styleClass="p-datatable-sm" [paginator]="true" [rows]="row" [rowsPerPageOptions]="rows" [value]="productsList"
          [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
          [globalFilterFields]="['name']">

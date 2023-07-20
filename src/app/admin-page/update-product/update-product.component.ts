@@ -31,7 +31,6 @@ export class UpdateProductComponent implements OnInit {
   visible = false;
   images: any = [];
   selectedFile!: File;
-  productsList: any = [];
   categoriesList: any = [];
 
   constructor(
@@ -47,12 +46,16 @@ export class UpdateProductComponent implements OnInit {
   }
 
   productForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(3)]],
+    name: ['', [Validators.required,
+      Validators.minLength(3)]],
     price: ['', [Validators.required]],
     categoryId: ['', [Validators.required]],
     description: ['', [Validators.required]],
     stock: ['', [Validators.required]],
-    discount: ['', [Validators.pattern('^[0-9]*$'), Validators.required]],
+    discount: ['', [Validators.pattern('^[0-9]*$'),
+      Validators.max(100),
+      Validators.min(0),
+      Validators.required]],
     imagesName: [[null], [Validators.required]]
   });
 
@@ -109,8 +112,9 @@ export class UpdateProductComponent implements OnInit {
     formData.append('unitsInStock', String(this.productForm.controls.stock.value));
     formData.append('discountPercentage', String(this.productForm.controls.discount.value));
     formData.append('image', this.selectedFile);
-    if (this.header === 'Add new product') {
+    if (this.header !=this.selectedProduct.name) {
       this.loading = true;
+      console.log(this.productForm.controls.categoryId.value)
       this.productsService.sendForm(formData, +this.productForm.controls.categoryId.value)
         .subscribe((res) => {
           this.loading = false;
@@ -124,7 +128,6 @@ export class UpdateProductComponent implements OnInit {
         .updateProduct(product, this.selectedProduct.id)
         .subscribe((res) => {
           this.loading = false;
-
           this.visible = false;
           this.updatedProduct.emit(res);
         });
