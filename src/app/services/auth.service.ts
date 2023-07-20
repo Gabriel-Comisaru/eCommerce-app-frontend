@@ -69,12 +69,7 @@ export class AuthService {
     for (const [key, value] of Object.entries(registerCredentials)) {
       formData.append(key, value);
     }
-    // formData.append('first_name', first_name);
-    // formData.append('last_name', last_name);
-    // formData.append('username', username);
-    // formData.append('email', email);
-    // formData.append('password', password);
-    // formData.append('role', role);
+
     return this.httpClient.post<any>(url, formData).pipe(
       map((data) => {
         localStorage.setItem('token', data.token);

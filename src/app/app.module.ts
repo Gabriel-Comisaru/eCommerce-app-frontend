@@ -53,8 +53,13 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { NgOptimizedImage } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { FloorPipe } from './home-page/shared/floor.pipe';
+
 import { RippleModule } from 'primeng/ripple';
+import { OrderDataComponent } from './shopping-cart/order-data/order-data.component';
 import { CheckboxModule } from 'primeng/checkbox';
+import { DividerModule } from 'primeng/divider';
+import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-modal/new-adress-modal.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -77,6 +82,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     RegisterComponent,
     AccountDetailsComponent,
     FloorPipe,
+    OrderDataComponent,
+    NewAdressModalComponent,
   ],
   imports: [
     HttpClientModule,
@@ -124,6 +131,7 @@ import { CheckboxModule } from 'primeng/checkbox';
     ImageModule,
     RippleModule,
     CheckboxModule,
+    DividerModule,
   ],
 
   providers: [

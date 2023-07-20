@@ -190,6 +190,11 @@ export class RegisterComponent {
 
     return control?.invalid && control?.dirty;
   }
+
+  checkValue(event: Event) {
+    console.log(event);
+    console.log(this.registerForm.controls);
+  }
 }
 
 // fa eroare pentru cazul in care exista email duplicat
