@@ -3,11 +3,13 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Observable, Subject, debounce, delay, of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
+import { RegisterFields } from '../models/register.model';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +22,6 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private userService: UserService
   ) {}
-  // is type assignation right?
 
   registerForm: FormGroup = new FormGroup({});
 
@@ -43,78 +44,94 @@ export class RegisterComponent {
   public registerFormFields: Array<{
     fieldName: string;
     controlName: string;
-    controlType: string;
-    validators?: any;
+    inputType: string;
+    validators: ValidatorFn[];
+    errors?: {};
   }> = [
     {
       fieldName: 'First name',
       controlName: 'first_name',
-      controlType: 'text',
+      inputType: 'text',
 
       validators: [
         Validators.minLength(2),
         Validators.maxLength(15),
         Validators.required,
       ],
+      errors: {
+        length: 'length must be between 2 and 15 characters.',
+        required: 'is required',
+      },
     },
     {
       fieldName: 'Last name',
       controlName: 'last_name',
-      controlType: 'text',
+      inputType: 'text',
       validators: [
         Validators.minLength(2),
         Validators.maxLength(15),
         Validators.required,
       ],
+      errors: {
+        length: 'length must be between 2 and 15 characters.',
+        required: 'is required',
+      },
     },
     {
       fieldName: 'Username',
       controlName: 'username',
-      controlType: 'text',
-      validators: [Validators.required],
+      inputType: 'text',
+      validators: [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(15),
+      ],
+      errors: {
+        length: 'length must be between 2 and 15 characters.',
+        required: 'is required',
+      },
     },
     {
       fieldName: 'Email',
       controlName: 'email',
-      controlType: 'text',
+      inputType: 'text',
       validators: [Validators.email, Validators.required],
+      errors: {
+        email: 'is not valid.',
+        required: 'is required',
+      },
     },
     {
       fieldName: 'Password',
       controlName: 'password',
-      controlType: 'password',
+      inputType: 'password',
       validators: [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(20),
       ],
+      errors: {
+        length: 'length must be between 3 and 20 characters.',
+        required: 'is required',
+      },
+    },
+
+    {
+      fieldName: 'Is this an ADMIN account?',
+      inputType: 'checkbox',
+      controlName: 'role',
+      validators: [],
     },
   ];
 
-  registerRoleField = {
-    fieldName: 'Role',
-    controlType: 'checkbox',
-    name: 'roleType',
-    controlName: 'role',
-    options: [
-      { label: 'Admin', controlValue: 'ADMIN' },
-      { label: 'User', controlValue: 'USER' },
-    ],
-  };
-
   ngOnInit() {
+    console.log(this.getFieldValidity('last_name'));
     this.registerFormFields.forEach((field) =>
       this.registerForm.addControl(
         field.controlName,
         new FormControl('', field.validators)
       )
     );
-    this.registerRoleField.options.forEach((field) => {
-      this.registerForm.addControl(
-        this.registerRoleField.controlName,
-        new FormControl('')
-      );
-    });
 
     console.log(this.registerForm.controls);
   }
@@ -151,36 +168,27 @@ export class RegisterComponent {
   onSubmit() {
     const val = this.registerForm.value;
     console.log(val);
-    if (
-      val.first_name &&
-      val.last_name &&
-      val.username &&
-      val.email &&
-      val.password &&
-      val.role[0]
-    ) {
-      this.authService
-        .register(
-          val.first_name,
-          val.last_name,
-          val.username,
-          val.email,
-          val.password,
-          val.role[0]
-        )
-        .subscribe({
-          next: (data) =>
-            this.userService.getLoggedInUser().subscribe((user) => {
-              localStorage.setItem('currentUser', JSON.stringify(user));
-              console.log('crt user:', user);
-            }),
-        });
-    }
+    const registerData: RegisterFields = {
+      first_name: val.first_name,
+      last_name: val.last_name,
+      username: val.username,
+      email: val.email,
+      password: val.password,
+      role: val.role[0] !== '' ? val.role[0] : 'USER',
+    };
+    this.authService.register(registerData).subscribe({
+      next: (data) =>
+        this.userService.getLoggedInUser().subscribe((user) => {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          console.log('crt user:', user);
+        }),
+    });
   }
 
-  checkValue(event: Event) {
-    console.log(event);
-    console.log(this.registerForm.controls);
+  getFieldValidity(controlName: string) {
+    const control = this.registerForm.get(controlName);
+
+    return control?.invalid && control?.dirty;
   }
 }
 

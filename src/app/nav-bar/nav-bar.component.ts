@@ -15,6 +15,7 @@ import { BasketService } from '../shopping-cart/shared/basket.service';
 import { CategoriesService } from '../product-categories/shared/categories.service';
 import { Subject } from 'rxjs';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-nav-bar',
@@ -32,7 +33,7 @@ export class NavBarComponent {
   public nbOfBasketProducts: number = 0;
   public detailedBasketContent: detailedOrderItem[] = [];
   // get logged user details
-  public userLoggedIn: any = JSON.parse(
+  public userLoggedIn: User = JSON.parse(
     localStorage.getItem('currentUser') || '{}'
   );
   public itemNames: Map<number, string> = new Map<number, string>();
@@ -60,8 +61,7 @@ export class NavBarComponent {
   }
 
   ngOnInit() {
-    console.log(this.userLoggedIn);
-
+    // used to get user's name
     this.userService
       .getLoggedUserObservable()
       .subscribe((res) => (this.userLoggedIn = res));
@@ -83,10 +83,6 @@ export class NavBarComponent {
           label: 'Products',
           icon: 'pi pi-fw pi-bars',
           items: this.categoryItems,
-
-          // command: () => {
-          //   this.router.navigate(['/products']);
-          // },
         },
         { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
         {
@@ -98,7 +94,7 @@ export class NavBarComponent {
     });
     this.isAdmin = false;
 
-    if (this.authService.isAuthenticated()) {
+    if (this.userLoggedIn.username !== '') {
       this.productsService
         .getfavoriteProductsObservable()
         .subscribe((response) => (this.favoriteProductsList = response));
@@ -131,23 +127,6 @@ export class NavBarComponent {
           };
         });
       });
-
-      //   this.orderItems = allOrderItems.map((item: any) => {
-      //     return {
-      //       id: item.id,
-      //       name: this.itemNames.get(item.productId) || '',
-      //       productId: item.productId,
-      //       orderId: item.orderId,
-      //       quantity: item.quantity,
-      //       price: this.itemPrices.get(item.productId) || 0,
-      //     };
-      //   });
-      // });
-      // this.productService.getShopingCartObservable().subscribe((res) => {
-      //   this.orderItems.push(res);
-      //   console.log(this.orderItems);
-
-      // });
     }
   }
   loadBasketContent() {
@@ -158,13 +137,6 @@ export class NavBarComponent {
         this.itemPrices.set(product.id, product.price);
       });
     });
-
-    // setTimeout(() => {
-    //   this.basketService.getOrderItems().subscribe((list: any[]) => {
-
-    //   });
-    // }, 1);
-    // console.log(this.orderItems);
   }
 
   goHome() {
@@ -199,7 +171,7 @@ export class NavBarComponent {
   logout() {
     this.authService.logout();
   }
-  register() {
+  goToRegisterPage() {
     this.authService.goToRegister();
   }
   isAuthenticated() {

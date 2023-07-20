@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
 import { ProductsService } from '../home-page/shared/products.service';
+import { RegisterFields } from '../models/register.model';
 
 @Injectable({
   providedIn: 'root',
@@ -62,22 +63,18 @@ export class AuthService {
   goToRegister(): void {
     this.router.navigate(['register']);
   }
-  register(
-    first_name: string,
-    last_name: string,
-    username: string,
-    email: string,
-    password: string,
-    role: string
-  ): Observable<any> {
-    const formData: any = new FormData();
+  register(registerCredentials: RegisterFields): Observable<RegisterFields> {
+    const formData = new FormData();
     const url = `${this.baseUrl}/auth/register`;
-    formData.append('first_name', first_name);
-    formData.append('last_name', last_name);
-    formData.append('username', username);
-    formData.append('email', email);
-    formData.append('password', password);
-    formData.append('role', role);
+    for (const [key, value] of Object.entries(registerCredentials)) {
+      formData.append(key, value);
+    }
+    // formData.append('first_name', first_name);
+    // formData.append('last_name', last_name);
+    // formData.append('username', username);
+    // formData.append('email', email);
+    // formData.append('password', password);
+    // formData.append('role', role);
     return this.httpClient.post<any>(url, formData).pipe(
       map((data) => {
         localStorage.setItem('token', data.token);

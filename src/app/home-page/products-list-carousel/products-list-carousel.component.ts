@@ -66,20 +66,6 @@ export class ProductsListCarouselComponent {
     }
   }
 
-  // createImageFromBlob(image: Blob, store: any) {
-  //   let reader = new FileReader();
-  //   reader.addEventListener(
-  //     'load',
-  //     () => {
-  //       store = reader.result;
-  //     },
-  //     false
-  //   );
-  //   if (image) {
-  //     reader.readAsDataURL(image);
-  //   }
-  // }
-
   dataLoadingStatus() {
     this.dataLoaded = true;
   }
@@ -95,16 +81,6 @@ export class ProductsListCarouselComponent {
     } else {
       this.router.navigate(['login']);
     }
-    //track shopping cart through local storage
-    // const shoppingCartList: Product[] = JSON.parse(
-    //   localStorage.getItem('shoppingCart') || '[]'
-    // );
-    // if (shoppingCartList.some((element) => element.id === product.id)) {
-    //   //TODO change quantity
-    // } else shoppingCartList.push(product);
-    // localStorage.setItem('shoppingCart', JSON.stringify(shoppingCartList));
-    // this.productsService.shoppingCartObservable.next(shoppingCartList);
-    // if product already exists don't add it
   }
   addToFavorite(product: Product) {
     if (this.authService.isAuthenticated()) {
@@ -143,7 +119,7 @@ export class ProductsListCarouselComponent {
 
   handleMissingImage(event: Event) {
     (event.target as HTMLImageElement).src =
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
+      '/assets/images/product-not-found.png';
   }
 }
 // <!-- notificare ca am adaugat in cos -->
