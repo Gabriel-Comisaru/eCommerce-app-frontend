@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {Product} from './product.model';
 import {Category} from './category.model';
 import {OrderItem} from './orderItem.model';
@@ -26,6 +26,8 @@ export class ProductsService {
   // public shoppingCartObservable = new Subject<Product[]>();
   public shoppingCartObservable = new Subject<OrderItem[]>();
   public favoriteProductsObservable = new Subject<Product[]>();
+  isAdminOnAdminPage:boolean = false;
+  checkIfAdminIsOnAdminPage:BehaviorSubject<any> = new BehaviorSubject<any>(this.isAdminOnAdminPage)
 
   getShopingCartObservable(): Observable<OrderItem[]> {
     return this.shoppingCartObservable.asObservable();
@@ -161,4 +163,14 @@ export class ProductsService {
       formData
     );
   }
+
+  adminIsOnAdminPage(){
+    this.checkIfAdminIsOnAdminPage.next(true)
+  }
+
+  adminLeftAdminPage(){
+    this.checkIfAdminIsOnAdminPage.next(false)
+  }
+
+
 }

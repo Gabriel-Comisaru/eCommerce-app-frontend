@@ -76,7 +76,7 @@ export class AdminProductListComponent implements OnInit {
     this.deleteVisible = false;
     this.productsService.delete(+event)
       .subscribe(() => {
-        this.messageService.add({severity: 'success',icon:'trash', summary: 'Success', detail: 'Product deleted'});
+        this.messageService.add({severity: 'success',icon:'pi pi-trash', summary: 'Success', detail: 'Product deleted'});
         this.productsList = this.productsList
           .filter((item: any) => item.id != +event)
       })

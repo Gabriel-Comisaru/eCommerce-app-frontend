@@ -1,4 +1,4 @@
-<nav class="navBar py-2 px-2" aria-label="product navigation">
+<nav *ngIf="!adminDashboard" class="navBar py-2 px-2" aria-label="product navigation">
   <div class="navControlsContainer">
     <img
       src="./../../assets/images/project-logo.png"
@@ -63,27 +63,16 @@
       ><span style="white-space: nowrap">{{ userLoggedIn.username }}</span></a
     >
 
-    <div class="flex navBarItem" *ngIf="isAuthenticated()">
-      <div *ngIf="isAdmin === false">
+    <div class="flex navBarItem" *ngIf="userLoggedIn.role==='ADMIN'">
         <p-button
-          [(ngModel)]="isAdmin"
-          ngDefaultControl
-          id="adminMode"
           (click)="goToAdminPage()"
           styleClass="p-button-outlined"
-          >Admin mode off</p-button
-        >
-      </div>
-      <div *ngIf="isAdmin === true">
-        <p-button [(ngModel)]="isAdmin" ngDefaultControl id="adminMode" (click)="goToAdminPage()"
-          >Admin mode on</p-button
-        >
-      </div>
+          >Dashboard</p-button>
     </div>
   </div>
 </nav>
 
-<nav class="">
+<nav *ngIf=!adminDashboard class="">
   <p-menubar
     #nav
     [model]="navProductControls"

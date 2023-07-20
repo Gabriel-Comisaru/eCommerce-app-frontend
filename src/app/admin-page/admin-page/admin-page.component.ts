@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
+import {ProductsService} from "../../home-page/shared/products.service";
 
 @Component({
   selector: 'app-admin-page',
@@ -14,9 +16,12 @@ export class AdminPageComponent {
   ]
 
   selected!: any;
+  adminPage:boolean=true;
 
   constructor(private router: Router,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private authService: AuthService,
+              private service:ProductsService) {
   }
 
   ngOnInit() {
@@ -35,4 +40,12 @@ export class AdminPageComponent {
       : this.router.navigate(['orders'], {relativeTo: this.route})
   }
 
+  logOut() {
+    this.authService.logout()
+  }
+
+  goBachToHomePage() {
+    this.router.navigate([''])
+    this.service.adminLeftAdminPage();
+  }
 }
