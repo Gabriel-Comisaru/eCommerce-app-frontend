@@ -38,6 +38,7 @@ export class AuthService {
           console.log(data)
           localStorage.setItem('token', data.token);
           this.router.navigate(['/']);
+          localStorage.setItem('admin','false')
           return data;
         })
       );
