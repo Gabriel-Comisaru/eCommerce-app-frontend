@@ -34,6 +34,7 @@ export class OrderDataComponent implements OnInit {
       address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
     }
   )
+
   loading: boolean = false;
   cities: any = [];
   visible: boolean = false;
