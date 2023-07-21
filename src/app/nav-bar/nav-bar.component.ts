@@ -66,11 +66,11 @@ export class NavBarComponent {
   }
 
   ngOnInit() {
-    this.productsService.checkIfAdminIsOnAdminPage
-      .subscribe((res:any) => {
-        this.adminDashboard = res
-        console.log('in navbar page', res)
-      })
+    // this.productsService.checkIfAdminIsOnAdminPage
+    //   .subscribe((res:any) => {
+    //     this.adminDashboard = res
+    //     console.log('in navbar page', res)
+    //   })
     // used to get user's name
     this.userService
       .getLoggedUserObservable()
@@ -153,6 +153,8 @@ export class NavBarComponent {
   goToAdminPage() {
     this.isAdmin = !this.isAdmin
     this.productsService.adminIsOnAdminPage()
+    this.productsService.checkIfAdminIsOnAdminPage
+      .subscribe(res => this.adminDashboard=res)
     this.router.navigate(['admin/products']);
   }
 

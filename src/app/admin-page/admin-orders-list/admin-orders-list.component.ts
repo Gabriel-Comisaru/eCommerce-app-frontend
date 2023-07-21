@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {ProductsService} from "../../home-page/shared/products.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-admin-orders-list',
@@ -9,13 +10,14 @@ import {ProductsService} from "../../home-page/shared/products.service";
 export class AdminOrdersListComponent {
 
   orders: any[] = [];
-  rows: any = [5, 20, 25]
-  row: any = 5;
+  rows: any = [15, 20, 25]
+  row: any;
   numberOfPages: any;
   status: any = ['ACTIVE', 'CHECKOUT', 'PLACED', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
   currentStatus: any;
 
-  constructor(private service: ProductsService) {
+  constructor(private service: ProductsService,
+              private router:Router) {
   }
 
   ngOnInit() {
@@ -28,6 +30,13 @@ export class AdminOrdersListComponent {
           return {status: item.status}
         })
       })
+
+    const previousUrl = history.state.prevPage ?? null;
+    if (!previousUrl) {
+      return;
+    } else {
+      console.log('I came here from: ', previousUrl);
+    }
   }
 
   changeStatus(id: number,event:any) {

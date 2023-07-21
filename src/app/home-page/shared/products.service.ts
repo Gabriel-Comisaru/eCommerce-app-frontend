@@ -30,8 +30,7 @@ export class ProductsService {
     productAction: string;
   }>();
   public favoriteProductsObservable = new Subject<Product[]>();
-  isAdminOnAdminPage:boolean = false;
-  checkIfAdminIsOnAdminPage:BehaviorSubject<any> = new BehaviorSubject<any>(this.isAdminOnAdminPage)
+  checkIfAdminIsOnAdminPage:BehaviorSubject<any> = new BehaviorSubject<any>('')
 
   getShopingCartObservable(): Observable<{
     orderItem: OrderItem;

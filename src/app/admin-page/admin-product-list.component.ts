@@ -15,7 +15,7 @@ export class AdminProductListComponent implements OnInit {
   productsList: any = [];
   selectedProduct?: any = [];
   row: any;
-  rows: any = [5, 15, 20];
+  rows: any = [15, 20,25];
   numberOfPages: any;
 
   constructor(private productsService: ProductsService,

@@ -72,7 +72,7 @@
   </div>
 </nav>
 
-<nav *ngIf=!adminDashboard class="">
+<nav *ngIf="!adminDashboard" >
   <p-menubar
     #nav
     [model]="navProductControls"
