@@ -1,22 +1,22 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {PrimeIcons, MenuItem} from 'primeng/api';
-import {Router} from '@angular/router';
-import {Product} from '../home-page/shared/product.model';
-import {ProductsService} from '../home-page/shared/products.service';
-import {Category} from '../home-page/shared/category.model';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { PrimeIcons, MenuItem } from 'primeng/api';
+import { Router } from '@angular/router';
+import { Product } from '../home-page/shared/product.model';
+import { ProductsService } from '../home-page/shared/products.service';
+import { Category } from '../home-page/shared/category.model';
 import {
   OrderItem,
   detailedOrderItem,
 } from '../home-page/shared/orderItem.model';
-import {AdminPageComponent} from "../admin-page/admin-page/admin-page.component";
-import {concatMap, of, switchMap, map, Observable, combineLatest} from 'rxjs';
-import {AuthService} from '../services/auth.service';
-import {UserService} from '../services/user.service';
-import {BasketService} from '../shopping-cart/shared/basket.service';
-import {CategoriesService} from '../product-categories/shared/categories.service';
-import {Subject} from 'rxjs';
-import {observableToBeFn} from 'rxjs/internal/testing/TestScheduler';
-import {User} from '../models/user.model';
+import { AdminPageComponent } from '../admin-page/admin-page/admin-page.component';
+import { concatMap, of, switchMap, map, Observable, combineLatest } from 'rxjs';
+import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
+import { BasketService } from '../shopping-cart/shared/basket.service';
+import { CategoriesService } from '../product-categories/shared/categories.service';
+import { Subject } from 'rxjs';
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-nav-bar',
@@ -37,17 +37,15 @@ export class NavBarComponent {
   public userLoggedIn: User = JSON.parse(
     localStorage.getItem('currentUser') || '{}'
   );
-  public itemNames: Map<number, string> = new Map<number, string>();
-  public itemPrices: Map<number, number> = new Map<number, number>();
-  public itemCategories: Map<number, string> = new Map<number, string>();
+
   public categories: any[] = [];
   // Placeholder
-  public itemNamesAny: any[] = [];
+
   // Placeholder
   public itemCategoriesAny: any[] = [];
   // Placeholder
   public itemPricesAny: any[] = [];
-  public orderItems: any = [];
+  public orderItems: OrderItem[] = [];
 
   adminDashboard!: string;
 
@@ -61,9 +59,7 @@ export class NavBarComponent {
     private basketService: BasketService,
     private productService: ProductsService,
     private categoryService: CategoriesService
-  ) {
-    this.basketService.NavBarComponent = this;
-  }
+  ) {}
 
   ngOnInit() {
     if(!this.authService.isAuthenticated()){
@@ -95,7 +91,7 @@ export class NavBarComponent {
           icon: 'pi pi-fw pi-bars',
           items: this.categoryItems,
         },
-        {label: 'Deals', icon: 'pi pi-fw pi-percentage'},
+        { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
         {
           label: 'All Categories',
           icon: 'pi pi-th-large',
@@ -104,39 +100,36 @@ export class NavBarComponent {
       ];
     });
     this.isAdmin = false;
+    console.log(this.userLoggedIn);
 
-    if (this.userLoggedIn.username !== '') {
-      this.productsService
-        .getfavoriteProductsObservable()
-        .subscribe((response) => (this.favoriteProductsList = response));
-      this.productsService.setInitialFavoriteProducts();
-      // this.productsService.getShopingCartObservable().subscribe()
-      this.loadBasketContent();
-
-      this.basketService
-        .getOrderItems()
-        .subscribe((res) => (this.orderItems = res));
-
-      this.productService.getShopingCartObservable().subscribe((res) => {
-        if (res.productAction === 'add') {
-          this.orderItems.push(res.orderItem);
-        } else if (res.productAction === 'delete') {
-          this.orderItems = this.orderItems.filter(
-            (orderItem: OrderItem) => orderItem.id !== res.orderItem.id
-          );
-        }
+    if (Object.keys(this.userLoggedIn).length !== 0) {
+      this.productsService.getCurrentBasket().subscribe((res) => {
+        this.productsService.shoppingCartObservable.next({
+          productAction: 'populate',
+          basketOrderItems: res,
+        });
       });
     }
-  }
+    //  subjects
+    this.productsService
+      .getfavoriteProductsObservable()
+      .subscribe((response) => (this.favoriteProductsList = response));
+    this.productsService.setInitialFavoriteProducts();
 
-  loadBasketContent() {
-    //extracting the name and the price of the products
-    this.productService.getProducts().subscribe((list) => {
-      this.itemNamesAny = list.map((product: any) => {
-        this.itemNames.set(product.id, product.name);
-        this.itemPrices.set(product.id, product.price);
-      });
+    this.productService.getShopingCartObservable().subscribe((res) => {
+      if (res.productAction === 'add') {
+        this.orderItems.push(res.orderItem!);
+      } else if (res.productAction === 'delete') {
+        this.orderItems = this.orderItems.filter(
+          (orderItem: OrderItem) => orderItem.id !== res.orderItem!.id
+        );
+      } else if (res.productAction === 'reset') {
+        this.orderItems = [];
+      } else if (res.productAction === 'populate') {
+        this.orderItems = res.basketOrderItems!;
+      }
     });
+    // }
   }
 
   goHome() {

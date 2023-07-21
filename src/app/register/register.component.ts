@@ -179,7 +179,6 @@ export class RegisterComponent {
     this.authService.register(registerData).subscribe({
       next: (data) =>
         this.userService.getLoggedInUser().subscribe((user) => {
-          localStorage.setItem('currentUser', JSON.stringify(user));
           console.log('crt user:', user);
         }),
     });

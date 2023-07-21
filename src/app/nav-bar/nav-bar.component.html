@@ -31,7 +31,7 @@
         class="pi pi-shopping-cart"
         pBadge
         severity="danger"
-        [value]="isAuthenticated() ? getOrderItemLength().toString() : '0'"
+        [value]="getOrderItemLength().toString()"
       ></i
       ><span>Basket</span></a
     >

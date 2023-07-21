@@ -1,8 +1,9 @@
 import { Injectable, Optional } from '@angular/core';
 import { Product } from 'src/app/home-page/shared/product.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { NavBarComponent } from '../../nav-bar/nav-bar.component';
+import { OrderItem } from 'src/app/home-page/shared/orderItem.model';
 
 @Injectable({
   providedIn: 'root',
