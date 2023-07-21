@@ -187,7 +187,11 @@ export class ProductsService {
   }
 
   getDiscountedProducts(): Observable<Product[]> {
-    const url = 'http://localhost:8080/api/products/discount';
+    const url = 'http://localhost:8081/api/products/discount';
+    return this.httpClient.get<Product[]>(url);
+  }
+  getMostSelledProducts(): Observable<Product[]> {
+    const url = 'http://localhost:8081/api/products/placed';
     return this.httpClient.get<Product[]>(url);
   }
 }

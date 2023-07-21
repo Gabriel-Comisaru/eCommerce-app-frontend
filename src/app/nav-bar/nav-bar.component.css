@@ -169,3 +169,8 @@
 .navBarItem {
   cursor: pointer;
 }
+
+.imagePlaceholder {
+  height: 3rem;
+  width: 8rem;
+}

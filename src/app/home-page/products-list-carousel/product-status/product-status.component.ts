@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Product } from '../../shared/product.model';
 
 @Component({
   selector: 'app-product-status',
@@ -6,7 +7,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./product-status.component.css'],
 })
 export class ProductStatusComponent {
-  @Input() product: any;
+  @Input() product!: Product;
 
   get stock() {
     return this.product.unitsInStock > 50

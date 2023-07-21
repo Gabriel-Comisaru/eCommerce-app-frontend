@@ -1,57 +1,35 @@
 <header class="header"></header>
 <main>
-  <!-- TODO -change mockProductsList to desired filtered list to display - according to each section -->
-
-  <section *ngIf="isLoggedIn">
-    <div class="titles">
-      <h2 class="ml-7">Recommended for you</h2>
-      <p-button
-        class="mr-6"
-        label="View more"
-        styleClass="p-button-link"
-      ></p-button>
-    </div>
-    <app-products-list-carousel
-      [productsToDisplay]="productsList"
-    ></app-products-list-carousel>
-
-    <!--[productsToDisplaye]="filtered list of products based on previous user's search tags" -->
-  </section>
-
-  <section>
-    <div class="titles">
-      <h2 class="ml-7">Discounted Products</h2>
-      <p-button
-        class="mr-6"
-        label="View more"
-        styleClass="p-button-link"
-      ></p-button>
-    </div>
-
-    <app-products-list-carousel
-      [productsToDisplay]="productsWithDiscountApplied"
+  <ng-container *ngFor="let section of listOfSections; let i = index">
+    <ng-container
+      *ngIf="section.condition !== undefined ? section.condition : true"
     >
-      <!-- [productsToDisplay]="filtered list of products by existence of a discount" -->
-    </app-products-list-carousel>
-  </section>
-  <section>
-    <div class="titles">
-      <h2 class="ml-7">Hottest Products</h2>
+      <section>
+        <div class="titles">
+          <h2 class="ml-7">{{ sectionsName[i] }}</h2>
+          <p-button
+            class="mr-6"
+            label="View more"
+            styleClass="p-button-link"
+            (onClick)="goToAllProductsPage()"
+          ></p-button>
+        </div>
+        <app-products-list-carousel
+          [productsToDisplay]="section.list"
+        ></app-products-list-carousel></section
+    ></ng-container>
+  </ng-container>
+
+  <ng-container *ngFor="let section of sectionsName">
+    <div class="titles" *ngIf="dataIsLoading">
+      <h2 class="ml-7">{{ section }}</h2>
       <p-button
         class="mr-6"
         label="View more"
         styleClass="p-button-link"
+        (onClick)="goToAllProductsPage()"
       ></p-button>
     </div>
-
-    <app-products-list-carousel [productsToDisplay]="mostSelledProducts">
-      <!-- [productsToDisplaye]='filtered list of products by most bought products' -->
-    </app-products-list-carousel>
-  </section>
-
-  <!-- if logged in - recommended for you products -->
+    <app-skeleton [dataIsLoading]="dataIsLoading"> </app-skeleton>
+  </ng-container>
 </main>
-<!-- <img [src]="imageToShow" alt="Place image title" /> -->
-<footer>
-  <!-- copyright info -->
-</footer>

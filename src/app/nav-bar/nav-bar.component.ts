@@ -100,7 +100,6 @@ export class NavBarComponent {
       ];
     });
     this.isAdmin = false;
-    console.log(this.userLoggedIn);
 
     if (Object.keys(this.userLoggedIn).length !== 0) {
       this.productsService.getCurrentBasket().subscribe((res) => {
