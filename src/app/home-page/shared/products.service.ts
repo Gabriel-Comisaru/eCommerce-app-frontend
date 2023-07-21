@@ -1,11 +1,12 @@
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Product } from './product.model';
 import { Category } from './category.model';
 import { OrderItem } from './orderItem.model';
 import { Review } from './review.model';
 import { BASE_URL_API } from '../../settings';
+import { Order } from './order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,17 +15,30 @@ export class ProductsService {
   constructor(private httpClient: HttpClient) {}
 
   private productsUrl = `${BASE_URL_API}/products`;
+  private productsUrlDisplay = `${BASE_URL_API}/products/display`;
+  private appUsersUrl = 'http://localhost:8081/api/users';
   private categoriesUrl = 'http://localhost:8081/api/categories';
   private reviewsUrl = 'http://localhost:8081/api/reviews';
   private productCategoryUrl = 'http://localhost:8081/api/products/category';
   private imageUrl = 'http://localhost:8081/api/images/upload';
-
+  private ordersUrl = 'http://localhost:8081/api/orders';
   private orderItemsUrl = 'http://localhost:8081/api/orderItems';
   // public shoppingCartObservable = new Subject<Product[]>();
-  public shoppingCartObservable = new Subject<OrderItem>();
+  public shoppingCartObservable = new Subject<{
+    orderItem?: OrderItem;
+    productAction: string;
+    basketOrderItems?: OrderItem[];
+  }>();
   public favoriteProductsObservable = new Subject<Product[]>();
+  checkIfAdminIsOnAdminPage: BehaviorSubject<any> = new BehaviorSubject<any>(
+    ''
+  );
 
-  getShopingCartObservable(): Observable<any> {
+  getShopingCartObservable(): Observable<{
+    orderItem?: OrderItem;
+    productAction: string;
+    basketOrderItems?: OrderItem[];
+  }> {
     return this.shoppingCartObservable.asObservable();
   }
 
@@ -34,20 +48,41 @@ export class ProductsService {
     );
     this.favoriteProductsObservable.next(localStorageCartList);
   }
+
+  getAllUsers() {
+    return this.httpClient.get<any>(this.appUsersUrl);
+  }
+
   getfavoriteProductsObservable(): Observable<Product[]> {
     return this.favoriteProductsObservable.asObservable();
   }
-  getOrders(): Observable<any> {
+
+  getOrdersItems(): Observable<any> {
     return this.httpClient.get<any>(this.orderItemsUrl);
+  }
+
+  getOrders(): Observable<any> {
+    const url = `${this.ordersUrl}/display`;
+    return this.httpClient.get<any>(url, {
+      params: new HttpParams().set('pageSize', '10'),
+    });
   }
 
   getProducts(): Observable<any> {
     return this.httpClient.get<any>(this.productsUrl);
   }
+
+  getProductsDisplay(): Observable<any> {
+    return this.httpClient.get<any>(this.productsUrlDisplay, {
+      params: new HttpParams().set('pageSize', '10'),
+    });
+  }
+
   getProductsByCat(categoryId: number): Observable<any> {
     let url = `${this.productsUrl}/category?categoryId=${categoryId}`;
     return this.httpClient.get<any>(url);
   }
+
   // i want to add it in cartList or favoriteList
 
   getProduct(id: number): Observable<any | undefined> {
@@ -67,8 +102,18 @@ export class ProductsService {
     return this.httpClient.put<any>(url, product);
   }
 
+  updateStatus(id: number, status: string): Observable<any> {
+    const url = `${this.ordersUrl}/${id}?status=${status}`;
+    return this.httpClient.put(url, status);
+  }
+
   delete(id: number) {
     const url = `${this.productsUrl}/${id}`;
+    return this.httpClient.delete(url, { responseType: 'text' });
+  }
+
+  deleteOrder(id: number) {
+    const url = `${this.ordersUrl}/${id}`;
     return this.httpClient.delete(url, { responseType: 'text' });
   }
 
@@ -84,12 +129,11 @@ export class ProductsService {
     productId: number,
     quantity: number
   ): Observable<OrderItem> {
-    const addProductToOrderUrl = `http://localhost:8081/api/orderItems/${productId}?quantity=${quantity}`;
-    const productBody = {
-      quantity,
-    };
-    return this.httpClient.post<OrderItem>(addProductToOrderUrl, productBody);
+    const addProductToOrderUrl = `http://localhost:8081/api/orders/${productId}?quantity=${quantity}`;
+
+    return this.httpClient.post<OrderItem>(addProductToOrderUrl, {});
   }
+
   // do model for that id quantity productId orderId
   saveReview(productId: number, review: Review) {
     const url = `${this.reviewsUrl}/save/${productId}`;
@@ -116,6 +160,7 @@ export class ProductsService {
     };
     return this.httpClient.get<any>(url, httpOptions as any);
   }
+
   getAllReviews(): Observable<any> {
     const url = 'http://localhost:8081/api/reviews';
     return this.httpClient.get<any>(url);
@@ -126,5 +171,23 @@ export class ProductsService {
       `${this.productCategoryUrl}/${categoryId}`,
       formData
     );
+  }
+
+  adminIsOnAdminPage() {
+    this.checkIfAdminIsOnAdminPage.next(true);
+  }
+
+  adminLeftAdminPage() {
+    this.checkIfAdminIsOnAdminPage.next(false);
+  }
+
+  getCurrentBasket(): Observable<OrderItem[]> {
+    const url = 'http://localhost:8081/api/orders/me/basket';
+    return this.httpClient.get<OrderItem[]>(url);
+  }
+
+  getDiscountedProducts(): Observable<Product[]> {
+    const url = 'http://localhost:8080/api/products/discount';
+    return this.httpClient.get<Product[]>(url);
   }
 }

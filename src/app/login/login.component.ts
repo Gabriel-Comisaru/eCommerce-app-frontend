@@ -3,6 +3,9 @@ import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
+import { ProductsService } from '../home-page/shared/products.service';
+import { concat } from 'rxjs';
+import { OrderItem } from '../home-page/shared/orderItem.model';
 // import { Button } from 'primeng/primeng';
 // import { InputText } from 'primeng/primeng';
 // import { Panel } from 'primeng/primeng';
@@ -18,7 +21,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private productsService: ProductsService
   ) {}
   public loginErrorCause!: string;
 
@@ -35,8 +39,16 @@ export class LoginComponent implements OnInit {
     if (val.username && val.password) {
       this.authService.login(val.username, val.password).subscribe({
         next: (data) => {
-          this.userService.getLoggedInUser().subscribe((user) => {
-            localStorage.setItem('currentUser', JSON.stringify(user));
+          concat(
+            this.userService.getLoggedInUser(),
+            this.productsService.getCurrentBasket()
+          ).subscribe((res) => {
+            if (res instanceof Array) {
+              this.productsService.shoppingCartObservable.next({
+                productAction: 'populate',
+                basketOrderItems: res,
+              });
+            }
           });
         },
         error: (data) => {

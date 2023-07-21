@@ -18,10 +18,10 @@ export class ProductDetailsComponent implements OnInit {
   position: string = 'bottom';
   discountedPrice: number = 0;
   reviews: Review[] = [];
-  reviewForm = this.fb.group({
-    rating: new FormControl(0, { nonNullable: true }),
-    title: new FormControl('', { nonNullable: true }),
-    comment: new FormControl('', { nonNullable: true }),
+  reviewForm = this.fb.nonNullable.group({
+    rating: [0, [Validators.required]],
+    title: ['', [Validators.required]],
+    comment: ['', [Validators.required]]
   });
 
   constructor(

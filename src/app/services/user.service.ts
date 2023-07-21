@@ -11,9 +11,9 @@ export class UserService {
 
   private apiBaseURL = 'http://localhost:8081/api';
 
-  public loggedUser = new Subject();
+  public loggedUser = new Subject<User>();
 
-  getLoggedUserObservable() {
+  getLoggedUserObservable(): Observable<User> {
     return this.loggedUser.asObservable();
   }
 
@@ -21,6 +21,7 @@ export class UserService {
     return this.http.get<User>(`${this.apiBaseURL}/users/loggedInUser`).pipe(
       tap((res) => {
         this.loggedUser.next(res);
+        localStorage.setItem('currentUser', JSON.stringify(res));
       })
     );
   }

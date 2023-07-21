@@ -3,10 +3,11 @@ import { Product } from '../shared/product.model';
 
 import { ProductsService } from '../shared/products.service';
 import { Router } from '@angular/router';
-import { OrderItem } from '../shared/orderItem.model';
+import { OrderItem, actionOrderItem } from '../shared/orderItem.model';
 import { FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
+import { Order } from '../shared/order.model';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -66,20 +67,6 @@ export class ProductsListCarouselComponent {
     }
   }
 
-  // createImageFromBlob(image: Blob, store: any) {
-  //   let reader = new FileReader();
-  //   reader.addEventListener(
-  //     'load',
-  //     () => {
-  //       store = reader.result;
-  //     },
-  //     false
-  //   );
-  //   if (image) {
-  //     reader.readAsDataURL(image);
-  //   }
-  // }
-
   dataLoadingStatus() {
     this.dataLoaded = true;
   }
@@ -87,24 +74,13 @@ export class ProductsListCarouselComponent {
     if (this.authService.isAuthenticated()) {
       this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
         this.productsService.shoppingCartObservable.next({
-          ...res,
-          action: 'add',
-        } as OrderItem);
-        console.log(res);
+          orderItem: res,
+          productAction: 'add',
+        });
       });
     } else {
       this.router.navigate(['login']);
     }
-    //track shopping cart through local storage
-    // const shoppingCartList: Product[] = JSON.parse(
-    //   localStorage.getItem('shoppingCart') || '[]'
-    // );
-    // if (shoppingCartList.some((element) => element.id === product.id)) {
-    //   //TODO change quantity
-    // } else shoppingCartList.push(product);
-    // localStorage.setItem('shoppingCart', JSON.stringify(shoppingCartList));
-    // this.productsService.shoppingCartObservable.next(shoppingCartList);
-    // if product already exists don't add it
   }
   addToFavorite(product: Product) {
     if (this.authService.isAuthenticated()) {
@@ -143,7 +119,7 @@ export class ProductsListCarouselComponent {
 
   handleMissingImage(event: Event) {
     (event.target as HTMLImageElement).src =
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png';
+      '/assets/images/product-not-found.png';
   }
 }
 // <!-- notificare ca am adaugat in cos -->

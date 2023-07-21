@@ -25,7 +25,7 @@ import { SkeletonModule } from 'primeng/skeleton';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ProductStatusComponent } from './home-page/products-list-carousel/product-status/product-status.component';
 
-import { AdminPageComponent } from './admin-page/admin-page.component';
+import { AdminProductListComponent } from './admin-page/admin-product-list.component';
 import { UpdateProductComponent } from './admin-page/update-product/update-product.component';
 import { DialogModule } from 'primeng/dialog';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -54,12 +54,15 @@ import { NgOptimizedImage } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { FloorPipe } from './home-page/shared/floor.pipe';
 import {RippleModule} from "primeng/ripple";
+import { AdminPageComponent } from './admin-page/admin-page/admin-page.component';
+import {RadioButtonModule} from "primeng/radiobutton";
+import { AdminOrdersListComponent } from './admin-page/admin-orders-list/admin-orders-list.component';
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+
 import { OrderDataComponent } from './shopping-cart/order-data/order-data.component';
-import {CheckboxModule} from "primeng/checkbox";
-import {DividerModule} from "primeng/divider";
+import { CheckboxModule } from 'primeng/checkbox';
+import { DividerModule } from 'primeng/divider';
 import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-modal/new-adress-modal.component';
-import { RadioButtonModule } from "primeng/radiobutton";
-import { OrderSummaryComponent } from './shopping-cart/order-summary/order-summary.component';
 
 @NgModule({
   declarations: [
@@ -67,10 +70,10 @@ import { OrderSummaryComponent } from './shopping-cart/order-summary/order-summa
     ProductDetailsComponent,
     HomePageComponent,
     ProductsListCarouselComponent,
-
+    AdminOrdersListComponent,
     NavBarComponent,
     ProductStatusComponent,
-    AdminPageComponent,
+    AdminProductListComponent,
     UpdateProductComponent,
     ProductAllComponent,
     ProductListComponent,
@@ -83,9 +86,10 @@ import { OrderSummaryComponent } from './shopping-cart/order-summary/order-summa
     RegisterComponent,
     AccountDetailsComponent,
     FloorPipe,
+    AdminPageComponent,
+    AdminOrdersListComponent,
     OrderDataComponent,
     NewAdressModalComponent,
-    OrderSummaryComponent,
   ],
   imports: [
     HttpClientModule,
@@ -125,6 +129,15 @@ import { OrderSummaryComponent } from './shopping-cart/order-summary/order-summa
     FormsModule,
     ReactiveFormsModule,
 
+        InputTextModule,
+        ButtonModule,
+        AppRoutingModule,
+        HttpClientModule,
+        NgOptimizedImage,
+        ImageModule,
+        RippleModule,
+        RadioButtonModule,
+        ConfirmDialogModule,
     InputTextModule,
     ButtonModule,
     AppRoutingModule,
@@ -134,8 +147,8 @@ import { OrderSummaryComponent } from './shopping-cart/order-summary/order-summa
     RippleModule,
     CheckboxModule,
     DividerModule,
-    RadioButtonModule,
-  ],
+    ],
+
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

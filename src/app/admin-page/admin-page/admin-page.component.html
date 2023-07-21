@@ -1,0 +1,18 @@
+<p-menubar>
+  <ng-template pTemplate="start">
+    <div class="flex flex-row flex-wrap gap-3">
+      <div *ngFor="let name of listName" class="field-checkbox">
+        <p-radioButton styleClass="p-label-active" (click)="goToProductsOrOrders()" name="list" [value]="name"
+                       [(ngModel)]="selected"></p-radioButton>
+        <label [for]="name.key" class="ml-2">{{name.name}}</label>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <div class="flex flex-row flex-wrap gap-3">
+  <p-button (click)="logOut()" styleClass="p-button-outlined" label="Logout"></p-button>
+    <p-button (click)="goBachToHomePage()" styleClass="p-button-outlined" label="Home Page"></p-button>
+    </div>
+  </ng-template>
+</p-menubar>
+<router-outlet></router-outlet>

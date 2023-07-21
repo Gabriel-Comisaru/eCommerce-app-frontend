@@ -4,63 +4,40 @@
       class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid"
       style="margin: 10px 0px"
     >
-      <div class="ui-grid-row" *ngFor="let field of registerFormFields">
-        <div class="ui-grid-col-2">{{ field.fieldName }}:</div>
-        <div class="ui-grid-col-6">
-          <input
-            pInputText
-            [type]="field.controlType"
-            [formControlName]="field.controlName"
-            class="form-control"
-            [name]="field.controlName"
-            autocomplete="off"
-          />
-        </div>
-        <div class="ui-grid-col-4">
-          <!-- i need instead of username - variable field.controlName -->
-          <div
-            [hidden]="errorRequired(field.controlName)"
-            class="alert alert-danger"
-          >
-            {{ field.fieldName }} is required
+      <div
+        class="ui-grid-row formSections"
+        *ngFor="let field of registerFormFields"
+      >
+        <ng-container
+          *ngIf="field.inputType === 'text' || field.inputType === 'password'"
+        >
+          <div class="ui-grid-col-2">{{ field.fieldName }}:</div>
+          <div class="ui-grid-col-6">
+            <input
+              pInputText
+              [type]="field.inputType"
+              [formControlName]="field.controlName"
+              class="form-control"
+              [name]="field.controlName"
+              autocomplete="off"
+            />
           </div>
-          <div
-            *ngIf="
-              field.controlName === 'first_name' ||
-              field.controlName === 'last_name'
-            "
-            [hidden]="!errorLength(field.controlName)"
-          >
-            {{ field.fieldName }} must have between 2 and 15 characters
-            <!-- how can i dinamically change 2 and 15? -->
+          <div [hidden]="!getFieldValidity(field.controlName)">
+            <div class="errors" *ngFor="let error of field.errors | keyvalue">
+              <p class="errorMessage">
+                {{ field.fieldName }} {{ error.value }}
+              </p>
+            </div>
           </div>
-
-          <div
-            *ngIf="field.controlName === 'email'"
-            [hidden]="errorEmail(field.controlName)"
-          >
-            That's not a valid email address.
-          </div>
-          <div *ngIf="field.controlName === 'password'"></div>
-        </div>
-      </div>
-
-      <!-- ROLE FIELD -->
-      <div>
-        <div *ngFor="let option of registerRoleField.options">
+        </ng-container>
+        <ng-container *ngIf="field.inputType === 'checkbox'">
+          <label [for]="field.fieldName">{{ field.fieldName }}</label>
           <p-checkbox
-            name="group"
-            [value]="option.controlValue"
-            [formControlName]="registerRoleField.controlName"
-            [inputId]="option.label"
-            (onChange)="checkValue($event)"
+            [formControlName]="field.controlName"
+            value="ADMIN"
+            [inputId]="field.fieldName"
           ></p-checkbox>
-          <label [for]="option.label">{{ option.label }}</label>
-        </div>
-      </div>
-
-      <div>
-        <div *ngFor="let option"></div>
+        </ng-container>
       </div>
 
       <div class="ui-grid-row">

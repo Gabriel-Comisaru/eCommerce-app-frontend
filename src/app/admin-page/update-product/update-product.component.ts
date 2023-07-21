@@ -26,12 +26,11 @@ export class UpdateProductComponent implements OnInit {
   product: any;
   @Output() savedProduct = new EventEmitter();
   @Output() updatedProduct = new EventEmitter();
-  loading:boolean=false;
+  loading: boolean = false;
 
   visible = false;
   images: any = [];
   selectedFile!: File;
-  productsList: any = [];
   categoriesList: any = [];
 
   constructor(
@@ -41,21 +40,22 @@ export class UpdateProductComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.productsService.getProducts().subscribe((list: any) => {
-      this.productsList = list;
-    });
     this.productsService.getCategories().subscribe((list: any) => {
       this.categoriesList = list;
     });
   }
 
   productForm = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.minLength(3)]],
+    name: ['', [Validators.required,
+      Validators.minLength(3)]],
     price: ['', [Validators.required]],
     categoryId: ['', [Validators.required]],
     description: ['', [Validators.required]],
     stock: ['', [Validators.required]],
-    discount: ['', [Validators.pattern('^[0-9]*$'), Validators.required]],
+    discount: ['', [Validators.pattern('^[0-9]*$'),
+      Validators.max(100),
+      Validators.min(0),
+      Validators.required]],
     imagesName: [[null], [Validators.required]]
   });
 
@@ -73,7 +73,7 @@ export class UpdateProductComponent implements OnInit {
     if (changes['show']?.currentValue) {
       this.visible = changes['show'].currentValue;
     }
-    if (this.header === 'Edit product') {
+    if (this.header === this.selectedProduct.name) {
       this.productForm.controls.name.setValue(this.selectedProduct.name);
       let selectedCategory = this.categoriesList.filter((category: any) => category.id === this.selectedProduct?.categoryId);
       this.productForm.controls.categoryId.setValue(selectedCategory.length ? selectedCategory[0].id : null);
@@ -82,7 +82,7 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.controls.description.setValue(this.selectedProduct.description.toString());
       this.productForm.controls.stock.setValue(this.selectedProduct.unitsInStock.toString());
       this.productForm.controls.discount.setValue(this.selectedProduct.discountPercentage.toString());
-    } else if (this.header === 'Add new product') {
+    } else if (this.header != this.selectedProduct.name) {
       this.resetFormValues()
       this.productForm.controls.categoryId.enable();
     }
@@ -112,24 +112,22 @@ export class UpdateProductComponent implements OnInit {
     formData.append('unitsInStock', String(this.productForm.controls.stock.value));
     formData.append('discountPercentage', String(this.productForm.controls.discount.value));
     formData.append('image', this.selectedFile);
-    if (this.header === 'Add new product') {
-      this.loading=true;
+    if (this.header !=this.selectedProduct.name) {
+      this.loading = true;
+      console.log(this.productForm.controls.categoryId.value)
       this.productsService.sendForm(formData, +this.productForm.controls.categoryId.value)
         .subscribe((res) => {
-          this.loading=false;
+          this.loading = false;
           this.visible = false;
           this.savedProduct.emit(res)
           console.log(res)
         });
-
-
     } else {
-      this.loading=true;
+      this.loading = true;
       this.productsService
         .updateProduct(product, this.selectedProduct.id)
         .subscribe((res) => {
-          this.loading=false;
-
+          this.loading = false;
           this.visible = false;
           this.updatedProduct.emit(res);
         });
