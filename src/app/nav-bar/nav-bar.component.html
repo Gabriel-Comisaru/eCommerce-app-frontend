@@ -87,12 +87,17 @@
       <p-button
         (click)="goToAccountDetailsPage()"
         label="Account Details"
-        styleClass="p-button-text"
+        styleClass="p-button-text mt-1"
+      ></p-button>
+      <p-button
+        (click)="gotoOrdersPage()"
+        label="My Orders"
+        styleClass="p-button-secondary p-button-text"
       ></p-button>
       <p-button
         (click)="logout()"
         label="Logout"
-        styleClass="p-button-secondary p-button-text"
+        styleClass="p-button-secondary p-button-text mb-1"
       ></p-button>
     </div>
   </ng-template>
@@ -140,7 +145,7 @@
       <p-button
         (click)="goToBasketPage()"
         label="View whole basket"
-        styleClass="p-button-raised"
+        styleClass="p-button-raised mb-1 mt-2"
       ></p-button>
     </div>
   </ng-template>

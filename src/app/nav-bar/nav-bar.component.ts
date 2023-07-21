@@ -192,4 +192,8 @@ export class NavBarComponent {
     });
     return noOfBasketProducts;
   }
+
+  gotoOrdersPage() {
+
+  }
 }
