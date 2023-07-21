@@ -8,5 +8,6 @@ import { ProductsService } from './home-page/shared/products.service';
 export class AppComponent {
   constructor(private productsService: ProductsService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }

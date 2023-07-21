@@ -38,6 +38,8 @@ export class AuthService {
           const newLocal = this;
           newLocal.router.navigate(['/']);
 
+          this.router.navigate(['/']);
+          localStorage.setItem('admin','false')
           return data;
         })
       );

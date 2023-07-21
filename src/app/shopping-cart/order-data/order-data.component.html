@@ -4,46 +4,66 @@
       <div class="text-900 text-3xl font-medium">Delivery Details</div>
       <p-divider></p-divider>
     </div>
-    <div class="surface-card shadow-none clientDeets">
+    <div *ngFor="let address of userAddresses" class="surface-card shadow-none clientDeets">
       <div class="checkbox pt-3">
-        <p-checkbox class=""></p-checkbox>
+        <p-radioButton name="address{{address.id}}" value="{{address.id}}" [(ngModel)]="selectedAddress"></p-radioButton>
       </div>
       <p-divider layout="vertical"></p-divider>
       <div class="detailsContainer pt-2">
-        <button pButton pRipple label="Edit" (click)="editAddress({fullName: 'Dulap', phone: '07noidoi', county: 'VS', city: 'Banca', address: 'strada cioacelor' })" class="p-button-outlined p-button-sm editBtn"></button>
-        <div class="">Name & Surname - 0777654894</div>
-        <div class="">Address - County - City</div>
+        <button pButton pRipple
+                (click)="deleteAddress(address)"
+                class="p-button-outlined p-button-sm editBtn p-button-danger" icon="pi pi-trash"></button>
+        <button pButton pRipple label="Edit"
+                (click)="editAddress(address)"
+                class="p-button-outlined p-button-sm editBtn"></button>
+        <div class=""> {{ address.fullName }} - {{ address.phone }}</div>
+        <div class="">{{ address.address }} - {{ address.county }} - {{ address.city }}</div>
       </div>
     </div>
     <div class="flex justify-between mt-5">
       <p-button (click)="showDialog()" icon="pi pi-plus" styleClass="p-button-outlined p-button-sm ml-2"
                 label="New Address"></p-button>
     </div>
+    <p-divider></p-divider>
+    <div class=" mb-5">
+      <div class="text-900 text-3xl font-medium mt-3">Payment Details</div>
+      <p-divider></p-divider>
+    </div>
+    <div class="paymentType flex w-full">
+      <p-card class="m-2 w-full">
+        <p-radioButton name="group1" value="cash" [(ngModel)]="paymentType" class="m-2"></p-radioButton>
+        <h1>Cash</h1>
+      </p-card>
+      <p-card class="m-2 w-full">
+        <p-radioButton name="group1" value="card" [(ngModel)]="paymentType" class="m-2"></p-radioButton>
+        <h1>Card</h1>
+      </p-card>
+    </div>
     <div class="flex justify-between mt-5">
-      <button pButton pRipple label="Finish Order" class="w-full"></button>
+      <button pButton pRipple label="Finish Order" (click)="finishOrder()" class="w-full"></button>
     </div>
   </div>
 </div>
-
-
 
 
 <p-dialog header="{{ header }}" [(visible)]="visible" [style]="{width: 'auto'}">
   <div>
     <h3>Contact Details</h3>
     <form [formGroup]="userAddressForm" (ngSubmit)="addNewAddress()">
-    <div class="userDetails">
-      <div class="mr-3 userName">
-        <label for="fullName" class="block  w-full font-medium mb-2">Full Name</label>
-        <input id="fullName" type="text" placeholder="eg. John Doe" pInputText class="w-full mb-3 br-3" formControlName="fullName" >
+      <div class="userDetails">
+        <div class="mr-3 userName">
+          <label for="fullName" class="block  w-full font-medium mb-2">Full Name</label>
+          <input id="fullName" type="text" placeholder="eg. John Doe" pInputText class="w-full mb-3 br-3"
+                 formControlName="fullName">
+        </div>
+        <div class="userPhone">
+          <label for="phone" class="block font-medium mb-2">Phone number</label>
+          <input id="phone" type="text" placeholder="eg. 0123123123" pInputText class="w-full mb-3"
+                 formControlName="phone">
+        </div>
       </div>
-      <div class="userPhone">
-        <label for="phone" class="block font-medium mb-2">Phone number</label>
-        <input id="phone" type="text" placeholder="eg. 0123123123" pInputText class="w-full mb-3"  formControlName="phone">
-      </div>
-    </div>
-    <p-divider></p-divider>
-    <h3>Delivery Address</h3>
+      <p-divider></p-divider>
+      <h3>Delivery Address</h3>
       <div class="deliveryDetails">
         <div class="countyCity flex-auto">
 
@@ -58,18 +78,23 @@
             <p-dropdown id="city" optionValue="nume" placeholder="Select a City"
                         [options]="cities" optionLabel="nume" styleClass="mb-2"
                         formControlName="city"
-                       ></p-dropdown>
+                        [dropdownIcon]="loadingDropdown ? 'pi pi-spin pi-spinner' : 'pi pi-chevron-down'"
+            ></p-dropdown>
           </div>
         </div>
         <div class="mr-3 Address">
           <label for="address" class="block font-medium mb-2">Address</label>
           <input id="address" type="text" placeholder="eg. 1234 Main St" pInputText class="w-full mb-3"
-          formControlName="address"
+                 formControlName="address"
           >
         </div>
 
       </div>
-      <button pButton pRipple label="{{ header }}" [loading]="loading" class="w-full"></button>
+      <div class="flex">
+        <button pButton pRipple label="{{ header }}" [loading]="loading" [disabled]="!userAddressForm.valid" class="w-full p-button-outlined"></button>
+        <button pButton pRipple label="Cancel" (click)="cancel(); $event.preventDefault()"
+                class="w-full p-button-danger p-button-text"></button>
+      </div>
     </form>
   </div>
 </p-dialog>

@@ -1,5 +1,4 @@
 import { Injectable, Optional } from '@angular/core';
-import { Product } from 'src/app/home-page/shared/product.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { NavBarComponent } from '../../nav-bar/nav-bar.component';
@@ -16,9 +15,19 @@ export class BasketService {
 
   private url = 'http://localhost:8081/api';
 
-  createOrder(productId: number) {
-    const url = `${this.url}/orderItems/${productId}?quantity=1`;
-    return this.httpClient.post(url, {});
+  finishOrder(orderId: number, status: string): Observable<any> {
+    const url = `${this.url}/orders/${orderId}?status=${status}`;
+    return this.httpClient.put(url, {}, { responseType: "json" });
+  }
+
+  getOrder(orderId: number): Observable<any> {
+    const url = `${this.url}/orders/${orderId}`;
+    return this.httpClient.get<any>(url);
+  }
+
+  getOrderForMe() {
+    const url = `${this.url}/orders`;
+    return this.httpClient.get(url, { responseType: 'json' });
   }
 
   deleteOrderItem(productId: number) {
@@ -26,8 +35,8 @@ export class BasketService {
     return this.httpClient.delete(url, { responseType: 'text' });
   }
 
-  getOrderItems(): Observable<any> {
-    const url = `${this.url}/orderItems`;
+  getOrderedItems(): Observable<any> {
+    const url = `${this.url}/orders/me/basket`;
     return this.httpClient.get<any>(url);
   }
 
@@ -35,4 +44,6 @@ export class BasketService {
     const url = `${this.url}/orderItems/${productId}/quantity?quantity=${quantity}`;
     return this.httpClient.put(url, {}, { responseType: 'text' });
   }
+
+
 }

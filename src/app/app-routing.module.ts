@@ -14,6 +14,7 @@ import { AuthGuard } from './services/auth.guard';
 import { AlreadyLoggedGuard } from './services/already-logged.guard';
 import { AccountDetailsComponent } from './account-details/account-details.component';
 import {OrderDataComponent} from "./shopping-cart/order-data/order-data.component";
+import {OrderSummaryComponent} from "./shopping-cart/order-summary/order-summary.component";
 
 const routes: Routes = [
   {
@@ -77,6 +78,11 @@ const routes: Routes = [
     component: AccountDetailsComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: 'order-summary',
+    component: OrderSummaryComponent,
+    canActivate: [AuthGuard],
+  }
 ];
 
 @NgModule({

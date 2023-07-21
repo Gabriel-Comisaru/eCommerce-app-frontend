@@ -47,7 +47,7 @@ export class NavBarComponent {
   public itemPricesAny: any[] = [];
   public orderItems: OrderItem[] = [];
 
-  adminDashboard: boolean = false;
+  adminDashboard!: string;
 
   @ViewChild(AdminPageComponent) admin!: AdminPageComponent;
 
@@ -62,15 +62,16 @@ export class NavBarComponent {
   ) {}
 
   ngOnInit() {
-    // this.productsService.checkIfAdminIsOnAdminPage
-    //   .subscribe((res:any) => {
-    //     this.adminDashboard = res
-    //     console.log('in navbar page', res)
-    //   })
+    if(!this.authService.isAuthenticated()){
+      localStorage.setItem('admin','false')
+    }
+    this.adminDashboard = localStorage.getItem('admin')!
     // used to get user's name
     this.userService
       .getLoggedUserObservable()
-      .subscribe((res) => (this.userLoggedIn = res));
+      .subscribe((res) => {
+        this.userLoggedIn = res
+      });
     this.productsService.getCategories().subscribe((res) => {
       this.categoryItems = res.map((category) => {
         return {
@@ -143,11 +144,15 @@ export class NavBarComponent {
   }
 
   goToAdminPage() {
-    this.isAdmin = !this.isAdmin;
-    this.productsService.adminIsOnAdminPage();
-    this.productsService.checkIfAdminIsOnAdminPage.subscribe(
-      (res) => (this.adminDashboard = res)
-    );
+    this.isAdmin = !this.isAdmin
+    this.productsService.adminIsOnAdminPage()
+    this.productsService.checkIfAdminIsOnAdminPage
+      .subscribe(res => {
+        this.adminDashboard = res
+        localStorage.setItem('admin', res);
+        this.adminDashboard = localStorage.getItem('admin')!
+        console.log(this.adminDashboard, "from navbar")
+      })
     this.router.navigate(['admin/products']);
   }
 
@@ -185,5 +190,9 @@ export class NavBarComponent {
       noOfBasketProducts += item.quantity;
     });
     return noOfBasketProducts;
+  }
+
+  gotoOrdersPage() {
+
   }
 }

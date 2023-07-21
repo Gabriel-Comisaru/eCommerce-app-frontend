@@ -25,6 +25,7 @@ export class AdminPageComponent {
   }
 
   ngOnInit() {
+    this.adminPage=true;
     this.selected = this.listName[0];
     if (this.router.url.split('/')[2] == 'products') {
       this.selected = this.listName[0];
@@ -43,10 +44,13 @@ export class AdminPageComponent {
   logOut() {
     this.authService.logout()
     this.service.adminLeftAdminPage();
+    localStorage.setItem('admin','false')
   }
 
   goBachToHomePage() {
-    this.router.navigate([''])
+    localStorage.setItem('admin','false')
     this.service.adminLeftAdminPage();
+    this.router.navigate([''])
+
   }
 }

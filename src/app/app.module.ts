@@ -53,17 +53,18 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { NgOptimizedImage } from '@angular/common';
 import { ImageModule } from 'primeng/image';
 import { FloorPipe } from './home-page/shared/floor.pipe';
-import {RippleModule} from "primeng/ripple";
+import { RippleModule } from 'primeng/ripple';
 import { AdminPageComponent } from './admin-page/admin-page/admin-page.component';
-import {RadioButtonModule} from "primeng/radiobutton";
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { AdminOrdersListComponent } from './admin-page/admin-orders-list/admin-orders-list.component';
-import {ConfirmDialogModule} from "primeng/confirmdialog";
-
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { OrderSummaryComponent } from './shopping-cart/order-summary/order-summary.component';
 import { OrderDataComponent } from './shopping-cart/order-data/order-data.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
 import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-modal/new-adress-modal.component';
 import { SkeletonComponent } from './home-page/skeleton/skeleton.component';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -92,6 +93,7 @@ import { SkeletonComponent } from './home-page/skeleton/skeleton.component';
     OrderDataComponent,
     NewAdressModalComponent,
     SkeletonComponent,
+    OrderSummaryComponent,
   ],
   imports: [
     HttpClientModule,
@@ -131,15 +133,15 @@ import { SkeletonComponent } from './home-page/skeleton/skeleton.component';
     FormsModule,
     ReactiveFormsModule,
 
-        InputTextModule,
-        ButtonModule,
-        AppRoutingModule,
-        HttpClientModule,
-        NgOptimizedImage,
-        ImageModule,
-        RippleModule,
-        RadioButtonModule,
-        ConfirmDialogModule,
+    InputTextModule,
+    ButtonModule,
+    AppRoutingModule,
+    HttpClientModule,
+    NgOptimizedImage,
+    ImageModule,
+    RippleModule,
+    RadioButtonModule,
+    ConfirmDialogModule,
     InputTextModule,
     ButtonModule,
     AppRoutingModule,
@@ -149,11 +151,11 @@ import { SkeletonComponent } from './home-page/skeleton/skeleton.component';
     RippleModule,
     CheckboxModule,
     DividerModule,
-    ],
-
+  ],
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    [MessageService],
   ],
   bootstrap: [AppComponent],
 })

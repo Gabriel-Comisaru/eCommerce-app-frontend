@@ -7,6 +7,8 @@ import { Item } from '../shared/item.model';
 import { forkJoin } from 'rxjs';
 import { combineLatest } from 'rxjs/internal/operators/combineLatest';
 import {Router} from "@angular/router";
+import {OrderedItem} from "../shared/orderedItem.model";
+import {BasketModel} from "../shared/basket-model";
 
 @Component({
   selector: 'app-basketpage',
@@ -20,44 +22,21 @@ export class BasketpageComponent implements OnInit {
     private router: Router
   ) {}
 
-  public basketItems: Product[] = [];
-
   public products: any = [];
   public orderItemProducts: any = [];
-  public orderedItems: any = [];
+  public orderedItems: BasketModel[] = [];
   loading: boolean = true;
-
-  //Map the current quantity of each product
-  public productQuantityMap: Map<string, number> = new Map<string, number>();
-  //map the properties of each product
-
-  rows: any = [5, 10, 15];
-  row: any = 5;
+  rows: number[] = [5, 10, 15];
+  row: number = 5;
+  public orderedItemsIds: number[] = [];
 
   ngOnInit(): void {
     this.loading = true;
 
-    const productSubscriber = this.productService.getProducts();
-    const orderSubscriber = this.basketService.getOrderItems();
-
-    forkJoin([productSubscriber, orderSubscriber]).subscribe((res: any) => {
-      [this.products, this.orderItemProducts] = res;
-      this.products.forEach((product: any) => {
-        let item = this.orderItemProducts.filter((orderItem: any) => {
-          if (orderItem.productId === product.id) {
-            this.orderedItems.push({
-              id: orderItem.id,
-              name: product.name,
-              category: product.categoryName,
-              price: product.price,
-              image: product.imagesName[0],
-              quantity: orderItem.quantity,
-              stock: product.unitsInStock,
-            });
-          }
-        });
-      });
-    });
+    this.basketService.getOrderedItems().subscribe((res) => {
+      this.orderedItems = res;
+      this.loading = false;
+    })
 
     this.loading = false;
   }
@@ -77,25 +56,13 @@ export class BasketpageComponent implements OnInit {
 
   checkout() {
     // Implement the checkout functionality here
-    this.router.navigate(['/order-data']);
+    this.orderedItemsIds = this.orderedItems.map((item: any) => item.id);
+    this.router.navigate(['/order-data'], { queryParams: { ids: this.orderedItems[0].orderId } });
   }
 
-  updateProductQuantityMap(): void {
-    this.productQuantityMap.clear();
-    this.basketItems.forEach((item) => {
-      const productName = item.name;
-      if (!this.productQuantityMap.has(productName)) {
-        const count = this.basketItems.filter(
-          (prod) => prod.name === productName
-        ).length;
-        this.productQuantityMap.set(productName, count);
-      }
-    });
-  }
   increment(Item: Item) {
     Item.quantity += 1;
     this.basketService.updateOrderQuantity(Item.id, Item.quantity);
-    this.updateProductQuantityMap();
     this.updateProductQuantity(Item);
   }
 
@@ -106,20 +73,19 @@ export class BasketpageComponent implements OnInit {
       this.deleteProduct(Item, null);
     }
     this.basketService.updateOrderQuantity(Item.id, Item.quantity);
-    this.updateProductQuantityMap();
     this.updateProductQuantity(Item);
   }
 
   getTotalPrice(): string {
     let totalPrice = 0;
     this.orderedItems.forEach((item: any) => {
-      totalPrice += item.price * item.quantity;
+      totalPrice += item.productPrice * item.quantity;
     });
     return totalPrice.toFixed(2);
   }
 
   getItemPrice(item: any) {
-    return (item.price * item.quantity).toFixed(2);
+    return (item.productPrice * item.quantity).toFixed(2);
   }
 
   updateProductQuantity(Item: any) {
