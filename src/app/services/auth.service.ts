@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { concat, concatMap, map, Observable, switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
 import { ProductsService } from '../home-page/shared/products.service';
 import { RegisterFields } from '../models/register.model';
+import { OrderItem } from '../home-page/shared/orderItem.model';
+import { Order } from '../home-page/shared/order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,10 +25,6 @@ export class AuthService {
     return localStorage.getItem('token') !== null;
   }
 
-  // register(data: User): Observable<User> {
-  //   return this.httpClient.post<UserInfo>(`${this.baseUrl}/auth/register`, data);
-  // }
-
   login(username: string, password: string): Observable<any> {
     const formData: any = new FormData();
     formData.append('username', username);
@@ -37,7 +35,10 @@ export class AuthService {
         map((data) => {
           console.log(data)
           localStorage.setItem('token', data.token);
-          this.router.navigate(['/']);
+
+          const newLocal = this;
+          newLocal.router.navigate(['/']);
+
           return data;
         })
       );
@@ -53,6 +54,10 @@ export class AuthService {
     // favoriteProducts doesn t update in real time
     localStorage.removeItem('favoriteProducts');
     this.userService.loggedUser.next({});
+    this.productsService.shoppingCartObservable.next({
+      orderItem: {} as OrderItem,
+      productAction: 'reset',
+    });
 
     this.redirectToLogin();
   }

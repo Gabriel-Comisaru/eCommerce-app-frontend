@@ -21,6 +21,7 @@ export class UserService {
     return this.http.get<User>(`${this.apiBaseURL}/users/loggedInUser`).pipe(
       tap((res) => {
         this.loggedUser.next(res);
+        localStorage.setItem('currentUser', JSON.stringify(res));
       })
     );
   }

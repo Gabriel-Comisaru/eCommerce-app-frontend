@@ -1,6 +1,6 @@
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Product } from './product.model';
 import { Category } from './category.model';
 import { OrderItem } from './orderItem.model';
@@ -12,8 +12,7 @@ import { Order } from './order.model';
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
   private productsUrl = `${BASE_URL_API}/products`;
   private productsUrlDisplay = `${BASE_URL_API}/products/display`;
@@ -22,19 +21,23 @@ export class ProductsService {
   private reviewsUrl = 'http://localhost:8081/api/reviews';
   private productCategoryUrl = 'http://localhost:8081/api/products/category';
   private imageUrl = 'http://localhost:8081/api/images/upload';
-  private ordersUrl = 'http://localhost:8081/api/orders'
+  private ordersUrl = 'http://localhost:8081/api/orders';
   private orderItemsUrl = 'http://localhost:8081/api/orderItems';
   // public shoppingCartObservable = new Subject<Product[]>();
   public shoppingCartObservable = new Subject<{
-    orderItem: OrderItem;
+    orderItem?: OrderItem;
     productAction: string;
+    basketOrderItems?: OrderItem[];
   }>();
   public favoriteProductsObservable = new Subject<Product[]>();
-  checkIfAdminIsOnAdminPage:BehaviorSubject<any> = new BehaviorSubject<any>('')
+  checkIfAdminIsOnAdminPage: BehaviorSubject<any> = new BehaviorSubject<any>(
+    ''
+  );
 
   getShopingCartObservable(): Observable<{
-    orderItem: OrderItem;
+    orderItem?: OrderItem;
     productAction: string;
+    basketOrderItems?: OrderItem[];
   }> {
     return this.shoppingCartObservable.asObservable();
   }
@@ -46,7 +49,7 @@ export class ProductsService {
     this.favoriteProductsObservable.next(localStorageCartList);
   }
 
-  getAllUsers(){
+  getAllUsers() {
     return this.httpClient.get<any>(this.appUsersUrl);
   }
 
@@ -60,8 +63,9 @@ export class ProductsService {
 
   getOrders(): Observable<any> {
     const url = `${this.ordersUrl}/display`;
-    return this.httpClient.get<any>(url,{
-      params: new HttpParams().set('pageSize', '10')})
+    return this.httpClient.get<any>(url, {
+      params: new HttpParams().set('pageSize', '10'),
+    });
   }
 
   getProducts(): Observable<any> {
@@ -69,8 +73,9 @@ export class ProductsService {
   }
 
   getProductsDisplay(): Observable<any> {
-    return this.httpClient.get<any>(this.productsUrlDisplay,{
-      params: new HttpParams().set('pageSize', '10')});
+    return this.httpClient.get<any>(this.productsUrlDisplay, {
+      params: new HttpParams().set('pageSize', '10'),
+    });
   }
 
   getProductsByCat(categoryId: number): Observable<any> {
@@ -97,19 +102,19 @@ export class ProductsService {
     return this.httpClient.put<any>(url, product);
   }
 
-  updateStatus(id:number,status:string): Observable<any> {
+  updateStatus(id: number, status: string): Observable<any> {
     const url = `${this.ordersUrl}/${id}?status=${status}`;
-    return this.httpClient.put(url,status)
+    return this.httpClient.put(url, status);
   }
 
   delete(id: number) {
     const url = `${this.productsUrl}/${id}`;
-    return this.httpClient.delete(url, {responseType: 'text'});
+    return this.httpClient.delete(url, { responseType: 'text' });
   }
 
   deleteOrder(id: number) {
     const url = `${this.ordersUrl}/${id}`;
-    return this.httpClient.delete(url, {responseType: 'text'});
+    return this.httpClient.delete(url, { responseType: 'text' });
   }
 
   getCategories(): Observable<Category[]> {
@@ -168,17 +173,21 @@ export class ProductsService {
     );
   }
 
-  adminIsOnAdminPage(){
-    this.checkIfAdminIsOnAdminPage.next(true)
+  adminIsOnAdminPage() {
+    this.checkIfAdminIsOnAdminPage.next(true);
   }
 
-  adminLeftAdminPage(){
-    this.checkIfAdminIsOnAdminPage.next(false)
+  adminLeftAdminPage() {
+    this.checkIfAdminIsOnAdminPage.next(false);
   }
-
 
   getCurrentBasket(): Observable<OrderItem[]> {
     const url = 'http://localhost:8081/api/orders/me/basket';
     return this.httpClient.get<OrderItem[]>(url);
+  }
+
+  getDiscountedProducts(): Observable<Product[]> {
+    const url = 'http://localhost:8080/api/products/discount';
+    return this.httpClient.get<Product[]>(url);
   }
 }
