@@ -63,6 +63,7 @@ import { OrderDataComponent } from './shopping-cart/order-data/order-data.compon
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
 import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-modal/new-adress-modal.component';
+import { SkeletonComponent } from './home-page/skeleton/skeleton.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-m
     AdminOrdersListComponent,
     OrderDataComponent,
     NewAdressModalComponent,
+    SkeletonComponent,
   ],
   imports: [
     HttpClientModule,

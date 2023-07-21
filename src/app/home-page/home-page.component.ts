@@ -3,6 +3,8 @@ import { ProductsService } from './shared/products.service';
 import { Product } from './shared/product.model';
 import { AuthService } from '../services/auth.service';
 import { combineLatest } from 'rxjs';
+import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-home-page',
@@ -10,67 +12,46 @@ import { combineLatest } from 'rxjs';
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent {
-  public productsList!: Product[];
-  public productsWithDiscountApplied: Product[] = [];
-  public mostSelledProducts: Product[] = [];
-  public isLoggedIn: boolean = true; //set to default true just for display purposes
-  public imageToShow!: any;
-
+  public isLoggedIn: boolean = this.authService.isAuthenticated();
+  public dataIsLoading: boolean = true;
+  public sectionsName: string[] = [
+    'Recommended for you',
+    'Discounted products',
+    'Hottest products',
+  ];
+  public listOfSections: {
+    list: Product[];
+    condition?: boolean;
+  }[] = [];
   constructor(
     private productsService: ProductsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
-    // this.productsService.getProductImage('cat.jpeg').subscribe((response) => {
-    //   this.createImageFromBlob(response);
-    // });
-
     combineLatest(
       this.productsService.getProducts(),
-      this.productsService.getAllReviews()
+      this.productsService.getAllReviews(),
+      this.productsService.getDiscountedProducts(),
+      this.productsService.getMostSelledProducts()
     ).subscribe((res) => {
-      const [list, reviews] = res;
-      this.productsList = list;
-      if (this.productsList) {
-        this.productsWithDiscountApplied = this.productsList.filter(
-          (product) => product.discountPercentage > 0
-        );
+      const [list, reviews, discountedProducts, mostSelledProducts] = res;
 
-        this.mostSelledProducts = this.productsList.filter(
-          (product) => product.price < 200
-        );
-      }
+      this.listOfSections = [
+        {
+          list: list,
+          condition: this.isLoggedIn,
+        },
+        { list: discountedProducts },
+        { list: mostSelledProducts },
+      ];
+      this.dataIsLoading = false;
     });
   }
 
-  createImageFromBlob(image: Blob) {
-    let reader = new FileReader();
-    reader.addEventListener(
-      'load',
-      () => {
-        this.imageToShow = reader.result;
-      },
-      false
-    );
-    if (image) {
-      reader.readAsDataURL(image);
-    }
+  goToAllProductsPage() {
+    return this.router.navigate(['/products']);
   }
-
-  // getAverageRating(product: Product) {
-  //   // tb sa fac getproductreviews si de acolo iau fiecare rating
-  //   // ori am nevoie sa calculeze backendul average rating
-  //   //
-  //   //ori sa reviewurile intr un array in product
-  //   const initialValue = 0;
-  //   if (product.rating) {
-  //     const sumOfRatings = product.reviews.reduce(
-  //       (acc, currVal) => acc + currVal.rating,
-  //       initialValue
-  //     );
-  //     const averageRating = sumOfRatings / product.reviews.length;
-  //     product.rating = averageRating;
-  //   }
-  // }
 }

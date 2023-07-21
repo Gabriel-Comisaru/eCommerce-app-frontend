@@ -1,0 +1,23 @@
+<p-carousel
+  [value]="[5, 5, 5, 5, 5]"
+  [numVisible]="5"
+  [numScroll]="5"
+  *ngIf="dataIsLoading"
+>
+  <ng-template let-skeleton pTemplate="item">
+    <div class="mr-2 mt-2 flex flex-column align-items-center">
+      <p-skeleton width="200px" height="200px"></p-skeleton>
+      <p-skeleton
+        width="8rem"
+        height="30px"
+        styleClass="mb-2 mt-2"
+      ></p-skeleton>
+      <p-skeleton width="12rem" height="50px" styleClass="mb-2"></p-skeleton>
+
+      <div class="flex flex-row justify-content-around w-12">
+        <p-skeleton size="3rem" styleClass="mb-2"></p-skeleton>
+        <p-skeleton size="3rem" styleClass="mb-2"></p-skeleton>
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>

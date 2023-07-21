@@ -22,8 +22,8 @@ export class ProductsListCarouselComponent {
     private basketService: BasketService
   ) {}
   @Input() productsToDisplay!: Product[];
+  @Input() dataIsLoading!: boolean;
 
-  public dataLoaded: boolean = false;
   private orderItems: OrderItem[] = [];
   public productsToDisplayWithImages!: Product[];
 
@@ -31,45 +31,29 @@ export class ProductsListCarouselComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.productsToDisplay && this.productsToDisplay.length > 0) {
-      this.dataLoadingStatus();
     }
 
-    if (!changes['productsToDisplay'].firstChange) {
-      // console.log(this.productsToDisplay);
-      // this.productsToDisplay.forEach((product) => {
-      // if (product.imagesName.length > 0) {
-      // this.productsService
-      //   .getProductImage(product.imagesName[0])
-      //   .subscribe((response) =>
-      //     this.createImageFromBlob(response, product.productImage)
-      //   );
+    this.productsToDisplayWithImages = this.productsToDisplay.map((product) => {
+      //TODO REFACTOR THE MAP
 
-      this.productsToDisplayWithImages = this.productsToDisplay.map(
-        (product) => {
-          //TODO REFACTOR THE MAP
-          if (
-            product.imagesName.length > 0 &&
-            product.imagesName[0].length > 0
-          ) {
-            const url = `http://localhost:8081/api/images/download?name=${product.imagesName[0]}`;
+      // if an image already exists use it otherwise replace it with a placeholder
+      if (product.imagesName.length > 0 && product.imagesName[0].length > 0) {
+        const url = `http://localhost:8081/api/images/download?name=${product.imagesName[0]}`;
 
-            return {
-              ...product,
-              roundedRating: Math.floor(product.rating),
-              productImage: url,
-            };
-          }
-          return { ...product, roundedRating: Math.floor(product.rating) };
-        }
-      );
-      // }
-      // });
-    }
+        return {
+          ...product,
+          roundedRating: Math.floor(product.rating),
+          productImage: url,
+        };
+      }
+      return {
+        ...product,
+        productImage: '/assets/images/product-not-found.png',
+        roundedRating: Math.floor(product.rating),
+      };
+    });
   }
 
-  dataLoadingStatus() {
-    this.dataLoaded = true;
-  }
   addToCart(product: Product) {
     if (this.authService.isAuthenticated()) {
       this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
