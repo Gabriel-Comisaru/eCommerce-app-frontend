@@ -100,8 +100,9 @@ export class FiltersComponent implements OnInit {
       const categoryIdParam = this.route.snapshot.queryParams;
       if (categoryIdParam) {
         this.selectedCategory = this.categories.find((category: any) => category.id == categoryIdParam['categoryId']);
+        // console.log(this.selectedCategory, '-----------------1---1--1-')
         this.filtersApplied.emit({
-          categoryId: this.selectedCategory.id,
+          categoryId: this.selectedCategory != undefined ? this.selectedCategory.id : '',
           priceMin: 0,
           priceMax: 1000
         });

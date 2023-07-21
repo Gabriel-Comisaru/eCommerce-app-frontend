@@ -5,12 +5,14 @@ import {CommonModule} from '@angular/common';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {ActivatedRoute, Router} from "@angular/router";
 import {BasketService} from "../shared/basket.service";
+import {MessageService} from 'primeng/api';
 
 
 @Component({
   selector: 'app-order-data',
   templateUrl: './order-data.component.html',
-  styleUrls: ['./order-data.component.css']
+  styleUrls: ['./order-data.component.css'],
+
 })
 export class OrderDataComponent implements OnInit {
   constructor(
@@ -18,17 +20,18 @@ export class OrderDataComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private basketService: BasketService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService,
   ) {
   }
 
   userAddressForm = this.fb.group({
       id: [''],
-      fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)] ],
+      fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       county: ['', [Validators.required]],
       city: ['', [Validators.required]],
-      address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50) ] ],
+      address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(50)]],
     }
   )
   loading: boolean = false;
@@ -133,18 +136,32 @@ export class OrderDataComponent implements OnInit {
   deleteAddress(address: any) {
     this.userAddresses = this.userAddresses.filter((item: any) => item !== address);
   }
+
   //WORK IN PROGRESS
   //Add Payment Method
   //Add Delivery Address Id
   finishOrder() {
-      this.basketService.createOrder(this.route.snapshot.queryParams['ids']).subscribe((response: any) => {
-        console.log(response, typeof response)
+    this.basketService.finishOrder(this.route.snapshot.queryParams['ids'], "PLACED").subscribe((response: any) => {
+        console.log(response, "response-=-=-=-=-=-=")
         this.orderId = response.id;
-        this.basketService.deleteOrderItem(this.route.snapshot.queryParams['ids']).subscribe((response:any) => {
-          console.log(response,'asdasdasdasdasd', response.id, typeof response)
-          console.log(this.orderId)
-          this.router.navigate(['order-summary'], {queryParams: {orderid: this.orderId} })
-        })
-      })
+        this.router.navigate(['/']);
+
+        this.showSuccessMessage(response.deliveryPrice, response.orderItems.length)
+      },
+      (error: any) => {
+        console.log(error)
+      }
+    )
+  }
+
+  showSuccessMessage(totalPrice: number, estimatedDeliveryDate: number) {
+    const message = `Order placed successfully!          Total price: ${totalPrice}, Number of Products: ${estimatedDeliveryDate}`;
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Order Placed',
+      detail: message,
+      life: 6000 // adik six sekunde
+    });
   }
 }

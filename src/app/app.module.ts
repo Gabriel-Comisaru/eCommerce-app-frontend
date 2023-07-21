@@ -58,11 +58,12 @@ import { AdminPageComponent } from './admin-page/admin-page/admin-page.component
 import {RadioButtonModule} from "primeng/radiobutton";
 import { AdminOrdersListComponent } from './admin-page/admin-orders-list/admin-orders-list.component';
 import {ConfirmDialogModule} from "primeng/confirmdialog";
-
+import { OrderSummaryComponent } from "./shopping-cart/order-summary/order-summary.component";
 import { OrderDataComponent } from './shopping-cart/order-data/order-data.component';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
 import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-modal/new-adress-modal.component';
+import {MessageService} from "primeng/api";
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-m
     AdminOrdersListComponent,
     OrderDataComponent,
     NewAdressModalComponent,
+    OrderSummaryComponent,
   ],
   imports: [
     HttpClientModule,
@@ -152,7 +154,9 @@ import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-m
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  ],
+     [MessageService],
+
+],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -8,6 +8,7 @@ import { forkJoin } from 'rxjs';
 import { combineLatest } from 'rxjs/internal/operators/combineLatest';
 import {Router} from "@angular/router";
 import {OrderedItem} from "../shared/orderedItem.model";
+import {BasketModel} from "../shared/basket-model";
 
 @Component({
   selector: 'app-basketpage',
@@ -23,7 +24,7 @@ export class BasketpageComponent implements OnInit {
 
   public products: any = [];
   public orderItemProducts: any = [];
-  public orderedItems: OrderedItem[] = [];
+  public orderedItems: BasketModel[] = [];
   loading: boolean = true;
   rows: number[] = [5, 10, 15];
   row: number = 5;
@@ -32,28 +33,10 @@ export class BasketpageComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
 
-    const productSubscriber = this.productService.getProducts();
-    const orderSubscriber = this.basketService.getOrderItems();
-
-    forkJoin([productSubscriber, orderSubscriber]).subscribe((res: any) => {
-      [this.products, this.orderItemProducts] = res;
-      console.log(res)
-      this.products.forEach((product: any) => {
-        let item = this.orderItemProducts.filter((orderItem: any) => {
-          if (orderItem.productId === product.id) {
-            this.orderedItems.push({
-              id: orderItem.id,
-              name: product.name,
-              category: product.categoryName,
-              price: product.price,
-              image: product.imagesName[0],
-              quantity: orderItem.quantity,
-              stock: product.unitsInStock,
-            });
-          }
-        });
-      });
-    });
+    this.basketService.getOrderedItems().subscribe((res) => {
+      this.orderedItems = res;
+      this.loading = false;
+    })
 
     this.loading = false;
   }
@@ -74,7 +57,7 @@ export class BasketpageComponent implements OnInit {
   checkout() {
     // Implement the checkout functionality here
     this.orderedItemsIds = this.orderedItems.map((item: any) => item.id);
-    this.router.navigate(['/order-data'], { queryParams: { ids: this.orderedItemsIds } });
+    this.router.navigate(['/order-data'], { queryParams: { ids: this.orderedItems[0].orderId } });
   }
 
   increment(Item: Item) {
@@ -96,13 +79,13 @@ export class BasketpageComponent implements OnInit {
   getTotalPrice(): string {
     let totalPrice = 0;
     this.orderedItems.forEach((item: any) => {
-      totalPrice += item.price * item.quantity;
+      totalPrice += item.productPrice * item.quantity;
     });
     return totalPrice.toFixed(2);
   }
 
   getItemPrice(item: any) {
-    return (item.price * item.quantity).toFixed(2);
+    return (item.productPrice * item.quantity).toFixed(2);
   }
 
   updateProductQuantity(Item: any) {

@@ -15,9 +15,9 @@ export class BasketService {
 
   private url = 'http://localhost:8081/api';
 
-  createOrder(orderItemId: number): Observable<any> {
-    const url = `${this.url}/orders/${orderItemId}`;
-    return this.httpClient.post(url, {}, { responseType: "json" });
+  finishOrder(orderId: number, status: string): Observable<any> {
+    const url = `${this.url}/orders/${orderId}?status=${status}`;
+    return this.httpClient.put(url, {}, { responseType: "json" });
   }
 
   getOrder(orderId: number): Observable<any> {
@@ -35,8 +35,8 @@ export class BasketService {
     return this.httpClient.delete(url, { responseType: 'text' });
   }
 
-  getOrderItems(): Observable<any> {
-    const url = `${this.url}/orderItems`;
+  getOrderedItems(): Observable<any> {
+    const url = `${this.url}/orders/me/basket`;
     return this.httpClient.get<any>(url);
   }
 

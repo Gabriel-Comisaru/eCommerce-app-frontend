@@ -55,6 +55,7 @@ export class ProductListComponent implements OnInit {
     if (this.authService.isAuthenticated()) {
       event.stopPropagation();
       this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
+        console.log(res)
         this.productsService.shoppingCartObservable.next({
           orderItem: res,
           productAction: 'add',
