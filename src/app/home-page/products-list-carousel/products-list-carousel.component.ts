@@ -52,6 +52,7 @@ export class ProductsListCarouselComponent {
         roundedRating: Math.floor(product.rating),
       };
     });
+    console.log(this.productsToDisplayWithImages);
   }
 
   addToCart(product: Product) {
@@ -68,20 +69,24 @@ export class ProductsListCarouselComponent {
   }
   addToFavorite(product: Product) {
     if (this.authService.isAuthenticated()) {
-      const favoriteProductsList: Product[] = JSON.parse(
-        localStorage.getItem('favoriteProducts') || '[]'
-      );
-      if (favoriteProductsList.some((element) => element.id === product.id)) {
-        //TODO change quantity
-      } else favoriteProductsList.push(product);
+      this.productsService
+        .addFavoriteProduct(product.id)
+        .subscribe((res) => console.log(res));
 
-      localStorage.setItem(
-        'favoriteProducts',
-        JSON.stringify(favoriteProductsList)
-      );
-      this.productsService.favoriteProductsObservable.next(
-        favoriteProductsList
-      );
+      // Store favorite Item in local storage
+      // const favoriteProductsList: Product[] = JSON.parse(
+      //   localStorage.getItem('favoriteProducts') || '[]'
+      // );
+      // if (favoriteProductsList.some((element) => element.id === product.id)) {
+      //   //TODO change quantity
+      // } else favoriteProductsList.push(product);
+      // localStorage.setItem(
+      //   'favoriteProducts',
+      //   JSON.stringify(favoriteProductsList)
+      // );
+      // this.productsService.favoriteProductsObservable.next(
+      //   favoriteProductsList
+      // );
     } else {
       this.router.navigate(['login']);
     }

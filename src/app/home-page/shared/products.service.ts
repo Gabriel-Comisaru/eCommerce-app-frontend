@@ -194,4 +194,21 @@ export class ProductsService {
     const url = 'http://localhost:8081/api/products/placed';
     return this.httpClient.get<Product[]>(url);
   }
+
+  getFavoriteProducts(): Observable<Product[]> {
+    const url = 'http://localhost:8081/api/products/fav';
+    return this.httpClient.get<Product[]>(url);
+  }
+
+  addFavoriteProduct(productId: number): Observable<string> {
+    const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
+    return this.httpClient.post<string>(url, { responseType: 'text' });
+  }
+
+  deleteFavoriteProduct(productId: number) {
+    const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
+    return this.httpClient.delete<any>(url, {});
+  }
 }
+
+// post si delete sunt gresite?
