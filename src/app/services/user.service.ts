@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { BehaviorSubject, Observable, Subject, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { OrderItem } from '../home-page/shared/orderItem.model';
+import { DetailedOrder, Order } from '../home-page/shared/order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,5 +26,15 @@ export class UserService {
         localStorage.setItem('currentUser', JSON.stringify(res));
       })
     );
+  }
+
+  getUserOrders(): Observable<Order[]> {
+    const url = `${this.apiBaseURL}/orders/me`;
+    return this.http.get<Order[]>(url);
+  }
+
+  getDetailedUserOrders(): Observable<DetailedOrder[]> {
+    const url = `${this.apiBaseURL}/orders/me/lazy`;
+    return this.http.get<DetailedOrder[]>(url);
   }
 }

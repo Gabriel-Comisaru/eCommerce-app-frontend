@@ -52,7 +52,7 @@ import { AccountDetailsComponent } from './account-details/account-details.compo
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { NgOptimizedImage } from '@angular/common';
 import { ImageModule } from 'primeng/image';
-import { FloorPipe } from './home-page/shared/floor.pipe';
+
 import { RippleModule } from 'primeng/ripple';
 import { AdminPageComponent } from './admin-page/admin-page/admin-page.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -65,7 +65,11 @@ import { DividerModule } from 'primeng/divider';
 import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-modal/new-adress-modal.component';
 import { SkeletonComponent } from './home-page/skeleton/skeleton.component';
 import { MessageService } from 'primeng/api';
-
+import { UserOrdersPageComponent } from './user/user-orders-page/user-orders-page.component';
+import { CapitalizeStatusPipe } from './user/shared/capitalize-status.pipe';
+import { UserOrderDetailsComponent } from './user/user-order-details/user-order-details.component';
+import { FieldsetModule } from 'primeng/fieldset';
+import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
 @NgModule({
   declarations: [
     AppComponent,
@@ -87,13 +91,16 @@ import { MessageService } from 'primeng/api';
     LoginComponent,
     RegisterComponent,
     AccountDetailsComponent,
-    FloorPipe,
+
     AdminPageComponent,
     AdminOrdersListComponent,
     OrderDataComponent,
     NewAdressModalComponent,
     SkeletonComponent,
     OrderSummaryComponent,
+    UserOrdersPageComponent,
+    CapitalizeStatusPipe,
+    UserOrderDetailsComponent,
   ],
   imports: [
     HttpClientModule,
@@ -151,6 +158,8 @@ import { MessageService } from 'primeng/api';
     RippleModule,
     CheckboxModule,
     DividerModule,
+    FieldsetModule,
+    DataViewModule,
   ],
 
   providers: [

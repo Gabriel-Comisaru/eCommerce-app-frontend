@@ -1,0 +1,78 @@
+<section class="ordersListContainer">
+  <h1 class="ml-8">My Orders</h1>
+  <article
+    class="orderContainer"
+    *ngFor="let order of userOrders; let i = index"
+  >
+    <p-card class="order">
+      <div class="header flex justify-content-between align-items-center">
+        <div class="data">
+          <h3 class="dataParagraph white-space-nowrap text-blue-700">
+            Order no. {{ userOrders.length - i }}
+          </h3>
+          <h4 class="dataParagraph">
+            Placed on:
+            <span class="white-space-nowrap">{{
+              order.startDate | date : "longDate"
+            }}</span>
+          </h4>
+        </div>
+        <div class="controls">
+          <!-- <p-button
+            styleClass="p-button-raised p-button-text"
+            (click)="
+              order.status === 'ACTIVE'
+                ? goToBasketPage()
+                : goToOrderDetails(order.id)
+            "
+            [label]="
+              order.status === 'ACTIVE' ? 'Go to checkout' : 'Show details'
+            "
+          >
+          </p-button> -->
+        </div>
+      </div>
+      <p-divider></p-divider>
+      <app-user-order-details
+        [orderItems]="order.orderItems"
+        [orderStatus]="order.status"
+      ></app-user-order-details>
+
+      <div class="footer flex justify-content-between align-items-center">
+        <div class="data">
+          <p class="dataParagraph white-space-nowrap">
+            Total price:
+            <span class="font-bold">{{ order.deliveryPrice }}$</span>
+          </p>
+          <p class="dataParagraph">
+            Status:
+            <span class="font-bold text-primary-500">{{
+              order.status | capitalizeStatus
+            }}</span>
+          </p>
+        </div>
+        <div class="controls">
+          <button
+            pButton
+            class="md:align-self-end p-button-square ml-3 mr-1"
+            label="Write a review"
+            *ngIf="
+              order.orderItems.length === 1 &&
+              (order.status === 'SHIPPED' || order.status === 'DELIVERED')
+            "
+          >
+            <!-- (click)="goToProductPage(order.productId)" -->
+            <!-- here i need to get the product id - with emitter from child component??? -->
+          </button>
+          <button
+            pButton
+            class="md:align-self-end p-button-square ml-3 mr-1"
+            label="Checkout"
+            *ngIf="order.status === 'ACTIVE'"
+            (click)="goToCheckoutPage(order.id)"
+          ></button>
+        </div>
+      </div>
+    </p-card>
+  </article>
+</section>
