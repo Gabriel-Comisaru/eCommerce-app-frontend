@@ -55,7 +55,7 @@ export class UpdateProductComponent implements OnInit {
       Validators.max(100),
       Validators.min(0),
       Validators.required]],
-    imagesName: ['',[Validators.required]]
+    imagesName: ['']
   });
 
   resetFormValues() {
