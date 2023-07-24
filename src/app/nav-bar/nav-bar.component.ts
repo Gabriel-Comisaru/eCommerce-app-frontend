@@ -62,10 +62,6 @@ export class NavBarComponent {
   ) {}
 
   ngOnInit() {
-    if (!this.authService.isAuthenticated()) {
-      localStorage.setItem('admin', 'false');
-    }
-    this.adminDashboard = localStorage.getItem('admin')!;
     // used to get user's name
     this.userService.getLoggedUserObservable().subscribe((res) => {
       this.userLoggedIn = res;
@@ -143,13 +139,6 @@ export class NavBarComponent {
 
   goToAdminPage() {
     this.isAdmin = !this.isAdmin;
-    this.productsService.adminIsOnAdminPage();
-    this.productsService.checkIfAdminIsOnAdminPage.subscribe((res) => {
-      this.adminDashboard = res;
-      localStorage.setItem('admin', res);
-      this.adminDashboard = localStorage.getItem('admin')!;
-      console.log(this.adminDashboard, 'from navbar');
-    });
     this.router.navigate(['admin/products']);
   }
 

@@ -52,7 +52,6 @@ import { AccountDetailsComponent } from './account-details/account-details.compo
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { NgOptimizedImage } from '@angular/common';
 import { ImageModule } from 'primeng/image';
-
 import { RippleModule } from 'primeng/ripple';
 import { AdminPageComponent } from './admin-page/admin-page/admin-page.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
