@@ -50,6 +50,12 @@ export class LoginComponent implements OnInit {
               });
             }
           });
+          this.productsService.getFavoriteProducts().subscribe((res) => {
+            this.productsService.favoriteProductsObservable.next({
+              productAction: 'populate',
+              allFavoriteItems: res,
+            });
+          });
         },
         error: (data) => {
           console.log('Cannot login!');

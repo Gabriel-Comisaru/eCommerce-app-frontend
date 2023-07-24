@@ -1,7 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { PrimeIcons, MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { Product } from '../home-page/shared/product.model';
 import { ProductsService } from '../home-page/shared/products.service';
 import { Category } from '../home-page/shared/category.model';
 import {
@@ -17,6 +16,7 @@ import { CategoriesService } from '../product-categories/shared/categories.servi
 import { Subject } from 'rxjs';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { User } from '../models/user.model';
+import { Product } from '../home-page/shared/product.model';
 
 @Component({
   selector: 'app-nav-bar',
@@ -106,6 +106,13 @@ export class NavBarComponent {
           basketOrderItems: res,
         });
       });
+
+      this.productService.getFavoriteProducts().subscribe((res) => {
+        this.productService.favoriteProductsObservable.next({
+          productAction: 'populate',
+          allFavoriteItems: res,
+        });
+      });
     }
     //  subjects
     // this.productsService
@@ -113,13 +120,19 @@ export class NavBarComponent {
     //   .subscribe((response) => (this.favoriteProductsList = response));
     // this.productsService.setInitialFavoriteProducts();
 
-    this.productService
-      .getFavoriteProducts()
-      .subscribe((res) => (this.favoriteProductsList = res));
-
+    // aici cred ca trebuie sa mai adaug si un next? sau doar un next si sterg favorite product list???
     this.productService.favoriteProductsObservable.subscribe((res) => {
-      this.favoriteProductsList.push(res);
-      console.log(res);
+      if (res.productAction === 'add') {
+        this.favoriteProductsList.push(res.favoriteProduct!);
+      } else if (res.productAction === 'delete') {
+        this.favoriteProductsList = this.favoriteProductsList.filter(
+          (product: Product) => product.id !== res.favoriteProduct!.id
+        );
+      } else if (res.productAction === 'reset') {
+        this.favoriteProductsList = [];
+      } else if (res.productAction === 'populate') {
+        this.favoriteProductsList = res.allFavoriteItems!;
+      }
     });
 
     this.productService.getShopingCartObservable().subscribe((res) => {
@@ -137,9 +150,7 @@ export class NavBarComponent {
     });
     // }
   }
-  ngOnDestroy() {
-    this.productService.getShopingCartObservable;
-  }
+
   goHome() {
     this.router.navigate(['']);
   }
@@ -202,5 +213,8 @@ export class NavBarComponent {
 
   gotoOrdersPage() {
     return this.router.navigate(['my-orders']);
+  }
+  gotToFavoritesPage() {
+    return this.router.navigate(['my-favorites']);
   }
 }

@@ -29,7 +29,11 @@ export class ProductsService {
     productAction: string;
     basketOrderItems?: OrderItem[];
   }>();
-  public favoriteProductsObservable = new Subject<Product>();
+  public favoriteProductsObservable = new Subject<{
+    favoriteProduct?: Product;
+    productAction: string;
+    allFavoriteItems?: Product[];
+  }>();
   checkIfAdminIsOnAdminPage: BehaviorSubject<any> = new BehaviorSubject<any>(
     ''
   );
@@ -150,17 +154,6 @@ export class ProductsService {
     return this.httpClient.post(url, image);
   }
 
-  getProductImage(productImageName: string): Observable<any> {
-    const url = `http://localhost:8081/api/images/download?name=${productImageName}`;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        Accept: 'image/jpeg',
-      }),
-      responseType: 'blob', // This tells angular to parse it as a blob, default is json
-    };
-    return this.httpClient.get<any>(url, httpOptions as any);
-  }
-
   getAllReviews(): Observable<any> {
     const url = 'http://localhost:8081/api/reviews';
     return this.httpClient.get<any>(url);
@@ -194,10 +187,6 @@ export class ProductsService {
     const url = 'http://localhost:8081/api/products/placed';
     return this.httpClient.get<Product[]>(url);
   }
-  getMostSelledProducts(): Observable<Product[]> {
-    const url = 'http://localhost:8081/api/products/placed';
-    return this.httpClient.get<Product[]>(url);
-  }
 
   getFavoriteProducts(): Observable<Product[]> {
     const url = 'http://localhost:8081/api/products/fav';
@@ -212,5 +201,9 @@ export class ProductsService {
   deleteFavoriteProduct(productId: number) {
     const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
     return this.httpClient.delete<any>(url, {});
+  }
+
+  getProductImage(productImage: string) {
+    return `http://localhost:8081/api/images/download?name=${productImage}`;
   }
 }

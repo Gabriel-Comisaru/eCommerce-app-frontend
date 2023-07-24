@@ -68,25 +68,29 @@ export class ProductsListCarouselComponent {
   }
   addToFavorite(product: Product) {
     if (this.authService.isAuthenticated()) {
-      this.productsService.addFavoriteProduct(product.id).subscribe((res) => {
-        console.log(product);
-        this.productsService.favoriteProductsObservable.next(product);
-      });
+      if (this.getFavoriteStatus(product)) {
+        // if product already exists the favorite list delete it
+        this.productsService
+          .deleteFavoriteProduct(product.id)
+          .subscribe((res) => {
+            this.productsService.favoriteProductsObservable.next({
+              productAction: 'delete',
+              favoriteProduct: product,
+            });
+            product.favUserIds = product.favUserIds.filter(
+              (id) => id !== product.userId
+            );
+          });
+      } else {
+        this.productsService.addFavoriteProduct(product.id).subscribe((res) => {
+          this.productsService.favoriteProductsObservable.next({
+            productAction: 'add',
+            favoriteProduct: product,
+          });
 
-      // Store favorite Item in local storage
-      // const favoriteProductsList: Product[] = JSON.parse(
-      //   localStorage.getItem('favoriteProducts') || '[]'
-      // );
-      // if (favoriteProductsList.some((element) => element.id === product.id)) {
-      //   //TODO change quantity
-      // } else favoriteProductsList.push(product);
-      // localStorage.setItem(
-      //   'favoriteProducts',
-      //   JSON.stringify(favoriteProductsList)
-      // );
-      // this.productsService.favoriteProductsObservable.next(
-      //   favoriteProductsList
-      // );
+          product.favUserIds.push(product.userId);
+        });
+      }
     } else {
       this.router.navigate(['login']);
     }
@@ -98,6 +102,12 @@ export class ProductsListCarouselComponent {
   handleMissingImage(event: Event) {
     (event.target as HTMLImageElement).src =
       '/assets/images/product-not-found.png';
+  }
+
+  getFavoriteStatus(product: Product) {
+    // eu tb sa fac request catre server ca altfel nu vede - teoretic sa fac get sau sa filter it you of user Ids
+    const isFavorite = product.favUserIds.some((id) => id === product.userId);
+    return isFavorite;
   }
 }
 // <!-- notificare ca am adaugat in cos -->

@@ -1,1 +1,59 @@
-<p>favorite-products-page works!</p>
+<p-table
+  [paginator]="true"
+  [rows]="row"
+  [rowsPerPageOptions]="rows"
+  [value]="favoriteProductsList"
+  responsiveLayout="stack"
+  [breakpoint]="'960px'"
+  [globalFilterFields]="['name']"
+  [style]="{ 'margin-top': '20px', }"
+  class="favTable"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product let-index="rowIndex">
+    <div *ngIf="loading" class="loading">
+      <div class="spinner"></div>
+    </div>
+    <tr class="item">
+      <td>
+        <p-image
+          [src]="showProductImage(product.imagesName[0])"
+          alt="Image"
+          width="50"
+        ></p-image>
+      </td>
+      <td>{{ product.name }}</td>
+
+      <td class="itemPrice">{{ product.price }} $</td>
+      <td class="actions">
+        <p-button
+          icon="pi pi-cart-plus"
+          [disabled]="product.unitsInStock === 0"
+          (click)="moveProductToBasket(product)"
+        ></p-button>
+        <p-button
+          icon="pi pi-trash"
+          (click)="deleteFavoriteProduct(product)"
+        ></p-button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <tr>
+      <td></td>
+      <td><strong>Total:</strong></td>
+      <td>
+        <strong>${{ getTotalPrice() }}</strong>
+      </td>
+      <td></td>
+    </tr>
+  </ng-template>
+</p-table>

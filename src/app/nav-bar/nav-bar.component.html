@@ -176,7 +176,11 @@
           <td>${{ product.price }}</td>
         </tr>
       </table>
-      <p-button label="View all" styleClass="p-button-raised"></p-button>
+      <p-button
+        (click)="gotToFavoritesPage()"
+        label="View all"
+        styleClass="p-button-raised"
+      ></p-button>
     </div>
   </ng-template>
 </p-overlayPanel>
