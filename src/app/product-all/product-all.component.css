@@ -54,21 +54,27 @@
 .product-list {
   width: calc(100% - 237px);
   box-sizing: border-box; /* Include padding and border in the width calculation */
+  margin-bottom: 10vh;
 }
 
 @media (max-width: 1200px) {
   .product-all {
+    display: inline-block;
     width: 100%; /* Take up full width */
     padding: 0; /* Remove padding */
-    margin: 0; /* Remove margins */
+    margin: 15px 0 15px 0;
   }
 
   .filters {
-    display: none; /* Hide the filters */
+    /*display: none; !* Hide the filters *!*/
+    display: inline-block;
+    width: 100%;
+    padding-bottom: 5vh;
   }
 
   .product-list {
     width: 100%; /* Take up full width */
+    margin-bottom: 10vh;
   }
 }
 
