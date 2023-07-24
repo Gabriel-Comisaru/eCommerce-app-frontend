@@ -40,6 +40,10 @@ export class BasketService {
     return this.httpClient.get<any>(url);
   }
 
+  getMyOrders(): Observable<any> {
+    const url = `${this.url}/orders/me`;
+    return this.httpClient.get<any>(url);
+  }
   updateOrderQuantity(productId: number, quantity: number) {
     const url = `${this.url}/orderItems/${productId}/quantity?quantity=${quantity}`;
     return this.httpClient.put(url, {}, { responseType: 'text' });
