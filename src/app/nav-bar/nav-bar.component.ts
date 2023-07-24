@@ -62,16 +62,14 @@ export class NavBarComponent {
   ) {}
 
   ngOnInit() {
-    if(!this.authService.isAuthenticated()){
-      localStorage.setItem('admin','false')
+    if (!this.authService.isAuthenticated()) {
+      localStorage.setItem('admin', 'false');
     }
-    this.adminDashboard = localStorage.getItem('admin')!
+    this.adminDashboard = localStorage.getItem('admin')!;
     // used to get user's name
-    this.userService
-      .getLoggedUserObservable()
-      .subscribe((res) => {
-        this.userLoggedIn = res
-      });
+    this.userService.getLoggedUserObservable().subscribe((res) => {
+      this.userLoggedIn = res;
+    });
     this.productsService.getCategories().subscribe((res) => {
       this.categoryItems = res.map((category) => {
         return {
@@ -110,10 +108,19 @@ export class NavBarComponent {
       });
     }
     //  subjects
-    this.productsService
-      .getfavoriteProductsObservable()
-      .subscribe((response) => (this.favoriteProductsList = response));
-    this.productsService.setInitialFavoriteProducts();
+    // this.productsService
+    //   .getfavoriteProductsObservable()
+    //   .subscribe((response) => (this.favoriteProductsList = response));
+    // this.productsService.setInitialFavoriteProducts();
+
+    this.productService
+      .getFavoriteProducts()
+      .subscribe((res) => (this.favoriteProductsList = res));
+
+    this.productService.favoriteProductsObservable.subscribe((res) => {
+      this.favoriteProductsList.push(res);
+      console.log(res);
+    });
 
     this.productService.getShopingCartObservable().subscribe((res) => {
       if (res.productAction === 'add') {
@@ -130,7 +137,9 @@ export class NavBarComponent {
     });
     // }
   }
-
+  ngOnDestroy() {
+    this.productService.getShopingCartObservable;
+  }
   goHome() {
     this.router.navigate(['']);
   }
@@ -144,15 +153,14 @@ export class NavBarComponent {
   }
 
   goToAdminPage() {
-    this.isAdmin = !this.isAdmin
-    this.productsService.adminIsOnAdminPage()
-    this.productsService.checkIfAdminIsOnAdminPage
-      .subscribe(res => {
-        this.adminDashboard = res
-        localStorage.setItem('admin', res);
-        this.adminDashboard = localStorage.getItem('admin')!
-        console.log(this.adminDashboard, "from navbar")
-      })
+    this.isAdmin = !this.isAdmin;
+    this.productsService.adminIsOnAdminPage();
+    this.productsService.checkIfAdminIsOnAdminPage.subscribe((res) => {
+      this.adminDashboard = res;
+      localStorage.setItem('admin', res);
+      this.adminDashboard = localStorage.getItem('admin')!;
+      console.log(this.adminDashboard, 'from navbar');
+    });
     this.router.navigate(['admin/products']);
   }
 
@@ -192,7 +200,5 @@ export class NavBarComponent {
     return noOfBasketProducts;
   }
 
-  gotoOrdersPage() {
-
-  }
+  gotoOrdersPage() {}
 }

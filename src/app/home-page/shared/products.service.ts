@@ -29,7 +29,7 @@ export class ProductsService {
     productAction: string;
     basketOrderItems?: OrderItem[];
   }>();
-  public favoriteProductsObservable = new Subject<Product[]>();
+  public favoriteProductsObservable = new Subject<Product>();
   checkIfAdminIsOnAdminPage: BehaviorSubject<any> = new BehaviorSubject<any>(
     ''
   );
@@ -53,9 +53,9 @@ export class ProductsService {
     return this.httpClient.get<any>(this.appUsersUrl);
   }
 
-  getfavoriteProductsObservable(): Observable<Product[]> {
-    return this.favoriteProductsObservable.asObservable();
-  }
+  // getfavoriteProductsObservable(): Observable<Product[]> {
+  //   return this.favoriteProductsObservable.asObservable();
+  // }
 
   getOrdersItems(): Observable<any> {
     return this.httpClient.get<any>(this.orderItemsUrl);
@@ -210,5 +210,3 @@ export class ProductsService {
     return this.httpClient.delete<any>(url, {});
   }
 }
-
-// post si delete sunt gresite?

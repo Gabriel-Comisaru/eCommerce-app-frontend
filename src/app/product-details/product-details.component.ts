@@ -21,7 +21,7 @@ export class ProductDetailsComponent implements OnInit {
   reviewForm = this.fb.nonNullable.group({
     rating: [0, [Validators.required]],
     title: ['', [Validators.required]],
-    comment: ['', [Validators.required]]
+    comment: ['', [Validators.required]],
   });
 
   constructor(
@@ -43,10 +43,9 @@ export class ProductDetailsComponent implements OnInit {
       this.getImages();
     });
 
-    this.productService.getProductReviews(id)
-      .subscribe(reviews => {
-        this.reviews = reviews
-      });
+    this.productService.getProductReviews(id).subscribe((reviews) => {
+      this.reviews = reviews;
+    });
   }
 
   scrollToSection(id: string) {
@@ -80,21 +79,20 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToFavorite(product: Product) {
-    if (this.authService.isAuthenticated()) {
-      const favoriteProductsList: Product[] = JSON.parse(
-        localStorage.getItem('favoriteProducts') || '[]'
-      );
-      if (favoriteProductsList.some((element) => element.id === product.id)) {
-      } else favoriteProductsList.push(product);
-
-      localStorage.setItem(
-        'favoriteProducts',
-        JSON.stringify(favoriteProductsList)
-      );
-      this.productService.favoriteProductsObservable.next(favoriteProductsList);
-    } else {
-      this.router.navigate(['login']);
-    }
+    // if (this.authService.isAuthenticated()) {
+    //   const favoriteProductsList: Product[] = JSON.parse(
+    //     localStorage.getItem('favoriteProducts') || '[]'
+    //   );
+    //   if (favoriteProductsList.some((element) => element.id === product.id)) {
+    //   } else favoriteProductsList.push(product);
+    //   localStorage.setItem(
+    //     'favoriteProducts',
+    //     JSON.stringify(favoriteProductsList)
+    //   );
+    //   this.productService.favoriteProductsObservable.next(favoriteProductsList);
+    // } else {
+    //   this.router.navigate(['login']);
+    // }
   }
 
   // calculateRating() {

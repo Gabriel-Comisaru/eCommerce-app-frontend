@@ -69,9 +69,10 @@ export class ProductsListCarouselComponent {
   }
   addToFavorite(product: Product) {
     if (this.authService.isAuthenticated()) {
-      this.productsService
-        .addFavoriteProduct(product.id)
-        .subscribe((res) => console.log(res));
+      this.productsService.addFavoriteProduct(product.id).subscribe((res) => {
+        console.log(product);
+        this.productsService.favoriteProductsObservable.next(product);
+      });
 
       // Store favorite Item in local storage
       // const favoriteProductsList: Product[] = JSON.parse(

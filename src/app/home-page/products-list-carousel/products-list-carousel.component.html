@@ -52,7 +52,7 @@
           <p-tag
             *ngIf="product.discountPercentage && product.discountPercentage > 0"
             severity="danger"
-            [value]="'-' + product.discountPercentage?.toFixed(0) + '%'"
+            [value]="'-' + product.discountPercentage?.toFixed(2) + '%'"
             class="absolute discountApplied"
           >
           </p-tag>
