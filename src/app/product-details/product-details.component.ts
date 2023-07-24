@@ -3,7 +3,7 @@ import { Product } from '../home-page/shared/product.model';
 import { ProductsService } from '../home-page/shared/products.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasketService } from '../shopping-cart/shared/basket.service';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Review } from '../home-page/shared/review.model';
 import { AuthService } from '../services/auth.service';
 

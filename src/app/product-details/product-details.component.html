@@ -19,12 +19,12 @@
         [showIndicators]="true"
         [showItemNavigators]="true"
         [showThumbnails]="false"
-        [containerStyle]="{ 'max-width': '640px' }"
+        [containerStyle]="{ 'width': '640px' }"
       >
         <ng-template pTemplate="item" let-image>
           <img
             [src]="image"
-            style="width: 100%; max-height: 500px; display: block"
+            style="height: 500px; max-width: 640px"
           />
         </ng-template>
       </p-galleria>

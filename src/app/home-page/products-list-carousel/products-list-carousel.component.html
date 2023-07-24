@@ -61,6 +61,8 @@
             [alt]="product.name"
             (error)="handleMissingImage($event)"
             class="w-full h-12rem max-h-full shadow-2 productImage"
+            (click)="getProductDetails(product.id)"
+            style="cursor: pointer;"
           />
         </div>
         <div class="detailsContainer">
