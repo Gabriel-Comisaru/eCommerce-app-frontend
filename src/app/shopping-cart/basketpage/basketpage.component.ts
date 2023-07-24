@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BasketService } from '../shared/basket.service';
-import { Product } from '../../home-page/shared/product.model';
 import { ProductsService } from '../../home-page/shared/products.service';
-import { CategoriesService } from '../../product-categories/shared/categories.service';
 import { Item } from '../shared/item.model';
-import { forkJoin } from 'rxjs';
-import { combineLatest } from 'rxjs/internal/operators/combineLatest';
 import {Router} from "@angular/router";
-import {OrderedItem} from "../shared/orderedItem.model";
 import {BasketModel} from "../shared/basket-model";
 
 @Component({
