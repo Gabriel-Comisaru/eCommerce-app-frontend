@@ -13,7 +13,13 @@
       </p-button>
     </ng-template>
   </p-menubar>
-  <p-table styleClass="p-datatable-sm" [paginator]="true" [rows]="5" [rowsPerPageOptions]="rows"
+  <p-table styleClass="p-datatable-sm"
+           [lazy]="true"
+           [totalRecords]="totalRecords"
+           [paginator]="true"
+           [rows]="5"
+           [rowsPerPageOptions]="rows"
+           (onPage)="onPage($event)"
            [value]="productsList"
            [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
            [globalFilterFields]="['name']">

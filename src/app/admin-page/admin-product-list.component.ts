@@ -14,8 +14,10 @@ export class AdminProductListComponent implements OnInit {
   header = '';
   productsList: any = [];
   selectedProduct?: any = [];
-  row: any;
+  row: any=5;
   rows: any = [5, 10, 15];
+  totalRecords: any;
+  first:any = 0;
 
   constructor(private productsService: ProductsService,
               private messageService: MessageService) {
@@ -44,8 +46,10 @@ export class AdminProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productsService.getProducts().subscribe((list: any) => {
-      this.productsList = list;
+    this.productsService.getProductsDisplay(this.first,this.row)
+      .subscribe((list: any) => {
+      this.productsList = list.products;
+      this.totalRecords = list.numberOfItems;
       this.productsList = this.productsList.sort((a: any, b: any) => a.name > b.name ? 1 : -1)
     });
   }
@@ -86,5 +90,21 @@ export class AdminProductListComponent implements OnInit {
 
   handleMissingImg(event: ErrorEvent) {
     (event!.target as HTMLImageElement).src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'
+  }
+
+  onPage(event: any) {
+    if(event.rows===5) {
+      this.first = event.first / 5
+    }else if(event.rows===10){
+      this.first = event.first / 10
+    }else if(event.rows===15){
+      this.first = event.first / 15
+    }
+    console.log(event)
+    this.productsService.getProductsDisplay(this.first,event.rows)
+      .subscribe(item=> {
+        this.productsList = item.products
+        console.log(item.products)
+      });
   }
 }

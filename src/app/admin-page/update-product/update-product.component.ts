@@ -29,7 +29,6 @@ export class UpdateProductComponent implements OnInit {
   loading: boolean = false;
 
   visible = false;
-  images: any = [];
   selectedFile!: File;
   categoriesList: any = [];
 
@@ -56,7 +55,7 @@ export class UpdateProductComponent implements OnInit {
       Validators.max(100),
       Validators.min(0),
       Validators.required]],
-    imagesName: [[null], [Validators.required]]
+    imagesName: ['',[Validators.required]]
   });
 
   resetFormValues() {
@@ -111,8 +110,8 @@ export class UpdateProductComponent implements OnInit {
     formData.append('categoryId', String(this.productForm.controls.categoryId.value));
     formData.append('unitsInStock', String(this.productForm.controls.stock.value));
     formData.append('discountPercentage', String(this.productForm.controls.discount.value));
-    formData.append('image', this.selectedFile);
-    if (this.header !=this.selectedProduct.name) {
+    formData.append('image', this.productForm.controls.imagesName.value);
+    if (this.header != this.selectedProduct.name) {
       this.loading = true;
       this.productsService.sendForm(formData, +this.productForm.controls.categoryId.value)
         .subscribe((res) => {
@@ -134,20 +133,12 @@ export class UpdateProductComponent implements OnInit {
   }
 
   onFileChanged(event: any) {
-    this.selectedFile = event.target.files[0];
-    console.log(this.selectedFile)
-  }
-
-  onUpload(id: number) {
-    const uploadImageData = new FormData();
-    uploadImageData.append('imagesName', this.selectedFile, this.selectedFile.name);
-
-    this.productsService.saveImage(uploadImageData, id)
-      .subscribe();
+    this.productForm.controls.imagesName.setValue(event.currentFiles[0]);
   }
 
   close() {
     this.visible = false;
     this.closeEmitter.emit(this.visible);
   }
+
 }

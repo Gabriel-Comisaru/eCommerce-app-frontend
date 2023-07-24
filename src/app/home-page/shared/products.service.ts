@@ -58,21 +58,18 @@ export class ProductsService {
     return this.httpClient.get<any>(this.orderItemsUrl);
   }
 
-  getOrders(): Observable<any> {
-    const url = `${this.ordersUrl}`;
-    return this.httpClient.get<any>(url, {
-      params: new HttpParams().set('pageSize', '10'),
-    });
+  getOrders(pageNumber:any,pageSize:any): Observable<any> {
+    const url = `${this.ordersUrl}/display?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    return this.httpClient.get<any>(url);
   }
 
   getProducts(): Observable<any> {
     return this.httpClient.get<any>(this.productsUrl);
   }
 
-  getProductsDisplay(): Observable<any> {
-    return this.httpClient.get<any>(this.productsUrlDisplay, {
-      params: new HttpParams().set('pageSize', '10'),
-    });
+  getProductsDisplay(pageNumber:any,pageSize:any): Observable<any> {
+    const url = `${this.productsUrlDisplay}?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    return this.httpClient.get<any>(url);
   }
 
   getProductsByCat(categoryId: number): Observable<any> {
