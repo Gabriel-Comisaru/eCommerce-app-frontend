@@ -1,0 +1,67 @@
+::ng-deep .p-fieldset-toggleable {
+  border: transparent;
+}
+
+::ng-deep .p-fieldset-legend {
+  text-align: right;
+  position: absolute;
+  width: max-content;
+  height: fit-content;
+  font-size: 0.9rem;
+  top: 1.3rem;
+  right: 1.5rem;
+}
+
+::ng-deep .p-fieldset.p-fieldset-toggleable .p-fieldset-legend a {
+  padding: 1rem 0.75rem;
+}
+
+:host ::ng-deep .p-fieldset .p-fieldset-content {
+  width: fit-content;
+  padding: 0;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  border: transparent;
+
+  outline: transparent;
+}
+
+:host ::ng-deep .p-datatable {
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.productData {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: center;
+}
+.productData p {
+  margin: 0 1rem;
+}
+
+.productPrice {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.productRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 600px) {
+  ::ng-deep .p-fieldset-legend {
+    text-align: center;
+    position: static;
+  }
+}

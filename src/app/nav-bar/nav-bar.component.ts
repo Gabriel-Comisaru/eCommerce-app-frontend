@@ -200,5 +200,7 @@ export class NavBarComponent {
     return noOfBasketProducts;
   }
 
-  gotoOrdersPage() {}
+  gotoOrdersPage() {
+    return this.router.navigate(['my-orders']);
+  }
 }

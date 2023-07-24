@@ -52,7 +52,6 @@ import { AccountDetailsComponent } from './account-details/account-details.compo
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { NgOptimizedImage } from '@angular/common';
 import { ImageModule } from 'primeng/image';
-import { FloorPipe } from './home-page/shared/floor.pipe';
 import { RippleModule } from 'primeng/ripple';
 import { AdminPageComponent } from './admin-page/admin-page/admin-page.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -67,6 +66,11 @@ import { SkeletonComponent } from './home-page/skeleton/skeleton.component';
 import { MessageService } from 'primeng/api';
 import { FavoriteProductsPageComponent } from './shopping-cart/favorite-products-page/favorite-products-page.component';
 
+import { UserOrdersPageComponent } from './user/user-orders-page/user-orders-page.component';
+import { CapitalizeStatusPipe } from './user/shared/capitalize-status.pipe';
+import { UserOrderDetailsComponent } from './user/user-order-details/user-order-details.component';
+import { FieldsetModule } from 'primeng/fieldset';
+import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +92,7 @@ import { FavoriteProductsPageComponent } from './shopping-cart/favorite-products
     LoginComponent,
     RegisterComponent,
     AccountDetailsComponent,
-    FloorPipe,
+
     AdminPageComponent,
     AdminOrdersListComponent,
     OrderDataComponent,
@@ -96,6 +100,9 @@ import { FavoriteProductsPageComponent } from './shopping-cart/favorite-products
     SkeletonComponent,
     OrderSummaryComponent,
     FavoriteProductsPageComponent,
+    UserOrdersPageComponent,
+    CapitalizeStatusPipe,
+    UserOrderDetailsComponent,
   ],
   imports: [
     HttpClientModule,
@@ -153,6 +160,8 @@ import { FavoriteProductsPageComponent } from './shopping-cart/favorite-products
     RippleModule,
     CheckboxModule,
     DividerModule,
+    FieldsetModule,
+    DataViewModule,
   ],
 
   providers: [

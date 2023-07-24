@@ -1,20 +1,22 @@
-import {AdminProductListComponent} from './admin-page/admin-product-list.component';
-import {AdminOrdersListComponent} from "./admin-page/admin-orders-list/admin-orders-list.component";
+import { AdminProductListComponent } from './admin-page/admin-product-list.component';
+import { AdminOrdersListComponent } from './admin-page/admin-orders-list/admin-orders-list.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
 import { ProductAllComponent } from './product-all/product-all.component';
 import { ProductCategoriesComponent } from './product-categories/product-categories.component';
 import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.component';
-import {AdminPageComponent} from "./admin-page/admin-page/admin-page.component";
+import { AdminPageComponent } from './admin-page/admin-page/admin-page.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './services/auth.guard';
 import { AlreadyLoggedGuard } from './services/already-logged.guard';
 import { AccountDetailsComponent } from './account-details/account-details.component';
-import {OrderDataComponent} from "./shopping-cart/order-data/order-data.component";
-import {OrderSummaryComponent} from "./shopping-cart/order-summary/order-summary.component";
+import { OrderDataComponent } from './shopping-cart/order-data/order-data.component';
+import { OrderSummaryComponent } from './shopping-cart/order-summary/order-summary.component';
+import { UserOrdersPageComponent } from './user/user-orders-page/user-orders-page.component';
+import { UserOrderDetailsComponent } from './user/user-order-details/user-order-details.component';
 
 const routes: Routes = [
   {
@@ -35,18 +37,18 @@ const routes: Routes = [
     path: 'admin',
     component: AdminPageComponent,
     canActivate: [AuthGuard],
-  children:[
-    {
-      path: 'products',
-      component: AdminProductListComponent,
-      canActivate: [AuthGuard],
-    },
-    {
-      path: 'orders',
-      component: AdminOrdersListComponent,
-      canActivate: [AuthGuard],
-    }
-  ]
+    children: [
+      {
+        path: 'products',
+        component: AdminProductListComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'orders',
+        component: AdminOrdersListComponent,
+        canActivate: [AuthGuard],
+      },
+    ],
   },
   {
     path: 'products',
@@ -65,13 +67,14 @@ const routes: Routes = [
     component: BasketpageComponent,
     canActivate: [AuthGuard],
   },
+
   {
     path: 'product-details/:id',
     component: ProductDetailsComponent,
   },
   {
     path: 'order-data',
-    component: OrderDataComponent
+    component: OrderDataComponent,
   },
   {
     path: 'user-details',
@@ -82,12 +85,20 @@ const routes: Routes = [
     path: 'order-summary',
     component: OrderSummaryComponent,
     canActivate: [AuthGuard],
-  }
+  },
+  {
+    path: 'my-orders',
+    component: UserOrdersPageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'order-details/:id',
+    component: UserOrderDetailsComponent,
+    canActivate: [AuthGuard],
+  },
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

@@ -194,6 +194,10 @@ export class ProductsService {
     const url = 'http://localhost:8081/api/products/placed';
     return this.httpClient.get<Product[]>(url);
   }
+  getMostSelledProducts(): Observable<Product[]> {
+    const url = 'http://localhost:8081/api/products/placed';
+    return this.httpClient.get<Product[]>(url);
+  }
 
   getFavoriteProducts(): Observable<Product[]> {
     const url = 'http://localhost:8081/api/products/fav';
