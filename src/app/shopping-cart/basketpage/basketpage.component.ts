@@ -35,7 +35,12 @@ export class BasketpageComponent implements OnInit {
 
     this.basketService.getOrderedItems().subscribe((res) => {
       console.log(res, 'asdasdasdasasdasdasd')
-      this.orderedItems = res;
+      this.orderedItems = res.map((item: any) => {
+        return {
+          ...item,
+          productImage: `http://localhost:8081/api/images/download?name=${item.imageName}`,
+        };
+      });
       this.loading = false;
     })
 
@@ -45,9 +50,16 @@ export class BasketpageComponent implements OnInit {
   loadData() {
     this.loading = true;
     this.basketService.getMyOrders().subscribe((res) => {
-      this.orderedItems = res;
+      this.orderedItems = res.map((item: any) => {
+        return {
+          ...item,
+          productImage: `http://localhost:8081/api/images/download?name=${item.imageName}`,
+        };
+        console.log(this.orderedItems, 'asdasda')
+      })
       this.loading = false;
     });
+
   }
 
   deleteProduct(product: any, event: any) {
