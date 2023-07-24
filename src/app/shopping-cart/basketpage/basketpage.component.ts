@@ -33,11 +33,11 @@ export class BasketpageComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
 
-    // this.basketService.getOrderedItems().subscribe((res) => {
-    //   console.log(res, 'asdasdasdasasdasdasd')
-    //   this.orderedItems = res;
-    //   this.loading = false;
-    // })
+    this.basketService.getOrderedItems().subscribe((res) => {
+      console.log(res, 'asdasdasdasasdasdasd')
+      this.orderedItems = res;
+      this.loading = false;
+    })
 
     this.loading = false;
   }
