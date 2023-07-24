@@ -65,6 +65,7 @@ import { DividerModule } from 'primeng/divider';
 import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-modal/new-adress-modal.component';
 import { SkeletonComponent } from './home-page/skeleton/skeleton.component';
 import { MessageService } from 'primeng/api';
+import { FavoriteProductsPageComponent } from './shopping-cart/favorite-products-page/favorite-products-page.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { MessageService } from 'primeng/api';
     NewAdressModalComponent,
     SkeletonComponent,
     OrderSummaryComponent,
+    FavoriteProductsPageComponent,
   ],
   imports: [
     HttpClientModule,

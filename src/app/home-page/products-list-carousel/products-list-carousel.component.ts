@@ -52,7 +52,6 @@ export class ProductsListCarouselComponent {
         roundedRating: Math.floor(product.rating),
       };
     });
-    console.log(this.productsToDisplayWithImages);
   }
 
   addToCart(product: Product) {
@@ -94,17 +93,6 @@ export class ProductsListCarouselComponent {
   }
   getProductDetails(id: number) {
     this.router.navigate([`product-details/${id}`]);
-  }
-  getStock(stock: number) {
-    return stock > 50
-      ? 'In stock'
-      : stock <= 50 && stock > 10
-      ? 'Limited stock'
-      : stock <= 10 && stock > 1
-      ? 'Last ' + stock + ' pieces'
-      : stock === 1
-      ? 'Last piece available'
-      : 'Out of stock';
   }
 
   handleMissingImage(event: Event) {
