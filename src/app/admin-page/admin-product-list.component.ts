@@ -15,8 +15,7 @@ export class AdminProductListComponent implements OnInit {
   productsList: any = [];
   selectedProduct?: any = [];
   row: any;
-  rows: any = [15, 20,25];
-  numberOfPages: any;
+  rows: any = [5, 10, 15];
 
   constructor(private productsService: ProductsService,
               private messageService: MessageService) {
@@ -45,10 +44,8 @@ export class AdminProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productsService.getProductsDisplay().subscribe((list: any) => {
-      this.productsList = list.products;
-      this.numberOfPages = list.numberOfPages;
-      this.row = list.numberOfItems;
+    this.productsService.getProducts().subscribe((list: any) => {
+      this.productsList = list;
       this.productsList = this.productsList.sort((a: any, b: any) => a.name > b.name ? 1 : -1)
     });
   }
@@ -76,7 +73,12 @@ export class AdminProductListComponent implements OnInit {
     this.deleteVisible = false;
     this.productsService.delete(+event)
       .subscribe(() => {
-        this.messageService.add({severity: 'success',icon:'pi pi-trash', summary: 'Success', detail: 'Product deleted'});
+        this.messageService.add({
+          severity: 'success',
+          icon: 'pi pi-trash',
+          summary: 'Success',
+          detail: 'Product deleted'
+        });
         this.productsList = this.productsList
           .filter((item: any) => item.id != +event)
       })

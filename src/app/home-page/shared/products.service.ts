@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import {BehaviorSubject, Observable, Subject, tap} from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Product } from './product.model';
@@ -30,9 +30,6 @@ export class ProductsService {
     basketOrderItems?: OrderItem[];
   }>();
   public favoriteProductsObservable = new Subject<Product[]>();
-  checkIfAdminIsOnAdminPage: BehaviorSubject<any> = new BehaviorSubject<any>(
-    ''
-  );
 
   getShopingCartObservable(): Observable<{
     orderItem?: OrderItem;
@@ -62,7 +59,7 @@ export class ProductsService {
   }
 
   getOrders(): Observable<any> {
-    const url = `${this.ordersUrl}/display`;
+    const url = `${this.ordersUrl}`;
     return this.httpClient.get<any>(url, {
       params: new HttpParams().set('pageSize', '10'),
     });
@@ -167,18 +164,8 @@ export class ProductsService {
   }
 
   sendForm(formData: any, categoryId: number) {
-    return this.httpClient.post<any>(
-      `${this.productCategoryUrl}/${categoryId}`,
-      formData
-    );
-  }
-
-  adminIsOnAdminPage() {
-    this.checkIfAdminIsOnAdminPage.next(true);
-  }
-
-  adminLeftAdminPage() {
-    this.checkIfAdminIsOnAdminPage.next(false);
+    return this.httpClient.post<any>(`${this.productCategoryUrl}/${categoryId}`,formData)
+      .pipe(tap(res=>console.log(res)));
   }
 
   getCurrentBasket(): Observable<OrderItem[]> {

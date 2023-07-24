@@ -114,13 +114,12 @@ export class UpdateProductComponent implements OnInit {
     formData.append('image', this.selectedFile);
     if (this.header !=this.selectedProduct.name) {
       this.loading = true;
-      console.log(this.productForm.controls.categoryId.value)
       this.productsService.sendForm(formData, +this.productForm.controls.categoryId.value)
         .subscribe((res) => {
+          console.log(res)
           this.loading = false;
           this.visible = false;
           this.savedProduct.emit(res)
-          console.log(res)
         });
     } else {
       this.loading = true;
