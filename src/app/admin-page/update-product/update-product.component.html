@@ -33,7 +33,7 @@
         </p-fileUpload>
       </div>
       <div class="card mt-2 flex flex-wrap gap-3 justify-content-center">
-        <p-button [ngClass]="{'disabled':!productForm.valid}" [disabled]="!productForm.valid || !productForm.dirty"
+        <p-button [ngClass]="{'disabled':!productForm.valid}" [disabled]="!productForm.valid && !productForm.dirty"
                   [loading]="loading"
                   *ngIf="header==selectedProduct.name" type="submit" icon="pi pi-check"
                   label="Update" styleClass="p-button-primary p-button-primary"></p-button>
