@@ -5,7 +5,7 @@ import { Product } from './product.model';
 import { Category } from './category.model';
 import { OrderItem } from './orderItem.model';
 import { Review } from './review.model';
-import { BASE_URL_API } from '../../settings';
+import { BASE_URL_API, BASE_URL } from '../../settings';
 import { Order } from './order.model';
 
 @Injectable({
@@ -16,13 +16,13 @@ export class ProductsService {
 
   private productsUrl = `${BASE_URL_API}/products`;
   private productsUrlDisplay = `${BASE_URL_API}/products/display`;
-  private appUsersUrl = 'http://localhost:8081/api/users';
-  private categoriesUrl = 'http://localhost:8081/api/categories';
-  private reviewsUrl = 'http://localhost:8081/api/reviews';
-  private productCategoryUrl = 'http://localhost:8081/api/products/category';
-  private imageUrl = 'http://localhost:8081/api/images/upload';
-  private ordersUrl = 'http://localhost:8081/api/orders';
-  private orderItemsUrl = 'http://localhost:8081/api/orderItems';
+  private appUsersUrl = `${BASE_URL_API}/users`;
+  private categoriesUrl = `${BASE_URL_API}/categories`;
+  private reviewsUrl = `${BASE_URL_API}/reviews`;
+  private productCategoryUrl = `${BASE_URL_API}/products/category`;
+  private imageUrl = `${BASE_URL_API}/images/upload`;
+  private ordersUrl = `${BASE_URL_API}/orders`;
+  private orderItemsUrl = `${BASE_URL_API}/orderItems`;
   // public shoppingCartObservable = new Subject<Product[]>();
   public shoppingCartObservable = new Subject<{
     orderItem?: OrderItem;
@@ -127,7 +127,7 @@ export class ProductsService {
     productId: number,
     quantity: number
   ): Observable<OrderItem> {
-    const addProductToOrderUrl = `http://localhost:8081/api/orders/${productId}?quantity=${quantity}`;
+    const addProductToOrderUrl = `${BASE_URL_API}/orders/${productId}?quantity=${quantity}`;
 
     return this.httpClient.post<OrderItem>(addProductToOrderUrl, {});
   }
@@ -149,7 +149,7 @@ export class ProductsService {
   }
 
   getAllReviews(): Observable<any> {
-    const url = 'http://localhost:8081/api/reviews';
+    const url = `${BASE_URL_API}/reviews`;
     return this.httpClient.get<any>(url);
   }
 
@@ -160,31 +160,31 @@ export class ProductsService {
   }
 
   getCurrentBasket(): Observable<OrderItem[]> {
-    const url = 'http://localhost:8081/api/orders/me/basket';
+    const url = `${BASE_URL_API}/orders/me/basket`;
     return this.httpClient.get<OrderItem[]>(url);
   }
 
   getDiscountedProducts(): Observable<Product[]> {
-    const url = 'http://localhost:8081/api/products/discount';
+    const url = `${BASE_URL_API}/products/discount`;
     return this.httpClient.get<Product[]>(url);
   }
   getMostSelledProducts(): Observable<Product[]> {
-    const url = 'http://localhost:8081/api/products/placed';
+    const url = `${BASE_URL_API}/products/placed`;
     return this.httpClient.get<Product[]>(url);
   }
 
   getFavoriteProducts(): Observable<Product[]> {
-    const url = 'http://localhost:8081/api/products/fav';
+    const url = `${BASE_URL_API}/products/fav`;
     return this.httpClient.get<Product[]>(url);
   }
 
   addFavoriteProduct(productId: number): Observable<string> {
-    const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
+    const url = `${BASE_URL_API}/products/fav?productId=${productId}`;
     return this.httpClient.post<string>(url, { responseType: 'text' });
   }
 
   deleteFavoriteProduct(productId: number) {
-    const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
+    const url = `${BASE_URL_API}/products/fav?productId=${productId}`;
     return this.httpClient.delete<any>(url, {});
   }
 

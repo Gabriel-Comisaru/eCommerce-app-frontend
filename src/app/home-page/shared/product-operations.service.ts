@@ -3,6 +3,7 @@ import { ProductsService } from './products.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { Product } from './product.model';
+import { BASE_URL_API } from 'src/app/settings';
 
 @Injectable({
   providedIn: 'root',
@@ -57,6 +58,6 @@ export class ProductOperationsService {
     }
   }
   getProductImage(productImage: string) {
-    return `http://localhost:8081/api/images/download?name=${productImage}`;
+    return `${BASE_URL_API}/images/download?name=${productImage}`;
   }
 }

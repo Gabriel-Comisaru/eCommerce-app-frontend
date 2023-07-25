@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { concat, concatMap, map, Observable, switchMap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
 import { ProductsService } from '../home-page/shared/products.service';
 import { RegisterFields } from '../models/register.model';
-import { OrderItem } from '../home-page/shared/orderItem.model';
-import { Order } from '../home-page/shared/order.model';
+import { BASE_URL } from '../settings';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  baseUrl = 'http://localhost:8081';
+  baseUrl = `${BASE_URL}`;
 
   constructor(
     private httpClient: HttpClient,

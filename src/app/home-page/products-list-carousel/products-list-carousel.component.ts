@@ -6,6 +6,7 @@ import { OrderItem } from '../shared/orderItem.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
 import { ProductOperationsService } from '../shared/product-operations.service';
+import { BASE_URL, BASE_URL_API } from 'src/app/settings';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -37,7 +38,7 @@ export class ProductsListCarouselComponent {
 
       // if an image already exists use it otherwise replace it with a placeholder
       if (product.imagesName.length > 0 && product.imagesName[0].length > 0) {
-        const url = `http://localhost:8081/api/images/download?name=${product.imagesName[0]}`;
+        const url = `${BASE_URL_API}/images/download?name=${product.imagesName[0]}`;
 
         return {
           ...product,

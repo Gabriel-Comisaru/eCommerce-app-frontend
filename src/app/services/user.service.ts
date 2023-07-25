@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
-import { BehaviorSubject, Observable, Subject, of, tap } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { OrderItem } from '../home-page/shared/orderItem.model';
 import { DetailedOrder, Order } from '../home-page/shared/order.model';
+import { BASE_URL_API } from '../settings';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ import { DetailedOrder, Order } from '../home-page/shared/order.model';
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  private apiBaseURL = 'http://localhost:8081/api';
+  private apiBaseURL = `${BASE_URL_API}`;
 
   public loggedUser = new Subject<User>();
 

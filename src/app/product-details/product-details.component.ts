@@ -7,6 +7,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Review } from '../home-page/shared/review.model';
 import { AuthService } from '../services/auth.service';
 import { ProductOperationsService } from '../home-page/shared/product-operations.service';
+import { BASE_URL_API } from '../settings';
 
 @Component({
   selector: 'app-product-details',
@@ -60,7 +61,7 @@ export class ProductDetailsComponent implements OnInit {
   getImages() {
     for (let image of this.product.imagesName) {
       this.images.push(
-        `http://localhost:8081/api/images/download?name=${image}`
+        `${BASE_URL_API}/images/download?name=${image}`
       );
     }
     this.images = [...this.images];

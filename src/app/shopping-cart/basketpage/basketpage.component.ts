@@ -4,6 +4,7 @@ import { ProductsService } from '../../home-page/shared/products.service';
 import { Item } from '../shared/item.model';
 import {Router} from "@angular/router";
 import {BasketModel} from "../shared/basket-model";
+import { BASE_URL_API } from 'src/app/settings';
 
 @Component({
   selector: 'app-basketpage',
@@ -33,7 +34,7 @@ export class BasketpageComponent implements OnInit {
       this.orderedItems = res.map((item: any) => {
         return {
           ...item,
-          productImage: `http://localhost:8081/api/images/download?name=${item.imageName}`,
+          productImage: `${BASE_URL_API}/images/download?name=${item.imageName}`,
         };
       });
       this.loading = false;
@@ -48,7 +49,7 @@ export class BasketpageComponent implements OnInit {
       this.orderedItems = res.map((item: any) => {
         return {
           ...item,
-          productImage: `http://localhost:8081/api/images/download?name=${item.imageName}`,
+          productImage: `${BASE_URL_API}/images/download?name=${item.imageName}`,
         };
         console.log(this.orderedItems, 'asdasda')
       })
