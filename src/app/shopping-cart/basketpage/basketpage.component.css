@@ -34,10 +34,10 @@ p-table td:nth-child(4) {
 }
 
 
-.product-img {
-  width: 100%;
-  height: auto;
-}
+/*.product-img {*/
+/*  width: 100%;*/
+/*  height: auto;*/
+/*}*/
 
 .p-card-body {
   flex-grow: 1;
@@ -77,4 +77,9 @@ p-table td:nth-child(4) {
   to {
     transform: rotate(360deg);
   }
+}
+
+.productImage {
+  max-height: 100px;
+  width: auto;
 }

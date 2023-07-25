@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {ProductsService} from "../../home-page/shared/products.service";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-admin-orders-list',
@@ -10,44 +9,56 @@ import {Router} from "@angular/router";
 export class AdminOrdersListComponent {
 
   orders: any[] = [];
-  rows: any = [15, 20, 25]
-  row: any;
-  numberOfPages: any;
+  rows: any = [5, 10, 15]
+  row: any=5;
   status: any = ['ACTIVE', 'CHECKOUT', 'PLACED', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
-  currentStatus: any;
+  numberOfPages:any;
+  totalRecords:any;
+  pageNumber = 0;
 
-  constructor(private service: ProductsService,
-              private router:Router) {
+
+  constructor(private service: ProductsService) {
   }
 
   ngOnInit() {
-    this.service.getOrders()
+    this.service.getOrders(this.pageNumber,this.row)
       .subscribe(item => {
         this.orders = item.orders;
-        this.row = item.numberOfItems;
         this.numberOfPages = item.numberOfPages;
+        this.totalRecords=item.numberOfItems;
         this.orders.forEach(item => {
           return {status: item.status}
         })
       })
-
-    const previousUrl = history.state.prevPage ?? null;
-    if (!previousUrl) {
-      return;
-    } else {
-      console.log('I came here from: ', previousUrl);
-    }
   }
 
-  changeStatus(id: number,event:any) {
+  changeStatus(id: number, event: any) {
     this.service.updateStatus(id, event)
       .subscribe()
   }
 
   deleteOrder(order: any) {
-  this.service.deleteOrder(order.id)
-    .subscribe(()=>
-      this.orders = this.orders
-      .filter((item: any) => item.id != order.id))
+    this.service.deleteOrder(order.id)
+      .subscribe(() =>
+        this.orders = this.orders
+          .filter((item: any) => item.id != order.id))
+  }
+  
+  onPage(event: any) {
+    if(event.rows===5) {
+      this.pageNumber = event.first / 5
+    }else if(event.rows===10){
+      this.pageNumber = event.first / 10
+    }else if(event.rows===15){
+      this.pageNumber = event.first / 15
+    }
+    console.log(event)
+    this.service.getOrders(this.pageNumber,event.rows)
+      .subscribe(item=> {
+        this.orders = item.orders
+        this.orders.forEach(item => {
+          return {status: item.status}
+        })
+      });
   }
 }

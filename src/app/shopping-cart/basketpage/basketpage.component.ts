@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BasketService } from '../shared/basket.service';
-import { Product } from '../../home-page/shared/product.model';
 import { ProductsService } from '../../home-page/shared/products.service';
-import { CategoriesService } from '../../product-categories/shared/categories.service';
 import { Item } from '../shared/item.model';
-import { forkJoin } from 'rxjs';
-import { combineLatest } from 'rxjs/internal/operators/combineLatest';
 import {Router} from "@angular/router";
-import {OrderedItem} from "../shared/orderedItem.model";
 import {BasketModel} from "../shared/basket-model";
 
 @Component({
@@ -34,11 +29,32 @@ export class BasketpageComponent implements OnInit {
     this.loading = true;
 
     this.basketService.getOrderedItems().subscribe((res) => {
-      this.orderedItems = res;
+      console.log(res, 'asdasdasdasasdasdasd')
+      this.orderedItems = res.map((item: any) => {
+        return {
+          ...item,
+          productImage: `http://localhost:8081/api/images/download?name=${item.imageName}`,
+        };
+      });
       this.loading = false;
     })
 
     this.loading = false;
+  }
+
+  loadData() {
+    this.loading = true;
+    this.basketService.getMyOrders().subscribe((res) => {
+      this.orderedItems = res.map((item: any) => {
+        return {
+          ...item,
+          productImage: `http://localhost:8081/api/images/download?name=${item.imageName}`,
+        };
+        console.log(this.orderedItems, 'asdasda')
+      })
+      this.loading = false;
+    });
+
   }
 
   deleteProduct(product: any, event: any) {

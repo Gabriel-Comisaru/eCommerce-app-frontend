@@ -1,5 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { PrimeIcons, MenuItem } from 'primeng/api';
+import { Component, ViewChild } from '@angular/core';
+import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ProductsService } from '../home-page/shared/products.service';
 import { Category } from '../home-page/shared/category.model';
@@ -8,13 +8,10 @@ import {
   detailedOrderItem,
 } from '../home-page/shared/orderItem.model';
 import { AdminPageComponent } from '../admin-page/admin-page/admin-page.component';
-import { concatMap, of, switchMap, map, Observable, combineLatest } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { BasketService } from '../shopping-cart/shared/basket.service';
 import { CategoriesService } from '../product-categories/shared/categories.service';
-import { Subject } from 'rxjs';
-import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { User } from '../models/user.model';
 import { Product } from '../home-page/shared/product.model';
 
@@ -62,10 +59,6 @@ export class NavBarComponent {
   ) {}
 
   ngOnInit() {
-    if (!this.authService.isAuthenticated()) {
-      localStorage.setItem('admin', 'false');
-    }
-    this.adminDashboard = localStorage.getItem('admin')!;
     // used to get user's name
     this.userService.getLoggedUserObservable().subscribe((res) => {
       this.userLoggedIn = res;
@@ -165,13 +158,6 @@ export class NavBarComponent {
 
   goToAdminPage() {
     this.isAdmin = !this.isAdmin;
-    this.productsService.adminIsOnAdminPage();
-    this.productsService.checkIfAdminIsOnAdminPage.subscribe((res) => {
-      this.adminDashboard = res;
-      localStorage.setItem('admin', res);
-      this.adminDashboard = localStorage.getItem('admin')!;
-      console.log(this.adminDashboard, 'from navbar');
-    });
     this.router.navigate(['admin/products']);
   }
 

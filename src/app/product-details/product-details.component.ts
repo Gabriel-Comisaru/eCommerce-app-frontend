@@ -3,7 +3,7 @@ import { Product } from '../home-page/shared/product.model';
 import { ProductsService } from '../home-page/shared/products.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasketService } from '../shopping-cart/shared/basket.service';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Review } from '../home-page/shared/review.model';
 import { AuthService } from '../services/auth.service';
 
@@ -37,6 +37,7 @@ export class ProductDetailsComponent implements OnInit {
     const id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
     this.productService.getProduct(id).subscribe((product) => {
       this.product = product;
+      this.product.category = product.categoryName;
       this.discountedPrice = Math.round(
         product.price - product.price * (product.discountPercentage / 100)
       );
@@ -95,18 +96,14 @@ export class ProductDetailsComponent implements OnInit {
     // }
   }
 
-  // calculateRating() {
-  //   let totalRating = 0;
-  //   for (let review of this.reviews) {
-  //     totalRating += review.rating;
-  //   }
-  //   this.overallRating = Math.round(totalRating / this.reviews.length);
-  //   return this.overallRating;
-  // }
-
   addToCart(product: Product) {
     if (this.authService.isAuthenticated()) {
-      //write logic to add product to cart
+      this.productService.addProductToOrder(product.id, 1).subscribe((res) => {
+        this.productService.shoppingCartObservable.next({
+          orderItem: res,
+          productAction: 'add',
+        });
+      });
     } else {
       this.router.navigate(['login']);
     }

@@ -1,6 +1,7 @@
 <div class="card flex justify-content-center">
 
-  <p-dialog [maximizable]="true" (onHide)="onClose()" header="{{header===selectedProduct.name? 'Edit product' : 'Add new product'}}"
+  <p-dialog [maximizable]="true" (onHide)="onClose()"
+            header="{{header===selectedProduct.name? 'Edit product' : 'Add new product'}}"
             [(visible)]="visible"
             [style]="{width: '50vw'}" [modal]="true">
     <h1 *ngIf="header==selectedProduct.name">{{selectedProduct.name}}</h1>
@@ -21,8 +22,15 @@
         <input pInputText [style]="{width: '100%'}" id="discount" formControlName="discount"/>
         <label htmlFor="description" class="block font-bold mb-2">Description*</label>
         <textarea pInputTextarea rows="5" cols="30" id="description" formControlName="description"></textarea>
-        <input *ngIf="header!=selectedProduct.name" type="file" (change)="onFileChanged($event)"
-               accept="image/*">
+        <p-fileUpload *ngIf="header!=selectedProduct.name"
+                      mode="advanced"
+                      [showUploadButton]="false"
+                      [showCancelButton]="false"
+                      chooseLabel="Choose"
+                      accept="image/*"
+                      (onSelect)="onFileChanged($event)">
+
+        </p-fileUpload>
       </div>
       <div class="card mt-2 flex flex-wrap gap-3 justify-content-center">
         <p-button [ngClass]="{'disabled':!productForm.valid}" [disabled]="!productForm.valid || !productForm.dirty"

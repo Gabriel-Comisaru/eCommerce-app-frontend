@@ -1,5 +1,13 @@
-<p-table styleClass="p-datatable-sm" [pageLinks]="numberOfPages" [paginator]="true" [rows]="row"
-         [rowsPerPageOptions]="rows" [value]="orders"
+<p-table styleClass="p-datatable-sm"
+         [pageLinks]="numberOfPages"
+         [totalRecords]="totalRecords"
+         [paginator]="true"
+         [lazy]="true"
+         (onPage)="onPage($event)"
+         [rows]="5"
+         [rowsPerPageOptions]="rows"
+         [value]="orders"
+
          [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
          [globalFilterFields]="['name']">
   <ng-template pTemplate="header">
@@ -37,4 +45,8 @@
       </td>
     </tr>
   </ng-template>
+  <ng-template *ngIf="orders.length" pTemplate="footer">
+    No orders
+  </ng-template>
 </p-table>
+

@@ -1,13 +1,10 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { Product } from '../shared/product.model';
-
 import { ProductsService } from '../shared/products.service';
 import { Router } from '@angular/router';
-import { OrderItem, actionOrderItem } from '../shared/orderItem.model';
-import { FormGroup } from '@angular/forms';
+import { OrderItem } from '../shared/orderItem.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
-import { Order } from '../shared/order.model';
 
 @Component({
   selector: 'app-products-list-carousel',

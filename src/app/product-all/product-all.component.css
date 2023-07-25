@@ -115,3 +115,7 @@
     transform: rotate(360deg);
   }
 }
+
+.product-img {
+  height: 100px;
+}

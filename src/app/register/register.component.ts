@@ -6,7 +6,6 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { Observable, Subject, debounce, delay, of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { RegisterFields } from '../models/register.model';
