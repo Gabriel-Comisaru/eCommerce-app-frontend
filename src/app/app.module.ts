@@ -70,6 +70,7 @@ import {UserOrderDetailsComponent} from './user/user-order-details/user-order-de
 import {FieldsetModule} from 'primeng/fieldset';
 import {DataViewModule, DataViewLayoutOptions} from 'primeng/dataview';
 import { AdminNavBarComponent } from './admin-nav-bar/admin-nav-bar.component';
+import {FavoriteProductsPageComponent} from "./shopping-cart/favorite-products-page/favorite-products-page.component";
 
 @NgModule({
   declarations: [
