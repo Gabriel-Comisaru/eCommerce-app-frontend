@@ -39,7 +39,7 @@ export class AuthService {
           newLocal.router.navigate(['/']);
 
           this.router.navigate(['/']);
-          localStorage.setItem('admin','false')
+          localStorage.setItem('admin', 'false');
           return data;
         })
       );
@@ -56,7 +56,10 @@ export class AuthService {
     localStorage.removeItem('favoriteProducts');
     this.userService.loggedUser.next({});
     this.productsService.shoppingCartObservable.next({
-      orderItem: {} as OrderItem,
+      productAction: 'reset',
+    });
+
+    this.productsService.favoriteProductsObservable.next({
       productAction: 'reset',
     });
 

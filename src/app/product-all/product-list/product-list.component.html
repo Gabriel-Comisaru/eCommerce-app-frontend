@@ -1,4 +1,3 @@
-
 <div class="sorting">
   <span class="sortByLabel">Sort By: </span>
   <p-dropdown
@@ -7,10 +6,8 @@
     (onChange)="sortProducts()"
     placeholder="Sort by"
   ></p-dropdown>
-
 </div>
 <div class="product-list" *ngIf="filteredList != null">
-
   <p-card
     *ngFor="let product of filteredList.slice(0, displayedRows)"
     class="product-card"
@@ -20,7 +17,11 @@
 
     <ng-template pTemplate="content">
       <div class="product-image">
-         <img [src]="product.productImage" alt="Image not available" class="fit-image2">
+        <img
+          [src]="product.productImage"
+          alt="Image not available"
+          class="fit-image2"
+        />
       </div>
       <div
         class="title-container"
@@ -35,24 +36,29 @@
     </ng-template>
     <ng-template pTemplate="footer">
       <p-button
-        icon="pi pi-heart"
+        [icon]="
+          product.favUserIds && product.favUserIds.includes(product.userId)
+            ? 'pi pi-heart-fill'
+            : 'pi pi-heart'
+        "
         class="favorite-button"
         (click)="addToFavorite(product, $event)"
-        styleClass="p-button-success p-button-outlined"
+        styleClass="p-button-danger p-button-outlined"
       ></p-button>
       <p-button
         class="add-to-cart-button"
         (click)="addToBasket(product, $event)"
         [disabled]="product.unitsInStock === 0"
         [label]="product.unitsInStock === 0 ? 'Out of Stock' : 'Add to Cart'"
-        [styleClass]="product.unitsInStock === 0 ? 'p-button-danger' : 'p-button-info'"
-        ></p-button
-      >
+        [styleClass]="
+          product.unitsInStock === 0 ? 'p-button-danger' : 'p-button-info'
+        "
+      ></p-button>
     </ng-template>
   </p-card>
 </div>
 <div class="load-more-button" *ngIf="displayedRows < totalRows">
-  <button pButton (click)="loadMoreRows()" style="" >Load More</button>
+  <button pButton (click)="loadMoreRows()" style="">Load More</button>
 </div>
 
 <div *ngIf="filteredList.length < 1">

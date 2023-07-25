@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable, Subject, tap} from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Product } from './product.model';
@@ -29,7 +29,11 @@ export class ProductsService {
     productAction: string;
     basketOrderItems?: OrderItem[];
   }>();
-  public favoriteProductsObservable = new Subject<Product[]>();
+  public favoriteProductsObservable = new Subject<{
+    favoriteProduct?: Product;
+    productAction: string;
+    allFavoriteItems?: Product[];
+  }>();
 
   getShopingCartObservable(): Observable<{
     orderItem?: OrderItem;
@@ -50,15 +54,15 @@ export class ProductsService {
     return this.httpClient.get<any>(this.appUsersUrl);
   }
 
-  getfavoriteProductsObservable(): Observable<Product[]> {
-    return this.favoriteProductsObservable.asObservable();
-  }
+  // getfavoriteProductsObservable(): Observable<Product[]> {
+  //   return this.favoriteProductsObservable.asObservable();
+  // }
 
   getOrdersItems(): Observable<any> {
     return this.httpClient.get<any>(this.orderItemsUrl);
   }
 
-  getOrders(pageNumber:any,pageSize:any): Observable<any> {
+  getOrders(pageNumber: any, pageSize: any): Observable<any> {
     const url = `${this.ordersUrl}/display?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     return this.httpClient.get<any>(url);
   }
@@ -67,8 +71,8 @@ export class ProductsService {
     return this.httpClient.get<any>(this.productsUrl);
   }
 
-  getProductsDisplay(pageNumber:any,pageSize:any): Observable<any> {
-    const url = `${this.productsUrlDisplay}?pageNumber=${pageNumber}&pageSize=${pageSize}`
+  getProductsDisplay(pageNumber: any, pageSize: any): Observable<any> {
+    const url = `${this.productsUrlDisplay}?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     return this.httpClient.get<any>(url);
   }
 
@@ -144,25 +148,15 @@ export class ProductsService {
     return this.httpClient.post(url, image);
   }
 
-  getProductImage(productImageName: string): Observable<any> {
-    const url = `http://localhost:8081/api/images/download?name=${productImageName}`;
-    const httpOptions = {
-      headers: new HttpHeaders({
-        Accept: 'image/jpeg',
-      }),
-      responseType: 'blob', // This tells angular to parse it as a blob, default is json
-    };
-    return this.httpClient.get<any>(url, httpOptions as any);
-  }
-
   getAllReviews(): Observable<any> {
     const url = 'http://localhost:8081/api/reviews';
     return this.httpClient.get<any>(url);
   }
 
   sendForm(formData: any, categoryId: number) {
-    return this.httpClient.post<any>(`${this.productCategoryUrl}/${categoryId}`,formData)
-      .pipe(tap(res=>console.log(res)));
+    return this.httpClient
+      .post<any>(`${this.productCategoryUrl}/${categoryId}`, formData)
+      .pipe(tap((res) => console.log(res)));
   }
 
   getCurrentBasket(): Observable<OrderItem[]> {
@@ -178,4 +172,21 @@ export class ProductsService {
     const url = 'http://localhost:8081/api/products/placed';
     return this.httpClient.get<Product[]>(url);
   }
+
+  getFavoriteProducts(): Observable<Product[]> {
+    const url = 'http://localhost:8081/api/products/fav';
+    return this.httpClient.get<Product[]>(url);
+  }
+
+  addFavoriteProduct(productId: number): Observable<string> {
+    const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
+    return this.httpClient.post<string>(url, { responseType: 'text' });
+  }
+
+  deleteFavoriteProduct(productId: number) {
+    const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
+    return this.httpClient.delete<any>(url, {});
+  }
+
+
 }

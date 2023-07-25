@@ -64,6 +64,8 @@ import { DividerModule } from 'primeng/divider';
 import { NewAdressModalComponent } from './shopping-cart/order-data/new-adress-modal/new-adress-modal.component';
 import { SkeletonComponent } from './home-page/skeleton/skeleton.component';
 import { MessageService } from 'primeng/api';
+import { FavoriteProductsPageComponent } from './shopping-cart/favorite-products-page/favorite-products-page.component';
+
 import { UserOrdersPageComponent } from './user/user-orders-page/user-orders-page.component';
 import { CapitalizeStatusPipe } from './user/shared/capitalize-status.pipe';
 import { UserOrderDetailsComponent } from './user/user-order-details/user-order-details.component';
@@ -97,6 +99,7 @@ import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
     NewAdressModalComponent,
     SkeletonComponent,
     OrderSummaryComponent,
+    FavoriteProductsPageComponent,
     UserOrdersPageComponent,
     CapitalizeStatusPipe,
     UserOrderDetailsComponent,

@@ -11,6 +11,7 @@ import {
   actionOrderItem,
 } from '../../home-page/shared/orderItem.model';
 import { Order } from 'src/app/home-page/shared/order.model';
+import { ProductOperationsService } from 'src/app/home-page/shared/product-operations.service';
 
 @Component({
   selector: 'app-product-list',
@@ -29,7 +30,8 @@ export class ProductListComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private mockproductService: CategoriesService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private productOperationsService: ProductOperationsService
   ) {
     this.totalRows$?.next(0);
   }
@@ -40,30 +42,14 @@ export class ProductListComponent implements OnInit {
   selectedSortOption: string = 'Default';
 
   ngOnInit(): void {
-
-    console.log(this.totalRows, this.displayedRows);
-    this.mockproductService.getCategories().subscribe(
-      (res) => {
-        this.loading = false;
-      }
-    );
-    console.log(this.totalRows)
-
+    this.mockproductService.getCategories().subscribe((res) => {
+      this.loading = false;
+    });
   }
 
   addToBasket(product: Product, event: any): void {
-    if (this.authService.isAuthenticated()) {
-      event.stopPropagation();
-      this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
-        console.log(res)
-        this.productsService.shoppingCartObservable.next({
-          orderItem: res,
-          productAction: 'add',
-        });
-      });
-    } else {
-      this.router.navigate(['login']);
-    }
+    event.stopPropagation();
+    this.productOperationsService.addToCart(product);
   }
 
   getProductDetails(id: number, event: any) {
@@ -71,11 +57,10 @@ export class ProductListComponent implements OnInit {
     this.router.navigate([`product-details/${id}`]);
   }
   addToFavorite(product: Product, event: any) {
-    if (this.authService.isAuthenticated()) {
-    } else {
-      this.router.navigate(['login']);
-    }
+    event.stopPropagation();
+    this.productOperationsService.addToFavorite(product);
   }
+
   loadMoreRows(): void {
     this.displayedRows += this.incrementRows;
     this.totalRows$?.next(this.displayedRows);

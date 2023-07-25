@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { Product } from '../home-page/shared/product.model';
 import { ProductsService } from '../home-page/shared/products.service';
 import { Category } from '../home-page/shared/category.model';
 import {
@@ -14,6 +13,8 @@ import { UserService } from '../services/user.service';
 import { BasketService } from '../shopping-cart/shared/basket.service';
 import { CategoriesService } from '../product-categories/shared/categories.service';
 import { User } from '../models/user.model';
+import { Product } from '../home-page/shared/product.model';
+import { ProductOperationsService } from '../home-page/shared/product-operations.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -55,7 +56,8 @@ export class NavBarComponent {
     private userService: UserService,
     private basketService: BasketService,
     private productService: ProductsService,
-    private categoryService: CategoriesService
+    private categoryService: CategoriesService,
+    private productOperationsService: ProductOperationsService
   ) {}
 
   ngOnInit() {
@@ -99,12 +101,34 @@ export class NavBarComponent {
           basketOrderItems: res,
         });
       });
+
+      this.productService.getFavoriteProducts().subscribe((res) => {
+        this.productService.favoriteProductsObservable.next({
+          productAction: 'populate',
+          allFavoriteItems: res,
+        });
+      });
     }
     //  subjects
-    this.productsService
-      .getfavoriteProductsObservable()
-      .subscribe((response) => (this.favoriteProductsList = response));
-    this.productsService.setInitialFavoriteProducts();
+    // this.productsService
+    //   .getfavoriteProductsObservable()
+    //   .subscribe((response) => (this.favoriteProductsList = response));
+    // this.productsService.setInitialFavoriteProducts();
+
+    // aici cred ca trebuie sa mai adaug si un next? sau doar un next si sterg favorite product list???
+    this.productService.favoriteProductsObservable.subscribe((res) => {
+      if (res.productAction === 'add') {
+        this.favoriteProductsList.push(res.favoriteProduct!);
+      } else if (res.productAction === 'delete') {
+        this.favoriteProductsList = this.favoriteProductsList.filter(
+          (product: Product) => product.id !== res.favoriteProduct!.id
+        );
+      } else if (res.productAction === 'reset') {
+        this.favoriteProductsList = [];
+      } else if (res.productAction === 'populate') {
+        this.favoriteProductsList = res.allFavoriteItems!;
+      }
+    });
 
     this.productService.getShopingCartObservable().subscribe((res) => {
       if (res.productAction === 'add') {
@@ -119,7 +143,6 @@ export class NavBarComponent {
         this.orderItems = res.basketOrderItems!;
       }
     });
-    // }
   }
 
   goHome() {
@@ -177,5 +200,12 @@ export class NavBarComponent {
 
   gotoOrdersPage() {
     return this.router.navigate(['my-orders']);
+  }
+  gotToFavoritesPage() {
+    return this.router.navigate(['my-favorites']);
+  }
+  showProductImage(productImage: string) {
+    const imgUrl = this.productOperationsService.getProductImage(productImage);
+    return imgUrl;
   }
 }

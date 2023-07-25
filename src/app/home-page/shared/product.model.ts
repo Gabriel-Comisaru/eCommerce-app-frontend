@@ -14,4 +14,7 @@ export interface Product {
   categoryId: number;
   isDeleted: boolean;
   productImage: any;
+  userId: number;
+  favUserIds: number[];
+  isFavorite?: boolean;
 }

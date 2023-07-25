@@ -2,6 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 99;
+  width: 100%;
 }
 
 .navBar {
@@ -173,4 +174,8 @@
 .imagePlaceholder {
   height: 3rem;
   width: 8rem;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  border: transparent;
 }

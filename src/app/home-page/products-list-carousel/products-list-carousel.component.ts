@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { OrderItem } from '../shared/orderItem.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
+import { ProductOperationsService } from '../shared/product-operations.service';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -16,7 +17,8 @@ export class ProductsListCarouselComponent {
     private productsService: ProductsService,
     private router: Router,
     private authService: AuthService,
-    private basketService: BasketService
+    private basketService: BasketService,
+    private productOperationsService: ProductOperationsService
   ) {}
   @Input() productsToDisplay!: Product[];
   @Input() dataIsLoading!: boolean;
@@ -52,55 +54,19 @@ export class ProductsListCarouselComponent {
   }
 
   addToCart(product: Product) {
-    if (this.authService.isAuthenticated()) {
-      this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
-        this.productsService.shoppingCartObservable.next({
-          orderItem: res,
-          productAction: 'add',
-        });
-      });
-    } else {
-      this.router.navigate(['login']);
-    }
+    this.productOperationsService.addToCart(product);
   }
-  addToFavorite(product: Product) {
-    if (this.authService.isAuthenticated()) {
-      const favoriteProductsList: Product[] = JSON.parse(
-        localStorage.getItem('favoriteProducts') || '[]'
-      );
-      if (favoriteProductsList.some((element) => element.id === product.id)) {
-        //TODO change quantity
-      } else favoriteProductsList.push(product);
 
-      localStorage.setItem(
-        'favoriteProducts',
-        JSON.stringify(favoriteProductsList)
-      );
-      this.productsService.favoriteProductsObservable.next(
-        favoriteProductsList
-      );
-    } else {
-      this.router.navigate(['login']);
-    }
-  }
   getProductDetails(id: number) {
     this.router.navigate([`product-details/${id}`]);
-  }
-  getStock(stock: number) {
-    return stock > 50
-      ? 'In stock'
-      : stock <= 50 && stock > 10
-      ? 'Limited stock'
-      : stock <= 10 && stock > 1
-      ? 'Last ' + stock + ' pieces'
-      : stock === 1
-      ? 'Last piece available'
-      : 'Out of stock';
   }
 
   handleMissingImage(event: Event) {
     (event.target as HTMLImageElement).src =
       '/assets/images/product-not-found.png';
+  }
+  addToFavorite(product: Product) {
+    this.productOperationsService.addToFavorite(product);
   }
 }
 // <!-- notificare ca am adaugat in cos -->

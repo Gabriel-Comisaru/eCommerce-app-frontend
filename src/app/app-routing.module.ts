@@ -17,6 +17,7 @@ import { OrderDataComponent } from './shopping-cart/order-data/order-data.compon
 import { OrderSummaryComponent } from './shopping-cart/order-summary/order-summary.component';
 import { UserOrdersPageComponent } from './user/user-orders-page/user-orders-page.component';
 import { UserOrderDetailsComponent } from './user/user-order-details/user-order-details.component';
+import { FavoriteProductsPageComponent } from './shopping-cart/favorite-products-page/favorite-products-page.component';
 
 const routes: Routes = [
   {
@@ -92,8 +93,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'order-details/:id',
-    component: UserOrderDetailsComponent,
+    path: 'my-favorites',
+    component: FavoriteProductsPageComponent,
     canActivate: [AuthGuard],
   },
 ];
