@@ -3,6 +3,8 @@ import { ProductsService } from './products.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { Product } from './product.model';
+import { OrderItem } from './orderItem.model';
+import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +13,8 @@ export class ProductOperationsService {
   constructor(
     private productsService: ProductsService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private basketService: BasketService
   ) {}
 
   addToFavorite(product: Product) {
@@ -44,14 +47,27 @@ export class ProductOperationsService {
     }
   }
 
-  addToCart(product: Product) {
+  addToCart(product: Product, basketItems: any = []) {
     if (this.authService.isAuthenticated()) {
-      this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
-        this.productsService.shoppingCartObservable.next({
-          orderItem: res,
-          productAction: 'add',
-        });
-      });
+      let orderItem = basketItems.filter(
+        (item: OrderItem) => item.productId === product.id
+      );
+      console.log(orderItem);
+      if (orderItem.length) {
+        this.basketService.updateOrderQuantity(
+          orderItem[0].id,
+          orderItem[0].quantity + 1
+        );
+      } else {
+        this.productsService
+          .addProductToOrder(product.id, 1)
+          .subscribe((res) => {
+            this.productsService.shoppingCartObservable.next({
+              orderItem: res,
+              productAction: 'add',
+            });
+          });
+      }
     } else {
       this.router.navigate(['login']);
     }

@@ -24,11 +24,11 @@ export class ProductsService {
   private ordersUrl = 'http://localhost:8081/api/orders';
   private orderItemsUrl = 'http://localhost:8081/api/orderItems';
   // public shoppingCartObservable = new Subject<Product[]>();
-  public shoppingCartObservable = new Subject<{
+  public shoppingCartObservable = new BehaviorSubject<{
     orderItem?: OrderItem;
     productAction: string;
     basketOrderItems?: OrderItem[];
-  }>();
+  }>({} as any);
   public favoriteProductsObservable = new Subject<{
     favoriteProduct?: Product;
     productAction: string;
@@ -187,6 +187,4 @@ export class ProductsService {
     const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
     return this.httpClient.delete<any>(url, {});
   }
-
-
 }

@@ -109,13 +109,7 @@ export class NavBarComponent {
         });
       });
     }
-    //  subjects
-    // this.productsService
-    //   .getfavoriteProductsObservable()
-    //   .subscribe((response) => (this.favoriteProductsList = response));
-    // this.productsService.setInitialFavoriteProducts();
 
-    // aici cred ca trebuie sa mai adaug si un next? sau doar un next si sterg favorite product list???
     this.productService.favoriteProductsObservable.subscribe((res) => {
       if (res.productAction === 'add') {
         this.favoriteProductsList.push(res.favoriteProduct!);
@@ -127,12 +121,25 @@ export class NavBarComponent {
         this.favoriteProductsList = [];
       } else if (res.productAction === 'populate') {
         this.favoriteProductsList = res.allFavoriteItems!;
+      } else if (res.productAction === 'update') {
       }
     });
 
     this.productService.getShopingCartObservable().subscribe((res) => {
       if (res.productAction === 'add') {
-        this.orderItems.push(res.orderItem!);
+        if (
+          this.orderItems.some(
+            (item) => item.productId === res.orderItem?.productId
+          )
+        ) {
+          const index = this.orderItems.findIndex(
+            (element) => element.productId === res.orderItem?.productId
+          );
+
+          this.orderItems[index].quantity = this.orderItems[index].quantity + 1;
+        } else {
+          this.orderItems.push(res.orderItem!);
+        }
       } else if (res.productAction === 'delete') {
         this.orderItems = this.orderItems.filter(
           (orderItem: OrderItem) => orderItem.id !== res.orderItem!.id

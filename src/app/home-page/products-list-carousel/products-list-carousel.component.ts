@@ -18,15 +18,24 @@ export class ProductsListCarouselComponent {
     private router: Router,
     private authService: AuthService,
     private basketService: BasketService,
-    private productOperationsService: ProductOperationsService
+    private productOperationsService: ProductOperationsService,
+    private productService: ProductsService
   ) {}
   @Input() productsToDisplay!: Product[];
   @Input() dataIsLoading!: boolean;
 
   private orderItems: OrderItem[] = [];
   public productsToDisplayWithImages!: Product[];
+  public basketItems: any;
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('spanac');
+    this.productService.getShopingCartObservable().subscribe((res) => {
+      this.basketItems = res.basketOrderItems;
+
+      console.log(res);
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.productsToDisplay && this.productsToDisplay.length > 0) {
@@ -54,7 +63,7 @@ export class ProductsListCarouselComponent {
   }
 
   addToCart(product: Product) {
-    this.productOperationsService.addToCart(product);
+    this.productOperationsService.addToCart(product, this.basketItems);
   }
 
   getProductDetails(id: number) {
