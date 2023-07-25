@@ -45,10 +45,7 @@ export class FavoriteProductsPageComponent {
     // this.deleteFavoriteProduct(product);
     // // if delete fails for some reason it will still add my product to cart
     this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
-      this.productsService.shoppingCartObservable.next({
-        productAction: 'add',
-        orderItem: res,
-      });
+
     });
   }
 

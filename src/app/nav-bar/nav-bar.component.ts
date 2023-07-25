@@ -96,10 +96,7 @@ export class NavBarComponent {
 
     if (Object.keys(this.userLoggedIn).length !== 0) {
       this.productsService.getCurrentBasket().subscribe((res) => {
-        this.productsService.shoppingCartObservable.next({
-          productAction: 'populate',
-          basketOrderItems: res,
-        });
+
       });
 
       this.productService.getFavoriteProducts().subscribe((res) => {
@@ -126,29 +123,7 @@ export class NavBarComponent {
     });
 
     this.productService.getShopingCartObservable().subscribe((res) => {
-      if (res.productAction === 'add') {
-        if (
-          this.orderItems.some(
-            (item) => item.productId === res.orderItem?.productId
-          )
-        ) {
-          const index = this.orderItems.findIndex(
-            (element) => element.productId === res.orderItem?.productId
-          );
-
-          this.orderItems[index].quantity = this.orderItems[index].quantity + 1;
-        } else {
-          this.orderItems.push(res.orderItem!);
-        }
-      } else if (res.productAction === 'delete') {
-        this.orderItems = this.orderItems.filter(
-          (orderItem: OrderItem) => orderItem.id !== res.orderItem!.id
-        );
-      } else if (res.productAction === 'reset') {
-        this.orderItems = [];
-      } else if (res.productAction === 'populate') {
-        this.orderItems = res.basketOrderItems!;
-      }
+      this.orderItems = res.basketOrderItems!;
     });
   }
 

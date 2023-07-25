@@ -30,11 +30,6 @@ export class BasketService {
     return this.httpClient.get(url, { responseType: 'json' });
   }
 
-  deleteOrderItem(productId: number) {
-    const url = `${this.url}/orderItems/${productId}`;
-    return this.httpClient.delete(url, { responseType: 'text' });
-  }
-
   getOrderedItems(): Observable<any> {
     const url = `${this.url}/orders/me/basket`;
     return this.httpClient.get<any>(url);
@@ -44,10 +39,4 @@ export class BasketService {
     const url = `${this.url}/orders/me`;
     return this.httpClient.get<any>(url);
   }
-  updateOrderQuantity(productId: number, quantity: number) {
-    const url = `${this.url}/orderItems/${productId}/quantity?quantity=${quantity}`;
-    return this.httpClient.put(url, {}, { responseType: 'text' });
-  }
-
-
 }

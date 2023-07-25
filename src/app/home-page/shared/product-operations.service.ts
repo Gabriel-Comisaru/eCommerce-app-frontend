@@ -52,9 +52,8 @@ export class ProductOperationsService {
       let orderItem = basketItems.filter(
         (item: OrderItem) => item.productId === product.id
       );
-      console.log(orderItem);
       if (orderItem.length) {
-        this.basketService.updateOrderQuantity(
+        this.productsService.updateOrderQuantity(
           orderItem[0].id,
           orderItem[0].quantity + 1
         );
@@ -62,10 +61,7 @@ export class ProductOperationsService {
         this.productsService
           .addProductToOrder(product.id, 1)
           .subscribe((res) => {
-            this.productsService.shoppingCartObservable.next({
-              orderItem: res,
-              productAction: 'add',
-            });
+
           });
       }
     } else {

@@ -55,9 +55,6 @@ export class AuthService {
     // favoriteProducts doesn t update in real time
     localStorage.removeItem('favoriteProducts');
     this.userService.loggedUser.next({});
-    this.productsService.shoppingCartObservable.next({
-      productAction: 'reset',
-    });
 
     this.productsService.favoriteProductsObservable.next({
       productAction: 'reset',

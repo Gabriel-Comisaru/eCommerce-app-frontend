@@ -25,8 +25,6 @@ export class ProductsService {
   private orderItemsUrl = 'http://localhost:8081/api/orderItems';
   // public shoppingCartObservable = new Subject<Product[]>();
   public shoppingCartObservable = new BehaviorSubject<{
-    orderItem?: OrderItem;
-    productAction: string;
     basketOrderItems?: OrderItem[];
   }>({} as any);
   public favoriteProductsObservable = new Subject<{
@@ -34,10 +32,9 @@ export class ProductsService {
     productAction: string;
     allFavoriteItems?: Product[];
   }>();
+  public currentBasketItems :OrderItem[] = [];
 
   getShopingCartObservable(): Observable<{
-    orderItem?: OrderItem;
-    productAction: string;
     basketOrderItems?: OrderItem[];
   }> {
     return this.shoppingCartObservable.asObservable();
@@ -129,7 +126,12 @@ export class ProductsService {
   ): Observable<OrderItem> {
     const addProductToOrderUrl = `http://localhost:8081/api/orders/${productId}?quantity=${quantity}`;
 
-    return this.httpClient.post<OrderItem>(addProductToOrderUrl, {});
+    return this.httpClient.post<OrderItem>(addProductToOrderUrl, {}).pipe(tap((res)=> {
+      this.currentBasketItems.push(res);
+      this.shoppingCartObservable.next({
+        basketOrderItems: this.currentBasketItems,
+      });
+    }));
   }
 
   // do model for that id quantity productId orderId
@@ -161,7 +163,22 @@ export class ProductsService {
 
   getCurrentBasket(): Observable<OrderItem[]> {
     const url = 'http://localhost:8081/api/orders/me/basket';
-    return this.httpClient.get<OrderItem[]>(url);
+    return this.httpClient.get<OrderItem[]>(url).pipe(tap(res => {
+      this.currentBasketItems = res;
+      this.shoppingCartObservable.next({
+        basketOrderItems: res,
+      });
+    }));
+  }
+
+  deleteOrderItem(orderId: number) {
+    const url = `http://localhost:8081/api/orderItems/${orderId}`;
+    return this.httpClient.delete(url, { responseType: 'text' }).pipe(tap(()=> {
+      this.currentBasketItems = this.currentBasketItems.filter(item => item.orderId !== orderId);
+      this.shoppingCartObservable.next({
+        basketOrderItems: this.currentBasketItems,
+      });
+    }));
   }
 
   getDiscountedProducts(): Observable<Product[]> {
@@ -186,5 +203,20 @@ export class ProductsService {
   deleteFavoriteProduct(productId: number) {
     const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
     return this.httpClient.delete<any>(url, {});
+  }
+
+  updateOrderQuantity(orderId: number, quantity: number) {
+    const url = `http://localhost:8081/api/orderItems/${orderId}/quantity?quantity=${quantity}`;
+    return this.httpClient.put(url, {}, { responseType: 'text' }).pipe(tap(()=> {
+      this.currentBasketItems = this.currentBasketItems.map(item => {
+        if(item.orderId === orderId) {
+          item.quantity = quantity
+        }
+        return item;
+      });
+      this.shoppingCartObservable.next({
+        basketOrderItems: this.currentBasketItems,
+      });
+    }));
   }
 }

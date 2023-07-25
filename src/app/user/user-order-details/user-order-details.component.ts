@@ -29,10 +29,7 @@ export class UserOrderDetailsComponent {
     this.productsService
       .addProductToOrder(product.productId, 1)
       .subscribe((res) => {
-        this.productsService.shoppingCartObservable.next({
-          orderItem: res,
-          productAction: 'add',
-        });
+
       });
   }
 }

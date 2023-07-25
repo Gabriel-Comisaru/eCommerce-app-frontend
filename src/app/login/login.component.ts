@@ -44,10 +44,7 @@ export class LoginComponent implements OnInit {
             this.productsService.getCurrentBasket()
           ).subscribe((res) => {
             if (res instanceof Array) {
-              this.productsService.shoppingCartObservable.next({
-                productAction: 'populate',
-                basketOrderItems: res,
-              });
+
             }
           });
           this.productsService.getFavoriteProducts().subscribe((res) => {
