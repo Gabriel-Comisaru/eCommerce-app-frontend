@@ -62,7 +62,7 @@
             (error)="handleMissingImage($event)"
             class="w-full h-12rem max-h-full shadow-2 productImage"
             (click)="getProductDetails(product.id)"
-            style="cursor: pointer;"
+            style="cursor: pointer"
           />
         </div>
         <div class="detailsContainer">
@@ -113,9 +113,12 @@
             <p-button
               (onClick)="addToFavorite(product)"
               type="button"
-              styleClass="p-button-success"
+              styleClass="p-button-raised p-button-text p-button-danger"
               [icon]="
-                getFavoriteStatus(product) ? 'pi pi-star-fill' : 'pi pi-star'
+                product.favUserIds &&
+                product.favUserIds.includes(product.userId)
+                  ? 'pi pi-heart-fill'
+                  : 'pi pi-heart'
               "
             ></p-button>
           </div>

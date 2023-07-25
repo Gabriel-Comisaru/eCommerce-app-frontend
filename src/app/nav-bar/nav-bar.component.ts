@@ -14,6 +14,7 @@ import { BasketService } from '../shopping-cart/shared/basket.service';
 import { CategoriesService } from '../product-categories/shared/categories.service';
 import { User } from '../models/user.model';
 import { Product } from '../home-page/shared/product.model';
+import { ProductOperationsService } from '../home-page/shared/product-operations.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -55,7 +56,8 @@ export class NavBarComponent {
     private userService: UserService,
     private basketService: BasketService,
     private productService: ProductsService,
-    private categoryService: CategoriesService
+    private categoryService: CategoriesService,
+    private productOperationsService: ProductOperationsService
   ) {}
 
   ngOnInit() {
@@ -141,7 +143,6 @@ export class NavBarComponent {
         this.orderItems = res.basketOrderItems!;
       }
     });
-    // }
   }
 
   goHome() {
@@ -202,5 +203,9 @@ export class NavBarComponent {
   }
   gotToFavoritesPage() {
     return this.router.navigate(['my-favorites']);
+  }
+  showProductImage(productImage: string) {
+    const imgUrl = this.productOperationsService.getProductImage(productImage);
+    return imgUrl;
   }
 }

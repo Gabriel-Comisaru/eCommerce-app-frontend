@@ -97,3 +97,10 @@
   align-items: center;
   justify-content: space-evenly;
 }
+
+.productButtons :nth-child(2) ::ng-deep .p-button-icon {
+  font-size: x-large;
+}
+.productButtons :nth-child(1) ::ng-deep .p-button-icon {
+  font-size: large;
+}

@@ -188,7 +188,5 @@ export class ProductsService {
     return this.httpClient.delete<any>(url, {});
   }
 
-  getProductImage(productImage: string) {
-    return `http://localhost:8081/api/images/download?name=${productImage}`;
-  }
+
 }

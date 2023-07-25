@@ -1,5 +1,4 @@
 .mainDiv {
-  border: solid gray 1px;
   border-radius: 5px;
 }
 
@@ -15,8 +14,8 @@ p-table .item {
 }
 
 p-table thead th {
-  background-color: #f5f5f5!important;
-  padding: 10px!important;
+  background-color: #f5f5f5 !important;
+  padding: 10px !important;
 }
 .p-card-header {
   width: 80px; /* Adjust the width as needed */
@@ -30,9 +29,7 @@ p-table thead th {
 p-table td:nth-child(4) {
   text-align: center;
   font-weight: bold;
-
 }
-
 
 /*.product-img {*/
 /*  width: 100%;*/
@@ -55,7 +52,6 @@ p-table td:nth-child(4) {
   color: #888;
 }
 .itemPrice {
-
 }
 .loading {
   display: flex;

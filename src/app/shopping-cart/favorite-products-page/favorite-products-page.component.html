@@ -14,13 +14,12 @@
       <th>Image</th>
       <th>Name</th>
       <th>Price</th>
+      <th>Availability</th>
       <th>Actions</th>
     </tr>
   </ng-template>
+
   <ng-template pTemplate="body" let-product let-index="rowIndex">
-    <div *ngIf="loading" class="loading">
-      <div class="spinner"></div>
-    </div>
     <tr class="item">
       <td>
         <p-image
@@ -30,12 +29,12 @@
         ></p-image>
       </td>
       <td>{{ product.name }}</td>
-
       <td class="itemPrice">{{ product.price }} $</td>
+      <td><app-product-status [product]="product"></app-product-status></td>
       <td class="actions">
         <p-button
           icon="pi pi-cart-plus"
-          [disabled]="product.unitsInStock === 0"
+          [disabled]="product.unitsInStock < 1"
           (click)="moveProductToBasket(product)"
         ></p-button>
         <p-button
@@ -53,6 +52,7 @@
       <td>
         <strong>${{ getTotalPrice() }}</strong>
       </td>
+      <td></td>
       <td></td>
     </tr>
   </ng-template>

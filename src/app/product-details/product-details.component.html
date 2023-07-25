@@ -7,7 +7,9 @@
       [cancel]="false"
       (click)="scrollToSection('reviews')"
     ></p-rating>
-    <p><em>Category: {{product.category}}</em></p>
+    <p>
+      <em>Category: {{ product.category }}</em>
+    </p>
   </div>
   <div
     class="gallery xl:flex lg:block md:block sm:block lg:justify-content-between md:justify-content-center sm:justify-content-center"
@@ -19,13 +21,10 @@
         [showIndicators]="true"
         [showItemNavigators]="true"
         [showThumbnails]="false"
-        [containerStyle]="{ 'width': '640px' }"
+        [containerStyle]="{ width: '640px' }"
       >
         <ng-template pTemplate="item" let-image>
-          <img
-            [src]="image"
-            style="height: 500px; max-width: 640px"
-          />
+          <img [src]="image" style="height: 500px; max-width: 640px" />
         </ng-template>
       </p-galleria>
     </div>
@@ -68,7 +67,12 @@
               [style]="{ width: '100%', margin: '5px 0' }"
               styleClass="p-button-danger"
               label="Add to favorites"
-              icon="pi pi-heart"
+              [icon]="
+                product.favUserIds &&
+                product.favUserIds.includes(product.userId)
+                  ? 'pi pi-heart-fill'
+                  : 'pi pi-heart'
+              "
               (click)="addToFavorite(product)"
             ></p-button>
             <p-button
@@ -114,7 +118,12 @@
   </div>
   <div id="reviews" class="reviews w-full my-5">
     <p-card header="Reviews">
-      <p *ngIf="reviews.length === 0"><em>The product did not receive any reviews yet. Be the first to share your opinion!</em></p>
+      <p *ngIf="reviews.length === 0">
+        <em
+          >The product did not receive any reviews yet. Be the first to share
+          your opinion!</em
+        >
+      </p>
       <div class="card" *ngFor="let review of reviews">
         <p-rating
           [(ngModel)]="review.rating"
@@ -159,8 +168,14 @@
             ></textarea>
             <label htmlFor="reviewBody">Enter your review</label>
           </span>
-          <p *ngIf="!reviewForm.valid && reviewForm.touched" style="color: red;"><strong>Complete your review!</strong></p>
-          <p-button [disabled]="!reviewForm.valid" label="Submit review" (click)="onSubmit()"></p-button>
+          <p *ngIf="!reviewForm.valid && reviewForm.touched" style="color: red">
+            <strong>Complete your review!</strong>
+          </p>
+          <p-button
+            [disabled]="!reviewForm.valid"
+            label="Submit review"
+            (click)="onSubmit()"
+          ></p-button>
         </div>
       </p-card>
     </form>

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { OrderItem } from '../shared/orderItem.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
+import { ProductOperationsService } from '../shared/product-operations.service';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -16,7 +17,8 @@ export class ProductsListCarouselComponent {
     private productsService: ProductsService,
     private router: Router,
     private authService: AuthService,
-    private basketService: BasketService
+    private basketService: BasketService,
+    private productOperationsService: ProductOperationsService
   ) {}
   @Input() productsToDisplay!: Product[];
   @Input() dataIsLoading!: boolean;
@@ -52,46 +54,9 @@ export class ProductsListCarouselComponent {
   }
 
   addToCart(product: Product) {
-    if (this.authService.isAuthenticated()) {
-      this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
-        this.productsService.shoppingCartObservable.next({
-          orderItem: res,
-          productAction: 'add',
-        });
-      });
-    } else {
-      this.router.navigate(['login']);
-    }
+    this.productOperationsService.addToCart(product);
   }
-  addToFavorite(product: Product) {
-    if (this.authService.isAuthenticated()) {
-      if (this.getFavoriteStatus(product)) {
-        // if product already exists the favorite list delete it
-        this.productsService
-          .deleteFavoriteProduct(product.id)
-          .subscribe((res) => {
-            this.productsService.favoriteProductsObservable.next({
-              productAction: 'delete',
-              favoriteProduct: product,
-            });
-            product.favUserIds = product.favUserIds.filter(
-              (id) => id !== product.userId
-            );
-          });
-      } else {
-        this.productsService.addFavoriteProduct(product.id).subscribe((res) => {
-          this.productsService.favoriteProductsObservable.next({
-            productAction: 'add',
-            favoriteProduct: product,
-          });
 
-          product.favUserIds.push(product.userId);
-        });
-      }
-    } else {
-      this.router.navigate(['login']);
-    }
-  }
   getProductDetails(id: number) {
     this.router.navigate([`product-details/${id}`]);
   }
@@ -100,11 +65,8 @@ export class ProductsListCarouselComponent {
     (event.target as HTMLImageElement).src =
       '/assets/images/product-not-found.png';
   }
-
-  getFavoriteStatus(product: Product) {
-    // eu tb sa fac request catre server ca altfel nu vede - teoretic sa fac get sau sa filter it you of user Ids
-    const isFavorite = product.favUserIds.some((id) => id === product.userId);
-    return isFavorite;
+  addToFavorite(product: Product) {
+    this.productOperationsService.addToFavorite(product);
   }
 }
 // <!-- notificare ca am adaugat in cos -->
