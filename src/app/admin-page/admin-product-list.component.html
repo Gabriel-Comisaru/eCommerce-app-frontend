@@ -11,6 +11,13 @@
       <p-button pTooltip="Add product" tooltipPosition="bottom"
                 (click)="showDialogNewProduct()" icon="pi pi-plus">
       </p-button>
+
+    </ng-template>
+    <ng-template pTemplate="start">
+      <input pInputText type="text"
+             [(ngModel)]="searchTerm"
+             (ngModelChange)="this.searchTermUpdate.next($event)"
+             placeholder="Search keyword" />
     </ng-template>
   </p-menubar>
   <p-table styleClass="p-datatable-sm"
@@ -23,6 +30,7 @@
            [value]="productsList"
            [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
            [globalFilterFields]="['name']">
+
     <ng-template pTemplate="header">
       <tr>
         <th>#</th>
@@ -41,7 +49,6 @@
     <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
       <tr class="item" [pSelectableRow]="product" [pSelectableRowIndex]="rowIndex">
         <td>{{rowIndex + 1}}</td>
-
         <td>
           <img alt="no image" *ngIf="product.imagesName[0]" width="50px"
                src="http://localhost:8081/api/images/download?name={{product.imagesName[0]}}"

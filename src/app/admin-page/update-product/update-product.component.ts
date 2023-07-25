@@ -1,10 +1,11 @@
 import {
-  Component,
+  Component, ElementRef,
   EventEmitter,
   Input,
   OnInit,
   Output,
   SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
 import {MessageService} from 'primeng/api';
@@ -18,6 +19,7 @@ import {ProductsService} from 'src/app/home-page/shared/products.service';
   providers: [MessageService],
 })
 export class UpdateProductComponent implements OnInit {
+  @ViewChild('uploadComponent') uploadComponent!: ElementRef
   @Input() selectedProduct!: Product;
   @Input() show: any;
   @Input() header: any;
@@ -27,10 +29,11 @@ export class UpdateProductComponent implements OnInit {
   @Output() savedProduct = new EventEmitter();
   @Output() updatedProduct = new EventEmitter();
   loading: boolean = false;
-
+  imagesList: any = [];
+  i: any = 0;
   visible = false;
-  selectedFile!: File;
   categoriesList: any = [];
+
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +42,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.i = 0;
     this.productsService.getCategories().subscribe((list: any) => {
       this.categoriesList = list;
     });
@@ -81,6 +85,9 @@ export class UpdateProductComponent implements OnInit {
       this.productForm.controls.description.setValue(this.selectedProduct.description.toString());
       this.productForm.controls.stock.setValue(this.selectedProduct.unitsInStock.toString());
       this.productForm.controls.discount.setValue(this.selectedProduct.discountPercentage.toString());
+      this.productForm.controls.imagesName.setValue(this.selectedProduct.imagesName[0])
+      this.imagesList = [...this.selectedProduct.imagesName];
+      this.i = 0;
     } else if (this.header != this.selectedProduct.name) {
       this.resetFormValues()
       this.productForm.controls.categoryId.enable();
@@ -115,7 +122,6 @@ export class UpdateProductComponent implements OnInit {
       this.loading = true;
       this.productsService.sendForm(formData, +this.productForm.controls.categoryId.value)
         .subscribe((res) => {
-          console.log(res)
           this.loading = false;
           this.visible = false;
           this.savedProduct.emit(res)
@@ -137,8 +143,33 @@ export class UpdateProductComponent implements OnInit {
   }
 
   close() {
+    this.i = 0;
     this.visible = false;
     this.closeEmitter.emit(this.visible);
   }
 
+  uploadImage(id: number, event: any, uploadComponent: any) {
+    const formData = new FormData();
+    formData.append('imageFile', event.currentFiles[this.i])
+    console.log(event.currentFiles[this.i])
+    this.productsService.saveImage(formData, id)
+      .subscribe((res) => {
+        this.updatedProduct.emit(res);
+        this.i++;
+        console.log(this.uploadComponent)
+        uploadComponent.clear();
+      })
+
+  }
+
+  deleteImage(image: any) {
+    this.productsService.deleteImage(image)
+      .subscribe((res) => {
+        this.updatedProduct.emit({
+          ...this.selectedProduct, imagesName: this.imagesList.filter((item: any) => {
+            return item.name != image.name
+          })
+        });
+      })
+  }
 }

@@ -21,6 +21,7 @@ export class ProductsService {
   private reviewsUrl = 'http://localhost:8081/api/reviews';
   private productCategoryUrl = 'http://localhost:8081/api/products/category';
   private imageUrl = 'http://localhost:8081/api/images/upload';
+  private deleteImageUrl = `${BASE_URL_API}/images/delete`;
   private ordersUrl = 'http://localhost:8081/api/orders';
   private orderItemsUrl = 'http://localhost:8081/api/orderItems';
   // public shoppingCartObservable = new Subject<Product[]>();
@@ -154,9 +155,8 @@ export class ProductsService {
   }
 
   sendForm(formData: any, categoryId: number) {
-    return this.httpClient
-      .post<any>(`${this.productCategoryUrl}/${categoryId}`, formData)
-      .pipe(tap((res) => console.log(res)));
+    return this.httpClient.post<any>(`${this.productCategoryUrl}/${categoryId}`,formData);
+
   }
 
   getCurrentBasket(): Observable<OrderItem[]> {
@@ -173,6 +173,11 @@ export class ProductsService {
     return this.httpClient.get<Product[]>(url);
   }
 
+  deleteImage(name:any){
+    const url = `${this.deleteImageUrl}?name=${name}`;
+    return this.httpClient.delete(url)
+  }
+
   getFavoriteProducts(): Observable<Product[]> {
     const url = 'http://localhost:8081/api/products/fav';
     return this.httpClient.get<Product[]>(url);
@@ -187,6 +192,4 @@ export class ProductsService {
     const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
     return this.httpClient.delete<any>(url, {});
   }
-
-
 }
