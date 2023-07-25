@@ -53,7 +53,7 @@ export class ProductAllComponent implements OnInit {
       this.filteredList = this.placeholder;
     }
 
-    if (priceMin && priceMax) {
+    if (priceMin>-1 && priceMax) {
       this.filteredList = this.filteredList.filter((product: Product) => {
         const price = product.price;
         return price >= priceMin && price <= priceMax;
