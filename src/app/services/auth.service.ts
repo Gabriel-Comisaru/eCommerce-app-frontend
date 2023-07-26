@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
-import { ProductsService } from '../home-page/shared/products.service';
 import { RegisterFields } from '../models/register.model';
 
 @Injectable({
@@ -16,7 +15,6 @@ export class AuthService {
     private httpClient: HttpClient,
     private router: Router,
     private userService: UserService,
-    private productsService: ProductsService
   ) {
   }
 
@@ -49,10 +47,6 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('favoriteProducts');
     this.userService.loggedUser.next({});
-
-    this.productsService.favoriteProductsObservable.next({
-      productAction: 'reset',
-    });
 
     this.redirectToLogin();
   }

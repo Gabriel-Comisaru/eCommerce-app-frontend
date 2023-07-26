@@ -142,6 +142,14 @@ export class NavBarComponent {
   logout() {
     this.authService.logout();
     this.userOverlay.hide();
+
+    this.productsService.favoriteProductsObservable.next({
+      productAction: 'reset',
+    });
+
+    this.productsService.shoppingCartObservable.next({
+      basketOrderItems: [],
+    });
   }
 
   goToRegisterPage() {
