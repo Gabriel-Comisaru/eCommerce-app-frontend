@@ -24,7 +24,7 @@ export class ProductsService {
   private deleteImageUrl = `${BASE_URL_API}/images/delete`;
   private ordersUrl = `${BASE_URL_API}/orders`;
   private orderItemsUrl = `${BASE_URL_API}/orderItems`;
-  // public shoppingCartObservable = new Subject<Product[]>();
+
   public shoppingCartObservable = new BehaviorSubject<{
     basketOrderItems?: OrderItem[];
   }>({ basketOrderItems: [] });
@@ -123,7 +123,7 @@ export class ProductsService {
   }
 
   getCurrentBasket(): Observable<OrderItem[]> {
-    const url = 'http://localhost:8081/api/orders/me/basket';
+    const url = `${BASE_URL_API}/orders/me/basket`;
     return this.httpClient.get<OrderItem[]>(url).pipe(
       tap((res) => {
         this.currentBasketItems = res;
@@ -135,7 +135,7 @@ export class ProductsService {
   }
 
   deleteOrderItem(orderId: number) {
-    const url = `http://localhost:8081/api/orderItems/${orderId}`;
+    const url = `${BASE_URL_API}/orderItems/${orderId}`;
     return this.httpClient.delete(url, { responseType: 'text' }).pipe(
       tap(() => {
         this.currentBasketItems = this.currentBasketItems.filter(
@@ -158,7 +158,7 @@ export class ProductsService {
   }
 
   updateOrderQuantity(orderId: number, quantity: number) {
-    const url = `http://localhost:8081/api/orderItems/${orderId}/quantity?quantity=${quantity}`;
+    const url = `${BASE_URL_API}/orderItems/${orderId}/quantity?quantity=${quantity}`;
     return this.httpClient.put(url, {}, { responseType: 'text' }).pipe(
       tap(() => {
         this.currentBasketItems = this.currentBasketItems.map((item) => {
@@ -174,7 +174,7 @@ export class ProductsService {
     );
   }
 
-  addToCart(product: Product, basketItems: OrderItem[] = []) {
+  addToCart(product: Product, basketItems: OrderItem[]) {
     let orderItem = basketItems.filter(
       (item: OrderItem) => item.productId === product.id
     );
@@ -194,7 +194,7 @@ export class ProductsService {
   }
 
   getProductImage(productImage: string) {
-    return `http://localhost:8081/api/images/download?name=${productImage}`;
+    return `${BASE_URL_API}/images/download?name=${productImage}`;
   }
   deleteImage(name: any) {
     const url = `${this.deleteImageUrl}?name=${name}`;

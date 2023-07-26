@@ -56,7 +56,7 @@ export class NavBarComponent {
     this.productService.getShopingCartObservable().subscribe((res) => {
       this.orderItems = res.basketOrderItems!;
     });
-
+    console.log(this.userLoggedIn);
     if (this.userLoggedIn) {
       this.productsService.getCurrentBasket().subscribe();
       this.favoriteProductsService.getFavoriteProducts().subscribe();
@@ -85,6 +85,7 @@ export class NavBarComponent {
       { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
       {
         label: 'All Categories',
+
         icon: 'pi pi-th-large',
         routerLink: '/categories',
       },
@@ -107,10 +108,6 @@ export class NavBarComponent {
   goToAdminPage() {
     this.isAdmin = !this.isAdmin;
     this.router.navigate(['admin/products']);
-  }
-
-  clearStorage() {
-    window.localStorage.clear();
   }
 
   goToLoginPage() {

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from './product.model';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-
+import { BASE_URL_API } from 'src/app/settings';
 @Injectable({
   providedIn: 'root',
 })
@@ -14,8 +14,9 @@ export class FavoriteProductsServiceService {
   public currentFavoriteItems: Product[] = [];
   constructor(private httpClient: HttpClient) {}
 
+  // get favorite products of the logged user
   getFavoriteProducts(): Observable<Product[]> {
-    const url = 'http://localhost:8081/api/products/fav';
+    const url = `${BASE_URL_API}/products/fav`;
     return this.httpClient.get<Product[]>(url).pipe(
       tap((res) => {
         this.currentFavoriteItems = res;
@@ -27,7 +28,7 @@ export class FavoriteProductsServiceService {
   }
 
   addFavoriteProduct(product: Product): Observable<string> {
-    const url = `http://localhost:8081/api/products/fav?productId=${product.id}`;
+    const url = `${BASE_URL_API}/products/fav?productId=${product.id}`;
     return this.httpClient.post<string>(url, { responseType: 'text' }).pipe(
       tap(() => {
         this.currentFavoriteItems.push(product);
@@ -39,7 +40,7 @@ export class FavoriteProductsServiceService {
   }
 
   deleteFavoriteProduct(productId: number) {
-    const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
+    const url = `${BASE_URL_API}/products/fav?productId=${productId}`;
     return this.httpClient.delete<any>(url, {}).pipe(
       tap(() => {
         this.currentFavoriteItems = this.currentFavoriteItems.filter(
@@ -51,8 +52,8 @@ export class FavoriteProductsServiceService {
       })
     );
   }
-  addToFavorite(product: Product) {
-    if (product.favUserIds.includes(product.userId)) {
+  addToFavorite(product: Product, favoriteList: Product[]) {
+    if (favoriteList.some((el) => el.id === product.id)) {
       // if product already exists the favorite list delete it
       this.deleteFavoriteProduct(product.id).subscribe();
     } else {

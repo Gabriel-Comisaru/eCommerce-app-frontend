@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 import { FavoriteProductsServiceService } from '../home-page/shared/favorite-products-service.service';
 
 import { BASE_URL_API } from '../settings';
+import { OrderItem } from '../home-page/shared/orderItem.model';
 
 @Component({
   selector: 'app-product-details',
@@ -26,7 +27,8 @@ export class ProductDetailsComponent implements OnInit {
     title: ['', [Validators.required]],
     comment: ['', [Validators.required]],
   });
-
+  favoriteItems: Product[] = [];
+  basketItems: OrderItem[] = [];
   constructor(
     private productService: ProductsService,
     private activatedRoute: ActivatedRoute,
@@ -51,6 +53,12 @@ export class ProductDetailsComponent implements OnInit {
 
     this.productService.getProductReviews(id).subscribe((reviews) => {
       this.reviews = reviews;
+    });
+    this.favoriteProductsService.favoriteProductsObservable.subscribe((res) => {
+      this.favoriteItems = res.favoriteProducts!;
+    });
+    this.productService.getShopingCartObservable().subscribe((res) => {
+      this.basketItems = res.basketOrderItems!;
     });
   }
 
@@ -83,10 +91,13 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToFavorite(product: Product) {
-    this.favoriteProductsService.addToFavorite(product);
+    this.favoriteProductsService.addToFavorite(product, this.favoriteItems);
   }
 
   addToCart(product: Product) {
-    this.productService.addToCart(product);
+    this.productService.addToCart(product, this.basketItems);
+  }
+  checkIfFavorite(product: Product) {
+    return this.favoriteItems.some((el) => el.id === product.id);
   }
 }

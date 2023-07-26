@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ProductsService } from 'src/app/home-page/shared/products.service';
 import { BehaviorSubject } from 'rxjs';
 import { FavoriteProductsServiceService } from 'src/app/home-page/shared/favorite-products-service.service';
+import { OrderItem } from 'src/app/home-page/shared/orderItem.model';
 
 @Component({
   selector: 'app-product-list',
@@ -35,16 +36,23 @@ export class ProductListComponent implements OnInit {
   incrementRows = 6;
   sortOptions: string[] = ['Price', 'Name', 'Default'];
   selectedSortOption: string = 'Default';
-
+  favoriteItems: Product[] = [];
+  basketItems: OrderItem[] = [];
   ngOnInit(): void {
     this.mockProductService.getCategories().subscribe(() => {
       this.loading = false;
+    });
+    this.favoriteProductsService.favoriteProductsObservable.subscribe((res) => {
+      this.favoriteItems = res.favoriteProducts!;
+    });
+    this.productService.getShopingCartObservable().subscribe((res) => {
+      this.basketItems = res.basketOrderItems!;
     });
   }
 
   addToBasket(product: Product, event: any): void {
     event.stopPropagation();
-    this.productService.addToCart(product);
+    this.productService.addToCart(product, this.basketItems);
   }
 
   getProductDetails(id: number, event: any) {
@@ -53,7 +61,7 @@ export class ProductListComponent implements OnInit {
   }
   addToFavorite(product: Product, event: any) {
     event.stopPropagation();
-    this.favoriteProductsService.addToFavorite(product);
+    this.favoriteProductsService.addToFavorite(product, this.favoriteItems);
   }
 
   loadMoreRows(): void {
@@ -75,5 +83,9 @@ export class ProductListComponent implements OnInit {
         return a.id - b.id;
       });
     }
+  }
+
+  checkIfFavorite(product: Product) {
+    return this.favoriteItems.some((el) => el.id === product.id);
   }
 }

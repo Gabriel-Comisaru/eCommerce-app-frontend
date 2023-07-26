@@ -68,10 +68,7 @@
               styleClass="p-button-danger"
               label="Add to favorites"
               [icon]="
-                product.favUserIds &&
-                product.favUserIds.includes(product.userId)
-                  ? 'pi pi-heart-fill'
-                  : 'pi pi-heart'
+                checkIfFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'
               "
               (click)="addToFavorite(product)"
             ></p-button>
