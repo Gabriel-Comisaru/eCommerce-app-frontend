@@ -1,15 +1,15 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ProductsService } from '../home-page/shared/products.service';
-import { OrderItem, } from '../home-page/shared/orderItem.model';
+import { OrderItem } from '../home-page/shared/orderItem.model';
 import { AdminPageComponent } from '../admin-page/admin-page/admin-page.component';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
-import { BasketService } from '../shopping-cart/shared/basket.service';
 import { User } from '../models/user.model';
 import { Product } from '../home-page/shared/product.model';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { FavoriteProductsServiceService } from '../home-page/shared/favorite-products-service.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -21,12 +21,13 @@ export class NavBarComponent {
   public favoriteProductsList: Product[] = [];
   public isAdmin: boolean = false;
   public categoryItems!: MenuItem[];
-  public userLoggedIn: User = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser') as any) : null;
+  public userLoggedIn: User = localStorage.getItem('currentUser')
+    ? JSON.parse(localStorage.getItem('currentUser') as any)
+    : null;
   public categories: any[] = [];
   public itemCategoriesAny: any[] = [];
   public itemPricesAny: any[] = [];
   public orderItems: OrderItem[] = [];
-
 
   @ViewChild(AdminPageComponent) admin!: AdminPageComponent;
   @ViewChild('userOptions') userOverlay!: OverlayPanel;
@@ -38,54 +39,32 @@ export class NavBarComponent {
     private productsService: ProductsService,
     private authService: AuthService,
     private userService: UserService,
-    private basketService: BasketService,
     private productService: ProductsService,
-  ) {
-  }
+    private favoriteProductsService: FavoriteProductsServiceService
+  ) {}
 
   ngOnInit() {
     this.userService.getLoggedUserObservable().subscribe((res) => {
       this.userLoggedIn = res;
     });
-
     this.productsService.getCategories().subscribe((res) => {
       this.mapCategories(res);
     });
-
-    if (this.userLoggedIn) {
-      this.productsService.getCurrentBasket().subscribe((res) => {
-      });
-
-      this.productService.getFavoriteProducts().subscribe((res) => {
-        this.productService.favoriteProductsObservable.next({
-          productAction: 'populate',
-          allFavoriteItems: res,
-        });
-      });
-    }
-
-    this.productService.favoriteProductsObservable.subscribe((res) => {
-      if (res.productAction === 'add') {
-        this.favoriteProductsList.push(res.favoriteProduct!);
-      } else if (res.productAction === 'delete') {
-        this.favoriteProductsList = this.favoriteProductsList.filter(
-          (product: Product) => product.id !== res.favoriteProduct!.id
-        );
-      } else if (res.productAction === 'reset') {
-        this.favoriteProductsList = [];
-      } else if (res.productAction === 'populate') {
-        this.favoriteProductsList = res.allFavoriteItems!;
-      } else if (res.productAction === 'update') {
-      }
+    this.favoriteProductsService.favoriteProductsObservable.subscribe((res) => {
+      this.favoriteProductsList = res.favoriteProducts!;
     });
-
     this.productService.getShopingCartObservable().subscribe((res) => {
       this.orderItems = res.basketOrderItems!;
     });
+
+    if (this.userLoggedIn) {
+      this.productsService.getCurrentBasket().subscribe();
+      this.favoriteProductsService.getFavoriteProducts().subscribe();
+    }
   }
 
-  mapCategories (categories:any) {
-    this.categoryItems = categories.map((category:any) => {
+  mapCategories(categories: any) {
+    this.categoryItems = categories.map((category: any) => {
       return {
         label: category.name,
         icon: 'pi pi-fw pi-bars',
@@ -103,7 +82,7 @@ export class NavBarComponent {
         icon: 'pi pi-fw pi-bars',
         items: this.categoryItems,
       },
-      {label: 'Deals', icon: 'pi pi-fw pi-percentage'},
+      { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
       {
         label: 'All Categories',
         icon: 'pi pi-th-large',
@@ -143,8 +122,8 @@ export class NavBarComponent {
     this.authService.logout();
     this.userOverlay.hide();
 
-    this.productsService.favoriteProductsObservable.next({
-      productAction: 'reset',
+    this.favoriteProductsService.favoriteProductsObservable.next({
+      favoriteProducts: [],
     });
 
     this.productsService.shoppingCartObservable.next({

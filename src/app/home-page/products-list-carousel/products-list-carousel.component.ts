@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { OrderItem } from '../shared/orderItem.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
+import { FavoriteProductsServiceService } from '../shared/favorite-products-service.service';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -13,16 +14,13 @@ import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
 })
 export class ProductsListCarouselComponent {
   constructor(
-    private productsService: ProductsService,
     private router: Router,
-    private authService: AuthService,
-    private basketService: BasketService,
-    private productService: ProductsService
+    private productService: ProductsService,
+    private favoriteProductsService: FavoriteProductsServiceService
   ) {}
   @Input() productsToDisplay!: Product[];
   @Input() dataIsLoading!: boolean;
 
-  private orderItems: OrderItem[] = [];
   public productsToDisplayWithImages!: Product[];
   public basketItems!: OrderItem[];
 
@@ -30,6 +28,7 @@ export class ProductsListCarouselComponent {
     this.productService.getShopingCartObservable().subscribe((res) => {
       this.basketItems = res.basketOrderItems!;
     });
+    this.favoriteProductsService.favoriteProductsObservable.subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -70,7 +69,7 @@ export class ProductsListCarouselComponent {
       '/assets/images/product-not-found.png';
   }
   addToFavorite(product: Product) {
-    this.productService.addToFavorite(product);
+    this.favoriteProductsService.addToFavorite(product);
   }
 }
 // <!-- notificare ca am adaugat in cos -->

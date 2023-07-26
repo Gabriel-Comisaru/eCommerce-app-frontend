@@ -6,6 +6,7 @@ import { BasketService } from '../shopping-cart/shared/basket.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Review } from '../home-page/shared/review.model';
 import { AuthService } from '../services/auth.service';
+import { FavoriteProductsServiceService } from '../home-page/shared/favorite-products-service.service';
 
 @Component({
   selector: 'app-product-details',
@@ -31,6 +32,7 @@ export class ProductDetailsComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private favoriteProductsService: FavoriteProductsServiceService
   ) {}
 
   ngOnInit(): void {
@@ -81,7 +83,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToFavorite(product: Product) {
-    this.productService.addToFavorite(product);
+    this.favoriteProductsService.addToFavorite(product);
   }
 
   addToCart(product: Product) {

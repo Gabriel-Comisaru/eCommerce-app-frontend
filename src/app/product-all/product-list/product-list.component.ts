@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductsService } from 'src/app/home-page/shared/products.service';
 import { BehaviorSubject } from 'rxjs';
+import { FavoriteProductsServiceService } from 'src/app/home-page/shared/favorite-products-service.service';
 
 @Component({
   selector: 'app-product-list',
@@ -25,6 +26,7 @@ export class ProductListComponent implements OnInit {
     private authService: AuthService,
     private mockProductService: CategoriesService,
     private productService: ProductsService,
+    private favoriteProductsService: FavoriteProductsServiceService
   ) {
     this.totalRows$?.next(0);
   }
@@ -51,7 +53,7 @@ export class ProductListComponent implements OnInit {
   }
   addToFavorite(product: Product, event: any) {
     event.stopPropagation();
-    this.productService.addToFavorite(product);
+    this.favoriteProductsService.addToFavorite(product);
   }
 
   loadMoreRows(): void {

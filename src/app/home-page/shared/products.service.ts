@@ -24,11 +24,6 @@ export class ProductsService {
     basketOrderItems?: OrderItem[];
   }>({ basketOrderItems: [] });
 
-  public favoriteProductsObservable = new Subject<{
-    favoriteProduct?: Product;
-    productAction: string;
-    allFavoriteItems?: Product[];
-  }>();
   public currentBasketItems: OrderItem[] = [];
 
   getShopingCartObservable(): Observable<{
@@ -116,8 +111,10 @@ export class ProductsService {
   }
 
   sendForm(formData: any, categoryId: number) {
-    return this.httpClient
-      .post<any>(`${this.productCategoryUrl}/${categoryId}`, formData);
+    return this.httpClient.post<any>(
+      `${this.productCategoryUrl}/${categoryId}`,
+      formData
+    );
   }
 
   getCurrentBasket(): Observable<OrderItem[]> {
@@ -155,21 +152,6 @@ export class ProductsService {
     return this.httpClient.get<Product[]>(url);
   }
 
-  getFavoriteProducts(): Observable<Product[]> {
-    const url = 'http://localhost:8081/api/products/fav';
-    return this.httpClient.get<Product[]>(url);
-  }
-
-  addFavoriteProduct(productId: number): Observable<string> {
-    const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
-    return this.httpClient.post<string>(url, { responseType: 'text' });
-  }
-
-  deleteFavoriteProduct(productId: number) {
-    const url = `http://localhost:8081/api/products/fav?productId=${productId}`;
-    return this.httpClient.delete<any>(url, {});
-  }
-
   updateOrderQuantity(orderId: number, quantity: number) {
     const url = `http://localhost:8081/api/orderItems/${orderId}/quantity?quantity=${quantity}`;
     return this.httpClient.put(url, {}, { responseType: 'text' }).pipe(
@@ -187,40 +169,16 @@ export class ProductsService {
     );
   }
 
-  addToFavorite(product: Product) {
-    if (product.favUserIds.includes(product.userId)) {
-      // if product already exists the favorite list delete it
-      this.deleteFavoriteProduct(product.id)
-        .subscribe(() => {
-          this.favoriteProductsObservable.next({
-            productAction: 'delete',
-            favoriteProduct: product,
-          });
-          product.favUserIds = product.favUserIds.filter(
-            (id) => id !== product.userId
-          );
-        });
-    } else {
-      this.addFavoriteProduct(product.id).subscribe(() => {
-        this.favoriteProductsObservable.next({
-          productAction: 'add',
-          favoriteProduct: product,
-        });
-
-        product.favUserIds.push(product.userId);
-      });
-    }
-  }
-
   addToCart(product: Product, basketItems: OrderItem[] = []) {
     let orderItem = basketItems.filter(
       (item: OrderItem) => item.productId === product.id
     );
     if (orderItem.length) {
       if (product.unitsInStock >= orderItem[0].quantity + 1) {
-        this
-          .updateOrderQuantity(orderItem[0].id, orderItem[0].quantity + 1)
-          .subscribe();
+        this.updateOrderQuantity(
+          orderItem[0].id,
+          orderItem[0].quantity + 1
+        ).subscribe();
       } else {
         console.log('quantity exceeds stock');
         //display somehow an error message
