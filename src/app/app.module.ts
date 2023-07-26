@@ -48,7 +48,7 @@ import {AuthInterceptor} from './services/auth.interceptor';
 import {PanelModule} from 'primeng/panel';
 import {DeleteModalComponent} from './admin-page/delete-modal/delete-modal.component';
 import {RegisterComponent} from './register/register.component';
-import {AccountDetailsComponent} from './account-details/account-details.component';
+import {AccountDetailsComponent} from './user/account-details/account-details.component';
 import {ToggleButtonModule} from 'primeng/togglebutton';
 import {NgOptimizedImage} from '@angular/common';
 import {ImageModule} from 'primeng/image';
