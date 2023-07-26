@@ -23,14 +23,32 @@
         <label htmlFor="description" class="block font-bold mb-2">Description*</label>
         <textarea pInputTextarea rows="5" cols="30" id="description" formControlName="description"></textarea>
         <p-fileUpload *ngIf="header!=selectedProduct.name"
-                      mode="advanced"
                       [showUploadButton]="false"
                       [showCancelButton]="false"
-                      chooseLabel="Choose"
+                      chooseLabel="Select"
                       accept="image/*"
                       (onSelect)="onFileChanged($event)">
+        </p-fileUpload>
+        <p-fileUpload *ngIf="header===selectedProduct.name"
+                      #uploadComponent
+                      [showUploadButton]="false"
+                      [showCancelButton]="false"
+                      mode="basic"
+                      chooseLabel=" Upload image"
+                      accept="image/*"
+                      [multiple]="true"
+                      (onSelect)="uploadImage(selectedProduct.id,$event,uploadComponent)">
 
         </p-fileUpload>
+        <div>
+          <div class="flex-column  align-content-between" *ngFor="let image of imagesList;let i = index">
+            <div style="width: 100px">
+              <p-image width="100"
+                       src="http://34.132.132.163:8081/api/images/download?name={{
+                image}}" (click)="deleteImage(image)"></p-image>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="card mt-2 flex flex-wrap gap-3 justify-content-center">
         <p-button [ngClass]="{'disabled':!productForm.valid}" [disabled]="!productForm.valid || !productForm.dirty"

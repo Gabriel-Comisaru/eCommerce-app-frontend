@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductsService} from '../home-page/shared/products.service';
 import {MessageService} from "primeng/api";
+import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 
 @Component({
   selector: 'app-admin-page',
@@ -14,10 +15,12 @@ export class AdminProductListComponent implements OnInit {
   header = '';
   productsList: any = [];
   selectedProduct?: any = [];
-  row: any=5;
+  row: any = 5;
   rows: any = [5, 10, 15];
   totalRecords: any;
-  first:any = 0;
+  first: any = 0;
+  searchTerm = ''
+  searchTermUpdate = new Subject<string>();
 
   constructor(private productsService: ProductsService,
               private messageService: MessageService) {
@@ -46,12 +49,21 @@ export class AdminProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.productsService.getProductsDisplay(this.first,this.row)
+    this.productsService.getProductsDisplay(this.first, this.row)
       .subscribe((list: any) => {
-      this.productsList = list.products;
-      this.totalRecords = list.numberOfItems;
-      this.productsList = this.productsList.sort((a: any, b: any) => a.name > b.name ? 1 : -1)
-    });
+        this.productsList = list.products;
+        this.totalRecords = list.numberOfItems;
+        this.productsList = this.productsList.sort((a: any, b: any) => a.name > b.name ? 1 : -1)
+      });
+    this.searchTermUpdate
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged())
+      .subscribe(value => {
+        if(value.length>2){
+          this.searchTerm = value
+        }
+      })
   }
 
   onCloseDelete() {
@@ -71,6 +83,7 @@ export class AdminProductListComponent implements OnInit {
       }
       return item;
     })
+    this.selectedProduct = event;
   }
 
   deletedProduct(event: Event) {
@@ -93,16 +106,16 @@ export class AdminProductListComponent implements OnInit {
   }
 
   onPage(event: any) {
-    if(event.rows===5) {
+    if (event.rows === 5) {
       this.first = event.first / 5
-    }else if(event.rows===10){
+    } else if (event.rows === 10) {
       this.first = event.first / 10
-    }else if(event.rows===15){
+    } else if (event.rows === 15) {
       this.first = event.first / 15
     }
     console.log(event)
-    this.productsService.getProductsDisplay(this.first,event.rows)
-      .subscribe(item=> {
+    this.productsService.getProductsDisplay(this.first, event.rows)
+      .subscribe(item => {
         this.productsList = item.products
         console.log(item.products)
       });
