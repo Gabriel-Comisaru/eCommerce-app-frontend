@@ -15,6 +15,7 @@ import { CategoriesService } from '../product-categories/shared/categories.servi
 import { User } from '../models/user.model';
 import { Product } from '../home-page/shared/product.model';
 import { ProductOperationsService } from '../home-page/shared/product-operations.service';
+import { BASE_URL_API } from '../settings';
 
 @Component({
   selector: 'app-nav-bar',
@@ -44,7 +45,7 @@ export class NavBarComponent {
   // Placeholder
   public itemPricesAny: any[] = [];
   public orderItems: OrderItem[] = [];
-
+  baseUrlApi = BASE_URL_API;
   adminDashboard!: string;
 
   @ViewChild(AdminPageComponent) admin!: AdminPageComponent;

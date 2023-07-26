@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProductsService} from '../home-page/shared/products.service';
 import {MessageService} from "primeng/api";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
+import { BASE_URL_API } from '../settings';
 
 @Component({
   selector: 'app-admin-page',
@@ -21,6 +22,7 @@ export class AdminProductListComponent implements OnInit {
   first: any = 0;
   searchTerm = ''
   searchTermUpdate = new Subject<string>();
+  baseUrlApi = BASE_URL_API;
 
   constructor(private productsService: ProductsService,
               private messageService: MessageService) {

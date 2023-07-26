@@ -44,7 +44,7 @@
           <div class="flex-column  align-content-between" *ngFor="let image of imagesList;let i = index">
             <div style="width: 100px">
               <p-image width="100"
-                       src="http://34.132.132.163:8081/api/images/download?name={{
+                       src="{{baseUrlApi}}/images/download?name={{
                 image}}" (click)="deleteImage(image)"></p-image>
             </div>
           </div>

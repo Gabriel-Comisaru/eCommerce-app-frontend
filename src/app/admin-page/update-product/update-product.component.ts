@@ -11,6 +11,7 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {MessageService} from 'primeng/api';
 import {Product} from 'src/app/home-page/shared/product.model';
 import {ProductsService} from 'src/app/home-page/shared/products.service';
+import { BASE_URL_API } from 'src/app/settings';
 
 @Component({
   selector: 'app-update-product',
@@ -33,7 +34,7 @@ export class UpdateProductComponent implements OnInit {
   i: any = 0;
   visible = false;
   categoriesList: any = [];
-
+  baseUrlApi = BASE_URL_API;
 
   constructor(
     private fb: FormBuilder,
