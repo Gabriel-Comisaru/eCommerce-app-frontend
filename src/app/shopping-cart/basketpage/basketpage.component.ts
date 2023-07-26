@@ -59,15 +59,10 @@ export class BasketpageComponent implements OnInit {
   }
 
   deleteProduct(product: any, event: any) {
-    console.log(product);
-    this.basketService.deleteOrderItem(product.id).subscribe((res) => {
+    this.productService.deleteOrderItem(product.id).subscribe((res) => {
       this.orderedItems = this.orderedItems.filter(
         (item: any) => item.id !== product.id
       );
-      this.productService.shoppingCartObservable.next({
-        orderItem: product,
-        productAction: 'delete',
-      });
     });
   }
 
@@ -79,7 +74,7 @@ export class BasketpageComponent implements OnInit {
 
   increment(Item: Item) {
     Item.quantity += 1;
-    this.basketService.updateOrderQuantity(Item.id, Item.quantity);
+    this.productService.updateOrderQuantity(Item.id, Item.quantity);
     this.updateProductQuantity(Item);
   }
 
@@ -89,7 +84,7 @@ export class BasketpageComponent implements OnInit {
     } else if (Item.quantity === 1) {
       this.deleteProduct(Item, null);
     }
-    this.basketService.updateOrderQuantity(Item.id, Item.quantity);
+    this.productService.updateOrderQuantity(Item.id, Item.quantity);
     this.updateProductQuantity(Item);
   }
 
@@ -106,6 +101,6 @@ export class BasketpageComponent implements OnInit {
   }
 
   updateProductQuantity(Item: any) {
-    this.basketService.updateOrderQuantity(Item.id, Item.quantity).subscribe();
+    this.productService.updateOrderQuantity(Item.id, Item.quantity).subscribe();
   }
 }

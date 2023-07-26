@@ -6,12 +6,8 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductsService } from 'src/app/home-page/shared/products.service';
 import { BehaviorSubject } from 'rxjs';
-import {
-  OrderItem,
-  actionOrderItem,
-} from '../../home-page/shared/orderItem.model';
-import { Order } from 'src/app/home-page/shared/order.model';
-import { ProductOperationsService } from 'src/app/home-page/shared/product-operations.service';
+import { FavoriteProductsServiceService } from 'src/app/home-page/shared/favorite-products-service.service';
+import { OrderItem } from 'src/app/home-page/shared/orderItem.model';
 
 @Component({
   selector: 'app-product-list',
@@ -29,9 +25,9 @@ export class ProductListComponent implements OnInit {
     private basketService: BasketService,
     private router: Router,
     private authService: AuthService,
-    private mockproductService: CategoriesService,
-    private productsService: ProductsService,
-    private productOperationsService: ProductOperationsService
+    private mockProductService: CategoriesService,
+    private productService: ProductsService,
+    private favoriteProductsService: FavoriteProductsServiceService
   ) {
     this.totalRows$?.next(0);
   }
@@ -40,16 +36,23 @@ export class ProductListComponent implements OnInit {
   incrementRows = 6;
   sortOptions: string[] = ['Price', 'Name', 'Default'];
   selectedSortOption: string = 'Default';
-
+  favoriteItems: Product[] = [];
+  basketItems: OrderItem[] = [];
   ngOnInit(): void {
-    this.mockproductService.getCategories().subscribe((res) => {
+    this.mockProductService.getCategories().subscribe(() => {
       this.loading = false;
+    });
+    this.favoriteProductsService.favoriteProductsObservable.subscribe((res) => {
+      this.favoriteItems = res.favoriteProducts!;
+    });
+    this.productService.getShopingCartObservable().subscribe((res) => {
+      this.basketItems = res.basketOrderItems!;
     });
   }
 
   addToBasket(product: Product, event: any): void {
     event.stopPropagation();
-    this.productOperationsService.addToCart(product);
+    this.productService.addToCart(product, this.basketItems);
   }
 
   getProductDetails(id: number, event: any) {
@@ -58,7 +61,7 @@ export class ProductListComponent implements OnInit {
   }
   addToFavorite(product: Product, event: any) {
     event.stopPropagation();
-    this.productOperationsService.addToFavorite(product);
+    this.favoriteProductsService.addToFavorite(product, this.favoriteItems);
   }
 
   loadMoreRows(): void {
@@ -67,9 +70,7 @@ export class ProductListComponent implements OnInit {
   }
 
   sortProducts() {
-    console.log(this.selectedSortOption, 'asdasd');
     if (this.selectedSortOption === 'Price') {
-      console.log('price');
       this.filteredList.sort((a, b) => {
         return a.price - b.price;
       });
@@ -82,5 +83,9 @@ export class ProductListComponent implements OnInit {
         return a.id - b.id;
       });
     }
+  }
+
+  checkIfFavorite(product: Product) {
+    return this.favoriteItems.some((el) => el.id === product.id);
   }
 }

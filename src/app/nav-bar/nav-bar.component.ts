@@ -2,19 +2,14 @@ import { Component, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ProductsService } from '../home-page/shared/products.service';
-import { Category } from '../home-page/shared/category.model';
-import {
-  OrderItem,
-  detailedOrderItem,
-} from '../home-page/shared/orderItem.model';
+import { OrderItem } from '../home-page/shared/orderItem.model';
 import { AdminPageComponent } from '../admin-page/admin-page/admin-page.component';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
-import { BasketService } from '../shopping-cart/shared/basket.service';
-import { CategoriesService } from '../product-categories/shared/categories.service';
 import { User } from '../models/user.model';
 import { Product } from '../home-page/shared/product.model';
-import { ProductOperationsService } from '../home-page/shared/product-operations.service';
+import { OverlayPanel } from 'primeng/overlaypanel';
+import { FavoriteProductsServiceService } from '../home-page/shared/favorite-products-service.service';
 import { BASE_URL_API } from '../settings';
 
 @Component({
@@ -24,126 +19,80 @@ import { BASE_URL_API } from '../settings';
 })
 export class NavBarComponent {
   public navProductControls: MenuItem[] = [];
-  public cartProductsList: Product[] = [];
   public favoriteProductsList: Product[] = [];
-  isAdmin: boolean = false;
-  public productsCategories!: Category[];
+  public isAdmin: boolean = false;
   public categoryItems!: MenuItem[];
-  public basketContent: OrderItem[] = [];
-  public nbOfBasketProducts: number = 0;
-  public detailedBasketContent: detailedOrderItem[] = [];
-  // get logged user details
-  public userLoggedIn: User = JSON.parse(
-    localStorage.getItem('currentUser') || '{}'
-  );
-
+  public userLoggedIn: User = localStorage.getItem('currentUser')
+    ? JSON.parse(localStorage.getItem('currentUser') as any)
+    : null;
   public categories: any[] = [];
-  // Placeholder
-
-  // Placeholder
   public itemCategoriesAny: any[] = [];
-  // Placeholder
   public itemPricesAny: any[] = [];
   public orderItems: OrderItem[] = [];
   baseUrlApi = BASE_URL_API;
   adminDashboard!: string;
 
   @ViewChild(AdminPageComponent) admin!: AdminPageComponent;
-
+  @ViewChild('userOptions') userOverlay!: OverlayPanel;
+  @ViewChild('myAccount') myAccountOverlay!: OverlayPanel;
+  @ViewChild('shoppingCart') shoppingCartOverlay!: OverlayPanel;
+  @ViewChild('favoriteItems') favoriteItemsOverlay!: OverlayPanel;
   constructor(
     private router: Router,
     private productsService: ProductsService,
     private authService: AuthService,
     private userService: UserService,
-    private basketService: BasketService,
     private productService: ProductsService,
-    private categoryService: CategoriesService,
-    private productOperationsService: ProductOperationsService
+    private favoriteProductsService: FavoriteProductsServiceService
   ) {}
 
   ngOnInit() {
-    // used to get user's name
     this.userService.getLoggedUserObservable().subscribe((res) => {
       this.userLoggedIn = res;
     });
     this.productsService.getCategories().subscribe((res) => {
-      this.categoryItems = res.map((category) => {
-        return {
-          label: category.name,
-          icon: 'pi pi-fw pi-bars',
-          routerLink: `/products/${category.id}`,
-        };
-      });
-      this.categoryItems.push({
-        label: 'All Products',
-        icon: 'pi pi-fw pi-bars',
-        routerLink: '/products',
-      });
-      this.navProductControls = [
-        {
-          label: 'Products',
-          icon: 'pi pi-fw pi-bars',
-          items: this.categoryItems,
-        },
-        { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
-        {
-          label: 'All Categories',
-          icon: 'pi pi-th-large',
-          routerLink: '/categories',
-        },
-      ];
+      this.mapCategories(res);
     });
-    this.isAdmin = false;
-
-    if (Object.keys(this.userLoggedIn).length !== 0) {
-      this.productsService.getCurrentBasket().subscribe((res) => {
-        this.productsService.shoppingCartObservable.next({
-          productAction: 'populate',
-          basketOrderItems: res,
-        });
-      });
-
-      this.productService.getFavoriteProducts().subscribe((res) => {
-        this.productService.favoriteProductsObservable.next({
-          productAction: 'populate',
-          allFavoriteItems: res,
-        });
-      });
-    }
-    //  subjects
-    // this.productsService
-    //   .getfavoriteProductsObservable()
-    //   .subscribe((response) => (this.favoriteProductsList = response));
-    // this.productsService.setInitialFavoriteProducts();
-
-    // aici cred ca trebuie sa mai adaug si un next? sau doar un next si sterg favorite product list???
-    this.productService.favoriteProductsObservable.subscribe((res) => {
-      if (res.productAction === 'add') {
-        this.favoriteProductsList.push(res.favoriteProduct!);
-      } else if (res.productAction === 'delete') {
-        this.favoriteProductsList = this.favoriteProductsList.filter(
-          (product: Product) => product.id !== res.favoriteProduct!.id
-        );
-      } else if (res.productAction === 'reset') {
-        this.favoriteProductsList = [];
-      } else if (res.productAction === 'populate') {
-        this.favoriteProductsList = res.allFavoriteItems!;
-      }
+    this.favoriteProductsService.favoriteProductsObservable.subscribe((res) => {
+      this.favoriteProductsList = res.favoriteProducts!;
     });
-
     this.productService.getShopingCartObservable().subscribe((res) => {
-      if (res.productAction === 'add') {
-        this.orderItems.push(res.orderItem!);
-      } else if (res.productAction === 'delete') {
-        this.orderItems = this.orderItems.filter(
-          (orderItem: OrderItem) => orderItem.id !== res.orderItem!.id
-        );
-      } else if (res.productAction === 'reset') {
-        this.orderItems = [];
-      } else if (res.productAction === 'populate') {
-        this.orderItems = res.basketOrderItems!;
-      }
+      this.orderItems = res.basketOrderItems!;
     });
+    console.log(this.userLoggedIn);
+    if (this.userLoggedIn) {
+      this.productsService.getCurrentBasket().subscribe();
+      this.favoriteProductsService.getFavoriteProducts().subscribe();
+    }
+  }
+
+  mapCategories(categories: any) {
+    this.categoryItems = categories.map((category: any) => {
+      return {
+        label: category.name,
+        icon: 'pi pi-fw pi-bars',
+        routerLink: `/products/${category.id}`,
+      };
+    });
+    this.categoryItems.push({
+      label: 'All Products',
+      icon: 'pi pi-fw pi-bars',
+      routerLink: '/products',
+    });
+    this.navProductControls = [
+      {
+        label: 'Products',
+        icon: 'pi pi-fw pi-bars',
+        items: this.categoryItems,
+      },
+      { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
+      {
+        label: 'All Categories',
+
+        icon: 'pi pi-th-large',
+        routerLink: '/categories',
+      },
+    ];
   }
 
   goHome() {
@@ -156,6 +105,7 @@ export class NavBarComponent {
     } else {
       this.router.navigate(['login']);
     }
+    this.shoppingCartOverlay.hide();
   }
 
   goToAdminPage() {
@@ -163,20 +113,27 @@ export class NavBarComponent {
     this.router.navigate(['admin/products']);
   }
 
-  clearStorage() {
-    window.localStorage.clear();
-  }
-
   goToLoginPage() {
     this.router.navigate(['login']);
+    this.myAccountOverlay.hide();
   }
 
   logout() {
     this.authService.logout();
+    this.userOverlay.hide();
+
+    this.favoriteProductsService.favoriteProductsObservable.next({
+      favoriteProducts: [],
+    });
+
+    this.productsService.shoppingCartObservable.next({
+      basketOrderItems: [],
+    });
   }
 
   goToRegisterPage() {
     this.authService.goToRegister();
+    this.myAccountOverlay.hide();
   }
 
   isAuthenticated() {
@@ -184,6 +141,7 @@ export class NavBarComponent {
   }
 
   goToAccountDetailsPage() {
+    this.userOverlay.hide();
     return this.router.navigate(['user-details']);
   }
 
@@ -200,13 +158,13 @@ export class NavBarComponent {
   }
 
   gotoOrdersPage() {
+    this.userOverlay.hide();
+
     return this.router.navigate(['my-orders']);
   }
+
   gotToFavoritesPage() {
+    this.favoriteItemsOverlay.hide();
     return this.router.navigate(['my-favorites']);
-  }
-  showProductImage(productImage: string) {
-    const imgUrl = this.productOperationsService.getProductImage(productImage);
-    return imgUrl;
   }
 }

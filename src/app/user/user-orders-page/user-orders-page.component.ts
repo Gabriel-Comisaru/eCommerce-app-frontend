@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DetailedOrder, Order } from 'src/app/home-page/shared/order.model';
+import { DetailedOrder } from 'src/app/home-page/shared/order.model';
 import { ProductsService } from 'src/app/home-page/shared/products.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -18,7 +18,6 @@ export class UserOrdersPageComponent {
   ) {}
 
   public userOrders: DetailedOrder[] = [];
-  public activeIndex: number | undefined;
   ngOnInit() {
     this.userService
       .getDetailedUserOrders()
@@ -29,19 +28,5 @@ export class UserOrdersPageComponent {
     return this.router.navigate(['order-data'], {
       queryParams: { ids: orderId },
     });
-  }
-  goToOrderDetails(orderId: number) {
-    return this.router.navigate([`order-details/${orderId}`]);
-  }
-
-  public accordionOpen: boolean = false;
-  toggleAccordion() {
-    this.accordionOpen = !this.accordionOpen;
-  }
-  setActiveIndex(index: number) {
-    this.activeIndex = index;
-  }
-  goToProductPage(productId: number) {
-    this.router.navigate([`product-details/${productId}`]);
   }
 }

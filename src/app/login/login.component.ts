@@ -5,10 +5,8 @@ import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { ProductsService } from '../home-page/shared/products.service';
 import { concat } from 'rxjs';
-import { OrderItem } from '../home-page/shared/orderItem.model';
-// import { Button } from 'primeng/primeng';
-// import { InputText } from 'primeng/primeng';
-// import { Panel } from 'primeng/primeng';
+import { FavoriteProductsPageComponent } from '../shopping-cart/favorite-products-page/favorite-products-page.component';
+import { FavoriteProductsServiceService } from '../home-page/shared/favorite-products-service.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +20,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private favoriteProductsService: FavoriteProductsServiceService
   ) {}
   public loginErrorCause!: string;
 
@@ -44,18 +43,9 @@ export class LoginComponent implements OnInit {
             this.productsService.getCurrentBasket()
           ).subscribe((res) => {
             if (res instanceof Array) {
-              this.productsService.shoppingCartObservable.next({
-                productAction: 'populate',
-                basketOrderItems: res,
-              });
             }
           });
-          this.productsService.getFavoriteProducts().subscribe((res) => {
-            this.productsService.favoriteProductsObservable.next({
-              productAction: 'populate',
-              allFavoriteItems: res,
-            });
-          });
+          this.favoriteProductsService.getFavoriteProducts().subscribe();
         },
         error: (data) => {
           console.log('Cannot login!');

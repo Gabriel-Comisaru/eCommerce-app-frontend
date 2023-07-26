@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Product } from './product.model';
 import { Category } from './category.model';
 import { OrderItem } from './orderItem.model';
@@ -24,49 +24,24 @@ export class ProductsService {
   private deleteImageUrl = `${BASE_URL_API}/images/delete`;
   private ordersUrl = `${BASE_URL_API}/orders`;
   private orderItemsUrl = `${BASE_URL_API}/orderItems`;
-  // public shoppingCartObservable = new Subject<Product[]>();
-  public shoppingCartObservable = new Subject<{
-    orderItem?: OrderItem;
-    productAction: string;
-    basketOrderItems?: OrderItem[];
-  }>();
-  public favoriteProductsObservable = new Subject<{
-    favoriteProduct?: Product;
-    productAction: string;
-    allFavoriteItems?: Product[];
-  }>();
-  public searchUrl=`${BASE_URL_API}/products/search`
 
-  getSearchedProducts(name:string): Observable<any>{
-    const url =`${this.searchUrl}?name=${name}&pageNumber=0`
+  public shoppingCartObservable = new BehaviorSubject<{
+    basketOrderItems?: OrderItem[];
+  }>({ basketOrderItems: [] });
+
+  public currentBasketItems: OrderItem[] = [];
+
+  public searchUrl = `${BASE_URL_API}/products/search`;
+
+  getSearchedProducts(name: string): Observable<any> {
+    const url = `${this.searchUrl}?name=${name}&pageNumber=0`;
     return this.httpClient.get<any>(url);
   }
 
   getShopingCartObservable(): Observable<{
-    orderItem?: OrderItem;
-    productAction: string;
     basketOrderItems?: OrderItem[];
   }> {
     return this.shoppingCartObservable.asObservable();
-  }
-
-  setInitialFavoriteProducts() {
-    const localStorageCartList = JSON.parse(
-      localStorage.getItem('favoriteProducts') || '[]'
-    );
-    this.favoriteProductsObservable.next(localStorageCartList);
-  }
-
-  getAllUsers() {
-    return this.httpClient.get<any>(this.appUsersUrl);
-  }
-
-  // getfavoriteProductsObservable(): Observable<Product[]> {
-  //   return this.favoriteProductsObservable.asObservable();
-  // }
-
-  getOrdersItems(): Observable<any> {
-    return this.httpClient.get<any>(this.orderItemsUrl);
   }
 
   getOrders(pageNumber: any, pageSize: any): Observable<any> {
@@ -83,23 +58,9 @@ export class ProductsService {
     return this.httpClient.get<any>(url);
   }
 
-  getProductsByCat(categoryId: number): Observable<any> {
-    let url = `${this.productsUrl}/category?categoryId=${categoryId}`;
-    return this.httpClient.get<any>(url);
-  }
-
-  // i want to add it in cartList or favoriteList
-
   getProduct(id: number): Observable<any | undefined> {
     const url = `${this.productsUrl}/${id}`;
     return this.httpClient.get(url);
-  }
-
-  saveProducts(product: any, categoryId: number): Observable<any> {
-    return this.httpClient.post<any>(
-      `${this.productCategoryUrl}/${categoryId}`,
-      product
-    );
   }
 
   updateProduct(product: any, id: number): Observable<any> {
@@ -136,10 +97,16 @@ export class ProductsService {
   ): Observable<OrderItem> {
     const addProductToOrderUrl = `${BASE_URL_API}/orders/${productId}?quantity=${quantity}`;
 
-    return this.httpClient.post<OrderItem>(addProductToOrderUrl, {});
+    return this.httpClient.post<OrderItem>(addProductToOrderUrl, {}).pipe(
+      tap((res) => {
+        this.currentBasketItems.push(res);
+        this.shoppingCartObservable.next({
+          basketOrderItems: this.currentBasketItems,
+        });
+      })
+    );
   }
 
-  // do model for that id quantity productId orderId
   saveReview(productId: number, review: Review) {
     const url = `${this.reviewsUrl}/save/${productId}`;
     this.httpClient.post<any>(url, review).subscribe();
@@ -150,24 +117,42 @@ export class ProductsService {
     return this.httpClient.get<any>(url);
   }
 
-  saveImage(image: any, id: number): Observable<any> {
-    const url = `${this.imageUrl}/${id}`;
-    return this.httpClient.post(url, image);
-  }
-
   getAllReviews(): Observable<any> {
     const url = `${BASE_URL_API}/reviews`;
     return this.httpClient.get<any>(url);
   }
 
   sendForm(formData: any, categoryId: number) {
-    return this.httpClient.post<any>(`${this.productCategoryUrl}/${categoryId}`,formData);
-
+    return this.httpClient.post<any>(
+      `${this.productCategoryUrl}/${categoryId}`,
+      formData
+    );
   }
 
   getCurrentBasket(): Observable<OrderItem[]> {
     const url = `${BASE_URL_API}/orders/me/basket`;
-    return this.httpClient.get<OrderItem[]>(url);
+    return this.httpClient.get<OrderItem[]>(url).pipe(
+      tap((res) => {
+        this.currentBasketItems = res;
+        this.shoppingCartObservable.next({
+          basketOrderItems: res,
+        });
+      })
+    );
+  }
+
+  deleteOrderItem(orderId: number) {
+    const url = `${BASE_URL_API}/orderItems/${orderId}`;
+    return this.httpClient.delete(url, { responseType: 'text' }).pipe(
+      tap(() => {
+        this.currentBasketItems = this.currentBasketItems.filter(
+          (item) => item.id !== orderId
+        );
+        this.shoppingCartObservable.next({
+          basketOrderItems: this.currentBasketItems,
+        });
+      })
+    );
   }
 
   getDiscountedProducts(): Observable<Product[]> {
@@ -179,23 +164,52 @@ export class ProductsService {
     return this.httpClient.get<Product[]>(url);
   }
 
-  deleteImage(name:any){
+  updateOrderQuantity(orderId: number, quantity: number) {
+    const url = `${BASE_URL_API}/orderItems/${orderId}/quantity?quantity=${quantity}`;
+    return this.httpClient.put(url, {}, { responseType: 'text' }).pipe(
+      tap(() => {
+        this.currentBasketItems = this.currentBasketItems.map((item) => {
+          if (item.id === orderId) {
+            item.quantity = quantity;
+          }
+          return item;
+        });
+        this.shoppingCartObservable.next({
+          basketOrderItems: this.currentBasketItems,
+        });
+      })
+    );
+  }
+
+  addToCart(product: Product, basketItems: OrderItem[]) {
+    let orderItem = basketItems.filter(
+      (item: OrderItem) => item.productId === product.id
+    );
+    if (orderItem.length) {
+      if (product.unitsInStock >= orderItem[0].quantity + 1) {
+        this.updateOrderQuantity(
+          orderItem[0].id,
+          orderItem[0].quantity + 1
+        ).subscribe();
+      } else {
+        console.log('quantity exceeds stock');
+        //display somehow an error message
+      }
+    } else {
+      this.addProductToOrder(product.id, 1).subscribe();
+    }
+  }
+
+  getProductImage(productImage: string) {
+    return `${BASE_URL_API}/images/download?name=${productImage}`;
+  }
+  deleteImage(name: any) {
     const url = `${this.deleteImageUrl}?name=${name}`;
-    return this.httpClient.delete(url)
+    return this.httpClient.delete(url);
   }
 
-  getFavoriteProducts(): Observable<Product[]> {
-    const url = `${BASE_URL_API}/products/fav`;
-    return this.httpClient.get<Product[]>(url);
-  }
-
-  addFavoriteProduct(productId: number): Observable<string> {
-    const url = `${BASE_URL_API}/products/fav?productId=${productId}`;
-    return this.httpClient.post<string>(url, { responseType: 'text' });
-  }
-
-  deleteFavoriteProduct(productId: number) {
-    const url = `${BASE_URL_API}/products/fav?productId=${productId}`;
-    return this.httpClient.delete<any>(url, {});
+  saveImage(image: any, id: number): Observable<any> {
+    const url = `${this.imageUrl}/${id}`;
+    return this.httpClient.post(url, image);
   }
 }
