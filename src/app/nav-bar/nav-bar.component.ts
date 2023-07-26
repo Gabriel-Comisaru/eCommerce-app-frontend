@@ -95,9 +95,7 @@ export class NavBarComponent {
     this.isAdmin = false;
 
     if (Object.keys(this.userLoggedIn).length !== 0) {
-      this.productsService.getCurrentBasket().subscribe((res) => {
-
-      });
+      this.productsService.getCurrentBasket().subscribe((res) => {});
 
       this.productService.getFavoriteProducts().subscribe((res) => {
         this.productService.favoriteProductsObservable.next({
@@ -124,6 +122,7 @@ export class NavBarComponent {
 
     this.productService.getShopingCartObservable().subscribe((res) => {
       this.orderItems = res.basketOrderItems!;
+      console.log(res);
     });
   }
 

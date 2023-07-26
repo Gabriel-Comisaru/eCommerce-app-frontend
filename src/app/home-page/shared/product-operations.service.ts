@@ -47,22 +47,22 @@ export class ProductOperationsService {
     }
   }
 
-  addToCart(product: Product, basketItems: any = []) {
+  addToCart(product: Product, basketItems: OrderItem[] = []) {
     if (this.authService.isAuthenticated()) {
       let orderItem = basketItems.filter(
         (item: OrderItem) => item.productId === product.id
       );
       if (orderItem.length) {
-        this.productsService.updateOrderQuantity(
-          orderItem[0].id,
-          orderItem[0].quantity + 1
-        );
+        if (product.unitsInStock >= orderItem[0].quantity + 1) {
+          this.productsService
+            .updateOrderQuantity(orderItem[0].id, orderItem[0].quantity + 1)
+            .subscribe();
+        } else {
+          console.log('quantity exceeds stock');
+          //display somehow an error message
+        }
       } else {
-        this.productsService
-          .addProductToOrder(product.id, 1)
-          .subscribe((res) => {
-
-          });
+        this.productsService.addProductToOrder(product.id, 1).subscribe();
       }
     } else {
       this.router.navigate(['login']);

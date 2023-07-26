@@ -26,13 +26,15 @@ export class ProductsService {
   // public shoppingCartObservable = new Subject<Product[]>();
   public shoppingCartObservable = new BehaviorSubject<{
     basketOrderItems?: OrderItem[];
-  }>({} as any);
+  }>({ basketOrderItems: [] });
+  //
+
   public favoriteProductsObservable = new Subject<{
     favoriteProduct?: Product;
     productAction: string;
     allFavoriteItems?: Product[];
   }>();
-  public currentBasketItems :OrderItem[] = [];
+  public currentBasketItems: OrderItem[] = [];
 
   getShopingCartObservable(): Observable<{
     basketOrderItems?: OrderItem[];
@@ -77,8 +79,6 @@ export class ProductsService {
     let url = `${this.productsUrl}/category?categoryId=${categoryId}`;
     return this.httpClient.get<any>(url);
   }
-
-  // i want to add it in cartList or favoriteList
 
   getProduct(id: number): Observable<any | undefined> {
     const url = `${this.productsUrl}/${id}`;
@@ -126,15 +126,16 @@ export class ProductsService {
   ): Observable<OrderItem> {
     const addProductToOrderUrl = `http://localhost:8081/api/orders/${productId}?quantity=${quantity}`;
 
-    return this.httpClient.post<OrderItem>(addProductToOrderUrl, {}).pipe(tap((res)=> {
-      this.currentBasketItems.push(res);
-      this.shoppingCartObservable.next({
-        basketOrderItems: this.currentBasketItems,
-      });
-    }));
+    return this.httpClient.post<OrderItem>(addProductToOrderUrl, {}).pipe(
+      tap((res) => {
+        this.currentBasketItems.push(res);
+        this.shoppingCartObservable.next({
+          basketOrderItems: this.currentBasketItems,
+        });
+      })
+    );
   }
 
-  // do model for that id quantity productId orderId
   saveReview(productId: number, review: Review) {
     const url = `${this.reviewsUrl}/save/${productId}`;
     this.httpClient.post<any>(url, review).subscribe();
@@ -163,22 +164,28 @@ export class ProductsService {
 
   getCurrentBasket(): Observable<OrderItem[]> {
     const url = 'http://localhost:8081/api/orders/me/basket';
-    return this.httpClient.get<OrderItem[]>(url).pipe(tap(res => {
-      this.currentBasketItems = res;
-      this.shoppingCartObservable.next({
-        basketOrderItems: res,
-      });
-    }));
+    return this.httpClient.get<OrderItem[]>(url).pipe(
+      tap((res) => {
+        this.currentBasketItems = res;
+        this.shoppingCartObservable.next({
+          basketOrderItems: res,
+        });
+      })
+    );
   }
 
   deleteOrderItem(orderId: number) {
     const url = `http://localhost:8081/api/orderItems/${orderId}`;
-    return this.httpClient.delete(url, { responseType: 'text' }).pipe(tap(()=> {
-      this.currentBasketItems = this.currentBasketItems.filter(item => item.orderId !== orderId);
-      this.shoppingCartObservable.next({
-        basketOrderItems: this.currentBasketItems,
-      });
-    }));
+    return this.httpClient.delete(url, { responseType: 'text' }).pipe(
+      tap(() => {
+        this.currentBasketItems = this.currentBasketItems.filter(
+          (item) => item.id !== orderId
+        );
+        this.shoppingCartObservable.next({
+          basketOrderItems: this.currentBasketItems,
+        });
+      })
+    );
   }
 
   getDiscountedProducts(): Observable<Product[]> {
@@ -206,17 +213,22 @@ export class ProductsService {
   }
 
   updateOrderQuantity(orderId: number, quantity: number) {
+    console.log(orderId);
+    console.log(quantity);
     const url = `http://localhost:8081/api/orderItems/${orderId}/quantity?quantity=${quantity}`;
-    return this.httpClient.put(url, {}, { responseType: 'text' }).pipe(tap(()=> {
-      this.currentBasketItems = this.currentBasketItems.map(item => {
-        if(item.orderId === orderId) {
-          item.quantity = quantity
-        }
-        return item;
-      });
-      this.shoppingCartObservable.next({
-        basketOrderItems: this.currentBasketItems,
-      });
-    }));
+    return this.httpClient.put(url, {}, { responseType: 'text' }).pipe(
+      tap(() => {
+        this.currentBasketItems = this.currentBasketItems.map((item) => {
+          if (item.id === orderId) {
+            item.quantity = quantity;
+          }
+          return item;
+        });
+        console.log(this.currentBasketItems);
+        this.shoppingCartObservable.next({
+          basketOrderItems: this.currentBasketItems,
+        });
+      })
+    );
   }
 }

@@ -26,14 +26,11 @@ export class ProductsListCarouselComponent {
 
   private orderItems: OrderItem[] = [];
   public productsToDisplayWithImages!: Product[];
-  public basketItems: any;
+  public basketItems!: OrderItem[];
 
   ngOnInit() {
-    console.log('spanac');
     this.productService.getShopingCartObservable().subscribe((res) => {
-      this.basketItems = res.basketOrderItems;
-
-      console.log(res);
+      this.basketItems = res.basketOrderItems!;
     });
   }
 
