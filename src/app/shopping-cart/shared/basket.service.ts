@@ -1,8 +1,8 @@
 import { Injectable, Optional } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { NavBarComponent } from '../../nav-bar/nav-bar.component';
-import { OrderItem } from 'src/app/home-page/shared/orderItem.model';
+import { BASE_URL_API } from 'src/app/settings';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class BasketService {
     @Optional() public NavBarComponent: NavBarComponent
   ) {}
 
-  private url = 'http://localhost:8081/api';
+  private url = `${BASE_URL_API}`;
 
   finishOrder(orderId: number, status: string): Observable<any> {
     const url = `${this.url}/orders/${orderId}?status=${status}`;

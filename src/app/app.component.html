@@ -1,5 +1,6 @@
 <div class="wrapper">
-  <app-nav-bar></app-nav-bar>
+  <app-nav-bar *ngIf="!isAdminRoute"></app-nav-bar>
+  <app-admin-nav-bar *ngIf="isAdminRoute"></app-admin-nav-bar>
   <p-toast></p-toast>
   <router-outlet></router-outlet>
 </div>

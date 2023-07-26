@@ -1,9 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Product} from '../home-page/shared/product.model';
 import {ActivatedRoute, Router} from "@angular/router";
-import {CategoriesService} from "../product-categories/shared/categories.service";
 import {ProductsService} from '../home-page/shared/products.service';
-import {Review} from "../home-page/shared/review.model";
+import { BASE_URL_API } from '../settings';
 
 @Component({
   selector: 'app-product-all',
@@ -31,7 +30,7 @@ export class ProductAllComponent implements OnInit {
   loadProducts(): void {
     this.productService.getProducts().subscribe((list) => {
       this.filteredList = list.map((item: any) => {
-        const url = `http://localhost:8081/api/images/download?name=${item.imagesName[0]}`;
+        const url = `${BASE_URL_API}/images/download?name=${item.imagesName[0]}`;
         return {
           ...item,
           productImage: url,
@@ -54,7 +53,7 @@ export class ProductAllComponent implements OnInit {
       this.filteredList = this.placeholder;
     }
 
-    if (priceMin && priceMax) {
+    if (priceMin>-1 && priceMax) {
       this.filteredList = this.filteredList.filter((product: Product) => {
         const price = product.price;
         return price >= priceMin && price <= priceMax;

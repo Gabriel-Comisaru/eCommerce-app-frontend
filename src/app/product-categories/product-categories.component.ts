@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../home-page/shared/product.model';
 import { Router } from '@angular/router';
 import { CategoriesService } from './shared/categories.service';
 import { ProductsService } from '../home-page/shared/products.service';
+import { BASE_URL_API } from '../settings';
 
 @Component({
   selector: 'app-product-categories',
@@ -46,7 +46,7 @@ export class ProductCategoriesComponent implements OnInit {
       const firstProduct = await this.productService.getProduct(firstProductId).toPromise();
       if (firstProduct && firstProduct.imagesName && firstProduct.imagesName.length > 0) {
         const imageName = firstProduct.imagesName[0];
-        const imageUrl = `http://localhost:8081/api/images/download?name=${imageName}`;
+        const imageUrl = `${BASE_URL_API}/images/download?name=${imageName}`;
         return imageUrl;
       }
     }

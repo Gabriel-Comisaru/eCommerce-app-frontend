@@ -4,19 +4,19 @@ import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
 import { RegisterFields } from '../models/register.model';
+import { BASE_URL } from '../settings';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  baseUrl = 'http://localhost:8081';
+  baseUrl = `${BASE_URL}`;
 
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    private userService: UserService,
-  ) {
-  }
+    private userService: UserService
+  ) {}
 
   isAuthenticated(): boolean {
     return localStorage.getItem('token') !== null;
