@@ -1,16 +1,19 @@
 <div class="card flex justify-content-center">
 
   <p-dialog [maximizable]="true" (onHide)="onClose()"
-            header="{{header===selectedProduct.name? 'Edit product' : 'Add new product'}}"
+            header="{{editModalFlag ? 'Edit product' : 'Add new product'}}"
             [(visible)]="visible"
             [style]="{width: '50vw'}" [modal]="true">
-    <h1 *ngIf="header==selectedProduct.name">{{selectedProduct.name}}</h1>
+    <h1 *ngIf="editModalFlag">{{selectedProduct?.name}}</h1>
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
       <div class="flex flex-column gap-2">
         <label htmlFor="title" class="block font-bold mb-2">Title*</label>
         <input pInputText id="title" formControlName="name"/>
         <label class="block font-bold mb-2">Category*</label>
-        <p-dropdown formControlName="categoryId" optionValue="id" placeholder="Select a category"
+        <p-dropdown *ngIf="editModalFlag" formControlName="categoryId" optionValue="name"
+                    placeholder="Select a category"
+                    [options]="categoriesList" optionLabel="name"></p-dropdown>
+        <p-dropdown *ngIf="!editModalFlag" formControlName="categoryId" optionValue="id" placeholder="Select a category"
                     [options]="categoriesList" optionLabel="name"></p-dropdown>
         <label htmlFor="price" class="block font-bold mb-2">Price*</label>
         <p-inputNumber [style]="{width: '100%'}" formControlName="price" inputId="currency-us" mode="currency"
@@ -22,40 +25,37 @@
         <input pInputText [style]="{width: '100%'}" id="discount" formControlName="discount"/>
         <label htmlFor="description" class="block font-bold mb-2">Description*</label>
         <textarea pInputTextarea rows="5" cols="30" id="description" formControlName="description"></textarea>
-        <p-fileUpload *ngIf="header!=selectedProduct.name"
+        <p-fileUpload #uploadComponent
+                      mode="{{editModalFlag ? 'basic' : 'advanced'}}"
                       [showUploadButton]="false"
                       [showCancelButton]="false"
-                      chooseLabel="Select"
+                      chooseLabel="Choose"
                       accept="image/*"
-                      (onSelect)="onFileChanged($event)">
+                      (onSelect)="onFileChanged($event,uploadComponent,selectedProduct?.id)">
         </p-fileUpload>
-        <p-fileUpload *ngIf="header===selectedProduct.name"
-                      #uploadComponent
-                      [showUploadButton]="false"
-                      [showCancelButton]="false"
-                      mode="basic"
-                      chooseLabel=" Upload image"
-                      accept="image/*"
-                      [multiple]="true"
-                      (onSelect)="uploadImage(selectedProduct.id,$event,uploadComponent)">
-
-        </p-fileUpload>
-        <div>
-          <div class="flex-column  align-content-between" *ngFor="let image of imagesList;let i = index">
-            <div style="width: 100px">
-              <p-image width="100"
-                       src="http://34.132.132.163:8081/api/images/download?name={{
-                image}}" (click)="deleteImage(image)"></p-image>
+        <!--        <div *ngIf="editModalFlag">-->
+        <!--          <div *ngFor="let image of imagesList">-->
+        <!--            <p-image width="150" src="http://34.132.132.163:8081/api/images/download?name={{image}}"></p-image>-->
+        <!--          </div>-->
+        <!--        </div>-->
+        <div class="container card flex flex-wrap justify-content-center justify-content-evenly align-content-evenly">
+          <div class="div-1" *ngFor="let item of imagesList">
+            <p-image src="http://34.132.132.163:8081/api/images/download?name={{item}}"
+                     alt="{{item}}" width="150" height="150">
+            </p-image>
+            <div class="div-2">
+            <p-button class="imageButton" styleClass="p-button-text p-button-danger" [disabled]="ifPressed" (click)="deleteImage(item)" icon="pi pi-trash"></p-button>
             </div>
           </div>
+          <p-progressSpinner *ngIf="spinnerLoading" class="spinner"></p-progressSpinner>
         </div>
       </div>
       <div class="card mt-2 flex flex-wrap gap-3 justify-content-center">
         <p-button [ngClass]="{'disabled':!productForm.valid}" [disabled]="!productForm.valid || !productForm.dirty"
                   [loading]="loading"
-                  *ngIf="header==selectedProduct.name" type="submit" icon="pi pi-check"
+                  *ngIf="editModalFlag" type="submit" icon="pi pi-check"
                   label="Update" styleClass="p-button-primary p-button-primary"></p-button>
-        <p-button [disabled]="!productForm.valid" *ngIf="header!=selectedProduct.name" [loading]="loading" type="submit"
+        <p-button [disabled]="!productForm.valid" *ngIf="!editModalFlag" [loading]="loading" type="submit"
                   icon="pi pi-check"
                   label="Add" styleClass="p-button-primary p-button-primary"></p-button>
         <p-button (click)="close()" icon="pi pi-times" label="Cancel"

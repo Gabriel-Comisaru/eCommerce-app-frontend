@@ -12,7 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './services/auth.guard';
 import { AlreadyLoggedGuard } from './services/already-logged.guard';
-import { AccountDetailsComponent } from './account-details/account-details.component';
+import { AccountDetailsComponent } from './user/account-details/account-details.component';
 import { OrderDataComponent } from './shopping-cart/order-data/order-data.component';
 import { OrderSummaryComponent } from './shopping-cart/order-summary/order-summary.component';
 import { UserOrdersPageComponent } from './user/user-orders-page/user-orders-page.component';

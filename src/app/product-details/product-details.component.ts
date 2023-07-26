@@ -79,7 +79,7 @@ export class ProductDetailsComponent implements OnInit {
       const review: Review = {
         rating: this.reviewForm.controls.rating.value,
         title: this.reviewForm.controls.title.value,
-        comment: this.reviewForm.controls.comment.value,
+        comment: this.reviewForm.controls.comment.value
       };
 
       this.productService.saveReview(this.product.id, review);

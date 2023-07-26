@@ -17,4 +17,5 @@ export interface Product {
   userId: number;
   favUserIds: number[];
   isFavorite?: boolean;
+  categoryName:string;
 }

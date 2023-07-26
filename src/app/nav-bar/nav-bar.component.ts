@@ -10,6 +10,7 @@ import { User } from '../models/user.model';
 import { Product } from '../home-page/shared/product.model';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { FavoriteProductsServiceService } from '../home-page/shared/favorite-products-service.service';
+import { BASE_URL_API } from '../settings';
 
 @Component({
   selector: 'app-nav-bar',
@@ -28,6 +29,8 @@ export class NavBarComponent {
   public itemCategoriesAny: any[] = [];
   public itemPricesAny: any[] = [];
   public orderItems: OrderItem[] = [];
+  baseUrlApi = BASE_URL_API;
+  adminDashboard!: string;
 
   @ViewChild(AdminPageComponent) admin!: AdminPageComponent;
   @ViewChild('userOptions') userOverlay!: OverlayPanel;

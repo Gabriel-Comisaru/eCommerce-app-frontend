@@ -48,7 +48,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
 import { PanelModule } from 'primeng/panel';
 import { DeleteModalComponent } from './admin-page/delete-modal/delete-modal.component';
 import { RegisterComponent } from './register/register.component';
-import { AccountDetailsComponent } from './account-details/account-details.component';
+import { AccountDetailsComponent } from './user/account-details/account-details.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { NgOptimizedImage } from '@angular/common';
 import { ImageModule } from 'primeng/image';
@@ -71,6 +71,9 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
 import { AdminNavBarComponent } from './admin-nav-bar/admin-nav-bar.component';
 import { FavoriteProductsPageComponent } from './shopping-cart/favorite-products-page/favorite-products-page.component';
+import { TabViewModule } from 'primeng/tabview';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -164,6 +167,9 @@ import { FavoriteProductsPageComponent } from './shopping-cart/favorite-products
     DividerModule,
     FieldsetModule,
     DataViewModule,
+    TabViewModule,
+    TabMenuModule,
+    ProgressSpinnerModule,
   ],
 
   providers: [

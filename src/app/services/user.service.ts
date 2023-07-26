@@ -11,7 +11,7 @@ import { BASE_URL_API } from '../settings';
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  private apiBaseURL = `${BASE_URL_API}`;
+  // private apiBaseURL = `${BASE_URL_API}`;
 
   public loggedUser = new Subject<User>();
 
@@ -20,7 +20,7 @@ export class UserService {
   }
 
   getLoggedInUser(): Observable<User> {
-    return this.http.get<User>(`${this.apiBaseURL}/users/loggedInUser`).pipe(
+    return this.http.get<User>(`${BASE_URL_API}/users/info/me`).pipe(
       tap((res) => {
         this.loggedUser.next(res);
         localStorage.setItem('currentUser', JSON.stringify(res));
@@ -29,12 +29,12 @@ export class UserService {
   }
 
   getUserOrders(): Observable<Order[]> {
-    const url = `${this.apiBaseURL}/orders/me`;
+    const url = `${BASE_URL_API}/orders/me`;
     return this.http.get<Order[]>(url);
   }
 
   getDetailedUserOrders(): Observable<DetailedOrder[]> {
-    const url = `${this.apiBaseURL}/orders/me/lazy`;
+    const url = `${BASE_URL_API}/orders/me/lazy`;
     return this.http.get<DetailedOrder[]>(url);
   }
 }
