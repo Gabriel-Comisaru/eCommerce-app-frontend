@@ -71,6 +71,9 @@ import {FieldsetModule} from 'primeng/fieldset';
 import {DataViewModule, DataViewLayoutOptions} from 'primeng/dataview';
 import { AdminNavBarComponent } from './admin-nav-bar/admin-nav-bar.component';
 import {FavoriteProductsPageComponent} from "./shopping-cart/favorite-products-page/favorite-products-page.component";
+import {TabViewModule} from "primeng/tabview";
+import {TabMenuModule} from "primeng/tabmenu";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 @NgModule({
   declarations: [
@@ -164,6 +167,9 @@ import {FavoriteProductsPageComponent} from "./shopping-cart/favorite-products-p
     DividerModule,
     FieldsetModule,
     DataViewModule,
+    TabViewModule,
+    TabMenuModule,
+    ProgressSpinnerModule,
   ],
 
   providers: [

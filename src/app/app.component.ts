@@ -21,7 +21,6 @@ export class AppComponent {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: any) => {
       this.isAdminRoute=event.url.includes('admin')
-        console.log(this.isAdminRoute)
     });
   }
 }

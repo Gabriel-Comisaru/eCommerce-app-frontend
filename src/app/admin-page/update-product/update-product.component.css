@@ -1,3 +1,23 @@
 .disabled{
   cursor:not-allowed;
 }
+
+.div-1 {
+  position:relative;
+}
+.div-2 {
+  position:absolute;
+  top:0;
+  right:0;
+}
+
+.container{
+  position:relative;
+}
+
+.spinner{
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

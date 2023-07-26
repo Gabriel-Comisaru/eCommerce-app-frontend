@@ -35,6 +35,12 @@ export class ProductsService {
     productAction: string;
     allFavoriteItems?: Product[];
   }>();
+  public searchUrl=`${BASE_URL_API}/products/search`
+
+  getSearchedProducts(name:string): Observable<any>{
+    const url =`${this.searchUrl}?name=${name}&pageNumber=0`
+    return this.httpClient.get<any>(url);
+  }
 
   getShopingCartObservable(): Observable<{
     orderItem?: OrderItem;
