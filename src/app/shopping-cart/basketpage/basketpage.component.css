@@ -23,18 +23,11 @@ p-table thead th {
 .my-button {
   border-radius: 15px;
   display: flex;
-  /*justify-content: center;*/
-  /*align-items: center;*/
 }
 p-table td:nth-child(4) {
   text-align: center;
   font-weight: bold;
 }
-
-/*.product-img {*/
-/*  width: 100%;*/
-/*  height: auto;*/
-/*}*/
 
 .p-card-body {
   flex-grow: 1;

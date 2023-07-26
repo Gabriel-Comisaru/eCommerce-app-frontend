@@ -25,12 +25,15 @@ export class ProductAllComponent implements OnInit {
 
   ngOnInit(): void {
    this.loading = true;
-   this.loadProducts();
+   setTimeout(() => {
+      this.loadProducts();
+   }, 100)
+   // this.loadProducts();
   }
   loadProducts(): void {
     this.productService.getProducts().subscribe((list) => {
       this.filteredList = list.map((item: any) => {
-        const url = `${BASE_URL_API}/images/download?name=${item.imagesName[0]}`;
+          const url = item.imagesName.length > 0? `${BASE_URL_API}/images/download?name=${item.imagesName[0]}` : '';
         return {
           ...item,
           productImage: url,

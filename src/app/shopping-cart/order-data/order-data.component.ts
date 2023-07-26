@@ -6,6 +6,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {ActivatedRoute, Router} from "@angular/router";
 import {BasketService} from "../shared/basket.service";
 import {MessageService} from 'primeng/api';
+import {ProductsService} from "../../home-page/shared/products.service";
 
 
 @Component({
@@ -22,6 +23,7 @@ export class OrderDataComponent implements OnInit {
     private basketService: BasketService,
     private router: Router,
     private messageService: MessageService,
+    private productsService: ProductsService
   ) {
   }
 
@@ -143,6 +145,9 @@ export class OrderDataComponent implements OnInit {
   //Add Delivery Address Id
   finishOrder() {
     this.basketService.finishOrder(this.route.snapshot.queryParams['ids'], "PLACED").subscribe((response: any) => {
+        // this.productsService.shoppingCartObservable.next({
+        //
+        // });
         console.log(response, "response-=-=-=-=-=-=")
         this.orderId = response.id;
         this.router.navigate(['/']);

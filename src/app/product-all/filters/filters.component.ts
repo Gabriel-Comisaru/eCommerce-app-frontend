@@ -81,8 +81,8 @@ export class FiltersComponent implements OnInit {
   @Output() filtersApplied: EventEmitter<any> = new EventEmitter<any>();
   @Output() filtersCleared: EventEmitter<any> = new EventEmitter<any>();
   public categories: Categories[] = [];
-  // public selectedCategory: number;
   selectedPriceRange!: [number, number];
+  loading: boolean = false;
   public selectedCategory: any
 
   constructor(private categoryService: CategoriesService, private route: ActivatedRoute,
@@ -90,25 +90,30 @@ export class FiltersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loading = true;
     this.selectedPriceRange = [0, 1000];
-    this.loadData();
+    setTimeout(() => {
+      this.loadData()
+    }, 500)
   }
 
   loadData(): void {
     this.categoryService.getCategories().subscribe((list) => {
       this.categories = list;
       const categoryIdParam = this.route.snapshot.queryParams;
+      console.log(this.route.snapshot.queryParams, '----p-a-r-a-m---------------')
       if (categoryIdParam) {
         this.selectedCategory = this.categories.find((category: any) => category.id == categoryIdParam['categoryId']);
-        // console.log(this.selectedCategory, '-----------------1---1--1-')
+        console.log(this.selectedCategory, '-----------------1---1--1-')
         this.filtersApplied.emit({
-          categoryId: this.selectedCategory != undefined ? this.selectedCategory.id : '',
+          categoryId: this.selectedCategory != undefined ? this.route.snapshot.queryParams['categoryId'] : '',
           priceMin: 0,
           priceMax: 1000
         });
       }
     });
     console.log(this.selectedCategory)
+    this.loading = false;
   }
   onCategoryChange(category: any): void {
     this.selectedCategory = category;

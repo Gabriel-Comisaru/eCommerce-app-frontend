@@ -57,8 +57,8 @@
     </ng-template>
   </p-card>
 </div>
-<div class="load-more-button" *ngIf="displayedRows < totalRows">
-  <button pButton (click)="loadMoreRows()" style="">Load More</button>
+<div class="load-more-button" >
+  <button pButton (click)="loadMoreRows()" style="" [disabled]="this.filteredList.length < 1 || displayedRows >= totalRows ">Load More</button>
 </div>
 
 <div *ngIf="filteredList.length < 1">
