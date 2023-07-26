@@ -39,7 +39,6 @@ export class UpdateProductComponent implements OnInit {
   images:any=[];
   ifPressed: boolean=false;
   spinnerLoading:boolean=false;
-  categoriesList: any = [];
   baseUrlApi = BASE_URL_API;
 
   constructor(
