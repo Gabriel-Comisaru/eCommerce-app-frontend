@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ProductsService } from '../home-page/shared/products.service';
@@ -15,6 +15,7 @@ import { CategoriesService } from '../product-categories/shared/categories.servi
 import { User } from '../models/user.model';
 import { Product } from '../home-page/shared/product.model';
 import { ProductOperationsService } from '../home-page/shared/product-operations.service';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-nav-bar',
@@ -48,7 +49,10 @@ export class NavBarComponent {
   adminDashboard!: string;
 
   @ViewChild(AdminPageComponent) admin!: AdminPageComponent;
-
+  @ViewChild('userOptions') userOverlay!: OverlayPanel;
+  @ViewChild('myAccount') myAccountOverlay!: OverlayPanel;
+  @ViewChild('shoppingCart') shoppingCartOverlay!: OverlayPanel;
+  @ViewChild('favoriteItems') favoriteItemsOverlay!: OverlayPanel;
   constructor(
     private router: Router,
     private productsService: ProductsService,
@@ -129,13 +133,18 @@ export class NavBarComponent {
   goHome() {
     this.router.navigate(['']);
   }
+  gotoOrdersPage() {
+    this.userOverlay.hide();
 
+    return this.router.navigate(['my-orders']);
+  }
   goToBasketPage() {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['basket']);
     } else {
       this.router.navigate(['login']);
     }
+    this.shoppingCartOverlay.hide();
   }
 
   goToAdminPage() {
@@ -149,14 +158,17 @@ export class NavBarComponent {
 
   goToLoginPage() {
     this.router.navigate(['login']);
+    this.myAccountOverlay.hide();
   }
 
   logout() {
     this.authService.logout();
+    this.userOverlay.hide();
   }
 
   goToRegisterPage() {
     this.authService.goToRegister();
+    this.myAccountOverlay.hide();
   }
 
   isAuthenticated() {
@@ -164,6 +176,7 @@ export class NavBarComponent {
   }
 
   goToAccountDetailsPage() {
+    this.userOverlay.hide();
     return this.router.navigate(['user-details']);
   }
 
@@ -179,10 +192,8 @@ export class NavBarComponent {
     return noOfBasketProducts;
   }
 
-  gotoOrdersPage() {
-    return this.router.navigate(['my-orders']);
-  }
   gotToFavoritesPage() {
+    this.favoriteItemsOverlay.hide();
     return this.router.navigate(['my-favorites']);
   }
   showProductImage(productImage: string) {
