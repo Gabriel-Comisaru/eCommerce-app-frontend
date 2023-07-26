@@ -1,0 +1,76 @@
+<div class="w-6 xl:w-8 lg:w-8 md:w-10 sm:w-full mx-auto my-8">
+    <div class="card my-4 flex justify-content-center">
+        <h1 class="title">ACCOUNT DETAILS</h1>
+    </div>
+    <div class="flex justify-content-center">
+        <p-card
+            class="my-auto flex justify-content-center"
+            header="{{loggedInUser.firstName}} {{loggedInUser.lastName}}"
+            subheader="{{loggedInUser.username}}"
+            [style]="{ width: '800px' }"
+        >
+            <p-divider></p-divider>
+            <h2>Account credentials</h2>
+            <p>You can change your credentials below:</p><br>
+            <form class="mb-4">
+                <label for="username">Username:</label>
+                <input
+                    pInputText
+                    class="w-full max-w-full mb-2"
+                    name="username"
+                    type="text"
+                    value="{{loggedInUser.username}}"
+                />
+                <label for="email">Email:</label>
+                <input
+                    pInputText
+                    class="w-full max-w-full mb-2"
+                    name="email"
+                    type="text"
+                    value="{{loggedInUser.email}}"
+                />
+                <label for="password">Password:</label>
+                <input
+                    pInputText
+                    class="w-full max-w-full mb-4"
+                    name="password"
+                    type="password"
+                />
+                <p-button>Confirm</p-button>
+            </form>
+            <p-divider></p-divider>
+            <h2>Invoicing address:</h2> <br>
+            <form>
+                <label for="street">Street:</label>
+                <input
+                    pInputText
+                    class="w-full max-w-full mb-2"
+                    name="street"
+                    type="text"
+                />
+                <label for="county">County:</label>
+                <input
+                    pInputText
+                    class="w-full max-w-full mb-2"
+                    name="county"
+                    type="text"
+                />
+                <label for="city">City:</label>
+                <input
+                    pInputText
+                    class="w-full max-w-full mb-2"
+                    name="city"
+                    type="text"
+                />
+                <label for="phone">Phone number:</label>
+                <input
+                    pInputText
+                    class="w-full max-w-full mb-4"
+                    name="phone"
+                    type="text"
+                />
+                <p-button>Confirm</p-button>
+            </form>
+        </p-card>
+    </div>
+</div>

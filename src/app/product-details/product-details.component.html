@@ -1,6 +1,6 @@
 <div class="w-6 xl:w-8 lg:w-8 md:w-10 sm:w-full mx-auto">
-  <div class="card">
-    <h1 class="title">{{ product.name }}</h1>
+  <div class="card mb-4">
+    <h1 class="title my-4">{{ product.name }}</h1>
     <p-rating
       [(ngModel)]="product.rating"
       [readonly]="true"
@@ -92,32 +92,11 @@
       <p>
         {{ product.description }}
       </p>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed
-        consequuntur error repudiandae numquam deserunt quisquam repellat libero
-        asperiores earum nam nobis, culpa ratione quam perferendis esse,
-        cupiditate neque quas!Lorem ipsum dolor sit amet, consectetur
-        adipisicing elit. Inventore sed consequuntur error repudiandae numquam
-        deserunt quisquam repellat libero asperiores earum nam nobis, culpa
-        ratione quam perferendis esse, cupiditate neque quas! Lorem ipsum dolor
-        sit amet, consectetur adipisicing elit. Inventore sed consequuntur error
-        repudiandae numquam deserunt quisquam repellat libero asperiores earum
-        nam nobis, culpa ratione quam perferendis esse, cupiditate neque
-        quas!Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore
-        sed consequuntur error repudiandae numquam deserunt quisquam repellat
-        libero asperiores earum nam nobis, culpa ratione quam perferendis esse,
-        cupiditate neque quas! Lorem ipsum dolor sit amet, consectetur
-        adipisicing elit. Inventore sed consequuntur error repudiandae numquam
-        deserunt quisquam repellat libero asperiores earum nam nobis, culpa
-        ratione quam perferendis esse, cupiditate neque quas!Lorem ipsum dolor
-        sit amet, consectetur adipisicing elit. Inventore sed consequuntur error
-        repudiandae numquam deserunt quisquam repellat libero asperiores earum
-        nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!
-      </p>
     </p-card>
   </div>
   <div id="reviews" class="reviews w-full my-5">
     <p-card header="Reviews">
+      <p-divider></p-divider>
       <p *ngIf="reviews.length === 0">
         <em
           >The product did not receive any reviews yet. Be the first to share
@@ -125,18 +104,23 @@
         >
       </p>
       <div class="card" *ngFor="let review of reviews">
-        <p-rating
-          [(ngModel)]="review.rating"
-          [readonly]="true"
-          [cancel]="false"
-        ></p-rating>
-        <h3>{{ review.title }}</h3>
+        <h2>{{review.fullName}}</h2>
+        <p>({{review.username}})</p>
+        <br>
+        <div class="flex mb-2">
+          <p-rating
+            class="mr-3"
+            [(ngModel)]="review.rating"
+            [readonly]="true"
+            [cancel]="false"
+          ></p-rating>
+          <h3>{{ review.title }}</h3>
+        </div>
         <p>
           {{ review.comment }}
         </p>
         <div *ngIf="reviews.length > 1">
-          <hr />
-          <br />
+          <p-divider></p-divider>
         </div>
       </div>
     </p-card>
