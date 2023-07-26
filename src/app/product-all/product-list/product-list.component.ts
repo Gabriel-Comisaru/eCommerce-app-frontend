@@ -6,12 +6,6 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductsService } from 'src/app/home-page/shared/products.service';
 import { BehaviorSubject } from 'rxjs';
-import {
-  OrderItem,
-  actionOrderItem,
-} from '../../home-page/shared/orderItem.model';
-import { Order } from 'src/app/home-page/shared/order.model';
-import { ProductOperationsService } from 'src/app/home-page/shared/product-operations.service';
 
 @Component({
   selector: 'app-product-list',
@@ -29,9 +23,8 @@ export class ProductListComponent implements OnInit {
     private basketService: BasketService,
     private router: Router,
     private authService: AuthService,
-    private mockproductService: CategoriesService,
-    private productsService: ProductsService,
-    private productOperationsService: ProductOperationsService
+    private mockProductService: CategoriesService,
+    private productService: ProductsService,
   ) {
     this.totalRows$?.next(0);
   }
@@ -42,14 +35,14 @@ export class ProductListComponent implements OnInit {
   selectedSortOption: string = 'Default';
 
   ngOnInit(): void {
-    this.mockproductService.getCategories().subscribe((res) => {
+    this.mockProductService.getCategories().subscribe(() => {
       this.loading = false;
     });
   }
 
   addToBasket(product: Product, event: any): void {
     event.stopPropagation();
-    this.productOperationsService.addToCart(product);
+    this.productService.addToCart(product);
   }
 
   getProductDetails(id: number, event: any) {
@@ -58,7 +51,7 @@ export class ProductListComponent implements OnInit {
   }
   addToFavorite(product: Product, event: any) {
     event.stopPropagation();
-    this.productOperationsService.addToFavorite(product);
+    this.productService.addToFavorite(product);
   }
 
   loadMoreRows(): void {
@@ -67,9 +60,7 @@ export class ProductListComponent implements OnInit {
   }
 
   sortProducts() {
-    console.log(this.selectedSortOption, 'asdasd');
     if (this.selectedSortOption === 'Price') {
-      console.log('price');
       this.filteredList.sort((a, b) => {
         return a.price - b.price;
       });

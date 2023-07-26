@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { Product } from 'src/app/home-page/shared/product.model';
 import { ProductsService } from 'src/app/home-page/shared/products.service';
-import { BasketService } from '../shared/basket.service';
-import { ProductOperationsService } from 'src/app/home-page/shared/product-operations.service';
 
 @Component({
   selector: 'app-favorite-products-page',
@@ -12,7 +10,6 @@ import { ProductOperationsService } from 'src/app/home-page/shared/product-opera
 export class FavoriteProductsPageComponent {
   constructor(
     private productsService: ProductsService,
-    private productOperationsService: ProductOperationsService
   ) {}
 
   favoriteProductsList: Product[] = [];
@@ -61,7 +58,6 @@ export class FavoriteProductsPageComponent {
     return (item.productPrice * item.quantity).toFixed(2);
   }
   showProductImage(productImage: string) {
-    const imgUrl = this.productOperationsService.getProductImage(productImage);
-    return imgUrl;
+    return this.productsService.getProductImage(productImage);
   }
 }

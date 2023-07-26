@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { concat, concatMap, map, Observable, switchMap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
 import { ProductsService } from '../home-page/shared/products.service';
 import { RegisterFields } from '../models/register.model';
-import { OrderItem } from '../home-page/shared/orderItem.model';
-import { Order } from '../home-page/shared/order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +17,8 @@ export class AuthService {
     private router: Router,
     private userService: UserService,
     private productsService: ProductsService
-  ) {}
+  ) {
+  }
 
   isAuthenticated(): boolean {
     return localStorage.getItem('token') !== null;
@@ -45,14 +44,9 @@ export class AuthService {
       );
   }
 
-  getToken(): any {
-    return localStorage.getItem('token');
-  }
-
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
-    // favoriteProducts doesn t update in real time
     localStorage.removeItem('favoriteProducts');
     this.userService.loggedUser.next({});
 
@@ -70,6 +64,7 @@ export class AuthService {
   goToRegister(): void {
     this.router.navigate(['register']);
   }
+
   register(registerCredentials: RegisterFields): Observable<RegisterFields> {
     const formData = new FormData();
     const url = `${this.baseUrl}/auth/register`;

@@ -10,7 +10,6 @@
       />
     </div>
 
-    <!-- <p-skeleton width="8rem" height="3rem" borderRadius="16px"></p-skeleton> -->
     <div class="searchContainer">
       <input
         type="text"
@@ -39,7 +38,6 @@
       ></i
       ><span>Basket</span></a
     >
-    <!-- [value]="basketContent.length.toString()" old basket badge setting -->
     <a class="navBarItem" (click)="favoriteItems.toggle($event)"
       ><i
         class="pi pi-heart"
@@ -64,10 +62,10 @@
       *ngIf="isAuthenticated()"
     >
       <i class="pi pi-user"></i
-      ><span style="white-space: nowrap">{{ userLoggedIn.username }}</span></a
+      ><span *ngIf="userLoggedIn" style="white-space: nowrap">{{ userLoggedIn.username }}</span></a
     >
 
-    <div class="flex navBarItem" *ngIf="userLoggedIn.role === 'ADMIN'">
+    <div class="flex navBarItem" *ngIf="userLoggedIn && userLoggedIn.role === 'ADMIN'">
       <p-button (click)="goToAdminPage()" styleClass="p-button-outlined"
         >Admin Dashboard</p-button
       >

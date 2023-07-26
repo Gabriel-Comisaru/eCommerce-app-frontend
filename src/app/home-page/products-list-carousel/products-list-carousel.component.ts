@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { OrderItem } from '../shared/orderItem.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
-import { ProductOperationsService } from '../shared/product-operations.service';
 
 @Component({
   selector: 'app-products-list-carousel',
@@ -18,7 +17,6 @@ export class ProductsListCarouselComponent {
     private router: Router,
     private authService: AuthService,
     private basketService: BasketService,
-    private productOperationsService: ProductOperationsService,
     private productService: ProductsService
   ) {}
   @Input() productsToDisplay!: Product[];
@@ -60,7 +58,7 @@ export class ProductsListCarouselComponent {
   }
 
   addToCart(product: Product) {
-    this.productOperationsService.addToCart(product, this.basketItems);
+    this.productService.addToCart(product, this.basketItems);
   }
 
   getProductDetails(id: number) {
@@ -72,7 +70,7 @@ export class ProductsListCarouselComponent {
       '/assets/images/product-not-found.png';
   }
   addToFavorite(product: Product) {
-    this.productOperationsService.addToFavorite(product);
+    this.productService.addToFavorite(product);
   }
 }
 // <!-- notificare ca am adaugat in cos -->

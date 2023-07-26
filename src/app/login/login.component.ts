@@ -5,10 +5,6 @@ import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { ProductsService } from '../home-page/shared/products.service';
 import { concat } from 'rxjs';
-import { OrderItem } from '../home-page/shared/orderItem.model';
-// import { Button } from 'primeng/primeng';
-// import { InputText } from 'primeng/primeng';
-// import { Panel } from 'primeng/primeng';
 
 @Component({
   selector: 'app-login',

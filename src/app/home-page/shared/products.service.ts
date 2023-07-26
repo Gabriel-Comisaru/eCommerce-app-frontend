@@ -186,4 +186,51 @@ export class ProductsService {
       })
     );
   }
+
+  addToFavorite(product: Product) {
+    if (product.favUserIds.includes(product.userId)) {
+      // if product already exists the favorite list delete it
+      this.deleteFavoriteProduct(product.id)
+        .subscribe(() => {
+          this.favoriteProductsObservable.next({
+            productAction: 'delete',
+            favoriteProduct: product,
+          });
+          product.favUserIds = product.favUserIds.filter(
+            (id) => id !== product.userId
+          );
+        });
+    } else {
+      this.addFavoriteProduct(product.id).subscribe(() => {
+        this.favoriteProductsObservable.next({
+          productAction: 'add',
+          favoriteProduct: product,
+        });
+
+        product.favUserIds.push(product.userId);
+      });
+    }
+  }
+
+  addToCart(product: Product, basketItems: OrderItem[] = []) {
+    let orderItem = basketItems.filter(
+      (item: OrderItem) => item.productId === product.id
+    );
+    if (orderItem.length) {
+      if (product.unitsInStock >= orderItem[0].quantity + 1) {
+        this
+          .updateOrderQuantity(orderItem[0].id, orderItem[0].quantity + 1)
+          .subscribe();
+      } else {
+        console.log('quantity exceeds stock');
+        //display somehow an error message
+      }
+    } else {
+      this.addProductToOrder(product.id, 1).subscribe();
+    }
+  }
+
+  getProductImage(productImage: string) {
+    return `http://localhost:8081/api/images/download?name=${productImage}`;
+  }
 }
