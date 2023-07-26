@@ -115,11 +115,7 @@ export class NavBarComponent {
   goHome() {
     this.router.navigate(['']);
   }
-  gotoOrdersPage() {
-    this.userOverlay.hide();
 
-    return this.router.navigate(['my-orders']);
-  }
   goToBasketPage() {
     if (this.authService.isAuthenticated()) {
       this.router.navigate(['basket']);
@@ -175,6 +171,8 @@ export class NavBarComponent {
   }
 
   gotoOrdersPage() {
+    this.userOverlay.hide();
+
     return this.router.navigate(['my-orders']);
   }
 
