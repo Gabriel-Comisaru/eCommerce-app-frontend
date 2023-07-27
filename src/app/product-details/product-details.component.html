@@ -1,4 +1,4 @@
-<div class="w-6 xl:w-8 lg:w-8 md:w-10 sm:w-full mx-auto">
+<div class="w-full xl:w-8 lg:w-8 md:w-10 sm:w-full mx-auto">
   <div class="card mb-4">
     <h1 class="title my-4">{{ product.name }}</h1>
     <p-rating
@@ -21,10 +21,10 @@
         [showIndicators]="true"
         [showItemNavigators]="true"
         [showThumbnails]="false"
-        [containerStyle]="{ width: '640px' }"
+        [containerStyle]="{ width: '50vw' }"
       >
         <ng-template pTemplate="item" let-image>
-          <img [src]="image" style="height: 500px; max-width: 640px" />
+          <img [src]="image" style="height: 500px; width: 50vw; object-fit: contain;" />
         </ng-template>
       </p-galleria>
     </div>
@@ -83,7 +83,6 @@
       </p-card>
     </div>
   </div>
-
   <div class="description w-full my-5">
     <p-card header="Description">
       <p>
@@ -101,9 +100,9 @@
         >
       </p>
       <div class="card" *ngFor="let review of reviews">
-        <h2>{{review.fullName}}</h2>
-        <p>({{review.username}})</p>
-        <br>
+        <h2>{{ review.fullName }}</h2>
+        <p>({{ review.username }})</p>
+        <br />
         <div class="flex mb-2">
           <p-rating
             class="mr-3"

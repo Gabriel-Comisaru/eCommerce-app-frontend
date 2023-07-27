@@ -31,6 +31,7 @@ export class NavBarComponent {
   public orderItems: OrderItem[] = [];
   baseUrlApi = BASE_URL_API;
   adminDashboard!: string;
+  deleteItemLoader: boolean = false;
 
   @ViewChild(AdminPageComponent) admin!: AdminPageComponent;
   @ViewChild('userOptions') userOverlay!: OverlayPanel;
@@ -59,7 +60,6 @@ export class NavBarComponent {
     this.productService.getShopingCartObservable().subscribe((res) => {
       this.orderItems = res.basketOrderItems!;
     });
-    console.log(this.userLoggedIn);
     if (this.userLoggedIn) {
       this.productsService.getCurrentBasket().subscribe();
       this.favoriteProductsService.getFavoriteProducts().subscribe();
@@ -85,7 +85,6 @@ export class NavBarComponent {
         icon: 'pi pi-fw pi-bars',
         items: this.categoryItems,
       },
-      { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
       {
         label: 'All Categories',
 
@@ -121,11 +120,9 @@ export class NavBarComponent {
   logout() {
     this.authService.logout();
     this.userOverlay.hide();
-
     this.favoriteProductsService.favoriteProductsObservable.next({
       favoriteProducts: [],
     });
-
     this.productsService.shoppingCartObservable.next({
       basketOrderItems: [],
     });
@@ -159,12 +156,29 @@ export class NavBarComponent {
 
   gotoOrdersPage() {
     this.userOverlay.hide();
-
     return this.router.navigate(['my-orders']);
   }
 
   gotToFavoritesPage() {
     this.favoriteItemsOverlay.hide();
     return this.router.navigate(['my-favorites']);
+  }
+  getProductImage(productImage: string) {
+    return `${BASE_URL_API}/images/download?name=${productImage}`;
+  }
+  goToProductDetailPage(id: number) {
+    this.router.navigate([`product-details/${id}`]);
+  }
+  deleteFavoriteProduct(productId: number) {
+    this.deleteItemLoader = true;
+    this.favoriteProductsService
+      .deleteFavoriteProduct(productId)
+      .subscribe(() => (this.deleteItemLoader = false));
+  }
+  deleteBasketOrderItem(orderId: number) {
+    this.deleteItemLoader = true;
+    this.productService
+      .deleteOrderItem(orderId)
+      .subscribe(() => (this.deleteItemLoader = false));
   }
 }

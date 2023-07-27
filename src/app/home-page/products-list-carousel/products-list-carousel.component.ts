@@ -3,12 +3,8 @@ import { Product } from '../shared/product.model';
 import { ProductsService } from '../shared/products.service';
 import { Router } from '@angular/router';
 import { OrderItem } from '../shared/orderItem.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
 import { FavoriteProductsServiceService } from '../shared/favorite-products-service.service';
-
 import { BASE_URL_API } from 'src/app/settings';
-
 @Component({
   selector: 'app-products-list-carousel',
   templateUrl: './products-list-carousel.component.html',
@@ -20,7 +16,6 @@ export class ProductsListCarouselComponent {
 
   public productsToDisplayWithImages!: Product[];
   public basketItems!: OrderItem[];
-  public loading: boolean = false;
   public favoriteItems: Product[] = [];
 
   constructor(
@@ -43,33 +38,26 @@ export class ProductsListCarouselComponent {
     }
 
     this.productsToDisplayWithImages = this.productsToDisplay.map((product) => {
-      //TODO REFACTOR THE MAP
-
-      // if an image already exists use it otherwise replace it with a placeholder
-      if (product.imagesName.length > 0 && product.imagesName[0].length > 0) {
-        const url = `${BASE_URL_API}/images/download?name=${product.imagesName[0]}`;
-
-        return {
-          ...product,
-          roundedRating: Math.floor(product.rating),
-          productImage: url,
-          loadingCart: false,
-          loadingFavorite: false,
-        };
-      }
       return {
         ...product,
-        productImage: '/assets/images/product-not-found.png',
+        productImage:
+          product.imagesName.length > 0 && product.imagesName[0].length > 0
+            ? `${BASE_URL_API}/images/download?name=${product.imagesName[0]}`
+            : '/assets/images/product-not-found.png',
         roundedRating: Math.floor(product.rating),
         loadingCart: false,
         loadingFavorite: false,
       };
     });
   }
-
   addToCart(product: Product) {
-    this.productService.addToCart(product, this.basketItems);
-    this.loadingButton(product, 'cart');
+    if (product.loadingCart) {
+      return;
+    }
+    product.loadingCart = true;
+    this.productService
+      .addToCart(product, this.basketItems)
+      .subscribe(() => (product.loadingCart = false));
   }
 
   getProductDetails(id: number) {
@@ -80,32 +68,24 @@ export class ProductsListCarouselComponent {
     (event.target as HTMLImageElement).src =
       '/assets/images/product-not-found.png';
   }
+
   addToFavorite(product: Product) {
-    this.favoriteProductsService.addToFavorite(product, this.favoriteItems);
-    this.loadingButton(product, 'favorite');
-  }
-  loadingButton(product: any, buttonType: string) {
-    if (buttonType === 'cart') {
-      product.loadingCart = true;
-
-      setTimeout(() => {
-        product.loadingCart = false;
-      }, 150);
-    } else if (buttonType === 'favorite') {
-      product.loadingFavorite = true;
-
-      setTimeout(() => {
-        product.loadingFavorite = false;
-      }, 150);
+    if (product.loadingFavorite) {
+      return;
     }
+    product.loadingFavorite = true;
+    this.favoriteProductsService
+      .addToFavorite(product, this.favoriteItems)
+      .subscribe(() => {
+        product.loadingFavorite = false;
+      });
   }
+
   checkIfFavorite(product: Product) {
     return this.favoriteItems.some((el) => el.id === product.id);
   }
+
   isUserLoggedIn() {
     return !localStorage.getItem('currentUser');
   }
 }
-
-// <!-- notificare ca am adaugat in cos -->
-// <!-- notificare ca am adaugat la favorite plus update badge-->

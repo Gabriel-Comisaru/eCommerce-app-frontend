@@ -1,6 +1,3 @@
-.productImageContainer {
-}
-
 .productImage {
   object-fit: contain;
 }
@@ -103,4 +100,8 @@
 }
 .productButtons :nth-child(1) ::ng-deep .p-button-icon {
   font-size: large;
+}
+::ng-deep .p-card {
+  background-color: whitesmoke;
+  margin: 1rem 2rem;
 }

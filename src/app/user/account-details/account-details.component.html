@@ -40,36 +40,34 @@
             </form>
             <p-divider></p-divider>
             <h2>Invoicing address:</h2> <br>
-            <form>
-                <label for="street">Street:</label>
+            <form [formGroup]="userAddressForm" (ngSubmit)="onSubmitAddress()">
+                <label for="address">Address:</label>
                 <input
                     pInputText
                     class="w-full max-w-full mb-2"
-                    name="street"
+                    name="address"
                     type="text"
+                    formControlName="address"
                 />
                 <label for="county">County:</label>
-                <input
-                    pInputText
-                    class="w-full max-w-full mb-2"
-                    name="county"
-                    type="text"
-                />
+                <p-dropdown id="county" optionValue="auto" placeholder="Select a County"
+                        [options]="counties" optionLabel="nume" formControlName="county"
+                        (onChange)="getCities()" styleClass="mb-2 w-full"></p-dropdown>
                 <label for="city">City:</label>
-                <input
-                    pInputText
-                    class="w-full max-w-full mb-2"
-                    name="city"
-                    type="text"
-                />
+                <p-dropdown id="city" optionValue="nume" placeholder="Select a City"
+                        [options]="cities" optionLabel="nume" styleClass="mb-2 w-full"
+                        formControlName="city" 
+                        [dropdownIcon]="'pi pi-chevron-down'"
+            ></p-dropdown>
                 <label for="phone">Phone number:</label>
                 <input
                     pInputText
                     class="w-full max-w-full mb-4"
                     name="phone"
                     type="text"
+                    formControlName="phone"
                 />
-                <p-button>Confirm</p-button>
+                <p-button type="submit">Confirm</p-button>
             </form>
         </p-card>
     </div>

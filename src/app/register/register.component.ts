@@ -18,7 +18,6 @@ import { RegisterFields } from '../models/register.model';
 export class RegisterComponent {
   constructor(
     private authService: AuthService,
-    private fb: FormBuilder,
     private userService: UserService
   ) {}
 
@@ -148,10 +147,6 @@ export class RegisterComponent {
       fieldName as keyof typeof this.registerForm.controls
     ].errors?.['email'];
   }
-
-  // getNbOfCharacters(control: string) {
-  //   return this.registerForm.get(control)?.errors;
-  // }
 
   onSubmit() {
     const val = this.registerForm.value;

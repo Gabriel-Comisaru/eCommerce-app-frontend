@@ -9,7 +9,6 @@
         style="cursor: pointer"
       />
     </div>
-
     <div class="searchContainer">
       <input
         type="text"
@@ -17,19 +16,20 @@
         placeholder="Search"
         class="ml-4 searchInput"
       />
-      <button class="searchButton">
+      <button class="mr-2 searchButton">
         <i class="pi pi-search"></i>
       </button>
     </div>
   </div>
-
   <div class="navControlsContainer accountControls">
     <a class="navBarItem" (click)="shoppingCart.toggle($event)"
       ><i
         class="pi pi-shopping-cart"
         pBadge
         severity="danger"
-        [value]="getOrderItemLength().toString()"
+        [value]="
+          getOrderItemLength() > 0 ? getOrderItemLength().toString() : null!
+        "
       ></i
       ><span>Basket</span></a
     >
@@ -38,11 +38,14 @@
         class="pi pi-heart"
         pBadge
         severity="danger"
-        [value]="favoriteProductsList.length.toString()"
+        [value]="
+          favoriteProductsList.length > 0
+            ? favoriteProductsList.length.toString()
+            : null!
+        "
       ></i
       ><span>Favorite</span></a
     >
-
     <a
       class="navBarItem"
       (click)="myAccount.toggle($event)"
@@ -61,18 +64,9 @@
         userLoggedIn.username
       }}</span></a
     >
-
-    <div
-      class="flex navBarItem"
-      *ngIf="userLoggedIn && userLoggedIn.role === 'ADMIN'"
-    >
-      <p-button (click)="goToAdminPage()" styleClass="p-button-outlined"
-        >Admin Dashboard
-      </p-button>
-    </div>
+    <a class="navBarItem font-semibold text-xs text-orange-500" *ngIf="userLoggedIn && userLoggedIn.role === 'ADMIN'" (click)="goToAdminPage()">Admin <br> Dashboard</a>
   </div>
 </nav>
-
 <nav class="secondaryNav">
   <p-menubar
     #nav
@@ -81,7 +75,6 @@
   >
   </p-menubar>
 </nav>
-
 <p-overlayPanel #userOptions>
   <ng-template pTemplate="content">
     <div class="overlay">
@@ -130,77 +123,91 @@
         [scrollable]="true"
         [value]="orderItems"
         scrollHeight="250px"
+        [rowHover]="true"
+        [loading]="deleteItemLoader"
       >
-        <ng-template pTemplate="header">
-          <tr class="contentRow">
-            <th>Product</th>
-            <th>Qty</th>
-            <th>Price</th>
-          </tr>
-        </ng-template>
         <ng-template pTemplate="body" let-product>
           <tr class="contentRow">
-            <td class="productContainer">
+            <td
+              class="productContainer"
+              (click)="goToProductDetailPage(product.id)"
+            >
               <img
-                src="{{baseUrlApi}}/images/download?name={{
+                src="{{ baseUrlApi }}/images/download?name={{
                   product.imageName
                 }}"
                 alt="product photo"
               />
-              <span class="productName">{{ product.productName }}</span>
+              <span class="productName ml-4">{{ product.productName }}</span>
             </td>
 
             <td>x{{ product.quantity }}</td>
             <td>${{ getItemPrice(product) }}</td>
-          </tr></ng-template
-        >
+            <p-button
+              icon="pi pi-times"
+              styleClass="p-button-rounded p-button-danger p-button-text"
+              (onClick)="deleteBasketOrderItem(product.id)"
+            ></p-button></tr
+        ></ng-template>
       </p-table>
+      <div
+        *ngIf="!orderItems.length"
+        class="flex justify-content-center align-content-center px-4"
+      >
+        <p class="basketOverlayFooter my-3 font-bold">Your basket is empty.</p>
+      </div>
       <p-button
         (click)="goToBasketPage()"
         label="View whole basket"
-        styleClass="p-button-raised mb-1 mt-2"
+        styleClass="p-button-text mb-1  p-button-sm"
       ></p-button>
     </div>
   </ng-template>
 </p-overlayPanel>
-
 <p-overlayPanel #favoriteItems class="favoriteItems">
   <ng-template pTemplate="content">
     <div class="overlay">
       <p-table
-        styleClass="p-datatable-sm"
+        styleClass="p-datatable-sm "
         [scrollable]="true"
         [value]="favoriteProductsList"
         scrollHeight="250px"
+        [rowHover]="true"
+        style="width: 25rem"
+        [loading]="deleteItemLoader"
       >
-        <ng-template pTemplate="header">
-          <tr class="contentRow">
-            <th>Product</th>
-
-            <th>Price</th>
-          </tr>
-        </ng-template>
-
         <ng-template pTemplate="body" let-product>
           <tr class="contentRow">
-            <td class="productContainer">
+            <td
+              class="productContainer cursor-pointer"
+              (click)="goToProductDetailPage(product.id)"
+            >
               <img
-                src="{{baseUrlApi}}/images/download?name={{
-                  product.imagesName[0]
-                }}"
+                [src]="getProductImage(product.imagesName[0])"
                 alt="product photo"
               />
-              <span class="productName">{{ product.name }}</span>
+              <span class="productName ml-4">{{ product.name }}</span>
             </td>
-
             <td>${{ product.price }}</td>
+            <p-button
+              icon="pi pi-times"
+              styleClass="p-button-rounded p-button-danger p-button-text"
+              (onClick)="deleteFavoriteProduct(product.id)"
+            ></p-button>
           </tr>
         </ng-template>
       </p-table>
+      <div *ngIf="!favoriteProductsList.length">
+        <div class="flex justify-content-center align-content-center px-4">
+          <p class="basketOverlayFooter my-3 font-bold">
+            You have no favorite products.
+          </p>
+        </div>
+      </div>
       <p-button
         (click)="gotToFavoritesPage()"
         label="View all"
-        styleClass="p-button-raised"
+        styleClass="p-button-text mb-1 p-button-sm "
       ></p-button>
     </div>
   </ng-template>

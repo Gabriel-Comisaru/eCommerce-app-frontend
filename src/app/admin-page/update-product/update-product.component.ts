@@ -12,6 +12,8 @@ import {MessageService} from 'primeng/api';
 import {Product} from 'src/app/home-page/shared/product.model';
 import {ProductsService} from 'src/app/home-page/shared/products.service';
 import {Category} from "../../home-page/shared/category.model";
+import {UUID} from "angular2-uuid";
+
 
 @Component({
   selector: 'app-update-product',
@@ -161,7 +163,7 @@ export class UpdateProductComponent implements OnInit {
   onFileChanged(event: any, uploadComponent: any, id: number | undefined) {
     this.showImageError = false;
     if (!this.editModalFlag) {
-      this.productForm.controls.imagesName.setValue(event.currentFiles[0]);
+      this.productForm.controls.imagesName.setValue(new File([event.currentFiles[0]], UUID.UUID(), {type: 'image/png'}) as any);
     } else if (this.editModalFlag) {
       this.uploadImage(id, event, uploadComponent)
     }
@@ -170,7 +172,7 @@ export class UpdateProductComponent implements OnInit {
   uploadImage(id: number | undefined, event: any, uploadComponent: any) {
     this.spinnerLoading = true;
     const formData = new FormData();
-    formData.append('imageFile', event.currentFiles[0])
+    formData.append('imageFile',new File([event.currentFiles[0]], UUID.UUID(), {type: 'image/png'}))
     this.productsService.saveImage(formData, id!)
       .subscribe((res) => {
           this.spinnerLoading = false;

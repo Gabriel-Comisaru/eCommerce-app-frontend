@@ -52,7 +52,13 @@ export class ProductListComponent implements OnInit {
 
   addToBasket(product: Product, event: any): void {
     event.stopPropagation();
-    this.productService.addToCart(product, this.basketItems);
+    if (product.loadingCart) {
+      return;
+    }
+    product.loadingCart = true;
+    this.productService
+      .addToCart(product, this.basketItems)
+      .subscribe(() => (product.loadingCart = false));
   }
 
   getProductDetails(id: number, event: any) {
@@ -61,7 +67,15 @@ export class ProductListComponent implements OnInit {
   }
   addToFavorite(product: Product, event: any) {
     event.stopPropagation();
-    this.favoriteProductsService.addToFavorite(product, this.favoriteItems);
+    if (product.loadingFavorite) {
+      return;
+    }
+    product.loadingFavorite = true;
+    this.favoriteProductsService
+      .addToFavorite(product, this.favoriteItems)
+      .subscribe(() => {
+        product.loadingFavorite = false;
+      });
   }
 
   loadMoreRows(): void {

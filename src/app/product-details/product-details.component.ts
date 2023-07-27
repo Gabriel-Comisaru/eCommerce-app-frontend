@@ -32,7 +32,6 @@ export class ProductDetailsComponent implements OnInit {
   constructor(
     private productService: ProductsService,
     private activatedRoute: ActivatedRoute,
-    private basketService: BasketService,
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
@@ -79,7 +78,7 @@ export class ProductDetailsComponent implements OnInit {
       const review: Review = {
         rating: this.reviewForm.controls.rating.value,
         title: this.reviewForm.controls.title.value,
-        comment: this.reviewForm.controls.comment.value
+        comment: this.reviewForm.controls.comment.value,
       };
 
       this.productService.saveReview(this.product.id, review);
@@ -91,11 +90,23 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToFavorite(product: Product) {
-    this.favoriteProductsService.addToFavorite(product, this.favoriteItems);
+    if (product.loadingFavorite) {
+      return;
+    }
+    product.loadingFavorite = true;
+    this.favoriteProductsService
+      .addToFavorite(product, this.favoriteItems)
+      .subscribe(() => (product.loadingFavorite = false));
   }
 
   addToCart(product: Product) {
-    this.productService.addToCart(product, this.basketItems);
+    if (product.loadingCart) {
+      return;
+    }
+    product.loadingCart = true;
+    this.productService
+      .addToCart(product, this.basketItems)
+      .subscribe(() => (product.loadingCart = false));
   }
   checkIfFavorite(product: Product) {
     return this.favoriteItems.some((el) => el.id === product.id);
