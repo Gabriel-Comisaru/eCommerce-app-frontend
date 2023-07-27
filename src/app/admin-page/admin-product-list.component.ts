@@ -65,12 +65,6 @@ export class AdminProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProducts()
-    // this.productsService.getProductsDisplay(this.first, this.row)
-    //   .subscribe((list: any) => {
-    //     this.productsList = list.products;
-    //     this.totalRecords = list.numberOfItems;
-    //     this.productsList = this.productsList.sort((a: any, b: any) => a.name > b.name ? 1 : -1)
-    //   });
     this.searchTermUpdate
       .pipe(
         debounceTime(500),
@@ -128,20 +122,15 @@ export class AdminProductListComponent implements OnInit {
           this.getProducts()
 
       },
-      (error:Error)=>{
-        console.log(error)
+      ()=>{
         this.loading=false;
         this.messageService.add({
-          severity: 'error',
+          severity: 'info',
           icon: 'pi pi-info',
           summary: 'Error',
-          detail: 'Oops'
+          detail: 'This product is part of an Order and it can\'t be deleted'
         });
       })
-  }
-
-  handleMissingImg(event: ErrorEvent) {
-    (event!.target as HTMLImageElement).src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'
   }
 
   onPage(event: { rows: number, first: number }) {

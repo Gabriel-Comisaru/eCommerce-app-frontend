@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {ProductsService} from "../../home-page/shared/products.service";
 import {Order} from "../../home-page/shared/order.model";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-admin-orders-list',
@@ -18,7 +19,8 @@ export class AdminOrdersListComponent {
   pageNumber: number = 0;
   loading: boolean = false;
 
-  constructor(private service: ProductsService) {
+  constructor(private service: ProductsService,
+              private messageService:MessageService) {
   }
 
   ngOnInit() {
@@ -27,10 +29,8 @@ export class AdminOrdersListComponent {
 
   getOrders() {
     this.loading = true;
-
     this.service.getOrders(this.pageNumber, this.row)
       .subscribe(item => {
-        console.log(item.orders)
         this.orders = item.orders;
         this.numberOfPages = item.numberOfPages;
         this.totalRecords = item.numberOfItems;
@@ -42,8 +42,16 @@ export class AdminOrdersListComponent {
   }
 
   changeStatus(id: number, status: string) {
+    this.loading=true;
     this.service.updateStatus(id, status)
-      .subscribe()
+      .subscribe(()=> {
+        this.loading = false
+        this.messageService.add({
+          severity:'info',
+          summary:'Info',
+          detail:`Status updated succesfuly to ${status}`
+        })
+      })
   }
 
   onPage(event: { rows: number, first: number }) {

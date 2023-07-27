@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {AuthService} from "../services/auth.service";
-import {UserService} from "../services/user.service";
 
 @Component({
   selector: 'app-admin-nav-bar',
@@ -9,18 +8,12 @@ import {UserService} from "../services/user.service";
 })
 export class AdminNavBarComponent {
 
-  username='';
+  username=localStorage.getItem('username');
 
-  constructor(private authService:AuthService,
-              private userService:UserService) {
+  constructor(private authService:AuthService) {
   }
 
   ngOnInit(){
-    this.userService.getLoggedInUser()
-      .subscribe(res=> {
-        console.log(res)
-        this.username = res.username!;
-      })
   }
 
 logOut(){

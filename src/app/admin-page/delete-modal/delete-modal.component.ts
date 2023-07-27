@@ -22,7 +22,6 @@ export class DeleteModalComponent {
   constructor() {
   }
 
-
   delete(selectedProduct: any) {
     this.deleteVisible = false;
     this.deleteEmitter.emit(selectedProduct.id);
