@@ -11,8 +11,6 @@ import { BASE_URL_API } from '../settings';
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  // private apiBaseURL = `${BASE_URL_API}`;
-
   public loggedUser = new Subject<User>();
 
   getLoggedUserObservable(): Observable<User> {
