@@ -91,7 +91,11 @@ export class FiltersComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedPriceRange = [0, 1000];
-    this.loadData();
+    setTimeout(() => {
+      this.loadData();
+
+    }, 500)
+    // this.loadData();
   }
 
   loadData(): void {
@@ -102,7 +106,7 @@ export class FiltersComponent implements OnInit {
         this.selectedCategory = this.categories.find((category: any) => category.id == categoryIdParam['categoryId']);
         // console.log(this.selectedCategory, '-----------------1---1--1-')
         this.filtersApplied.emit({
-          categoryId: this.selectedCategory != undefined ? this.selectedCategory.id : '',
+          categoryId: this.selectedCategory != undefined ? this.route.snapshot.queryParams['categoryId'] : '',
           priceMin: 0,
           priceMax: 1000
         });

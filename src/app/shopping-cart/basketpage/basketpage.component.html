@@ -1,56 +1,135 @@
-<div class="mainDiv">
-<p-table [paginator]="true" [rows]="row" [rowsPerPageOptions]="rows" [value]="orderedItems"
-         [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
-         [globalFilterFields]="['name']" [style]="{'margin-top': '20px'}">
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Image</th>
-      <th>Name</th>
-      <th>Category</th>
-      <th>Quantity</th>
-      <th>Price</th>
-      <th>Actions</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-BasketModel let-index="rowIndex">
-    <div *ngIf="loading" class="loading">
-      <div class="spinner"></div>
-    </div>
-    <tr  class="item">
-      <td> <img src="{{ BasketModel.productImage }}" class="product-img productImage" ></td>
-      <td>{{ BasketModel.productName }} </td>
-      <td>{{ BasketModel.categoryName }}</td>
-      <td>
-        <p-button (onClick)="decrement(BasketModel)" icon="pi pi-minus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
-        </p-button>
-        {{ BasketModel.quantity }}
-        <p-button (onClick)="increment(BasketModel)"
-                  [disabled]="BasketModel.quantity >= BasketModel.unitsInStock"
-                  icon="pi pi-plus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">
-        </p-button>
-      </td>
-      <td class="itemPrice">{{ getItemPrice(BasketModel) }} $</td>
-      <td>
-        <p-button icon="pi pi-trash" (click)="deleteProduct(BasketModel, $event)"></p-button>
-      </td>
-    </tr>
-  </ng-template>
+<!--<div class="mainDiv">-->
+<!--<p-table [paginator]="true" [rows]="row" [rowsPerPageOptions]="rows" [value]="orderedItems"-->
+<!--         [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"-->
+<!--         [globalFilterFields]="['name']" [style]="{'margin-top': '20px'}">-->
+<!--  <ng-template pTemplate="header">-->
+<!--    <tr>-->
+<!--      <th>Image</th>-->
+<!--      <th>Name</th>-->
+<!--      <th>Category</th>-->
+<!--      <th>Quantity</th>-->
+<!--      <th>Price</th>-->
+<!--      <th>Actions</th>-->
+<!--    </tr>-->
+<!--  </ng-template>-->
+<!--  <ng-template pTemplate="body" let-BasketModel let-index="rowIndex">-->
+<!--    <div *ngIf="loading" class="loading">-->
+<!--      <div class="spinner"></div>-->
+<!--    </div>-->
+<!--    <tr  class="item">-->
+<!--      <td> <img src="{{ BasketModel.productImage }}" class="product-img productImage" ></td>-->
+<!--      <td>{{ BasketModel.productName }} </td>-->
+<!--      <td>{{ BasketModel.categoryName }}</td>-->
+<!--      <td>-->
+<!--        <p-button (onClick)="decrement(BasketModel)" icon="pi pi-minus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">-->
+<!--        </p-button>-->
+<!--        {{ BasketModel.quantity }}-->
+<!--        <p-button (onClick)="increment(BasketModel)"-->
+<!--                  [disabled]="BasketModel.quantity >= BasketModel.unitsInStock"-->
+<!--                  icon="pi pi-plus" [style]="{'width': '30px', 'height': '30px', 'border-radius': '15px'}" styleClass="my-button">-->
+<!--        </p-button>-->
+<!--      </td>-->
+<!--      <td class="itemPrice">{{ getItemPrice(BasketModel) }} $</td>-->
+<!--      <td>-->
+<!--        <p-button icon="pi pi-trash" (click)="deleteProduct(BasketModel, $event)"></p-button>-->
+<!--      </td>-->
+<!--    </tr>-->
+<!--  </ng-template>-->
 
-  <ng-template pTemplate="footer">
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td><strong>Total:</strong></td>
-      <td><strong>${{ getTotalPrice() }}</strong></td>
-      <td>
-        <div class="checkout-button">
-          <p-button type="button" label="Checkout" (click)="checkout()" [disabled]="orderedItems.length < 1 "></p-button>
+<!--  <ng-template pTemplate="footer">-->
+<!--    <tr>-->
+<!--      <td></td>-->
+<!--      <td></td>-->
+<!--      <td></td>-->
+<!--      <td><strong>Total:</strong></td>-->
+<!--      <td><strong>${{ getTotalPrice() }}</strong></td>-->
+<!--      <td>-->
+<!--        <div class="checkout-button">-->
+<!--          <p-button type="button" label="Checkout" (click)="checkout()" [disabled]="orderedItems.length < 1 "></p-button>-->
+<!--        </div>-->
+
+<!--      </td>-->
+<!--    </tr>-->
+<!--  </ng-template>-->
+<!--</p-table>-->
+<!--</div>-->
+
+
+<!--<div class="mainDiv">-->
+<!--  <ng-container *ngFor="let item of orderedItems; let index = index">-->
+<!--    <div class="basket-item">-->
+<!--      <p-card class="product-card">-->
+<!--        <img src="{{ item.productImage }}" class="productImage" alt="Product Image">-->
+<!--        <div class="product-name">{{ item.productName }}</div>-->
+<!--        <div class="product-category">{{ item.categoryName }}</div>-->
+<!--        <p-button icon="pi pi-minus" (onClick)="decrement(item)" [disabled]="item.quantity >= item.unitsInStock"></p-button>-->
+<!--        {{ item.quantity }}-->
+<!--        <p-button icon="pi pi-plus" (onClick)="increment(item)" ></p-button>-->
+<!--        <div class="itemPrice">{{ getItemPrice(item) }} $</div>-->
+<!--        <p-button icon="pi pi-trash" (click)="deleteProduct(item, $event)"></p-button>-->
+<!--      </p-card>-->
+<!--    </div>-->
+<!--  </ng-container>-->
+
+<!--  <div class="total-price">-->
+<!--    &lt;!&ndash; Add the Total Price calculation here &ndash;&gt;-->
+<!--    &lt;!&ndash; Add the Checkout button here &ndash;&gt;-->
+<!--  </div>-->
+<!--</div>-->
+<div class="container">
+  <div class="mainDiv">
+    <div class="mainDiv">
+      <section class="ordersListContainer">
+        <div class="basketContainer">
+          <p-card class="mb-4 basketItem" *ngFor="let item of orderedItems">
+<!--            <p-divider></p-divider>-->
+            <div class="content">
+              <div class="product-image">
+                <img src="{{ item.productImage }}" class="productImage" alt="Product Image">
+              </div>
+              <div class="product-details">
+                <p class="dataParagraph">
+                  Quantity:
+                  <p-button
+                    icon="pi pi-minus"
+                    (click)="decrement(item)"
+                    [style]="{ 'width': '30px', 'height': '30px', 'border-radius': '15px' }"
+                    styleClass="my-button"
+                  ></p-button>
+                  {{ item.quantity }}
+                  <p-button
+                    icon="pi pi-plus"
+                    (click)="increment(item)"
+                    [disabled]="item.quantity >= item.unitsInStock"
+                    [style]="{ 'width': '30px', 'height': '30px', 'border-radius': '15px' }"
+                    styleClass="my-button"
+                  ></p-button>
+                </p>
+                <p class="dataParagraph">
+                  Price per unit: {{ getItemPrice(item) }}$
+                </p>
+              </div>
+              <div class="controls">
+                <button pButton class="md:align-self-end p-button-square ml-3 mr-1 p-button-danger p-button-outlined" icon="pi pi-trash" label=""
+                        (click)="deleteProduct(item, $event)"></button>
+              </div>
+            </div>
+          </p-card>
         </div>
+      </section>
+      <p-panel header="Order Summary" class="orderSummary">
+        <div class="totalPrice">
+          <p class="dataParagraph total-price">
+            Total price:
+            <span class="font-bold">{{ getTotalPrice() }}$</span>
+          </p>
+          <div class="checkout-button">
+            <p-button type="button" label="Checkout"  (click)="checkout()"
+                      [disabled]="orderedItems.length < 1 "></p-button>
+          </div>
 
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+        </div>
+      </p-panel>
+    </div>
+  </div>
 </div>
-
