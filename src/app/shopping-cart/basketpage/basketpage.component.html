@@ -123,6 +123,10 @@
             Total price:
             <span class="font-bold"> <span class="totalPriceSpan"> {{ getTotalPrice() }}$ </span></span>
           </p>
+          <p class="dataParagraph total-price">
+           Product count:
+            <span class="font-bold"> <span class="totalPriceSpan"> {{ orderedItems.length }} </span></span>
+          </p>
           <div class="checkout-button">
             <p-button type="button" label="Checkout"  (click)="checkout()"
                       [disabled]="orderedItems.length < 1 "></p-button>
