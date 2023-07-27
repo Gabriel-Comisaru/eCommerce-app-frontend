@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div class="navControlsContainer accountControls">
+  <div class="navControlsContainer accountControls flex align-items-center">
     <a class="navBarItem" (click)="shoppingCart.toggle($event)"
       ><i
         class="pi pi-shopping-cart"
@@ -61,15 +61,7 @@
         userLoggedIn.username
       }}</span></a
     >
-
-    <div
-      class="flex navBarItem"
-      *ngIf="userLoggedIn && userLoggedIn.role === 'ADMIN'"
-    >
-      <p-button (click)="goToAdminPage()" styleClass="p-button-outlined"
-        >Admin Dashboard
-      </p-button>
-    </div>
+    <a class="navBarItem font-semibold text-xs text-orange-500" *ngIf="userLoggedIn && userLoggedIn.role === 'ADMIN'" (click)="goToAdminPage()">Admin <br> Dashboard</a>
   </div>
 </nav>
 
