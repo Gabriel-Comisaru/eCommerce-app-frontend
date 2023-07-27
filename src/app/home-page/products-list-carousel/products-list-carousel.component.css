@@ -105,3 +105,8 @@
   background-color: whitesmoke;
   margin: 1rem 2rem;
 }
+
+::ng-deep .p-tooltip-text {
+  font-size: 0.8rem;
+  white-space: nowrap;
+}

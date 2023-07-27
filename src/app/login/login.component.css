@@ -9,3 +9,18 @@
 .error {
   color: tomato;
 }
+
+.passwordContainer {
+  position: relative;
+  display: flex;
+
+  align-items: center;
+}
+.passwordIcon {
+  position: absolute;
+  right: 20px;
+}
+.form-control {
+  width: 100%;
+  padding-right: 50px;
+}

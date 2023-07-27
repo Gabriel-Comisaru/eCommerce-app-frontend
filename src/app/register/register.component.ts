@@ -104,7 +104,7 @@ export class RegisterComponent {
     },
 
     {
-      fieldName: 'Is this an ADMIN account?',
+      fieldName: 'This is an ADMIN account:',
       inputType: 'checkbox',
       controlName: 'role',
       validators: [],

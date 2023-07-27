@@ -39,7 +39,11 @@
       <td>{{ order.startDate }}</td>
       <td>{{ order.deliveryDate }}</td>
       <td>${{ order.deliveryPrice.toFixed(2) }}</td>
-      <td>{{order.productNames}}</td>
+      <td>
+        <ul *ngFor="let subItem of order['productNames']">
+          <li>{{subItem}}</li>
+      </ul>
+      </td>
       <td>
         <p-dropdown [disabled]="order.status==='CANCELLED'"
                     [filterBy]="order.id"
