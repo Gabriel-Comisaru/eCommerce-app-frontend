@@ -27,7 +27,8 @@ export class ProductsListCarouselComponent {
     private router: Router,
     private productService: ProductsService,
     private favoriteProductsService: FavoriteProductsServiceService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.productService.getShopingCartObservable().subscribe((res) => {
@@ -54,14 +55,15 @@ export class ProductsListCarouselComponent {
   }
 
   addToCart(product: Product) {
-    this.loadingButton(product, 'cart');
+    if (product.loadingCart) {
+      return;
+    }
+    product.loadingCart = true;
     this.productService
       .addToCart(product, this.basketItems)
       .subscribe((res) => {
-        this.loadingButton(product, 'cart');
+        product.loadingCart = true;
       });
-    // this.loadingButton(product, 'cart');
-    // add disabled - handle 401
   }
 
   getProductDetails(id: number) {
@@ -72,10 +74,12 @@ export class ProductsListCarouselComponent {
     (event.target as HTMLImageElement).src =
       '/assets/images/product-not-found.png';
   }
+
   addToFavorite(product: Product) {
     this.favoriteProductsService.addToFavorite(product, this.favoriteItems);
     // this.loadingButton(product, 'favorite');
   }
+
   loadingButton(product: any, buttonType: string) {
     if (buttonType === 'cart') {
       product.loadingCart = !product.loadingCart;
@@ -83,9 +87,11 @@ export class ProductsListCarouselComponent {
       product.loadingFavorite = !product.loadingFavorite;
     }
   }
+
   checkIfFavorite(product: Product) {
     return this.favoriteItems.some((el) => el.id === product.id);
   }
+
   isUserLoggedIn() {
     return !localStorage.getItem('currentUser');
   }
