@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ProductsService } from './home-page/shared/products.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 

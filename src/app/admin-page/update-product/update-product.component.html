@@ -80,7 +80,8 @@
                         (onSelect)="onFileChanged($event,uploadComponent,selectedProduct?.id)">
           </p-fileUpload>
         </div>
-        <p *ngIf="showImageError">Image required*</p>
+        <p *ngIf="showImageError" class="error">Image required*</p>
+
         <div class="card flex flex-wrap justify-content-center justify-content-evenly align-content-evenly">
           <div class="div-1" *ngFor="let item of imagesList">
             <p-image src="http://34.132.132.163:8081/api/images/download?name={{item}}"
