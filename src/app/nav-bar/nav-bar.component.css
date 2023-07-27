@@ -16,32 +16,6 @@
   background-color: white;
 }
 
-@media screen and (max-width: 960px) {
-  ::ng-deep .p-menubar .p-menubar-button {
-    display: none;
-  }
-  ::ng-deep .p-menubar {
-    position: inherit;
-  }
-  ::ng-deep .p-menubar .p-menubar-root-list {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    position: unset;
-    padding: unset;
-    background: inherit;
-    border: unset;
-    box-shadow: unset;
-  }
-  .navProductControls::ng-deep
-    .p-menubar.p-component
-    p-menubarsub
-    .p-menubar-root-list
-    li:nth-child(2) {
-    margin-right: 0;
-  }
-}
-
 .navBarItem:last-child:hover {
   background-color: transparent;
 }
@@ -181,4 +155,36 @@
 
 ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
   border: transparent;
+}
+::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  border: transparent;
+}
+::ng-deep .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
+  flex-grow: 1;
+}
+
+@media screen and (max-width: 960px) {
+  ::ng-deep .p-menubar .p-menubar-button {
+    display: none;
+  }
+  ::ng-deep .p-menubar {
+    position: inherit;
+  }
+  ::ng-deep .p-menubar .p-menubar-root-list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    position: unset;
+    padding: unset;
+    background: inherit;
+    border: unset;
+    box-shadow: unset;
+  }
+  .navProductControls::ng-deep
+    .p-menubar.p-component
+    p-menubarsub
+    .p-menubar-root-list
+    li:nth-child(2) {
+    margin-right: 0;
+  }
 }

@@ -1,8 +1,7 @@
-import {Component} from '@angular/core';
-import {ProductsService} from './home-page/shared/products.service';
-import {ActivatedRouteSnapshot, NavigationEnd, Router} from "@angular/router";
-import {filter} from "rxjs";
-import {UserService} from "./services/user.service";
+import { Component } from '@angular/core';
+import { ProductsService } from './home-page/shared/products.service';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +11,7 @@ import {UserService} from "./services/user.service";
 export class AppComponent {
   public isAdminRoute: boolean = false;
 
-  constructor(
-    private productsService: ProductsService,
-    private router: Router
-  ) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.router.events

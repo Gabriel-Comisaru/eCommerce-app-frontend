@@ -14,7 +14,6 @@ export class FavoriteProductsServiceService {
   public currentFavoriteItems: Product[] = [];
   constructor(private httpClient: HttpClient) {}
 
-  // get favorite products of the logged user
   getFavoriteProducts(): Observable<Product[]> {
     const url = `${BASE_URL_API}/products/fav`;
     return this.httpClient.get<Product[]>(url).pipe(
@@ -52,12 +51,12 @@ export class FavoriteProductsServiceService {
       })
     );
   }
-  addToFavorite(product: Product, favoriteList: Product[]) {
+  addToFavorite(product: Product, favoriteList: Product[]): Observable<string> {
     if (favoriteList.some((el) => el.id === product.id)) {
       // if product already exists the favorite list delete it
-      this.deleteFavoriteProduct(product.id).subscribe();
+      return this.deleteFavoriteProduct(product.id);
     } else {
-      this.addFavoriteProduct(product).subscribe();
+      return this.addFavoriteProduct(product);
     }
   }
 }

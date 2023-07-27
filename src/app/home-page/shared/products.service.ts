@@ -1,22 +1,18 @@
-import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Product } from './product.model';
 import { Category } from './category.model';
 import { OrderItem } from './orderItem.model';
 import { Review } from './review.model';
-import { BASE_URL_API, BASE_URL } from '../../settings';
-import { Order } from './order.model';
-
+import { BASE_URL_API } from '../../settings';
+import { MessageService } from 'primeng/api';
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(private httpClient: HttpClient) {}
-
   private productsUrl = `${BASE_URL_API}/products`;
   private productsUrlDisplay = `${BASE_URL_API}/products/display`;
-  private appUsersUrl = `${BASE_URL_API}/users`;
   private categoriesUrl = `${BASE_URL_API}/categories`;
   private reviewsUrl = `${BASE_URL_API}/reviews`;
   private productCategoryUrl = `${BASE_URL_API}/products/category`;
@@ -24,14 +20,16 @@ export class ProductsService {
   private deleteImageUrl = `${BASE_URL_API}/images/delete`;
   private ordersUrl = `${BASE_URL_API}/orders`;
   private orderItemsUrl = `${BASE_URL_API}/orderItems`;
-
   public shoppingCartObservable = new BehaviorSubject<{
     basketOrderItems?: OrderItem[];
   }>({ basketOrderItems: [] });
-
   public currentBasketItems: OrderItem[] = [];
-
   public searchUrl = `${BASE_URL_API}/products/search`;
+
+  constructor(
+    private httpClient: HttpClient,
+    private messageService: MessageService
+  ) {}
 
   getSearchedProducts(name: string): Observable<any> {
     const url = `${this.searchUrl}?name=${name}&pageNumber=0`;
@@ -181,28 +179,29 @@ export class ProductsService {
     );
   }
 
-  addToCart(product: Product, basketItems: OrderItem[]) {
+  addToCart(product: Product, basketItems: OrderItem[]): Observable<any> {
     let orderItem = basketItems.filter(
       (item: OrderItem) => item.productId === product.id
     );
     if (orderItem.length) {
       if (product.unitsInStock >= orderItem[0].quantity + 1) {
-        this.updateOrderQuantity(
+        return this.updateOrderQuantity(
           orderItem[0].id,
           orderItem[0].quantity + 1
-        ).subscribe();
+        );
       } else {
-        console.log('quantity exceeds stock');
-        //display somehow an error message
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Quantity exceeds stock',
+        });
       }
     } else {
-      this.addProductToOrder(product.id, 1).subscribe();
+      return this.addProductToOrder(product.id, 1);
     }
+    return EMPTY;
   }
 
-  getProductImage(productImage: string) {
-    return `${BASE_URL_API}/images/download?name=${productImage}`;
-  }
   deleteImage(name: any) {
     const url = `${this.deleteImageUrl}?name=${name}`;
     return this.httpClient.delete(url);
