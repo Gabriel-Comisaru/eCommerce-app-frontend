@@ -43,23 +43,9 @@ export class ProductsListCarouselComponent {
     }
 
     this.productsToDisplayWithImages = this.productsToDisplay.map((product) => {
-      //TODO REFACTOR THE MAP
-
-      // if an image already exists use it otherwise replace it with a placeholder
-      if (product.imagesName.length > 0 && product.imagesName[0].length > 0) {
-        const url = `${BASE_URL_API}/images/download?name=${product.imagesName[0]}`;
-
-        return {
-          ...product,
-          roundedRating: Math.floor(product.rating),
-          productImage: url,
-          loadingCart: false,
-          loadingFavorite: false,
-        };
-      }
       return {
         ...product,
-        productImage: '/assets/images/product-not-found.png',
+        productImage: (product.imagesName.length > 0 && product.imagesName[0].length > 0) ? `${BASE_URL_API}/images/download?name=${product.imagesName[0]}` : '/assets/images/product-not-found.png',
         roundedRating: Math.floor(product.rating),
         loadingCart: false,
         loadingFavorite: false,
