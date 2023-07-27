@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../home-page/shared/product.model';
 import { ProductsService } from '../home-page/shared/products.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BasketService } from '../shopping-cart/shared/basket.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Review } from '../home-page/shared/review.model';
 import { AuthService } from '../services/auth.service';
 import { FavoriteProductsServiceService } from '../home-page/shared/favorite-products-service.service';
-
 import { BASE_URL_API } from '../settings';
 import { OrderItem } from '../home-page/shared/orderItem.model';
+import { User } from '../models/user.model';
+import { UserAddress } from '../models/user-address.model';
+import { AdressServiceService } from '../shopping-cart/shared/adress-service.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-product-details',
@@ -29,20 +31,26 @@ export class ProductDetailsComponent implements OnInit {
   });
   favoriteItems: Product[] = [];
   basketItems: OrderItem[] = [];
+  loggedInUser: User = JSON.parse(
+    localStorage.getItem('currentUser') || '{}'
+  );
+  userAddresses: UserAddress[] = [];
+  
   constructor(
     private productService: ProductsService,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private favoriteProductsService: FavoriteProductsServiceService
+    private favoriteProductsService: FavoriteProductsServiceService,
+    private addressService: AdressServiceService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
     const id = parseInt(this.activatedRoute.snapshot.paramMap.get('id')!);
     this.productService.getProduct(id).subscribe((product) => {
       this.product = product;
-      console.log(product);
       this.product.category = product.categoryName;
       this.discountedPrice = Math.round(
         product.price - product.price * (product.discountPercentage / 100)
@@ -59,6 +67,9 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.getShopingCartObservable().subscribe((res) => {
       this.basketItems = res.basketOrderItems!;
     });
+    this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
+      this.userAddresses = addresses;
+    })
   }
 
   scrollToSection(id: string) {
@@ -75,14 +86,26 @@ export class ProductDetailsComponent implements OnInit {
 
   onSubmit() {
     if (this.authService.isAuthenticated()) {
-      const review: Review = {
+      let review: Review = {
         rating: this.reviewForm.controls.rating.value,
         title: this.reviewForm.controls.title.value,
-        comment: this.reviewForm.controls.comment.value,
+        comment: this.reviewForm.controls.comment.value
       };
 
       this.productService.saveReview(this.product.id, review);
-      this.reviews.push(review);
+      const message = "Review added successfully!";
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Review added',
+        detail: message,
+        life: 4000,
+      });
+      setTimeout(() => {
+        this.productService.getProductReviews(this.product.id).subscribe(reviews => {
+          review = reviews[reviews.length-1];
+          this.reviews.push(review);
+        })
+      }, 1000)
       this.reviewForm.reset();
     } else {
       this.router.navigate(['login']);
