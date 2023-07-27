@@ -4,7 +4,7 @@
       <img
         src="/assets/images/project-logo.png"
         height="40"
-        class="mx-2"
+        class="mx-2 logo"
         (click)="goHome()"
         style="cursor: pointer"
       />
@@ -117,7 +117,6 @@
         styleClass="p-button-link"
         (click)="goToRegisterPage()"
       ></p-button>
-      <p-button label="Forgot Password" styleClass="p-button-link"></p-button>
     </div>
   </ng-template>
 </p-overlayPanel>
@@ -132,6 +131,7 @@
         scrollHeight="250px"
         [rowHover]="true"
         [loading]="deleteItemLoader"
+        [style]="{ width: '26rem' }"
       >
         <ng-template pTemplate="body" let-product>
           <tr class="contentRow">
@@ -180,7 +180,7 @@
         [value]="favoriteProductsList"
         scrollHeight="250px"
         [rowHover]="true"
-        style="width: 25rem"
+        [style]="{ width: '26rem' }"
         [loading]="deleteItemLoader"
       >
         <ng-template pTemplate="body" let-product>

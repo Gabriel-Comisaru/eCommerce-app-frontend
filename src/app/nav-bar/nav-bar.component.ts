@@ -70,13 +70,13 @@ export class NavBarComponent {
     this.categoryItems = categories.map((category: any) => {
       return {
         label: category.name,
-        icon: 'pi pi-fw pi-bars',
+        icon: 'pi pi-angle-right',
         routerLink: `/products/${category.id}`,
       };
     });
     this.categoryItems.push({
       label: 'All Products',
-      icon: 'pi pi-fw pi-bars',
+      icon: 'pi pi-angle-right',
       routerLink: '/products',
     });
     this.navProductControls = [
