@@ -4,7 +4,9 @@
   z-index: 99;
   width: 100%;
 }
-
+::ng-deep.p-menuitem-text {
+  white-space: nowrap;
+}
 .navBar {
   min-width: min-content;
   /* new */
@@ -112,8 +114,9 @@
 .overlay {
   display: flex;
   flex-direction: column;
-  margin: 0.5rem 1rem;
+
   align-items: center;
+  width: 100%;
 }
 
 .contentRow {

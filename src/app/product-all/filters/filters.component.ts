@@ -93,8 +93,9 @@ export class FiltersComponent implements OnInit {
     this.loading = true;
     this.selectedPriceRange = [0, 1000];
     setTimeout(() => {
-      this.loadData()
-    }, 500)
+      this.loadData();
+      }, 500)
+    // this.loadData();
   }
 
   loadData(): void {

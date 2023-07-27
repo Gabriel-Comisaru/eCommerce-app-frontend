@@ -39,6 +39,10 @@ export class ProductAllComponent implements OnInit {
           productImage: url,
         };
       });
+
+      this.totalRows = this.filteredList.length;
+
+
       this.placeholder = this.filteredList;
       this.loading = false;
     });

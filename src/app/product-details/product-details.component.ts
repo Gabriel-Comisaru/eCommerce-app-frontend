@@ -6,8 +6,10 @@ import { BasketService } from '../shopping-cart/shared/basket.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Review } from '../home-page/shared/review.model';
 import { AuthService } from '../services/auth.service';
-import { ProductOperationsService } from '../home-page/shared/product-operations.service';
+import { FavoriteProductsServiceService } from '../home-page/shared/favorite-products-service.service';
+
 import { BASE_URL_API } from '../settings';
+import { OrderItem } from '../home-page/shared/orderItem.model';
 
 @Component({
   selector: 'app-product-details',
@@ -25,7 +27,8 @@ export class ProductDetailsComponent implements OnInit {
     title: ['', [Validators.required]],
     comment: ['', [Validators.required]],
   });
-
+  favoriteItems: Product[] = [];
+  basketItems: OrderItem[] = [];
   constructor(
     private productService: ProductsService,
     private activatedRoute: ActivatedRoute,
@@ -33,7 +36,7 @@ export class ProductDetailsComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private productOperationsService: ProductOperationsService
+    private favoriteProductsService: FavoriteProductsServiceService
   ) {}
 
   ngOnInit(): void {
@@ -51,6 +54,12 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.getProductReviews(id).subscribe((reviews) => {
       this.reviews = reviews;
     });
+    this.favoriteProductsService.favoriteProductsObservable.subscribe((res) => {
+      this.favoriteItems = res.favoriteProducts!;
+    });
+    this.productService.getShopingCartObservable().subscribe((res) => {
+      this.basketItems = res.basketOrderItems!;
+    });
   }
 
   scrollToSection(id: string) {
@@ -60,9 +69,7 @@ export class ProductDetailsComponent implements OnInit {
 
   getImages() {
     for (let image of this.product.imagesName) {
-      this.images.push(
-        `${BASE_URL_API}/images/download?name=${image}`
-      );
+      this.images.push(`${BASE_URL_API}/images/download?name=${image}`);
     }
     this.images = [...this.images];
   }
@@ -72,7 +79,7 @@ export class ProductDetailsComponent implements OnInit {
       const review: Review = {
         rating: this.reviewForm.controls.rating.value,
         title: this.reviewForm.controls.title.value,
-        comment: this.reviewForm.controls.comment.value,
+        comment: this.reviewForm.controls.comment.value
       };
 
       this.productService.saveReview(this.product.id, review);
@@ -84,10 +91,13 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   addToFavorite(product: Product) {
-    this.productOperationsService.addToFavorite(product);
+    this.favoriteProductsService.addToFavorite(product, this.favoriteItems);
   }
 
   addToCart(product: Product) {
-    this.productOperationsService.addToCart(product);
+    this.productService.addToCart(product, this.basketItems);
+  }
+  checkIfFavorite(product: Product) {
+    return this.favoriteItems.some((el) => el.id === product.id);
   }
 }

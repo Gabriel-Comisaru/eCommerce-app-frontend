@@ -1,9 +1,16 @@
-<app-update-product (savedProduct)="savedProduct($event)" (updatedProduct)="updatedProduct($event)"
-                    (closeEmitter)="onClose()" [selectedProduct]="selectedProduct"
-                    [show]="visible" [header]="header"></app-update-product>
-<app-delete-modal (deleteEmitter)="deletedProduct($event)" (closeEmitter)="onCloseDelete()"
-                  [selectedProduct]="selectedProduct"
-                  [deleteVisible]="deleteVisible" [header]="'Delete'"></app-delete-modal>
+<app-update-product (savedProduct)="savedProduct($event)"
+                    (updatedProduct)="updatedProduct($event)"
+                    (closeEmitter)="onClose()"
+                    [selectedProduct]="selectedProduct!"
+                    [show]="visible" [header]="header"
+                    [editModalFlag]="editModalFlag">
+</app-update-product>
+<app-delete-modal (deleteEmitter)="deletedProduct($event)"
+                  (closeEmitter)="onCloseDelete()"
+                  [selectedProduct]="selectedProduct!"
+                  [deleteVisible]="deleteVisible"
+                  [header]="'Delete'">
+</app-delete-modal>
 <p-toast></p-toast>
 <div class="relative">
   <p-menubar>
@@ -14,13 +21,17 @@
 
     </ng-template>
     <ng-template pTemplate="start">
-      <input pInputText type="text"
-             [(ngModel)]="searchTerm"
-             (ngModelChange)="this.searchTermUpdate.next($event)"
-             placeholder="Search keyword" />
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input pInputText
+               type="text"
+               [(ngModel)]="searchTerm"
+               (ngModelChange)="this.searchTermUpdate.next($event)"
+               placeholder="Search"/>
+      </span>
     </ng-template>
   </p-menubar>
-  <p-table styleClass="p-datatable-sm"
+  <p-table [loading]="loading"
            [lazy]="true"
            [totalRecords]="totalRecords"
            [paginator]="true"
@@ -28,15 +39,13 @@
            [rowsPerPageOptions]="rows"
            (onPage)="onPage($event)"
            [value]="productsList"
-           [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
-           [globalFilterFields]="['name']">
-
+           [tableStyle]="{ 'min-width': '50rem' }"
+           [breakpoint]="'960px'"
+           [rowHover]="true">
     <ng-template pTemplate="header">
       <tr>
         <th>#</th>
-
-        <th>Photos</th>
-        <!--      <th>Image</th>-->
+        <th>Photo</th>
         <th>Name</th>
         <th>Category</th>
         <th>Stock</th>
@@ -46,15 +55,21 @@
         <th>Action</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
-      <tr class="item" [pSelectableRow]="product" [pSelectableRowIndex]="rowIndex">
+    <ng-template
+      class="container"
+      pTemplate="body"
+      let-product
+      let-rowIndex="rowIndex">
+      <tr
+        [pSelectableRow]="product"
+        [pSelectableRowIndex]="rowIndex">
         <td>{{rowIndex + 1}}</td>
         <td>
-          <img alt="no image" *ngIf="product.imagesName[0]" width="50px"
-               src="http://34.132.132.163:8081/api/images/download?name={{product.imagesName[0]}}"
-               (error)="handleMissingImg($event)">
+          <img alt="no image"
+               *ngIf="product.imagesName[0]"
+               width="50px"
+               src="{{baseUrlApi}}/images/download?name={{product.imagesName[0]}}">
         </td>
-        <!--      <td><img alt="image" [src]="product.images" style="max-width: 100px;max-height: 50px"></td>-->
         <td>{{ product.name }}</td>
         <td>{{ product.categoryName }}</td>
         <td>{{ product.unitsInStock }}</td>
@@ -63,10 +78,14 @@
         <td>${{ (product.price - ((product.price * product.discountPercentage) / 100)).toFixed(2) }}</td>
         <td>
           <div class="card flex justify-content-center justify-content-evenly">
-            <p-button pTooltip="Delete" tooltipPosition="top" icon="pi pi-trash"
+            <p-button pTooltip="Delete"
+                      tooltipPosition="top"
+                      icon="pi pi-trash"
                       styleClass="p-button-danger p-button-sm"
-                      (click)="showDialogDeleteProduct(product,$event)"></p-button>
-            <p-button pTooltip="Edit" tooltipPosition="top" icon="pi pi-file-edit"
+                      (click)="showDialogDeleteProduct(product)"></p-button>
+            <p-button pTooltip="Edit"
+                      tooltipPosition="top"
+                      icon="pi pi-file-edit"
                       styleClass="p-button-info p-button-sm"
                       (click)="showDialogEditProduct(product)"></p-button>
           </div>

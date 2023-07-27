@@ -10,6 +10,7 @@ export interface Order {
   userName: string;
   userEmail: string;
   orderItems: number[];
+  productNames:string[];
 }
 
 export interface DetailedOrder {

@@ -1,5 +1,5 @@
 <div class="categories-list">
-  <p-card *ngFor="let category of categories" (click)="navigateToProducts(category.categoryId)" class="category-card" >
+  <p-card *ngFor="let category of categories" (click)="navigateToProducts(category.categoryIdrr)" class="category-card" >
     <ng-template pTemplate="title">
       {{ category.categoryName }}
     </ng-template>
@@ -10,4 +10,3 @@
     </ng-template>
   </p-card>
 </div>
-

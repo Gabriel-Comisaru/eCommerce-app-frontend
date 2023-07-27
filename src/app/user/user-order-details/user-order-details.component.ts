@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { OrderItem } from 'src/app/home-page/shared/orderItem.model';
 import { ProductsService } from 'src/app/home-page/shared/products.service';
 import { UserService } from 'src/app/services/user.service';
+import { BASE_URL_API } from 'src/app/settings';
 
 @Component({
   selector: 'app-user-order-details',
@@ -18,7 +19,7 @@ export class UserOrderDetailsComponent {
 
   @Input() orderItems!: OrderItem[];
   @Input() orderStatus!: string;
-
+  baseUrlApi = BASE_URL_API;
   public hoverProduct!: OrderItem;
 
   goToProductPage(id: number) {
@@ -29,10 +30,7 @@ export class UserOrderDetailsComponent {
     this.productsService
       .addProductToOrder(product.productId, 1)
       .subscribe((res) => {
-        this.productsService.shoppingCartObservable.next({
-          orderItem: res,
-          productAction: 'add',
-        });
+
       });
   }
 }

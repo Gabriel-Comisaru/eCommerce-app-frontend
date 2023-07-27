@@ -36,11 +36,7 @@
     </ng-template>
     <ng-template pTemplate="footer">
       <p-button
-        [icon]="
-          product.favUserIds && product.favUserIds.includes(product.userId)
-            ? 'pi pi-heart-fill'
-            : 'pi pi-heart'
-        "
+        [icon]="checkIfFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'"
         class="favorite-button"
         (click)="addToFavorite(product, $event)"
         styleClass="p-button-danger p-button-outlined"

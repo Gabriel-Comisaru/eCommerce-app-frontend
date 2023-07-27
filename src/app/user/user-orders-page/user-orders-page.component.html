@@ -17,20 +17,6 @@
             }}</span>
           </h4>
         </div>
-        <div class="controls">
-          <!-- <p-button
-            styleClass="p-button-raised p-button-text"
-            (click)="
-              order.status === 'ACTIVE'
-                ? goToBasketPage()
-                : goToOrderDetails(order.id)
-            "
-            [label]="
-              order.status === 'ACTIVE' ? 'Go to checkout' : 'Show details'
-            "
-          >
-          </p-button> -->
-        </div>
       </div>
       <p-divider></p-divider>
       <app-user-order-details
@@ -61,8 +47,6 @@
               (order.status === 'SHIPPED' || order.status === 'DELIVERED')
             "
           >
-            <!-- (click)="goToProductPage(order.productId)" -->
-            <!-- here i need to get the product id - with emitter from child component??? -->
           </button>
           <button
             pButton

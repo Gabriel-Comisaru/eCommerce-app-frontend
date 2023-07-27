@@ -1,8 +1,10 @@
-<app-nav-bar *ngIf="!isAdminRoute"></app-nav-bar>
-<app-admin-nav-bar *ngIf="isAdminRoute"></app-admin-nav-bar>
-<p-toast></p-toast>
-<router-outlet></router-outlet>
-<ng-template pTemplate="footer">
+<div class="wrapper">
+  <app-nav-bar *ngIf="!isAdminRoute"></app-nav-bar>
+  <app-admin-nav-bar *ngIf="isAdminRoute"></app-admin-nav-bar>
+  <p-toast></p-toast>
+  <router-outlet></router-outlet>
+</div>
+<footer class="footer">
   <p class="copyright">
     Copyright &copy; 2023 Qualitance Interns. All rights reserved.
   </p>
@@ -13,4 +15,4 @@
     <a class="footerNavbarItem">Terms of Use</a>
     <a class="footerNavbarItem">Accessibility</a>
   </nav>
-</ng-template>
+</footer>

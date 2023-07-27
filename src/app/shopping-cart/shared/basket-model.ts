@@ -1,4 +1,5 @@
 export interface BasketModel {
+  productImage: any;
   id: number;
   quantity: number;
   categoryId: number;
@@ -8,4 +9,8 @@ export interface BasketModel {
   productPrice: number;
   unitsInStock: number;
   orderId: number;
+  price: number;
+  name: string;
+  description: string;
+  category: string;
 }

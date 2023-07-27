@@ -11,6 +11,7 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {MessageService} from 'primeng/api';
 import {Product} from 'src/app/home-page/shared/product.model';
 import {ProductsService} from 'src/app/home-page/shared/products.service';
+import {Category} from "../../home-page/shared/category.model";
 
 @Component({
   selector: 'app-update-product',
@@ -20,41 +21,58 @@ import {ProductsService} from 'src/app/home-page/shared/products.service';
 })
 export class UpdateProductComponent implements OnInit {
   @ViewChild('uploadComponent') uploadComponent!: ElementRef
-  @Input() selectedProduct!: Product;
-  @Input() show: any;
-  @Input() header: any;
-  @Input() token: any;
+  @Input() selectedProduct?: Product;
+  @Input() show: boolean = false;
+  @Input() header: string = '';
+  @Input() editModalFlag?: boolean;
   @Output() closeEmitter = new EventEmitter();
-  product: any;
   @Output() savedProduct = new EventEmitter();
   @Output() updatedProduct = new EventEmitter();
   loading: boolean = false;
-  imagesList: any = [];
-  i: any = 0;
+  product?: Product;
+  imagesList: string[] = [];
+  responsiveOptions: any[] = [];
   visible = false;
-  categoriesList: any = [];
-
+  categoriesList: Category[] = [];
+  images: any = [];
+  ifPressed: boolean = false;
+  spinnerLoading: boolean = false;
+  showImageError: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private messageService: MessageService
   ) {
   }
 
   ngOnInit() {
-    this.i = 0;
     this.productsService.getCategories().subscribe((list: any) => {
       this.categoriesList = list;
     });
+    this.responsiveOptions = [
+      {
+        breakpoint: '1024px',
+        numVisible: 5
+      },
+      {
+        breakpoint: '768px',
+        numVisible: 3
+      },
+      {
+        breakpoint: '560px',
+        numVisible: 1
+      }
+    ];
   }
 
   productForm = this.fb.nonNullable.group({
     name: ['', [Validators.required,
       Validators.minLength(3)]],
-    price: ['', [Validators.required]],
+    price: ['', [Validators.required, Validators.min(1), Validators.pattern('^[1-9][.0-9]*$')]],
     categoryId: ['', [Validators.required]],
     description: ['', [Validators.required]],
-    stock: ['', [Validators.required]],
+    stock: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.min(0)]],
     discount: ['', [Validators.pattern('^[0-9]*$'),
       Validators.max(100),
       Validators.min(0),
@@ -70,34 +88,33 @@ export class UpdateProductComponent implements OnInit {
     this.productForm.controls.stock.reset()
     this.productForm.controls.discount.reset()
     this.productForm.controls.imagesName.reset()
+    this.showImageError = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['show']?.currentValue) {
       this.visible = changes['show'].currentValue;
     }
-    if (this.header === this.selectedProduct.name) {
-      this.productForm.controls.name.setValue(this.selectedProduct.name);
-      let selectedCategory = this.categoriesList.filter((category: any) => category.id === this.selectedProduct?.categoryId);
-      this.productForm.controls.categoryId.setValue(selectedCategory.length ? selectedCategory[0].id : null);
+    if (this.editModalFlag) {
+      this.productForm.controls.name.setValue(this.selectedProduct!.name);
+      this.productForm.controls.categoryId.setValue(this.selectedProduct!.categoryName);
       this.productForm.controls.categoryId.disable();
-      this.productForm.controls.price.setValue(this.selectedProduct.price.toString());
-      this.productForm.controls.description.setValue(this.selectedProduct.description.toString());
-      this.productForm.controls.stock.setValue(this.selectedProduct.unitsInStock.toString());
-      this.productForm.controls.discount.setValue(this.selectedProduct.discountPercentage.toString());
-      this.productForm.controls.imagesName.setValue(this.selectedProduct.imagesName[0])
-      this.imagesList = [...this.selectedProduct.imagesName];
-      this.i = 0;
-    } else if (this.header != this.selectedProduct.name) {
+      this.productForm.controls.price.setValue(this.selectedProduct!.price.toString());
+      this.productForm.controls.description.setValue(this.selectedProduct!.description.toString());
+      this.productForm.controls.stock.setValue(this.selectedProduct!.unitsInStock.toString());
+      this.productForm.controls.discount.setValue(this.selectedProduct!.discountPercentage.toString());
+      this.imagesList = [...this.selectedProduct!.imagesName];
+    } else if (!this.editModalFlag) {
       this.resetFormValues()
       this.productForm.controls.categoryId.enable();
     }
   }
 
-  onClose() {
+  onClose(uploadComponent: any) {
     this.resetFormValues()
-    this.visible = false;
     this.closeEmitter.emit(this.visible);
+    uploadComponent.clear();
+    this.visible = false;
   }
 
   onSubmit() {
@@ -109,7 +126,6 @@ export class UpdateProductComponent implements OnInit {
       unitsInStock: +this.productForm.controls.stock.value,
       discountPercentage: +this.productForm.controls.discount.value,
     } as Product;
-
     const formData = new FormData();
     formData.append('name', String(this.productForm.controls.name.value));
     formData.append('price', String(this.productForm.controls.price.value));
@@ -118,7 +134,11 @@ export class UpdateProductComponent implements OnInit {
     formData.append('unitsInStock', String(this.productForm.controls.stock.value));
     formData.append('discountPercentage', String(this.productForm.controls.discount.value));
     formData.append('image', this.productForm.controls.imagesName.value);
-    if (this.header != this.selectedProduct.name) {
+    if (!this.editModalFlag) {
+      if (!this.productForm.controls.imagesName.value) {
+        this.showImageError = true;
+        return;
+      }
       this.loading = true;
       this.productsService.sendForm(formData, +this.productForm.controls.categoryId.value)
         .subscribe((res) => {
@@ -129,7 +149,7 @@ export class UpdateProductComponent implements OnInit {
     } else {
       this.loading = true;
       this.productsService
-        .updateProduct(product, this.selectedProduct.id)
+        .updateProduct(product, this.selectedProduct!.id)
         .subscribe((res) => {
           this.loading = false;
           this.visible = false;
@@ -138,36 +158,47 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  onFileChanged(event: any) {
-    this.productForm.controls.imagesName.setValue(event.currentFiles[0]);
+  onFileChanged(event: any, uploadComponent: any, id: number | undefined) {
+    this.showImageError = false;
+    if (!this.editModalFlag) {
+      this.productForm.controls.imagesName.setValue(event.currentFiles[0]);
+    } else if (this.editModalFlag) {
+      this.uploadImage(id, event, uploadComponent)
+    }
   }
 
-  close() {
-    this.i = 0;
-    this.visible = false;
-    this.closeEmitter.emit(this.visible);
-  }
-
-  uploadImage(id: number, event: any, uploadComponent: any) {
+  uploadImage(id: number | undefined, event: any, uploadComponent: any) {
+    this.spinnerLoading = true;
     const formData = new FormData();
-    formData.append('imageFile', event.currentFiles[this.i])
-    console.log(event.currentFiles[this.i])
-    this.productsService.saveImage(formData, id)
+    formData.append('imageFile', event.currentFiles[0])
+    this.productsService.saveImage(formData, id!)
       .subscribe((res) => {
-        this.updatedProduct.emit(res);
-        this.i++;
-        console.log(this.uploadComponent)
-        uploadComponent.clear();
-      })
-
+          this.spinnerLoading = false;
+          this.updatedProduct.emit(res);
+          uploadComponent.clear();
+        },
+        () => {
+          this.spinnerLoading = false
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: 'Image name already exists'
+          })
+          uploadComponent.clear();
+        }
+      )
   }
 
   deleteImage(image: any) {
+    this.spinnerLoading = true;
+    this.ifPressed = true;
     this.productsService.deleteImage(image)
-      .subscribe((res) => {
+      .subscribe(() => {
+        this.spinnerLoading = false;
+        this.ifPressed = false;
         this.updatedProduct.emit({
           ...this.selectedProduct, imagesName: this.imagesList.filter((item: any) => {
-            return item.name != image.name
+            return item != image
           })
         });
       })

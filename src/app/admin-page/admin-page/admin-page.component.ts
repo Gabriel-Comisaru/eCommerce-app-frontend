@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "../../services/auth.service";
-import {ProductsService} from "../../home-page/shared/products.service";
+import {MenuItem} from "primeng/api";
 
 @Component({
   selector: 'app-admin-page',
@@ -9,43 +7,22 @@ import {ProductsService} from "../../home-page/shared/products.service";
   styleUrls: ['./admin-page.component.css']
 })
 export class AdminPageComponent {
-
-  listName: any = [
-    {name: 'Products List'},
-    {name: 'Orders List'}
+  activeIndex: number = 0;
+  tabs: MenuItem[] = [
+    {
+      label: 'Products',
+      routerLink: 'products'
+    },
+    {
+      label: 'Orders',
+      routerLink: 'orders'
+    }
   ]
+  activeItem: MenuItem = this.tabs[0];
 
-  selected!: any;
-  adminPage:boolean=true;
-
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private authService: AuthService,
-              private service:ProductsService) {
+  constructor() {
   }
 
   ngOnInit() {
-    this.selected = this.listName[0];
-    if (this.router.url.split('/')[2] == 'products') {
-      this.selected = this.listName[0];
-    } else if (this.router.url.split('/')[2] == 'orders') {
-      this.selected = this.listName[1];
-    } else {
-      this.selected = '';
-    }
-  }
-
-  goToProductsOrOrders() {
-    this.selected.name === 'Products List' ? this.router.navigate(['products'], {relativeTo: this.route})
-      : this.router.navigate(['orders'], {relativeTo: this.route})
-  }
-
-  logOut() {
-    this.authService.logout()
-  }
-
-  goBachToHomePage() {
-    this.router.navigate([''])
-
   }
 }

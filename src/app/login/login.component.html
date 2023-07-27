@@ -1,83 +1,86 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
-  <p-panel header="Login form">
-    <div
-      class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid"
-      style="margin: 10px 0px"
-    >
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-2">Username:</div>
-        <div class="ui-grid-col-6">
-          <input
-            pInputText
-            type="text"
-            formControlName="username"
-            class="form-control"
-            name="username"
-          />
-        </div>
-        <div class="ui-grid-col-4">
-          <div
-            [hidden]="
-              loginForm.controls['username'].valid ||
-              !loginForm.controls['username'].dirty
-            "
-            class="alert alert-danger"
-          >
-            Username is required
-          </div>
-        </div>
-      </div>
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-2">Password:</div>
-        <div class="ui-grid-col-6">
-          <input
-            pInputText
-            type="password"
-            formControlName="password"
-            class="form-control"
-            name="password"
-          />
-        </div>
-        <div class="ui-grid-col-4">
-          <div
-            [hidden]="
-              loginForm.controls['password'].valid ||
-              !loginForm.controls['password'].dirty
-            "
-            class="alert alert-danger"
-          >
-            Password is required
-          </div>
-        </div>
-      </div>
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-2"></div>
-        <div class="ui-grid-col-6">
-          <button
-            pButton
-            type="submit"
-            label="Submit"
-            [disabled]="!loginForm.valid"
-          ></button>
-        </div>
-        <div class="ui-grid-col-4"></div>
-      </div>
+<form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="login-form">
+  <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
+    <div class="text-center mb-5">
+      <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
+      <span class="text-600 font-medium line-height-3"
+        >Don't have an account?</span
+      >
+      <a
+        routerLink="/register"
+        class="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
+        >Let's sign up!</a
+      >
     </div>
-    <div class="ui-grid-col-4">
-      <div *ngIf="loginErrorCause === 'username'" class="alert alert-danger">
-        Login credentials are incorrect. Please try again!
-      </div>
-      <div *ngIf="loginErrorCause === 'password'" class="alert alert-danger">
-        Password is incorrect. Please try again!
-      </div>
-      <div *ngIf="loginErrorCause === 'unknown'" class="alert alert-danger">
-        CHAOS!!!
-      </div>
-    </div>
-  </p-panel>
-</form>
-<!-- invalid password - make errors based on error response
-error.message: "Something went wrong" cand e userul gresit
 
-error.message: "Invalid Credentials" -when user is right password is wrong
--->
+    <div class="flex flex-column justify-content-center">
+      <label for="email1" class="block text-900 font-medium mx-2"
+        >Username</label
+      >
+      <input
+        pInputText
+        type="text"
+        formControlName="username"
+        class="form-control my-2"
+        name="username"
+      />
+      <div class="ui-grid-col-4">
+        <div
+          [hidden]="
+            loginForm.controls['username'].valid ||
+            !loginForm.controls['username'].dirty
+          "
+          class="alert alert-danger"
+        >
+          Username is required
+        </div>
+      </div>
+      <label for="password1" class="block text-900 font-medium mx-2"
+        >Password</label
+      >
+      <input
+        pInputText
+        type="password"
+        formControlName="password"
+        class="form-control my-2"
+        name="password"
+      />
+      <div class="ui-grid-col-4">
+        <div
+          [hidden]="
+            loginForm.controls['password'].valid ||
+            !loginForm.controls['password'].dirty
+          "
+          class="alert alert-danger"
+        >
+          Password is required
+        </div>
+      </div>
+      <div class="flex justify-content-end mb-4 mt-2">
+        <a
+          class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
+          >Forgot password?</a
+        >
+      </div>
+      <div class="ui-grid-col-4 mx-2 my-4 flex justify-content-center">
+        <div *ngIf="loginErrorCause === 'username'" class="alert alert-danger">
+          Login credentials are incorrect. Please try again!
+        </div>
+        <div *ngIf="loginErrorCause === 'password'" class="alert alert-danger">
+          Password is incorrect. Please try again!
+        </div>
+        <div *ngIf="loginErrorCause === 'unknown'" class="alert alert-danger">
+          CHAOS!!!
+        </div>
+      </div>
+      <button
+        pButton
+        type="submit"
+        label="Submit"
+        [disabled]="!loginForm.valid"
+        pRipple
+        icon="pi pi-user"
+        class="w-full"
+      ></button>
+    </div>
+  </div>
+</form>
