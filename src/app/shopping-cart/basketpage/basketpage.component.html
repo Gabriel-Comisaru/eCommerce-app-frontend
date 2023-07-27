@@ -100,9 +100,9 @@
                   <p-button
                     icon="pi pi-plus"
                     (click)="increment(item)"
-                    [disabled]="item.quantity >= item.unitsInStock"
+                    [disabled]="item.unitsInStock < item.quantity"
                     [style]="{ 'width': '30px', 'height': '30px', 'border-radius': '15px' }"
-                    styleClass="my-button p-button-outlined"
+                    styleClass="p-button-outlined"
                   ></p-button>
                 </p>
                 <p class="dataParagraph price">

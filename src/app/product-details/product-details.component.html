@@ -1,4 +1,4 @@
-<div class="w-6 xl:w-8 lg:w-8 md:w-10 sm:w-full mx-auto">
+<div class="w-full xl:w-8 lg:w-8 md:w-10 sm:w-full mx-auto">
   <div class="card mb-4">
     <h1 class="title my-4">{{ product.name }}</h1>
     <p-rating
@@ -21,10 +21,10 @@
         [showIndicators]="true"
         [showItemNavigators]="true"
         [showThumbnails]="false"
-        [containerStyle]="{ width: '640px' }"
+        [containerStyle]="{ width: '50vw' }"
       >
         <ng-template pTemplate="item" let-image>
-          <img [src]="image" style="height: 500px; max-width: 640px" />
+          <img [src]="image" style="height: 500px; width: 50vw; object-fit: contain;" />
         </ng-template>
       </p-galleria>
     </div>
