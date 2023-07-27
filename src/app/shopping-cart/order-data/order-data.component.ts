@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { AdressServiceService } from '../shared/adress-service.service';
+import {Component, OnInit} from '@angular/core';
+import {AdressServiceService} from '../shared/adress-service.service';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BasketService } from '../shared/basket.service';
-import { MessageService } from 'primeng/api';
-import { ProductsService } from 'src/app/home-page/shared/products.service';
+import {CommonModule} from '@angular/common';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BasketService} from '../shared/basket.service';
+import {MessageService} from 'primeng/api';
+import {ProductsService} from 'src/app/home-page/shared/products.service';
 
 @Component({
   selector: 'app-order-data',
@@ -27,17 +27,22 @@ export class OrderDataComponent implements OnInit {
     private router: Router,
     private messageService: MessageService,
     private productsService: ProductsService
-  ) {}
+  ) {
+  }
 
   userAddressForm = this.fb.group({
     id: [''],
-    fullName: [
+    firstName: [
+      '',
+      [Validators.required, Validators.minLength(3), Validators.maxLength(50)],
+    ],
+    lastName: [
       '',
       [Validators.required, Validators.minLength(3), Validators.maxLength(50)],
     ],
     phone: [
       '',
-      [Validators.required, Validators.minLength(10), Validators.maxLength(10)],
+      [Validators.required, Validators.minLength(11), Validators.maxLength(11)],
     ],
     county: ['', [Validators.required]],
     city: ['', [Validators.required]],
@@ -59,7 +64,8 @@ export class OrderDataComponent implements OnInit {
   userAddresses: any = [
     {
       id: 0,
-      fullName: 'Ion Popescu',
+      firstName: 'Ion',
+      lastName: 'Popescu',
       phone: '0745123456',
       county: 'B',
       city: 'Sector 2',
@@ -67,7 +73,8 @@ export class OrderDataComponent implements OnInit {
     },
     {
       id: 1,
-      fullName: 'Ioana Popescu',
+      firstName: 'Ioana',
+      lastName: 'Popescu',
       phone: '0723453456',
       county: 'B',
       city: 'Sector 1',
@@ -77,10 +84,24 @@ export class OrderDataComponent implements OnInit {
   paymentType: string = 'cash';
 
   ngOnInit(): void {
+
     this.getCounties();
     this.userAddressForm.controls.city.disable();
     console.log(this.route.snapshot.queryParams['ids']);
   }
+
+  loadData() {
+
+  }
+
+  postAddress() {
+    const formData = this.userAddressForm.value;
+    this.addressService.postAddress(formData).subscribe((res) => {
+      // Handle the response if needed
+      this.addNewAddress();
+    });
+  }
+
 
   getCounties() {
     this.addressService.getCounties().subscribe((list: any) => {
@@ -110,7 +131,7 @@ export class OrderDataComponent implements OnInit {
     this.loading = true;
     this.header = 'Edit address';
     this.selectedAddress = address;
-    this.userAddressForm.controls.fullName.setValue(address.fullName);
+    this.userAddressForm.controls.firstName.setValue(address.firstName);
     this.userAddressForm.controls.phone.setValue(address.phone);
     this.userAddressForm.controls.city.enable();
     this.userAddressForm.controls.county.setValue(address.county);
@@ -127,7 +148,7 @@ export class OrderDataComponent implements OnInit {
     this.loading = true;
     this.userAddresses.push({
       id: this.userAddresses.length,
-      fullName: this.userAddressForm.controls.fullName.value,
+      firstName: this.userAddressForm.controls.firstName.value,
       phone: this.userAddressForm.controls.phone.value,
       county: this.userAddressForm.controls.county.value,
       city: this.userAddressForm.controls.city.value,
@@ -139,7 +160,7 @@ export class OrderDataComponent implements OnInit {
   cancel() {
     this.visible = false;
     this.loading = false;
-    this.userAddressForm.controls.fullName.setValue('');
+    this.userAddressForm.controls.firstName.setValue('');
     this.userAddressForm.controls.phone.setValue('');
     this.userAddressForm.controls.county.setValue('');
     this.userAddressForm.controls.city.setValue('');
