@@ -1,59 +1,72 @@
-<p-table
-  [paginator]="true"
-  [rows]="row"
-  [rowsPerPageOptions]="rows"
-  [value]="favoriteProductsList"
-  responsiveLayout="stack"
-  [breakpoint]="'960px'"
-  [globalFilterFields]="['name']"
-  [style]="{ 'margin-top': '20px', }"
-  class="favTable"
+<p-card
+  [style]="{
+    margin: '2rem 3rem',
+    'background-color': 'whitesmoke',
+    padding: '0 2rem'
+  }"
 >
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Image</th>
-      <th>Name</th>
-      <th>Price</th>
-      <th>Availability</th>
-      <th>Actions</th>
-    </tr>
-  </ng-template>
+  <div
+    class="w-full flex justify-content-center align-content-center"
+    *ngIf="!favoriteProductsList.length"
+  >
+    <strong class="text-2xl">You have no favorite products.</strong>
+  </div>
+  <p-table
+    *ngIf="favoriteProductsList.length"
+    [paginator]="favoriteProductsList.length > 5"
+    [rows]="row"
+    [rowsPerPageOptions]="rows"
+    [value]="favoriteProductsList"
+    responsiveLayout="stack"
+    [globalFilterFields]="['name']"
+    class="favTable"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Availability</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
 
-  <ng-template pTemplate="body" let-product let-index="rowIndex">
-    <tr class="item">
-      <td>
-        <p-image
-          [src]="getProductImage(product.imagesName[0])"
-          alt="Image"
-          width="50"
-        ></p-image>
-      </td>
-      <td>{{ product.name }}</td>
-      <td class="itemPrice">{{ product.price }} $</td>
-      <td><app-product-status [product]="product"></app-product-status></td>
-      <td class="actions">
-        <p-button
-          icon="pi pi-cart-plus"
-          [disabled]="product.unitsInStock < 1"
-          (click)="moveProductToBasket(product)"
-        ></p-button>
-        <p-button
-          icon="pi pi-trash"
-          (click)="deleteFavoriteProduct(product)"
-        ></p-button>
-      </td>
-    </tr>
-  </ng-template>
+    <ng-template pTemplate="body" let-product let-index="rowIndex">
+      <tr class="item">
+        <td>
+          <p-image
+            [src]="getProductImage(product.imagesName[0])"
+            alt="Image"
+            width="50"
+          ></p-image>
+        </td>
+        <td>{{ product.name }}</td>
+        <td class="itemPrice">{{ product.price }} $</td>
+        <td><app-product-status [product]="product"></app-product-status></td>
+        <td class="actions">
+          <p-button
+            icon="pi pi-cart-plus"
+            [disabled]="product.unitsInStock < 1"
+            (click)="moveProductToBasket(product)"
+          ></p-button>
+          <p-button
+            icon="pi pi-trash"
+            (click)="deleteFavoriteProduct(product)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
 
-  <ng-template pTemplate="footer">
-    <tr>
-      <td></td>
-      <td><strong>Total:</strong></td>
-      <td>
-        <strong>${{ getTotalPrice() }}</strong>
-      </td>
-      <td></td>
-      <td></td>
-    </tr>
-  </ng-template>
-</p-table>
+    <ng-template pTemplate="footer">
+      <tr>
+        <td></td>
+        <td><strong>Total:</strong></td>
+        <td>
+          <strong>${{ getTotalPrice() }}</strong>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

@@ -5,7 +5,6 @@ import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { ProductsService } from '../home-page/shared/products.service';
 import { concat } from 'rxjs';
-import { FavoriteProductsPageComponent } from '../shopping-cart/favorite-products-page/favorite-products-page.component';
 import { FavoriteProductsServiceService } from '../home-page/shared/favorite-products-service.service';
 
 @Component({
@@ -14,7 +13,9 @@ import { FavoriteProductsServiceService } from '../home-page/shared/favorite-pro
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;
+  public loginForm!: FormGroup;
+  public showPassword: boolean = false;
+  public loginErrorCause!: string;
 
   constructor(
     private authService: AuthService,
@@ -23,7 +24,6 @@ export class LoginComponent implements OnInit {
     private productsService: ProductsService,
     private favoriteProductsService: FavoriteProductsServiceService
   ) {}
-  public loginErrorCause!: string;
 
   ngOnInit() {
     this.loginForm = new FormGroup({
@@ -49,7 +49,6 @@ export class LoginComponent implements OnInit {
         },
         error: (data) => {
           console.log('Cannot login!');
-          console.log(data);
           switch (data.error.message) {
             case 'Something went wrong': {
               this.loginErrorCause = 'username';

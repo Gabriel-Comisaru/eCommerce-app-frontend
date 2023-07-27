@@ -21,6 +21,7 @@
         formControlName="username"
         class="form-control my-2"
         name="username"
+        autocomplete="off"
       />
       <div class="ui-grid-col-4">
         <div
@@ -28,34 +29,53 @@
             loginForm.controls['username'].valid ||
             !loginForm.controls['username'].dirty
           "
-          class="alert alert-danger"
+          class="text-red-500"
         >
           Username is required
         </div>
       </div>
-      <label for="password1" class="block text-900 font-medium mx-2"
+      <label for="password" class="block text-900 font-medium mx-2"
         >Password</label
       >
-      <input
-        pInputText
-        type="password"
-        formControlName="password"
-        class="form-control my-2"
-        name="password"
-      />
+      <div class="passwordContainer">
+        <input
+          pInputText
+          type="password"
+          formControlName="password"
+          class="form-control my-2"
+          name="password"
+          autocomplete="off"
+          #password
+        />
+        <i
+          [ngClass]="
+            password.type !== 'password' ? 'pi pi-eye' : 'pi pi-eye-slash'
+          "
+          style="color: #708090"
+          class="cursor-pointer passwordIcon"
+          (click)="
+            password.type === 'password'
+              ? (password.type = 'text')
+              : (password.type = 'password')
+          "
+        ></i>
+      </div>
+
       <div class="ui-grid-col-4">
         <div
           [hidden]="
             loginForm.controls['password'].valid ||
             !loginForm.controls['password'].dirty
           "
-          class="alert alert-danger"
+          class="text-red-500"
         >
           Password is required
         </div>
       </div>
       <div class="flex justify-content-end mb-4 mt-2">
         <a
+          pTooltip="That's unfortunate but we can't help you at this moment."
+          tooltipPosition="top"
           class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
           >Forgot password?</a
         >
