@@ -64,18 +64,7 @@
         userLoggedIn.username
       }}</span></a
     >
-<<<<<<< HEAD
-    <div
-      class="flex navBarItem"
-      *ngIf="userLoggedIn && userLoggedIn.role === 'ADMIN'"
-    >
-      <p-button (click)="goToAdminPage()" styleClass="p-button-outlined"
-        >Admin Dashboard
-      </p-button>
-    </div>
-=======
     <a class="navBarItem font-semibold text-xs text-orange-500" *ngIf="userLoggedIn && userLoggedIn.role === 'ADMIN'" (click)="goToAdminPage()">Admin <br> Dashboard</a>
->>>>>>> feature/account-details
   </div>
 </nav>
 <nav class="secondaryNav">
