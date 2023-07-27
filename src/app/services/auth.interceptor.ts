@@ -33,10 +33,11 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        // if (error.status === 401) {
-        //   localStorage.removeItem('token');
-        //   this.authService.redirectToLogin();
-        // }
+        if (error.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('currentUser');
+          this.authService.redirectToLogin();
+        }
         return throwError(error);
       })
     );

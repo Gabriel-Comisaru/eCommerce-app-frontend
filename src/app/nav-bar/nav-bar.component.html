@@ -10,7 +10,6 @@
       />
     </div>
 
-    <!-- <p-skeleton width="8rem" height="3rem" borderRadius="16px"></p-skeleton> -->
     <div class="searchContainer">
       <input
         type="text"
@@ -25,29 +24,23 @@
   </div>
 
   <div class="navControlsContainer accountControls">
-    <p-button
-      label="Clear storage"
-      styleClass="p-button-link"
-      (click)="clearStorage()"
-    ></p-button>
     <a class="navBarItem" (click)="shoppingCart.toggle($event)"
-    ><i
-      class="pi pi-shopping-cart"
-      pBadge
-      severity="danger"
-      [value]="getOrderItemLength().toString()"
-    ></i
-    ><span>Basket</span></a
+      ><i
+        class="pi pi-shopping-cart"
+        pBadge
+        severity="danger"
+        [value]="getOrderItemLength().toString()"
+      ></i
+      ><span>Basket</span></a
     >
-    <!-- [value]="basketContent.length.toString()" old basket badge setting -->
     <a class="navBarItem" (click)="favoriteItems.toggle($event)"
-    ><i
-      class="pi pi-heart"
-      pBadge
-      severity="danger"
-      [value]="favoriteProductsList.length.toString()"
-    ></i
-    ><span>Favorite</span></a
+      ><i
+        class="pi pi-heart"
+        pBadge
+        severity="danger"
+        [value]="favoriteProductsList.length.toString()"
+      ></i
+      ><span>Favorite</span></a
     >
 
     <a
@@ -64,14 +57,18 @@
       *ngIf="isAuthenticated()"
     >
       <i class="pi pi-user"></i
-      ><span style="white-space: nowrap">{{ userLoggedIn.username }}</span></a
+      ><span *ngIf="userLoggedIn" style="white-space: nowrap">{{
+        userLoggedIn.username
+      }}</span></a
     >
 
-    <div class="flex navBarItem" *ngIf="userLoggedIn.role === 'ADMIN'">
+    <div
+      class="flex navBarItem"
+      *ngIf="userLoggedIn && userLoggedIn.role === 'ADMIN'"
+    >
       <p-button (click)="goToAdminPage()" styleClass="p-button-outlined"
-      >Admin Dashboard
-      </p-button
-      >
+        >Admin Dashboard
+      </p-button>
     </div>
   </div>
 </nav>
@@ -128,7 +125,6 @@
 <p-overlayPanel #shoppingCart class="shoppingCart">
   <ng-template pTemplate="content">
     <div class="overlay">
-      <h4>Last added products</h4>
       <p-table
         styleClass="p-datatable-sm"
         [scrollable]="true"
@@ -146,7 +142,7 @@
           <tr class="contentRow">
             <td class="productContainer">
               <img
-                src="http://34.132.132.163:8081/api/images/download?name={{
+                src="{{baseUrlApi}}/images/download?name={{
                   product.imageName
                 }}"
                 alt="product photo"
@@ -171,23 +167,6 @@
 <p-overlayPanel #favoriteItems class="favoriteItems">
   <ng-template pTemplate="content">
     <div class="overlay">
-      <h4>Products you liked</h4>
-      <table>
-        <tr class="contentRow">
-          <th>Product</th>
-          <th>Qty</th>
-          <th>Price</th>
-        </tr>
-        <tr *ngFor="let product of favoriteProductsList" class="contentRow">
-          <td class="productContainer">
-            <img [src]="product.productImage" alt="product photo"/>
-            <span class="productName">{{ product.name }}</span>
-          </td>
-          <td>x{{ product.unitsInStock }}</td>
-          <td>${{ product.price }}</td>
-        </tr>
-      </table>
-      <p-button label="View all" styleClass="p-button-raised"></p-button>
       <p-table
         styleClass="p-datatable-sm"
         [scrollable]="true"
@@ -206,7 +185,7 @@
           <tr class="contentRow">
             <td class="productContainer">
               <img
-                src="http://34.132.132.163:8081/api/images/download?name={{
+                src="{{baseUrlApi}}/images/download?name={{
                   product.imagesName[0]
                 }}"
                 alt="product photo"

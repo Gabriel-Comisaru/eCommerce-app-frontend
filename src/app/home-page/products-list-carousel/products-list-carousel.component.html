@@ -30,7 +30,6 @@
     [numScroll]="5"
     [circular]="true"
   >
-    <!-- [responsiveOptions]="responsiveOptions" -->
     <ng-template let-product pTemplate="item">
       <div
         class="border-1 surface-border border-round m-2 text-center productCard"
@@ -101,24 +100,23 @@
               >
             </h5>
           </div>
-
           <div class="productButtons mb-2">
             <p-button
-              [disabled]="product.unitsInStock < 1"
+              [disabled]="product.unitsInStock < 1 || isUserLoggedIn()"
               (onClick)="addToCart(product)"
+              [loading]="product.loadingCart"
               type="button"
               styleClass="p-button"
               icon="pi pi-cart-plus"
             ></p-button>
             <p-button
+              [disabled]="isUserLoggedIn()"
               (onClick)="addToFavorite(product)"
               type="button"
+              [loading]="product.loadingFavorite"
               styleClass="p-button-raised p-button-text p-button-danger"
               [icon]="
-                product.favUserIds &&
-                product.favUserIds.includes(product.userId)
-                  ? 'pi pi-heart-fill'
-                  : 'pi pi-heart'
+                checkIfFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'
               "
             ></p-button>
           </div>

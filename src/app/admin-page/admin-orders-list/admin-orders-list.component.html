@@ -1,3 +1,4 @@
+<ng-template pTemplate="search"></ng-template>
 <p-table styleClass="p-datatable-sm"
          [pageLinks]="numberOfPages"
          [totalRecords]="totalRecords"
@@ -7,9 +8,9 @@
          [rows]="5"
          [rowsPerPageOptions]="rows"
          [value]="orders"
-
-         [tableStyle]="{ 'min-width': '50rem' }" responsiveLayout="stack" [breakpoint]="'960px'"
-         [globalFilterFields]="['name']">
+         [loading]="loading"
+         [tableStyle]="{ 'min-width': '50rem' }"
+         [breakpoint]="'960px'">
   <ng-template pTemplate="header">
     <tr>
       <th>#</th>
@@ -20,7 +21,6 @@
       <th>Delivery Fee</th>
       <th>Ordered Items</th>
       <th>Status</th>
-      <th>Action</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-order let-rowIndex="rowIndex">
@@ -31,17 +31,11 @@
       <td>{{ order.startDate }}</td>
       <td>{{ order.deliveryDate }}</td>
       <td>${{ order.deliveryPrice.toFixed(2) }}</td>
-      <td>{{order.orderItems}}</td>
+      <td>{{order.productNames}}</td>
       <td>
         <p-dropdown [filterBy]="order.id" (onChange)="changeStatus(order.id,order.status)"
                     [options]="status" [(ngModel)]="order.status"
                     appendTo="body"></p-dropdown>
-      </td>
-      <td>
-        <div class="card flex">
-          <p-button (click)="deleteOrder(order)" pTooltip="Delete" tooltipPosition="top" icon="pi pi-times"
-                    styleClass="p-button-danger p-button-sm"></p-button>
-        </div>
       </td>
     </tr>
   </ng-template>

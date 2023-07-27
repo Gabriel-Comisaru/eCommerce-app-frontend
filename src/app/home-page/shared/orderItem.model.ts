@@ -9,6 +9,7 @@ export interface OrderItem {
   productPrice: number;
   unitsInStock: number;
   orderId: number;
+  productNames:string[];
 }
 
 export interface detailedOrderItem extends OrderItem {

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
+import { FavoriteProductsServiceService } from 'src/app/home-page/shared/favorite-products-service.service';
 import { Product } from 'src/app/home-page/shared/product.model';
 import { ProductsService } from 'src/app/home-page/shared/products.service';
-import { BasketService } from '../shared/basket.service';
-import { ProductOperationsService } from 'src/app/home-page/shared/product-operations.service';
 
 @Component({
   selector: 'app-favorite-products-page',
@@ -12,7 +11,7 @@ import { ProductOperationsService } from 'src/app/home-page/shared/product-opera
 export class FavoriteProductsPageComponent {
   constructor(
     private productsService: ProductsService,
-    private productOperationsService: ProductOperationsService
+    private favoriteProductsService: FavoriteProductsServiceService
   ) {}
 
   favoriteProductsList: Product[] = [];
@@ -24,32 +23,23 @@ export class FavoriteProductsPageComponent {
   public orderedItemsIds: number[] = [];
   //
   ngOnInit() {
-    this.productsService.getFavoriteProducts().subscribe((res) => {
-      this.favoriteProductsList = res;
-    });
+    this.favoriteProductsService.favoriteProductsObservable.subscribe(
+      (res) => (this.favoriteProductsList = res.favoriteProducts!)
+    );
   }
 
   deleteFavoriteProduct(product: Product) {
-    this.productsService.deleteFavoriteProduct(product.id).subscribe((res) => {
-      this.productsService.favoriteProductsObservable.next({
-        productAction: 'delete',
-        favoriteProduct: product,
-      });
-      this.favoriteProductsList = this.favoriteProductsList.filter(
-        (favProduct) => favProduct.id !== product.id
-      );
-    });
+    this.favoriteProductsService
+      .deleteFavoriteProduct(product.id)
+      .subscribe((res) => {});
   }
 
   moveProductToBasket(product: Product) {
-    this.deleteFavoriteProduct(product);
-    // if delete fails for some reason it will still add my product to cart
-    this.productsService.addProductToOrder(product.id, 1).subscribe((res) => {
-      this.productsService.shoppingCartObservable.next({
-        productAction: 'add',
-        orderItem: res,
-      });
-    });
+    // this.deleteFavoriteProduct(product);
+    // // if delete fails for some reason it will still add my product to cart
+    this.productsService
+      .addProductToOrder(product.id, 1)
+      .subscribe((res) => {});
   }
 
   getTotalPrice(): string {
@@ -64,7 +54,6 @@ export class FavoriteProductsPageComponent {
     return (item.productPrice * item.quantity).toFixed(2);
   }
   showProductImage(productImage: string) {
-    const imgUrl = this.productOperationsService.getProductImage(productImage);
-    return imgUrl;
+    return this.productsService.getProductImage(productImage);
   }
 }

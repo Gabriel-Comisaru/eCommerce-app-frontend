@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
-import { ProductsService } from '../home-page/shared/products.service';
 import { RegisterFields } from '../models/register.model';
 import { BASE_URL } from '../settings';
 
@@ -16,8 +15,7 @@ export class AuthService {
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    private userService: UserService,
-    private productsService: ProductsService
+    private userService: UserService
   ) {}
 
   isAuthenticated(): boolean {
@@ -44,23 +42,11 @@ export class AuthService {
       );
   }
 
-  getToken(): any {
-    return localStorage.getItem('token');
-  }
-
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
-    // favoriteProducts doesn t update in real time
     localStorage.removeItem('favoriteProducts');
     this.userService.loggedUser.next({});
-    this.productsService.shoppingCartObservable.next({
-      productAction: 'reset',
-    });
-
-    this.productsService.favoriteProductsObservable.next({
-      productAction: 'reset',
-    });
 
     this.redirectToLogin();
   }
@@ -72,6 +58,7 @@ export class AuthService {
   goToRegister(): void {
     this.router.navigate(['register']);
   }
+
   register(registerCredentials: RegisterFields): Observable<RegisterFields> {
     const formData = new FormData();
     const url = `${this.baseUrl}/auth/register`;

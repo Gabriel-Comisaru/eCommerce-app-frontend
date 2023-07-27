@@ -1,1 +1,9 @@
-<p>admin-nav-bar works!</p>
+<p-menubar>
+  <ng-template pTemplate="start">
+    <p>Welcome back, {{username}}</p>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <p-button label="Log out" styleClass="p-button-text" (onClick)="logOut()"></p-button>
+    <p-button label="Preview" styleClass="p-button-text" icon="pi pi-external-link" routerLink=""></p-button>
+  </ng-template>
+</p-menubar>
