@@ -14,7 +14,6 @@ export class FavoriteProductsServiceService {
   public currentFavoriteItems: Product[] = [];
   constructor(private httpClient: HttpClient) {}
 
-  // get favorite products of the logged user
   getFavoriteProducts(): Observable<Product[]> {
     const url = `${BASE_URL_API}/products/fav`;
     return this.httpClient.get<Product[]>(url).pipe(

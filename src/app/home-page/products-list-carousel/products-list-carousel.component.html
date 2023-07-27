@@ -1,4 +1,4 @@
-<div>
+<p-card class="shadow-3">
   <p-carousel
     [value]="[5, 5, 5, 5, 5]"
     [numVisible]="5"
@@ -14,7 +14,6 @@
           styleClass="mb-2 mt-2"
         ></p-skeleton>
         <p-skeleton width="12rem" height="50px" styleClass="mb-2"></p-skeleton>
-
         <div class="flex flex-row justify-content-around w-12">
           <p-skeleton size="3rem" styleClass="mb-2"></p-skeleton>
           <p-skeleton size="3rem" styleClass="mb-2"></p-skeleton>
@@ -22,7 +21,6 @@
       </div>
     </ng-template>
   </p-carousel>
-
   <p-carousel
     *ngIf="!dataIsLoading"
     [value]="productsToDisplayWithImages"
@@ -31,96 +29,105 @@
     [circular]="true"
   >
     <ng-template let-product pTemplate="item">
-      <div
-        class="border-1 surface-border border-round m-2 text-center productCard"
-      >
-        <div class="mb-1 w-full relative overflow-hidden imageContainer">
-          <!-- *ngIf="product.soldPieces && product.soldPieces > 100" -->
-          <p-tag
-            *ngIf="product.price && product.price < 100"
-            severity="primary"
-            value="Most selled"
-            class="absolute mostSelledPosition"
-          ></p-tag>
-          <p-tag
-            *ngIf="product.discountPercentage && product.discountPercentage > 0"
-            severity="danger"
-            value="Limited offer"
-            class="absolute limitedOfferPosition"
-          ></p-tag>
-          <p-tag
-            *ngIf="product.discountPercentage && product.discountPercentage > 0"
-            severity="danger"
-            [value]="'-' + product.discountPercentage?.toFixed(2) + '%'"
-            class="absolute discountApplied"
+      <div class="productCard">
+        <div
+          class="border-1 surface-border border-round m-2 text-center productCard"
+        >
+          <div
+            class="mb-1 w-full relative overflow-hidden imageContainer bg-white"
           >
-          </p-tag>
-          <img
-            [src]="product.productImage"
-            [alt]="product.name"
-            (error)="handleMissingImage($event)"
-            class="w-full h-12rem max-h-full shadow-2 productImage"
-            (click)="getProductDetails(product.id)"
-            style="cursor: pointer"
-          />
-        </div>
-        <div class="detailsContainer">
-          <div class="productNameContainer">
-            <h4
-              class="mb-1 mt-0 productName"
-              [title]="product.name"
-              (click)="getProductDetails(product.id)"
-            >
-              {{ product.name }}
-            </h4>
-          </div>
-          <p-rating
-            [(ngModel)]="product.roundedRating"
-            [readonly]="true"
-            [cancel]="false"
-          ></p-rating>
-
-          <div>({{ product.rating?.toFixed(2) }})</div>
-          <div class="stockAndPrice">
-            <app-product-status [product]="product"></app-product-status>
-            <h5 class="mt-0 mb-1 productPrice">
-              <span [ngClass]="{ oldPrice: product.discountPercentage !== 0 }">
-                {{ "$" + product.price }} </span
-              ><span
-                *ngIf="product.discountPercentage !== 0"
-                class="discountedPrice"
-              >
-                {{
-                  "$" +
-                    (
-                      product.price -
-                      (product.price * product.discountPercentage) / 100
-                    ).toFixed(0)
-                }}</span
-              >
-            </h5>
-          </div>
-          <div class="productButtons mb-2">
-            <p-button
-              [disabled]="product.unitsInStock < 1 || isUserLoggedIn()"
-              (onClick)="addToCart(product)"
-              type="button"
-              styleClass="p-button"
-              icon="pi pi-cart-plus"
-            ></p-button>
-            <p-button
-              [disabled]="isUserLoggedIn()"
-              (onClick)="addToFavorite(product)"
-              type="button"
-              styleClass="p-button-raised p-button-text p-button-danger"
-              [icon]="
-                checkIfFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'
+            <p-tag
+              *ngIf="product.price && product.price < 100"
+              severity="primary"
+              value="Most selled"
+              class="absolute mostSelledPosition"
+            ></p-tag>
+            <p-tag
+              *ngIf="
+                product.discountPercentage && product.discountPercentage > 0
               "
-            ></p-button>
+              severity="danger"
+              value="Limited offer"
+              class="absolute limitedOfferPosition"
+            ></p-tag>
+            <p-tag
+              *ngIf="
+                product.discountPercentage && product.discountPercentage > 0
+              "
+              severity="danger"
+              [value]="'-' + product.discountPercentage?.toFixed(2) + '%'"
+              class="absolute discountApplied"
+            >
+            </p-tag>
+            <img
+              [src]="product.productImage"
+              [alt]="product.name"
+              (error)="handleMissingImage($event)"
+              class="w-full h-12rem max-h-full shadow-2 productImage"
+              (click)="getProductDetails(product.id)"
+              style="cursor: pointer"
+            />
+          </div>
+          <div class="detailsContainer bg-white">
+            <div class="productNameContainer">
+              <h4
+                class="mb-1 mt-0 productName"
+                [title]="product.name"
+                (click)="getProductDetails(product.id)"
+              >
+                {{ product.name }}
+              </h4>
+            </div>
+            <p-rating
+              [(ngModel)]="product.roundedRating"
+              [readonly]="true"
+              [cancel]="false"
+            ></p-rating>
+
+            <div>({{ product.rating?.toFixed(2) }})</div>
+            <div class="stockAndPrice">
+              <app-product-status [product]="product"></app-product-status>
+              <h5 class="mt-0 mb-1 productPrice">
+                <span
+                  [ngClass]="{ oldPrice: product.discountPercentage !== 0 }"
+                >
+                  {{ "$" + product.price }} </span
+                ><span
+                  *ngIf="product.discountPercentage !== 0"
+                  class="discountedPrice"
+                >
+                  {{
+                    "$" +
+                      (
+                        product.price -
+                        (product.price * product.discountPercentage) / 100
+                      ).toFixed(0)
+                  }}</span
+                >
+              </h5>
+            </div>
+            <div class="productButtons mb-2">
+              <p-button
+                [disabled]="product.unitsInStock < 1 || isUserLoggedIn()"
+                (onClick)="addToCart(product)"
+                type="button"
+                styleClass="p-button"
+                icon="pi pi-cart-plus"
+              ></p-button>
+              <p-button
+                [disabled]="isUserLoggedIn()"
+                (onClick)="addToFavorite(product)"
+                type="button"
+                styleClass="p-button-raised p-button-text p-button-danger"
+                [icon]="
+                  checkIfFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'
+                "
+              ></p-button>
+            </div>
           </div>
         </div>
       </div>
     </ng-template>
   </p-carousel>
-</div>
+</p-card>
 <p-toast></p-toast>

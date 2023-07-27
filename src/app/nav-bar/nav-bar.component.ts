@@ -31,6 +31,7 @@ export class NavBarComponent {
   public orderItems: OrderItem[] = [];
   baseUrlApi = BASE_URL_API;
   adminDashboard!: string;
+  deleteItemLoader: boolean = false;
 
   @ViewChild(AdminPageComponent) admin!: AdminPageComponent;
   @ViewChild('userOptions') userOverlay!: OverlayPanel;
@@ -56,10 +57,10 @@ export class NavBarComponent {
     this.favoriteProductsService.favoriteProductsObservable.subscribe((res) => {
       this.favoriteProductsList = res.favoriteProducts!;
     });
+
     this.productService.getShopingCartObservable().subscribe((res) => {
       this.orderItems = res.basketOrderItems!;
     });
-
     if (this.userLoggedIn) {
       this.productsService.getCurrentBasket().subscribe();
       this.favoriteProductsService.getFavoriteProducts().subscribe();
@@ -121,11 +122,9 @@ export class NavBarComponent {
   logout() {
     this.authService.logout();
     this.userOverlay.hide();
-
     this.favoriteProductsService.favoriteProductsObservable.next({
       favoriteProducts: [],
     });
-
     this.productsService.shoppingCartObservable.next({
       basketOrderItems: [],
     });
@@ -159,7 +158,6 @@ export class NavBarComponent {
 
   gotoOrdersPage() {
     this.userOverlay.hide();
-
     return this.router.navigate(['my-orders']);
   }
 
@@ -169,5 +167,20 @@ export class NavBarComponent {
   }
   getProductImage(productImage: string) {
     return `${BASE_URL_API}/images/download?name=${productImage}`;
+  }
+  goToProductDetailPage(id: number) {
+    this.router.navigate([`product-details/${id}`]);
+  }
+  deleteFavoriteProduct(productId: number) {
+    this.deleteItemLoader = true;
+    this.favoriteProductsService
+      .deleteFavoriteProduct(productId)
+      .subscribe(() => (this.deleteItemLoader = false));
+  }
+  deleteBasketOrderItem(orderId: number) {
+    this.deleteItemLoader = true;
+    this.productService
+      .deleteOrderItem(orderId)
+      .subscribe(() => (this.deleteItemLoader = false));
   }
 }

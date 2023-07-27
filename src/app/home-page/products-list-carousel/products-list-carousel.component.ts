@@ -89,6 +89,3 @@ export class ProductsListCarouselComponent {
     return !localStorage.getItem('currentUser');
   }
 }
-
-// <!-- notificare ca am adaugat in cos -->
-// <!-- notificare ca am adaugat la favorite plus update badge-->

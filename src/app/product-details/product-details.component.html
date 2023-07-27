@@ -83,7 +83,6 @@
       </p-card>
     </div>
   </div>
-
   <div class="description w-full my-5">
     <p-card header="Description">
       <p>
@@ -101,9 +100,9 @@
         >
       </p>
       <div class="card" *ngFor="let review of reviews">
-        <h2>{{review.fullName}}</h2>
-        <p>({{review.username}})</p>
-        <br>
+        <h2>{{ review.fullName }}</h2>
+        <p>({{ review.username }})</p>
+        <br />
         <div class="flex mb-2">
           <p-rating
             class="mr-3"

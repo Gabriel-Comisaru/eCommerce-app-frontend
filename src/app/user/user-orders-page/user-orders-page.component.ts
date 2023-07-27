@@ -15,7 +15,10 @@ export class UserOrdersPageComponent {
   ngOnInit() {
     this.userService
       .getDetailedUserOrders()
-      .subscribe((res) => (this.userOrders = res));
+      .subscribe(
+        (res) =>
+          (this.userOrders = res.filter((order) => order.status !== 'ACTIVE'))
+      );
   }
 
   goToCheckoutPage(orderId: number) {
