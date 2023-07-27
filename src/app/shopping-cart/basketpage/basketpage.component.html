@@ -88,25 +88,25 @@
                 <img src="{{ item.productImage }}" class="productImage" alt="Product Image">
               </div>
               <div class="product-details">
-                <p class="dataParagraph">
+                <p class="dataParagraph quantity">
                   Quantity:
                   <p-button
                     icon="pi pi-minus"
                     (click)="decrement(item)"
                     [style]="{ 'width': '30px', 'height': '30px', 'border-radius': '15px' }"
-                    styleClass="my-button"
+                    styleClass="my-button p-button-outlined"
                   ></p-button>
-                  {{ item.quantity }}
+                  <span class="quantitySpan">{{ item.quantity }}</span>
                   <p-button
                     icon="pi pi-plus"
                     (click)="increment(item)"
                     [disabled]="item.quantity >= item.unitsInStock"
                     [style]="{ 'width': '30px', 'height': '30px', 'border-radius': '15px' }"
-                    styleClass="my-button"
+                    styleClass="my-button p-button-outlined"
                   ></p-button>
                 </p>
-                <p class="dataParagraph">
-                  Price per unit: {{ getItemPrice(item) }}$
+                <p class="dataParagraph price">
+                  Price:  <span class="totalPriceSpan" > {{ getItemPrice(item) }}$</span>
                 </p>
               </div>
               <div class="controls">
@@ -121,7 +121,7 @@
         <div class="totalPrice">
           <p class="dataParagraph total-price">
             Total price:
-            <span class="font-bold">{{ getTotalPrice() }}$</span>
+            <span class="font-bold"> <span class="totalPriceSpan"> {{ getTotalPrice() }}$ </span></span>
           </p>
           <div class="checkout-button">
             <p-button type="button" label="Checkout"  (click)="checkout()"
