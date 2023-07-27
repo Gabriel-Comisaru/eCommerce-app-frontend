@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FavoriteProductsServiceService } from 'src/app/home-page/shared/favorite-products-service.service';
+import { OrderItem } from 'src/app/home-page/shared/orderItem.model';
 import { Product } from 'src/app/home-page/shared/product.model';
 import { ProductsService } from 'src/app/home-page/shared/products.service';
 
@@ -15,14 +16,15 @@ export class FavoriteProductsPageComponent {
   ) {}
 
   favoriteProductsList: Product[] = [];
-
-  //
-
+  basketItems: OrderItem[] = [];
   rows: number[] = [5, 10, 15];
   row: number = 5;
   public orderedItemsIds: number[] = [];
-  //
+
   ngOnInit() {
+    this.productsService.getShopingCartObservable().subscribe((res) => {
+      this.basketItems = res.basketOrderItems!;
+    });
     this.favoriteProductsService.favoriteProductsObservable.subscribe(
       (res) => (this.favoriteProductsList = res.favoriteProducts!)
     );
@@ -35,11 +37,7 @@ export class FavoriteProductsPageComponent {
   }
 
   moveProductToBasket(product: Product) {
-    // this.deleteFavoriteProduct(product);
-    // // if delete fails for some reason it will still add my product to cart
-    this.productsService
-      .addProductToOrder(product.id, 1)
-      .subscribe((res) => {});
+    this.productsService.addToCart(product, this.basketItems);
   }
 
   getTotalPrice(): string {

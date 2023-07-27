@@ -68,8 +68,14 @@ export class ProductsListCarouselComponent {
   }
 
   addToCart(product: Product) {
-    this.productService.addToCart(product, this.basketItems);
     this.loadingButton(product, 'cart');
+    this.productService
+      .addToCart(product, this.basketItems)
+      .subscribe((res) => {
+        this.loadingButton(product, 'cart');
+      });
+    // this.loadingButton(product, 'cart');
+    // add disabled - handle 401
   }
 
   getProductDetails(id: number) {
@@ -82,21 +88,13 @@ export class ProductsListCarouselComponent {
   }
   addToFavorite(product: Product) {
     this.favoriteProductsService.addToFavorite(product, this.favoriteItems);
-    this.loadingButton(product, 'favorite');
+    // this.loadingButton(product, 'favorite');
   }
   loadingButton(product: any, buttonType: string) {
     if (buttonType === 'cart') {
-      product.loadingCart = true;
-
-      setTimeout(() => {
-        product.loadingCart = false;
-      }, 150);
+      product.loadingCart = !product.loadingCart;
     } else if (buttonType === 'favorite') {
-      product.loadingFavorite = true;
-
-      setTimeout(() => {
-        product.loadingFavorite = false;
-      }, 150);
+      product.loadingFavorite = !product.loadingFavorite;
     }
   }
   checkIfFavorite(product: Product) {

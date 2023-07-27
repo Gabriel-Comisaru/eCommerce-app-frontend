@@ -1,4 +1,12 @@
-import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  EMPTY,
+  Observable,
+  Subject,
+  catchError,
+  tap,
+  throwError,
+} from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Product } from './product.model';
@@ -7,12 +15,16 @@ import { OrderItem } from './orderItem.model';
 import { Review } from './review.model';
 import { BASE_URL_API, BASE_URL } from '../../settings';
 import { Order } from './order.model';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private messageService: MessageService
+  ) {}
 
   private productsUrl = `${BASE_URL_API}/products`;
   private productsUrlDisplay = `${BASE_URL_API}/products/display`;
@@ -181,23 +193,30 @@ export class ProductsService {
     );
   }
 
-  addToCart(product: Product, basketItems: OrderItem[]) {
+  addToCart(product: Product, basketItems: OrderItem[]): Observable<any> {
     let orderItem = basketItems.filter(
       (item: OrderItem) => item.productId === product.id
     );
     if (orderItem.length) {
       if (product.unitsInStock >= orderItem[0].quantity + 1) {
-        this.updateOrderQuantity(
+        return this.updateOrderQuantity(
           orderItem[0].id,
           orderItem[0].quantity + 1
-        ).subscribe();
+        );
+        // .subscribe();
       } else {
         console.log('quantity exceeds stock');
-        //display somehow an error message
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Quantity exceeds stock',
+        });
       }
     } else {
-      this.addProductToOrder(product.id, 1).subscribe();
+      return this.addProductToOrder(product.id, 1);
+      // .subscribe();
     }
+    return EMPTY;
   }
 
   getProductImage(productImage: string) {
