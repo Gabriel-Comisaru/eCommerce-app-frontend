@@ -12,7 +12,6 @@ import {MessageService} from 'primeng/api';
 import {Product} from 'src/app/home-page/shared/product.model';
 import {ProductsService} from 'src/app/home-page/shared/products.service';
 import {Category} from "../../home-page/shared/category.model";
-import { BASE_URL_API } from 'src/app/settings';
 
 @Component({
   selector: 'app-update-product',
@@ -32,18 +31,18 @@ export class UpdateProductComponent implements OnInit {
   loading: boolean = false;
   product?: Product;
   imagesList: string[] = [];
-  responsiveOptions: any[]=[];
+  responsiveOptions: any[] = [];
   visible = false;
-  selectedFile!: File;
   categoriesList: Category[] = [];
-  images:any=[];
-  ifPressed: boolean=false;
-  spinnerLoading:boolean=false;
-  baseUrlApi = BASE_URL_API;
+  images: any = [];
+  ifPressed: boolean = false;
+  spinnerLoading: boolean = false;
+  showImageError: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private messageService: MessageService
   ) {
   }
 
@@ -65,23 +64,21 @@ export class UpdateProductComponent implements OnInit {
         numVisible: 1
       }
     ];
-
   }
 
   productForm = this.fb.nonNullable.group({
     name: ['', [Validators.required,
       Validators.minLength(3)]],
-    price: ['', [Validators.required]],
+    price: ['', [Validators.required, Validators.min(1), Validators.pattern('^[1-9][.0-9]*$')]],
     categoryId: ['', [Validators.required]],
     description: ['', [Validators.required]],
-    stock: ['', [Validators.required]],
+    stock: ['', [Validators.required, Validators.pattern('^[0-9]*$'), Validators.min(0)]],
     discount: ['', [Validators.pattern('^[0-9]*$'),
       Validators.max(100),
       Validators.min(0),
       Validators.required]],
     imagesName: ['']
   });
-
 
   resetFormValues() {
     this.productForm.controls.name.reset()
@@ -91,6 +88,7 @@ export class UpdateProductComponent implements OnInit {
     this.productForm.controls.stock.reset()
     this.productForm.controls.discount.reset()
     this.productForm.controls.imagesName.reset()
+    this.showImageError = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -112,10 +110,11 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  onClose() {
+  onClose(uploadComponent: any) {
     this.resetFormValues()
-    this.visible = false;
     this.closeEmitter.emit(this.visible);
+    uploadComponent.clear();
+    this.visible = false;
   }
 
   onSubmit() {
@@ -127,7 +126,6 @@ export class UpdateProductComponent implements OnInit {
       unitsInStock: +this.productForm.controls.stock.value,
       discountPercentage: +this.productForm.controls.discount.value,
     } as Product;
-
     const formData = new FormData();
     formData.append('name', String(this.productForm.controls.name.value));
     formData.append('price', String(this.productForm.controls.price.value));
@@ -137,6 +135,10 @@ export class UpdateProductComponent implements OnInit {
     formData.append('discountPercentage', String(this.productForm.controls.discount.value));
     formData.append('image', this.productForm.controls.imagesName.value);
     if (!this.editModalFlag) {
+      if (!this.productForm.controls.imagesName.value) {
+        this.showImageError = true;
+        return;
+      }
       this.loading = true;
       this.productsService.sendForm(formData, +this.productForm.controls.categoryId.value)
         .subscribe((res) => {
@@ -157,6 +159,7 @@ export class UpdateProductComponent implements OnInit {
   }
 
   onFileChanged(event: any, uploadComponent: any, id: number | undefined) {
+    this.showImageError = false;
     if (!this.editModalFlag) {
       this.productForm.controls.imagesName.setValue(event.currentFiles[0]);
     } else if (this.editModalFlag) {
@@ -164,30 +167,35 @@ export class UpdateProductComponent implements OnInit {
     }
   }
 
-  close() {
-    this.visible = false;
-    this.closeEmitter.emit(this.visible);
-  }
-
   uploadImage(id: number | undefined, event: any, uploadComponent: any) {
-    this.spinnerLoading=true;
+    this.spinnerLoading = true;
     const formData = new FormData();
     formData.append('imageFile', event.currentFiles[0])
     this.productsService.saveImage(formData, id!)
       .subscribe((res) => {
-        this.spinnerLoading=false;
-        this.updatedProduct.emit(res);
-        uploadComponent.clear();
-      })
+          this.spinnerLoading = false;
+          this.updatedProduct.emit(res);
+          uploadComponent.clear();
+        },
+        () => {
+          this.spinnerLoading = false
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Info',
+            detail: 'Image name already exists'
+          })
+          uploadComponent.clear();
+        }
+      )
   }
 
   deleteImage(image: any) {
-    this.spinnerLoading=true;
-    this.ifPressed=true;
+    this.spinnerLoading = true;
+    this.ifPressed = true;
     this.productsService.deleteImage(image)
-      .subscribe((res) => {
-        this.spinnerLoading=false;
-        this.ifPressed=false;
+      .subscribe(() => {
+        this.spinnerLoading = false;
+        this.ifPressed = false;
         this.updatedProduct.emit({
           ...this.selectedProduct, imagesName: this.imagesList.filter((item: any) => {
             return item != image

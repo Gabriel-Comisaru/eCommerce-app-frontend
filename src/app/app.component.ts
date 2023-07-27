@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductsService } from './home-page/shared/products.service';
-import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 
 @Component({
@@ -11,10 +11,7 @@ import { filter } from 'rxjs';
 export class AppComponent {
   public isAdminRoute: boolean = false;
 
-  constructor(
-    private productsService: ProductsService,
-    private router: Router
-  ) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.router.events

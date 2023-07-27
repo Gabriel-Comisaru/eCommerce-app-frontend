@@ -1,16 +1,8 @@
-
-<!--    <div class="flex flex-row flex-wrap gap-3">-->
-<!--      <div *ngFor="let name of listName" class="field-checkbox">-->
-<!--        <p-radioButton styleClass="p-label-active" (click)="goToProductsOrOrders()" name="list" [value]="name"-->
-<!--                       [(ngModel)]="selected"></p-radioButton>-->
-<!--        <label [for]="name.key" class="ml-2">{{name.name}}</label>-->
-<!--      </div>-->
-<!--    </div>-->
-    <p-tabView [(activeIndex)]="activeIndex">
-      <p-tabMenu
-        [model]="tabs"
-        [activeItem]="activeItem"
-      >
-      </p-tabMenu>
-    </p-tabView>
+<p-tabView [(activeIndex)]="activeIndex">
+  <p-tabMenu
+    [model]="tabs"
+    [activeItem]="activeItem"
+  >
+  </p-tabMenu>
+</p-tabView>
 <router-outlet></router-outlet>

@@ -1,12 +1,4 @@
-import {
-  BehaviorSubject,
-  EMPTY,
-  Observable,
-  Subject,
-  catchError,
-  tap,
-  throwError,
-} from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Product } from './product.model';
@@ -197,7 +189,6 @@ export class ProductsService {
           orderItem[0].id,
           orderItem[0].quantity + 1
         );
-        // .subscribe();
       } else {
         this.messageService.add({
           severity: 'error',
@@ -207,7 +198,6 @@ export class ProductsService {
       }
     } else {
       return this.addProductToOrder(product.id, 1);
-      // .subscribe();
     }
     return EMPTY;
   }

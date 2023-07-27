@@ -1,7 +1,4 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "../../services/auth.service";
-import {ProductsService} from "../../home-page/shared/products.service";
 import {MenuItem} from "primeng/api";
 
 @Component({
@@ -23,20 +20,9 @@ export class AdminPageComponent {
   ]
   activeItem: MenuItem = this.tabs[0];
 
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private authService: AuthService) {
+  constructor() {
   }
 
   ngOnInit() {
-  }
-
-  logOut() {
-    this.authService.logout()
-  }
-
-  goBachToHomePage() {
-    this.router.navigate([''])
-
   }
 }

@@ -31,12 +31,11 @@ export class AuthService {
       .pipe(
         map((data) => {
           localStorage.setItem('token', data.token);
-
+          localStorage.setItem('username', username);
           const newLocal = this;
           newLocal.router.navigate(['/']);
 
           this.router.navigate(['/']);
-          localStorage.setItem('admin', 'false');
           return data;
         })
       );
@@ -46,6 +45,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('favoriteProducts');
+    localStorage.removeItem('username');
     this.userService.loggedUser.next({});
 
     this.redirectToLogin();

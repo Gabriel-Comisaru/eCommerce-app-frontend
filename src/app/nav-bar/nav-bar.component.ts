@@ -57,7 +57,6 @@ export class NavBarComponent {
     this.favoriteProductsService.favoriteProductsObservable.subscribe((res) => {
       this.favoriteProductsList = res.favoriteProducts!;
     });
-
     this.productService.getShopingCartObservable().subscribe((res) => {
       this.orderItems = res.basketOrderItems!;
     });
@@ -86,7 +85,6 @@ export class NavBarComponent {
         icon: 'pi pi-fw pi-bars',
         items: this.categoryItems,
       },
-
       {
         label: 'All Categories',
 
