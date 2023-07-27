@@ -3,7 +3,7 @@ import { FavoriteProductsServiceService } from 'src/app/home-page/shared/favorit
 import { OrderItem } from 'src/app/home-page/shared/orderItem.model';
 import { Product } from 'src/app/home-page/shared/product.model';
 import { ProductsService } from 'src/app/home-page/shared/products.service';
-
+import { BASE_URL_API } from 'src/app/settings';
 @Component({
   selector: 'app-favorite-products-page',
   templateUrl: './favorite-products-page.component.html',
@@ -37,7 +37,13 @@ export class FavoriteProductsPageComponent {
   }
 
   moveProductToBasket(product: Product) {
-    this.productsService.addToCart(product, this.basketItems);
+    if (product.loadingCart) {
+      return;
+    }
+    product.loadingCart = true;
+    this.productsService
+      .addToCart(product, this.basketItems)
+      .subscribe(() => (product.loadingCart = false));
   }
 
   getTotalPrice(): string {
@@ -51,7 +57,7 @@ export class FavoriteProductsPageComponent {
   getItemPrice(item: any) {
     return (item.productPrice * item.quantity).toFixed(2);
   }
-  showProductImage(productImage: string) {
-    return this.productsService.getProductImage(productImage);
+  getProductImage(productImage: string) {
+    return `${BASE_URL_API}/images/download?name=${productImage}`;
   }
 }

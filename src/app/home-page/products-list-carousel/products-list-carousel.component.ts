@@ -3,12 +3,8 @@ import { Product } from '../shared/product.model';
 import { ProductsService } from '../shared/products.service';
 import { Router } from '@angular/router';
 import { OrderItem } from '../shared/orderItem.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { BasketService } from 'src/app/shopping-cart/shared/basket.service';
 import { FavoriteProductsServiceService } from '../shared/favorite-products-service.service';
-
 import { BASE_URL_API } from 'src/app/settings';
-
 @Component({
   selector: 'app-products-list-carousel',
   templateUrl: './products-list-carousel.component.html',
@@ -20,15 +16,13 @@ export class ProductsListCarouselComponent {
 
   public productsToDisplayWithImages!: Product[];
   public basketItems!: OrderItem[];
-  public loading: boolean = false;
   public favoriteItems: Product[] = [];
 
   constructor(
     private router: Router,
     private productService: ProductsService,
     private favoriteProductsService: FavoriteProductsServiceService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.productService.getShopingCartObservable().subscribe((res) => {
@@ -46,14 +40,16 @@ export class ProductsListCarouselComponent {
     this.productsToDisplayWithImages = this.productsToDisplay.map((product) => {
       return {
         ...product,
-        productImage: (product.imagesName.length > 0 && product.imagesName[0].length > 0) ? `${BASE_URL_API}/images/download?name=${product.imagesName[0]}` : '/assets/images/product-not-found.png',
+        productImage:
+          product.imagesName.length > 0 && product.imagesName[0].length > 0
+            ? `${BASE_URL_API}/images/download?name=${product.imagesName[0]}`
+            : '/assets/images/product-not-found.png',
         roundedRating: Math.floor(product.rating),
         loadingCart: false,
         loadingFavorite: false,
       };
     });
   }
-
   addToCart(product: Product) {
     if (product.loadingCart) {
       return;
@@ -61,9 +57,7 @@ export class ProductsListCarouselComponent {
     product.loadingCart = true;
     this.productService
       .addToCart(product, this.basketItems)
-      .subscribe((res) => {
-        product.loadingCart = true;
-      });
+      .subscribe(() => (product.loadingCart = false));
   }
 
   getProductDetails(id: number) {
@@ -76,16 +70,15 @@ export class ProductsListCarouselComponent {
   }
 
   addToFavorite(product: Product) {
-    this.favoriteProductsService.addToFavorite(product, this.favoriteItems);
-    // this.loadingButton(product, 'favorite');
-  }
-
-  loadingButton(product: any, buttonType: string) {
-    if (buttonType === 'cart') {
-      product.loadingCart = !product.loadingCart;
-    } else if (buttonType === 'favorite') {
-      product.loadingFavorite = !product.loadingFavorite;
+    if (product.loadingFavorite) {
+      return;
     }
+    product.loadingFavorite = true;
+    this.favoriteProductsService
+      .addToFavorite(product, this.favoriteItems)
+      .subscribe(() => {
+        product.loadingFavorite = false;
+      });
   }
 
   checkIfFavorite(product: Product) {

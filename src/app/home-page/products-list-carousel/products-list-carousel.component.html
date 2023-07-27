@@ -104,7 +104,6 @@
             <p-button
               [disabled]="product.unitsInStock < 1 || isUserLoggedIn()"
               (onClick)="addToCart(product)"
-              [loading]="product.loadingCart"
               type="button"
               styleClass="p-button"
               icon="pi pi-cart-plus"
@@ -113,7 +112,6 @@
               [disabled]="isUserLoggedIn()"
               (onClick)="addToFavorite(product)"
               type="button"
-              [loading]="product.loadingFavorite"
               styleClass="p-button-raised p-button-text p-button-danger"
               [icon]="
                 checkIfFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'

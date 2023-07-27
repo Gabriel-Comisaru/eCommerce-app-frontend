@@ -59,7 +59,7 @@ export class NavBarComponent {
     this.productService.getShopingCartObservable().subscribe((res) => {
       this.orderItems = res.basketOrderItems!;
     });
-    console.log(this.userLoggedIn);
+
     if (this.userLoggedIn) {
       this.productsService.getCurrentBasket().subscribe();
       this.favoriteProductsService.getFavoriteProducts().subscribe();
@@ -85,7 +85,7 @@ export class NavBarComponent {
         icon: 'pi pi-fw pi-bars',
         items: this.categoryItems,
       },
-      { label: 'Deals', icon: 'pi pi-fw pi-percentage' },
+
       {
         label: 'All Categories',
 
@@ -166,5 +166,8 @@ export class NavBarComponent {
   gotToFavoritesPage() {
     this.favoriteItemsOverlay.hide();
     return this.router.navigate(['my-favorites']);
+  }
+  getProductImage(productImage: string) {
+    return `${BASE_URL_API}/images/download?name=${productImage}`;
   }
 }

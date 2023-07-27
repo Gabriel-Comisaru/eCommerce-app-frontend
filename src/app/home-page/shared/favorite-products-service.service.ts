@@ -52,12 +52,12 @@ export class FavoriteProductsServiceService {
       })
     );
   }
-  addToFavorite(product: Product, favoriteList: Product[]) {
+  addToFavorite(product: Product, favoriteList: Product[]): Observable<string> {
     if (favoriteList.some((el) => el.id === product.id)) {
       // if product already exists the favorite list delete it
-      this.deleteFavoriteProduct(product.id).subscribe();
+      return this.deleteFavoriteProduct(product.id);
     } else {
-      this.addFavoriteProduct(product).subscribe();
+      return this.addFavoriteProduct(product);
     }
   }
 }

@@ -28,7 +28,9 @@
         <div class="data">
           <p class="dataParagraph white-space-nowrap">
             Total price:
-            <span class="font-bold">{{ order.deliveryPrice }}$</span>
+            <span class="font-bold"
+              >{{ order.deliveryPrice.toFixed(2) }} $</span
+            >
           </p>
           <p class="dataParagraph">
             Status:
@@ -46,8 +48,7 @@
               order.orderItems.length === 1 &&
               (order.status === 'SHIPPED' || order.status === 'DELIVERED')
             "
-          >
-          </button>
+          ></button>
           <button
             pButton
             class="md:align-self-end p-button-square ml-3 mr-1"

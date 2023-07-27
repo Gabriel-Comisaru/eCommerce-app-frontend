@@ -9,18 +9,13 @@
     >
       <ng-template pTemplate="body" let-product>
         <tr class="productRow">
-          <!-- <tr [pSelectableRow]="product"> -->
-
           <td
             class="imageContainer cursor-pointer"
             (click)="goToProductPage(product.productId)"
           >
             <p-image
               class="mx-2 shadow-2 border-round"
-              [src]="
-                '{{baseUrlApi}}/images/download?name=' +
-                product.imageName
-              "
+              [src]="getProductImage(product.imageName)"
               alt="Image"
               width="50"
             ></p-image>
@@ -41,11 +36,11 @@
             <button
               *ngIf="orderStatus !== 'ACTIVE'"
               pButton
-              label="Buy again"
+              label="Order again"
               icon="pi pi-shopping-cart"
               class="md:align-self-end p-button-square ml-3"
               [disabled]="product.unitsInStock === 0"
-              (click)="buyAgain(product)"
+              (click)="orderAgain(product)"
             ></button>
           </td>
         </tr>

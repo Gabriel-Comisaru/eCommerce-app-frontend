@@ -13,22 +13,14 @@ import { Product } from './product.model';
 import { Category } from './category.model';
 import { OrderItem } from './orderItem.model';
 import { Review } from './review.model';
-import { BASE_URL_API, BASE_URL } from '../../settings';
-import { Order } from './order.model';
+import { BASE_URL_API } from '../../settings';
 import { MessageService } from 'primeng/api';
-
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  constructor(
-    private httpClient: HttpClient,
-    private messageService: MessageService
-  ) {}
-
   private productsUrl = `${BASE_URL_API}/products`;
   private productsUrlDisplay = `${BASE_URL_API}/products/display`;
-  private appUsersUrl = `${BASE_URL_API}/users`;
   private categoriesUrl = `${BASE_URL_API}/categories`;
   private reviewsUrl = `${BASE_URL_API}/reviews`;
   private productCategoryUrl = `${BASE_URL_API}/products/category`;
@@ -36,14 +28,16 @@ export class ProductsService {
   private deleteImageUrl = `${BASE_URL_API}/images/delete`;
   private ordersUrl = `${BASE_URL_API}/orders`;
   private orderItemsUrl = `${BASE_URL_API}/orderItems`;
-
   public shoppingCartObservable = new BehaviorSubject<{
     basketOrderItems?: OrderItem[];
   }>({ basketOrderItems: [] });
-
   public currentBasketItems: OrderItem[] = [];
-
   public searchUrl = `${BASE_URL_API}/products/search`;
+
+  constructor(
+    private httpClient: HttpClient,
+    private messageService: MessageService
+  ) {}
 
   getSearchedProducts(name: string): Observable<any> {
     const url = `${this.searchUrl}?name=${name}&pageNumber=0`;
@@ -205,7 +199,6 @@ export class ProductsService {
         );
         // .subscribe();
       } else {
-        console.log('quantity exceeds stock');
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -219,9 +212,6 @@ export class ProductsService {
     return EMPTY;
   }
 
-  getProductImage(productImage: string) {
-    return `${BASE_URL_API}/images/download?name=${productImage}`;
-  }
   deleteImage(name: any) {
     const url = `${this.deleteImageUrl}?name=${name}`;
     return this.httpClient.delete(url);

@@ -142,7 +142,7 @@
           <tr class="contentRow">
             <td class="productContainer">
               <img
-                src="{{baseUrlApi}}/images/download?name={{
+                src="{{ baseUrlApi }}/images/download?name={{
                   product.imageName
                 }}"
                 alt="product photo"
@@ -185,9 +185,7 @@
           <tr class="contentRow">
             <td class="productContainer">
               <img
-                src="{{baseUrlApi}}/images/download?name={{
-                  product.imagesName[0]
-                }}"
+                [src]="getProductImage(product.imagesName[0])"
                 alt="product photo"
               />
               <span class="productName">{{ product.name }}</span>

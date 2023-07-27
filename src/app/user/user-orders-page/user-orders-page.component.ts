@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DetailedOrder } from 'src/app/home-page/shared/order.model';
-import { ProductsService } from 'src/app/home-page/shared/products.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,14 +9,9 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./user-orders-page.component.css'],
 })
 export class UserOrdersPageComponent {
-  constructor(
-    private userService: UserService,
-    private productsService: ProductsService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
-
   public userOrders: DetailedOrder[] = [];
+
+  constructor(private userService: UserService, private router: Router) {}
   ngOnInit() {
     this.userService
       .getDetailedUserOrders()
