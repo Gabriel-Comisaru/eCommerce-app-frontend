@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
-import { ProductsService } from './home-page/shared/products.service';
-import { NavigationEnd, Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {ProductsService} from './home-page/shared/products.service';
+import {ActivatedRouteSnapshot, NavigationEnd, Router} from "@angular/router";
+import {filter} from "rxjs";
+import {UserService} from "./services/user.service";
 import { filter } from 'rxjs';
 
 @Component({
