@@ -165,7 +165,7 @@
 ::ng-deep .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
   flex-grow: 1;
 }
-::ng-deep .p-icon-wrapper {
+:host ::ng-deep .p-icon-wrapper {
   display: none;
 }
 @media screen and (max-width: 960px) {
