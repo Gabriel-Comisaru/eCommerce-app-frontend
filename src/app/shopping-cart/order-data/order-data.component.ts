@@ -161,6 +161,7 @@ export class OrderDataComponent implements OnInit {
   }
 
   editAddress(address: any) {
+    this.loadingDropdown = true;
     this.visible = true;
     this.header = 'Edit address';
     this.selectedAddress = address;
@@ -172,6 +173,7 @@ export class OrderDataComponent implements OnInit {
     this.getCities();
     setTimeout(() => {
       this.userAddressForm.controls.city.setValue(address.city);
+      this.loadingDropdown = false
     }, 1000);
     this.userAddressForm.controls.address.setValue(address.address);
   }
