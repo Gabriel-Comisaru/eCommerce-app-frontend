@@ -132,6 +132,7 @@ export class UpdateProductComponent implements OnInit {
     } else if (!this.editModalFlag) {
       this.resetFormValues();
       this.productForm.controls.categoryId.enable();
+      this.imagesList=[];
     }
   }
 
@@ -143,6 +144,14 @@ export class UpdateProductComponent implements OnInit {
   }
 
   onSubmit() {
+    if(this.productForm.invalid){
+      this.messageService.add({
+        severity:'info',
+        summary:'Info',
+        detail:'Please complete all required inputs'
+      })
+      return;
+    }
     const product: Product = {
       name: this.productForm.controls.name.value,
       price: +this.productForm.controls.price.value,
@@ -183,6 +192,13 @@ export class UpdateProductComponent implements OnInit {
           this.loading = false;
           this.visible = false;
           this.savedProduct.emit(res);
+        },()=>{
+          this.loading=false;
+          this.messageService.add({
+            severity:'info',
+            summary:'Info',
+            detail:'Description too long'
+          })
         });
     } else {
       this.loading = true;
