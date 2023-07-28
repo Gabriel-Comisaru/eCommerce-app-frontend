@@ -32,7 +32,7 @@ export class ProductsService {
   ) {}
 
   getSearchedProducts(name: string): Observable<any> {
-    const url = `${this.searchUrl}?name=${name}&pageNumber=0`;
+    const url = `${this.searchUrl}?name=${name}&pageNumber=0&sortBy=name`;
     return this.httpClient.get<any>(url);
   }
 
@@ -52,7 +52,7 @@ export class ProductsService {
   }
 
   getProductsDisplay(pageNumber: any, pageSize: any): Observable<any> {
-    const url = `${this.productsUrlDisplay}?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    const url = `${this.productsUrlDisplay}?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=name`;
     return this.httpClient.get<any>(url);
   }
 

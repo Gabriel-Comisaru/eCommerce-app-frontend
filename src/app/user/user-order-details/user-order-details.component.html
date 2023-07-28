@@ -1,9 +1,9 @@
-<div class="card flex justify-content-center container">
+<div class="card flex justify-content-evenly container align-items-center">
   <p-fieldset legend="Show details" [toggleable]="true" [collapsed]="true">
     <p-table
       styleClass="p-datatable-sm"
       [value]="orderItems"
-      [tableStyle]="{ 'min-width': '50rem' }"
+      [tableStyle]="{ width: '40rem' }"
       selectionMode="single"
       [(selection)]="hoverProduct"
     >

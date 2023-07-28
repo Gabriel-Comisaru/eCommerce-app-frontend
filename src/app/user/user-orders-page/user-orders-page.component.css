@@ -8,6 +8,7 @@
 
 .orderContainer {
   margin: 2rem 5rem;
+  width: 50rem;
 }
 .order ::ng-deep .p-card {
   background-color: white;

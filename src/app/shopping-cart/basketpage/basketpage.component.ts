@@ -73,7 +73,7 @@ export class BasketpageComponent implements OnInit {
   }
 
   increment(Item: Item) {
-    if(Item.quantity <= Item.unitsInStock) {
+    if(Item.unitsInStock >= Item.quantity) {
       Item.quantity += 1;
       this.productService.updateOrderQuantity(Item.id, Item.quantity);
       this.updateProductQuantity(Item);

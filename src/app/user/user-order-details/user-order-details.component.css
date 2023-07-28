@@ -1,3 +1,7 @@
+:host {
+  position: relative;
+}
+
 ::ng-deep .p-fieldset-toggleable {
   border: transparent;
 }
@@ -8,8 +12,8 @@
   width: max-content;
   height: fit-content;
   font-size: 0.9rem;
-  top: 1.3rem;
-  right: 1.6rem;
+  top: -5.5rem;
+  right: 0;
 }
 
 ::ng-deep .p-fieldset.p-fieldset-toggleable .p-fieldset-legend a {
@@ -23,7 +27,6 @@
 
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
   border: transparent;
-
   outline: transparent;
 }
 

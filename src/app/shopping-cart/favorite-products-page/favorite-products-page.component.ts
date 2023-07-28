@@ -31,9 +31,7 @@ export class FavoriteProductsPageComponent {
   }
 
   deleteFavoriteProduct(product: Product) {
-    this.favoriteProductsService
-      .deleteFavoriteProduct(product.id)
-      .subscribe((res) => {});
+    this.favoriteProductsService.deleteFavoriteProduct(product.id).subscribe();
   }
 
   moveProductToBasket(product: Product) {
