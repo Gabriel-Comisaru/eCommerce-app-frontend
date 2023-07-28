@@ -12,6 +12,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BasketService} from '../shared/basket.service';
 import {MessageService} from 'primeng/api';
 import {ProductsService} from 'src/app/home-page/shared/products.service';
+import {UserAddress} from "../../models/user-address.model";
+import {User} from "../../models/user.model";
 
 @Component({
   selector: 'app-order-data',
@@ -19,6 +21,10 @@ import {ProductsService} from 'src/app/home-page/shared/products.service';
   styleUrls: ['./order-data.component.css'],
 })
 export class OrderDataComponent implements OnInit {
+  loggedInUser: User = JSON.parse(
+    localStorage.getItem('currentUser') || '{}'
+  );
+
   constructor(
     private addressService: AdressServiceService,
     private fb: FormBuilder,
@@ -58,7 +64,7 @@ export class OrderDataComponent implements OnInit {
   header: string = '';
   counties: any = [];
   loadingDropdown: boolean = false;
-  selectedAddress: number = 0;
+  selectedAddress!: UserAddress;
   orderId: number = 0;
 
   userAddresses: any = [
@@ -84,22 +90,54 @@ export class OrderDataComponent implements OnInit {
   paymentType: string = 'cash';
 
   ngOnInit(): void {
-
-    this.getCounties();
-    this.userAddressForm.controls.city.disable();
-    console.log(this.route.snapshot.queryParams['ids']);
+  this.loadData();
   }
 
   loadData() {
-
+    this.getCounties();
+    this.userAddressForm.controls.city.disable();
+    this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
+      this.userAddresses = addresses;
+      console.log(this.userAddresses);
+    });
+    console.log(this.route.snapshot.queryParams['ids']);
   }
 
   postAddress() {
-    const formData = this.userAddressForm.value;
-    this.addressService.postAddress(formData).subscribe((res) => {
-      // Handle the response if needed
-      this.addNewAddress();
-    });
+      const address: UserAddress = {
+        first_name: String(this.userAddressForm.controls.firstName.value),
+        last_name: String(this.userAddressForm.controls.lastName.value),
+        phone_number: String(this.userAddressForm.controls.phone.value),
+        address: String(this.userAddressForm.controls.address.value),
+        county: String(this.userAddressForm.controls.county.value),
+        city: String(this.userAddressForm.controls.city.value)
+      }
+
+      if (this.header === 'Add new address') {
+        this.addressService.setAddress(address);
+        this.userAddresses.push(address);
+        const message = "Address creation was successfull!";
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Address created',
+          detail: message,
+          life: 4000,
+        });
+      } else if (this.header === 'Edit address') {
+        this.addressService.updateAddress(this.selectedAddress.id!, address).subscribe(() => {
+          this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
+            this.userAddresses = addresses;
+          });
+        });
+        const message = "You changed your address successfully!";
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Address changed',
+          detail: message,
+          life: 4000,
+        });
+      }
+      this.cancel();
   }
 
 
@@ -126,37 +164,20 @@ export class OrderDataComponent implements OnInit {
   }
 
   editAddress(address: any) {
-    this.loadingDropdown = true;
     this.visible = true;
-    this.loading = true;
     this.header = 'Edit address';
     this.selectedAddress = address;
-    this.userAddressForm.controls.firstName.setValue(address.firstName);
-    this.userAddressForm.controls.phone.setValue(address.phone);
     this.userAddressForm.controls.city.enable();
+    this.userAddressForm.controls.firstName.setValue(address.first_name);
+    this.userAddressForm.controls.lastName.setValue(address.last_name);
+    this.userAddressForm.controls.phone.setValue(address.phone_number);
     this.userAddressForm.controls.county.setValue(address.county);
     this.getCities();
     setTimeout(() => {
       this.userAddressForm.controls.city.setValue(address.city);
-      this.loading = false;
-      this.loadingDropdown = false;
     }, 1000);
     this.userAddressForm.controls.address.setValue(address.address);
   }
-
-  addNewAddress() {
-    this.loading = true;
-    this.userAddresses.push({
-      id: this.userAddresses.length,
-      firstName: this.userAddressForm.controls.firstName.value,
-      phone: this.userAddressForm.controls.phone.value,
-      county: this.userAddressForm.controls.county.value,
-      city: this.userAddressForm.controls.city.value,
-      address: this.userAddressForm.controls.address.value,
-    });
-    this.cancel();
-  }
-
   cancel() {
     this.visible = false;
     this.loading = false;
@@ -169,9 +190,12 @@ export class OrderDataComponent implements OnInit {
   }
 
   deleteAddress(address: any) {
-    this.userAddresses = this.userAddresses.filter(
-      (item: any) => item !== address
-    );
+    this.addressService.deleteAddress(address.id).subscribe(() =>{
+      this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
+        this.userAddresses = addresses;
+      });
+    });
+
   }
 
   //WORK IN PROGRESS
