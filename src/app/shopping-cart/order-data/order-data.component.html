@@ -40,7 +40,7 @@
       </p-card>
     </div>
     <div class="flex justify-between mt-5">
-      <button pButton pRipple label="Finish Order" (click)="finishOrder()" class="w-full"></button>
+      <button pButton pRipple label="Finish Order" (click)="finishOrder()" [disabled]="!selectedAddress" class="w-full"></button>
     </div>
   </div>
 </div>
