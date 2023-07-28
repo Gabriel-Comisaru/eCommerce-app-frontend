@@ -34,10 +34,10 @@ export class ProductDetailsComponent implements OnInit {
   loggedInUser: User = JSON.parse(
     localStorage.getItem('currentUser') || '{}'
   );
-  userAddresses: UserAddress[] = [];
   mainAddress: UserAddress = JSON.parse(
     localStorage.getItem('mainAddress') || '{}'
   );
+  addressLength = Object.keys(this.mainAddress);
   
   constructor(
     private productService: ProductsService,
@@ -70,9 +70,6 @@ export class ProductDetailsComponent implements OnInit {
     this.productService.getShopingCartObservable().subscribe((res) => {
       this.basketItems = res.basketOrderItems!;
     });
-    this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
-      this.userAddresses = addresses;
-    })
   }
 
   scrollToSection(id: string) {

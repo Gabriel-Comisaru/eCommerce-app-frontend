@@ -1,13 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Product } from 'src/app/home-page/shared/product.model';
-import { BasketService } from '../../shopping-cart/shared/basket.service';
-import { CategoriesService } from '../../product-categories/shared/categories.service';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
-import { ProductsService } from 'src/app/home-page/shared/products.service';
-import { BehaviorSubject } from 'rxjs';
-import { FavoriteProductsServiceService } from 'src/app/home-page/shared/favorite-products-service.service';
-import { OrderItem } from 'src/app/home-page/shared/orderItem.model';
+import {Component, Input, OnInit} from '@angular/core';
+import {Product} from 'src/app/home-page/shared/product.model';
+import {BasketService} from '../../shopping-cart/shared/basket.service';
+import {CategoriesService} from '../../product-categories/shared/categories.service';
+import {Router} from '@angular/router';
+import {AuthService} from 'src/app/services/auth.service';
+import {ProductsService} from 'src/app/home-page/shared/products.service';
+import {BehaviorSubject} from 'rxjs';
+import {FavoriteProductsServiceService} from 'src/app/home-page/shared/favorite-products-service.service';
+import {OrderItem} from 'src/app/home-page/shared/orderItem.model';
 
 @Component({
   selector: 'app-product-list',
@@ -38,6 +38,7 @@ export class ProductListComponent implements OnInit {
   selectedSortOption: string = 'Default';
   favoriteItems: Product[] = [];
   basketItems: OrderItem[] = [];
+
   ngOnInit(): void {
     this.mockProductService.getCategories().subscribe(() => {
       this.loading = false;
@@ -56,15 +57,18 @@ export class ProductListComponent implements OnInit {
       return;
     }
     product.loadingCart = true;
-    this.productService
-      .addToCart(product, this.basketItems)
-      .subscribe(() => (product.loadingCart = false));
+    if (product.unitsInStock > 0) {
+      this.productService
+        .addToCart(product, this.basketItems)
+        .subscribe(() => (product.loadingCart = false));
+    }
   }
 
   getProductDetails(id: number, event: any) {
     event.stopPropagation();
     this.router.navigate([`product-details/${id}`]);
   }
+
   addToFavorite(product: Product, event: any) {
     event.stopPropagation();
     if (product.loadingFavorite) {
@@ -102,6 +106,7 @@ export class ProductListComponent implements OnInit {
   checkIfFavorite(product: Product) {
     return this.favoriteItems.some((el) => el.id === product.id);
   }
+
   isUserLoggedIn() {
     return !localStorage.getItem('currentUser');
   }

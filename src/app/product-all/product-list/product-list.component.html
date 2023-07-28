@@ -40,7 +40,7 @@
         class="favorite-button"
         (click)="addToFavorite(product, $event)"
         styleClass="p-button-danger p-button-outlined"
-        [disabled]="isUserLoggedIn()"
+       [disabled]="isUserLoggedIn()"
         pTooltip="You need to be logged in."
         [tooltipDisabled]="!isUserLoggedIn()"
         tooltipPosition="bottom"
@@ -48,12 +48,11 @@
       <p-button
         class="add-to-cart-button"
         (click)="addToBasket(product, $event)"
-        [disabled]="product.unitsInStock === 0"
         [label]="product.unitsInStock === 0 ? 'Out of Stock' : 'Add to Cart'"
         [styleClass]="
           product.unitsInStock === 0 ? 'p-button-danger' : 'p-button-info'
         "
-        [disabled]="product.unitsInStock < 1 || isUserLoggedIn()"
+        [disabled]="product.unitsInStock == 0 || isUserLoggedIn()"
         pTooltip="You need to be logged in."
         [tooltipDisabled]="!isUserLoggedIn()"
         tooltipPosition="bottom"
