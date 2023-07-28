@@ -192,6 +192,13 @@ export class UpdateProductComponent implements OnInit {
           this.loading = false;
           this.visible = false;
           this.savedProduct.emit(res);
+        },()=>{
+          this.loading=false;
+          this.messageService.add({
+            severity:'info',
+            summary:'Info',
+            detail:'Description too long'
+          })
         });
     } else {
       this.loading = true;
