@@ -21,7 +21,7 @@ export class FiltersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.selectedPriceRange = [0, 1000];
+    this.selectedPriceRange = [0, 300000];
     setTimeout(() => {
       this.loadData();
 
@@ -38,7 +38,7 @@ export class FiltersComponent implements OnInit {
         this.filtersApplied.emit({
           categoryId: this.selectedCategory != undefined ? this.route.snapshot.queryParams['categoryId'] : '',
           priceMin: 0,
-          priceMax: 1000
+          priceMax: 300000
         });
       }
     });
@@ -71,11 +71,11 @@ export class FiltersComponent implements OnInit {
 
   clearFilters(): void {
     this.selectedCategory = '';
-    this.selectedPriceRange = [0, 1000];
+    this.selectedPriceRange = [0, 300000];
     this.filtersCleared.emit({
       selectedCategory: '',
       priceMin: 0,
-      priceMax: 1000
+      priceMax: 300000
     });
   }
 }
