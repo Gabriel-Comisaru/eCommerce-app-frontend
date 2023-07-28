@@ -40,29 +40,18 @@
         [style]="{ width: '360px' }"
       >
         <p *ngIf="product.discountPercentage > 0">
-          <span class="text-red-700 font-bold text-2xl font-italic"
-            >$ {{ discountedPrice }}
-          </span>
-          <span class="text-base font-bold"
-            ><s>$ {{ product.price }}</s></span
-          >
+          <span class="text-red-700 font-bold text-2xl font-italic">$ {{ discountedPrice }} </span>
+          <span class="text-base font-bold"><s>$ {{ product.price }}</s></span>
         </p>
         <p *ngIf="product.discountPercentage === 0">
-          <span class="text-red-700 text-2xl font-bold font-italic"
-            >$ {{ product.price }}</span
-          >
+          <span class="text-red-700 text-2xl font-bold font-italic">$ {{ product.price }}</span>
         </p>
         <p>
-          Estimated delivery time at the address
-          <a
-            *ngIf="userAddresses.length > 0"
-            style="color: coral; cursor: pointer"
-            routerLink="/user-details"
-          >
-            {{ userAddresses[0].address }}, {{ userAddresses[0].city }} -
-            {{ userAddresses[0].county }}
+          Estimated delivery time at the address 
+          <a *ngIf="userAddresses.length > 0" style="color:coral; cursor: pointer;" routerLink="/user-details">
+            {{mainAddress.address}}, {{mainAddress.city}} - {{mainAddress.county}}
           </a>
-          is 7 days after completing the order.
+           is 7 days after completing the order.
         </p>
         <ng-template pTemplate="footer">
           <div class="justify-content-center">

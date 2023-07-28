@@ -12,14 +12,14 @@
             <p-divider></p-divider>
             <h2>Account credentials</h2>
             <p>You can change your credentials below:</p><br>
-            <form class="mb-4">
+            <form class="mb-4" [formGroup]="userForm" (ngSubmit)="editCredentials()">
                 <label for="username">Username:</label>
                 <input
                     pInputText
                     class="w-full max-w-full mb-2"
                     name="username"
                     type="text"
-                    value="{{loggedInUser.username}}"
+                    formControlName="username"
                 />
                 <label for="email">Email:</label>
                 <input
@@ -27,7 +27,7 @@
                     class="w-full max-w-full mb-2"
                     name="email"
                     type="text"
-                    value="{{loggedInUser.email}}"
+                    formControlName="email"
                 />
                 <label for="password">Password:</label>
                 <input
@@ -35,14 +35,17 @@
                     class="w-full max-w-full mb-4"
                     name="password"
                     type="password"
+                    formControlName="password"
                 />
-                <p-button>Confirm</p-button>
+                <p-button type="submit" [disabled]="!userForm.valid || !userForm.dirty">Confirm</p-button>
             </form>
             <p-divider></p-divider>
             <h2>Delivery address:</h2> <br>
+            <p><em>Pro tip: you can choose your main address right here. Just select the preferred address.</em></p>
+            <p *ngIf="userAddresses.length === 0"><em>You did not set your address yet. Set it up now for an easier checkout process!</em></p>
             <div *ngFor="let address of userAddresses" class="surface-card shadow-none clientDeets">
                 <div class="checkbox pt-3">
-                  <p-radioButton name="address{{address.id}}" value="{{address.id}}" [(ngModel)]="selectedAddress"></p-radioButton>
+                  <p-radioButton name="address{{address.id}}" value="{{address.id}}" [(ngModel)]="selectedAddress" (click)="setMainAddress(address)"></p-radioButton>
                 </div>
                 <p-divider layout="vertical"></p-divider>
                 <div class="detailsContainer pt-2">
