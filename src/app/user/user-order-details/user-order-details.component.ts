@@ -39,7 +39,7 @@ export class UserOrderDetailsComponent {
     let orderItem = this.basketItems.filter(
       (item: OrderItem) => item.productId === product.productId
     );
-    console.log(orderItem);
+
     if (orderItem.length) {
       if (product.unitsInStock >= orderItem[0].quantity + 1) {
         return this.productService

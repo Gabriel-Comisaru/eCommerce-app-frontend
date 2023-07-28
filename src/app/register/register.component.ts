@@ -112,15 +112,12 @@ export class RegisterComponent {
   ];
 
   ngOnInit() {
-    console.log(this.getFieldValidity('last_name'));
     this.registerFormFields.forEach((field) =>
       this.registerForm.addControl(
         field.controlName,
         new FormControl('', field.validators)
       )
     );
-
-    console.log(this.registerForm.controls);
   }
   errorRequired(fieldName: string) {
     return (
@@ -153,7 +150,6 @@ export class RegisterComponent {
       return;
     }
     const val = this.registerForm.value;
-    console.log(val);
     const registerData: RegisterFields = {
       first_name: val.first_name,
       last_name: val.last_name,
@@ -164,15 +160,12 @@ export class RegisterComponent {
     };
     this.authService.register(registerData).subscribe({
       next: (data) =>
-        this.userService.getLoggedInUser().subscribe((user) => {
-          console.log('crt user:', user);
-        }),
+        this.userService.getLoggedInUser().subscribe((user) => {}),
     });
   }
 
   getFieldValidity(controlName: string) {
     const control = this.registerForm.get(controlName);
-
     return control?.invalid && control?.dirty;
   }
   getField(controlName: string) {
