@@ -1,13 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AdressServiceService} from '../shared/adress-service.service';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {RadioButtonModule} from 'primeng/radiobutton';
+import {FormBuilder, Validators,} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BasketService} from '../shared/basket.service';
 import {MessageService} from 'primeng/api';
@@ -64,7 +57,9 @@ export class OrderDataComponent implements OnInit {
   header: string = '';
   counties: any = [];
   loadingDropdown: boolean = false;
-  selectedAddress!: UserAddress;
+  selectedAddress: UserAddress = JSON.parse(
+    localStorage.getItem('mainAddressId') || '{}'
+  );
   orderId: number = 0;
 
   userAddresses: any = [
@@ -90,7 +85,7 @@ export class OrderDataComponent implements OnInit {
   paymentType: string = 'cash';
 
   ngOnInit(): void {
-  this.loadData();
+    this.loadData();
   }
 
   loadData() {
@@ -98,47 +93,45 @@ export class OrderDataComponent implements OnInit {
     this.userAddressForm.controls.city.disable();
     this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
       this.userAddresses = addresses;
-      if(localStorage.getItem('mainAddressId') !== null) {
-        this.selectedAddress = this.userAddresses.find((address: any) => address.id === Number(localStorage.getItem('mainAddressId')));
-      }
+    
     });
   }
 
   postAddress() {
-      const address: UserAddress = {
-        first_name: String(this.userAddressForm.controls.firstName.value),
-        last_name: String(this.userAddressForm.controls.lastName.value),
-        phone_number: String(this.userAddressForm.controls.phone.value),
-        address: String(this.userAddressForm.controls.address.value),
-        county: String(this.userAddressForm.controls.county.value),
-        city: String(this.userAddressForm.controls.city.value)
-      }
+    const address: UserAddress = {
+      first_name: String(this.userAddressForm.controls.firstName.value),
+      last_name: String(this.userAddressForm.controls.lastName.value),
+      phone_number: String(this.userAddressForm.controls.phone.value),
+      address: String(this.userAddressForm.controls.address.value),
+      county: String(this.userAddressForm.controls.county.value),
+      city: String(this.userAddressForm.controls.city.value)
+    }
 
-      if (this.header === 'Add new address') {
-        this.addressService.setAddress(address);
-        this.userAddresses.push(address);
-        const message = "Address creation was successfull!";
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Address created',
-          detail: message,
-          life: 4000,
+    if (this.header === 'Add new address') {
+      this.addressService.setAddress(address);
+      this.userAddresses.push(address);
+      const message = "Address creation was successfull!";
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Address created',
+        detail: message,
+        life: 4000,
+      });
+    } else if (this.header === 'Edit address') {
+      this.addressService.updateAddress(this.selectedAddress.id!, address).subscribe(() => {
+        this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
+          this.userAddresses = addresses;
         });
-      } else if (this.header === 'Edit address') {
-        this.addressService.updateAddress(this.selectedAddress.id!, address).subscribe(() => {
-          this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
-            this.userAddresses = addresses;
-          });
-        });
-        const message = "You changed your address successfully!";
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Address changed',
-          detail: message,
-          life: 4000,
-        });
-      }
-      this.cancel();
+      });
+      const message = "You changed your address successfully!";
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Address changed',
+        detail: message,
+        life: 4000,
+      });
+    }
+    this.cancel();
   }
 
 
@@ -180,6 +173,7 @@ export class OrderDataComponent implements OnInit {
     }, 1000);
     this.userAddressForm.controls.address.setValue(address.address);
   }
+
   cancel() {
     this.visible = false;
     this.loading = false;
@@ -193,7 +187,7 @@ export class OrderDataComponent implements OnInit {
   }
 
   deleteAddress(address: any) {
-    this.addressService.deleteAddress(address.id).subscribe(() =>{
+    this.addressService.deleteAddress(address.id).subscribe(() => {
       this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
         this.userAddresses = addresses;
       });
