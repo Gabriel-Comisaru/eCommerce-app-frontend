@@ -47,6 +47,7 @@ export class AuthService {
     localStorage.removeItem('favoriteProducts');
     localStorage.removeItem('username');
     localStorage.removeItem('mainAddress');
+    localStorage.removeItem('mainAddressId');
     this.userService.loggedUser.next({});
 
     this.redirectToLogin();
