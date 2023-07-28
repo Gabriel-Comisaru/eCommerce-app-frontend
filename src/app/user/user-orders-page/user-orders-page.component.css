@@ -10,7 +10,7 @@
   margin: 2rem 5rem;
   width: 50rem;
 }
-.order ::ng-deep .p-card {
+:host .order ::ng-deep .p-card {
   background-color: white;
   height: min-content;
 
@@ -21,7 +21,7 @@
   margin: 0;
 }
 
-.order ::ng-deep .p-card-content {
+:host .order ::ng-deep .p-card-content {
   padding: 0;
 }
 

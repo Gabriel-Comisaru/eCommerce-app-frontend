@@ -149,6 +149,9 @@ export class RegisterComponent {
   }
 
   onSubmit() {
+    if (this.registerForm.invalid) {
+      return;
+    }
     const val = this.registerForm.value;
     console.log(val);
     const registerData: RegisterFields = {

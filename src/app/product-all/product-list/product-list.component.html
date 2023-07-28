@@ -40,6 +40,10 @@
         class="favorite-button"
         (click)="addToFavorite(product, $event)"
         styleClass="p-button-danger p-button-outlined"
+        [disabled]="isUserLoggedIn()"
+        pTooltip="You need to be logged in."
+        [tooltipDisabled]="!isUserLoggedIn()"
+        tooltipPosition="bottom"
       ></p-button>
       <p-button
         class="add-to-cart-button"
@@ -49,6 +53,10 @@
         [styleClass]="
           product.unitsInStock === 0 ? 'p-button-danger' : 'p-button-info'
         "
+        [disabled]="isUserLoggedIn()"
+        pTooltip="You need to be logged in."
+        [tooltipDisabled]="!isUserLoggedIn()"
+        tooltipPosition="bottom"
       ></p-button>
     </ng-template>
   </p-card>

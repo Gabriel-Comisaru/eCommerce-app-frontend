@@ -56,7 +56,7 @@
                   product.discountPercentage && product.discountPercentage > 0
                 "
                 severity="danger"
-                [value]="'-' + product.discountPercentage?.toFixed(2) + '%'"
+                [value]="'-' + product.discountPercentage?.toFixed(0) + '%'"
                 class="absolute discountApplied"
               >
               </p-tag>

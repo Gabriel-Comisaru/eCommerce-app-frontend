@@ -2,11 +2,11 @@
   position: relative;
 }
 
-::ng-deep .p-fieldset-toggleable {
+:host ::ng-deep .p-fieldset-toggleable {
   border: transparent;
 }
 
-::ng-deep .p-fieldset-legend {
+:host ::ng-deep .p-fieldset-legend {
   text-align: right;
   position: absolute;
   width: max-content;
@@ -16,7 +16,7 @@
   right: 0;
 }
 
-::ng-deep .p-fieldset.p-fieldset-toggleable .p-fieldset-legend a {
+:host ::ng-deep .p-fieldset.p-fieldset-toggleable .p-fieldset-legend a {
   padding: 1rem 0.75rem;
 }
 
@@ -63,7 +63,7 @@
 }
 
 @media screen and (max-width: 600px) {
-  ::ng-deep .p-fieldset-legend {
+  :host ::ng-deep .p-fieldset-legend {
     text-align: center;
     position: static;
   }
