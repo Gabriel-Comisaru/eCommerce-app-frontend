@@ -98,6 +98,9 @@ export class OrderDataComponent implements OnInit {
     this.userAddressForm.controls.city.disable();
     this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
       this.userAddresses = addresses;
+      if(localStorage.getItem('mainAddressId') !== null) {
+        this.selectedAddress = this.userAddresses.find((address: any) => address.id === Number(localStorage.getItem('mainAddressId')));
+      }
     });
   }
 
