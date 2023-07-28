@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ProductsService} from "../../home-page/shared/products.service";
 import {Order} from "../../home-page/shared/order.model";
 import {MessageService} from "primeng/api";
-import { Subject} from "rxjs";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-admin-orders-list',
@@ -34,8 +34,6 @@ export class AdminOrdersListComponent {
     this.loading = true;
     this.service.getOrders(this.pageNumber, this.row)
       .subscribe(item => {
-        this.orders = item.orders;
-        console.log(this.orders)
         this.numberOfPages = item.numberOfPages;
         this.totalRecords = item.numberOfItems;
         this.orders.forEach(item => {
