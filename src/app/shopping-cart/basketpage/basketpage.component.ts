@@ -30,7 +30,6 @@ export class BasketpageComponent implements OnInit {
     this.loading = true;
 
     this.basketService.getOrderedItems().subscribe((res) => {
-      console.log(res, 'asdasdasdasasdasdasd')
       this.orderedItems = res.map((item: any) => {
         return {
           ...item,
@@ -51,7 +50,6 @@ export class BasketpageComponent implements OnInit {
           ...item,
           productImage: `${BASE_URL_API}/images/download?name=${item.imageName}`,
         };
-        console.log(this.orderedItems, 'asdasda')
       })
       this.loading = false;
     });

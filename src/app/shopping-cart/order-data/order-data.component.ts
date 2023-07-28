@@ -98,9 +98,7 @@ export class OrderDataComponent implements OnInit {
     this.userAddressForm.controls.city.disable();
     this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
       this.userAddresses = addresses;
-      console.log(this.userAddresses);
     });
-    console.log(this.route.snapshot.queryParams['ids']);
   }
 
   postAddress() {
@@ -154,7 +152,6 @@ export class OrderDataComponent implements OnInit {
       .getCities(this.userAddressForm.controls.county.value!)
       .subscribe((list: any) => {
         this.cities = list;
-        console.log(list);
       });
   }
 
@@ -208,7 +205,6 @@ export class OrderDataComponent implements OnInit {
           this.productsService.shoppingCartObservable.next({
             basketOrderItems: [],
           });
-          console.log(response, 'response-=-=-=-=-=-=');
           this.orderId = response.id;
           this.router.navigate(['/']);
 

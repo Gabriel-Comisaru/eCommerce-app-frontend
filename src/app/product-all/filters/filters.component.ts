@@ -33,10 +33,8 @@ export class FiltersComponent implements OnInit {
     this.categoryService.getCategories().subscribe((list) => {
       this.categories = list;
       const categoryIdParam = this.route.snapshot.queryParams;
-      console.log(categoryIdParam)
       if (categoryIdParam) {
         this.selectedCategory = this.categories.find((category: any) => category.id == categoryIdParam['categoryId']);
-        console.log(this.selectedCategory, '-----------------1---1--1-')
         this.filtersApplied.emit({
           categoryId: this.selectedCategory != undefined ? this.route.snapshot.queryParams['categoryId'] : '',
           priceMin: 0,
@@ -44,7 +42,6 @@ export class FiltersComponent implements OnInit {
         });
       }
     });
-    console.log(this.selectedCategory)
   }
   onCategoryChange(category: any): void {
     this.selectedCategory = category;
