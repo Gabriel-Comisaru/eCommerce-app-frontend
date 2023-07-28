@@ -16,7 +16,7 @@
         <button pButton pRipple label="Edit"
                 (click)="editAddress(address)"
                 class="p-button-outlined p-button-sm editBtn"></button>
-        <div class=""> {{ address.first_name }} {{address.last_name }} - {{ address.phone }}</div>
+        <div class=""> {{ address.first_name }} {{address.last_name }} - +{{ address.phone_number }}</div>
         <div class="">{{ address.address }} - {{ address.county }} - {{ address.city }}</div>
       </div>
     </div>
@@ -52,12 +52,12 @@
     <form [formGroup]="userAddressForm" (ngSubmit)="postAddress()">
       <div class="userDetails">
         <div class="mr-3 userName">
-          <label for="firstName" class="block  w-full font-medium mb-2">Full Name</label>
+          <label for="firstName" class="block  w-full font-medium mb-2">First Name</label>
           <input id="firstName" type="text" placeholder="eg. Carl" pInputText class="w-full mb-3 br-3"
                  formControlName="firstName">
         </div>
         <div class="mr-3 userName">
-          <label for="lastName" class="block  w-full font-medium mb-2">Full Name</label>
+          <label for="lastName" class="block  w-full font-medium mb-2">Last Name</label>
           <input id="lastName" type="text" placeholder="eg. Johnson" pInputText class="w-full mb-3 br-3"
                  formControlName="lastName">
         </div>

@@ -182,6 +182,7 @@ export class OrderDataComponent implements OnInit {
     this.visible = false;
     this.loading = false;
     this.userAddressForm.controls.firstName.setValue('');
+    this.userAddressForm.controls.lastName.setValue('');
     this.userAddressForm.controls.phone.setValue('');
     this.userAddressForm.controls.county.setValue('');
     this.userAddressForm.controls.city.setValue('');
@@ -198,9 +199,7 @@ export class OrderDataComponent implements OnInit {
 
   }
 
-  //WORK IN PROGRESS
-  //Add Payment Method
-  //Add Delivery Address Id
+
   finishOrder() {
     this.basketService
       .finishOrder(this.route.snapshot.queryParams['ids'], 'PLACED')
