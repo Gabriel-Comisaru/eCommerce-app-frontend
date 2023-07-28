@@ -9,6 +9,7 @@ import {
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { RegisterFields } from '../models/register.model';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +19,8 @@ import { RegisterFields } from '../models/register.model';
 export class RegisterComponent {
   constructor(
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private messageService: MessageService
   ) {}
 
   registerForm: FormGroup = new FormGroup({});
@@ -147,6 +149,11 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.invalid) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'HA! Nice try!',
+      });
       return;
     }
     const val = this.registerForm.value;
