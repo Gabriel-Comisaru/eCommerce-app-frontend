@@ -135,7 +135,6 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     InputNumberModule,
     PaginatorModule,
     SliderModule,
-    RatingModule,
     CardModule,
     GalleriaModule,
     StyleClassModule,

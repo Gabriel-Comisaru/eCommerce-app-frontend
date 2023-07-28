@@ -46,7 +46,7 @@
         <p>
           Estimated delivery time at the address 
           <a *ngIf="userAddresses.length > 0" style="color:coral; cursor: pointer;" routerLink="/user-details">
-            {{userAddresses[0].address}}, {{userAddresses[0].city}} - {{userAddresses[0].county}}
+            {{mainAddress.address}}, {{mainAddress.city}} - {{mainAddress.county}}
           </a>
            is 7 days after completing the order.
         </p>

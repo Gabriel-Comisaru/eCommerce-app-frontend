@@ -35,6 +35,9 @@ export class ProductDetailsComponent implements OnInit {
     localStorage.getItem('currentUser') || '{}'
   );
   userAddresses: UserAddress[] = [];
+  mainAddress: UserAddress = JSON.parse(
+    localStorage.getItem('mainAddress') || '{}'
+  );
   
   constructor(
     private productService: ProductsService,

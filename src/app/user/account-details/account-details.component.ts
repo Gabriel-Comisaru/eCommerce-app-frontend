@@ -16,6 +16,12 @@ export class AccountDetailsComponent implements OnInit{
     localStorage.getItem('currentUser') || '{}'
   );
 
+  userForm = this.fb.group({
+    username: ['', [Validators.required]],
+    email: ['', [Validators.required]],
+    password: ['', [Validators.required]]
+  })
+
   userAddresses: UserAddress[] = [];
 
   userAddressForm = this.fb.group({
@@ -28,9 +34,12 @@ export class AccountDetailsComponent implements OnInit{
   });
   counties: any = [];
   cities: any = [];
-  selectedAddress!: UserAddress;
+  selectedAddress: UserAddress = JSON.parse(
+    localStorage.getItem('mainAddressId') || '{}'
+  );
   header: string = '';
   visible: boolean = false;
+  addressLength = Object.entries(this.selectedAddress);
 
   constructor(
     private userService: UserService,
@@ -45,6 +54,9 @@ export class AccountDetailsComponent implements OnInit{
       this.userAddresses = addresses;
     });
     this.userAddressForm.controls.city.disable();
+
+    this.userForm.controls.username.setValue(this.loggedInUser.username!);
+    this.userForm.controls.email.setValue(this.loggedInUser.email!);
   }
 
   getCounties() {
@@ -60,7 +72,7 @@ export class AccountDetailsComponent implements OnInit{
       .getCities(this.userAddressForm.controls.county.value!)
       .subscribe((list: any) => {
         this.cities = list;        
-      });
+      });  
   }
 
   showDialog() {
@@ -69,7 +81,7 @@ export class AccountDetailsComponent implements OnInit{
   }
 
   submitAddress() {
-    const address: UserAddress = {
+    let address: UserAddress = {
       first_name: String(this.userAddressForm.controls.firstName.value),
       last_name: String(this.userAddressForm.controls.lastName.value),
       phone_number: String(this.userAddressForm.controls.phone.value),
@@ -80,7 +92,12 @@ export class AccountDetailsComponent implements OnInit{
 
     if (this.header === 'Add new address') {
       this.addressService.setAddress(address);
-      this.userAddresses.push(address);
+      setTimeout(() => {
+        this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
+          address = addresses[addresses.length-1];
+          this.userAddresses.push(address);
+        });
+      }, 1000);
       const message = "Address creation was successfull!";
       this.messageService.add({
         severity: 'success',
@@ -132,7 +149,21 @@ export class AccountDetailsComponent implements OnInit{
       this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
         this.userAddresses = addresses;
       });
-  });
-    
+    }); 
+  }
+
+  setMainAddress(selectedAddress: UserAddress) {
+    localStorage.setItem('mainAddress', JSON.stringify(selectedAddress));
+    localStorage.setItem('mainAddressId', `${selectedAddress.id}`);
+  }
+
+  editCredentials() {
+    const user: User = {
+      username: this.userForm.controls.username.value!,
+      email: this.userForm.controls.email.value!,
+      password: this.userForm.controls.password.value!
+    }
+    console.log(user);
+    // this.userService.updateUser(user.username!, user).subscribe();
   }
 }
