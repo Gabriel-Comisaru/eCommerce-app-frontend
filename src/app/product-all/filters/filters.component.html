@@ -11,7 +11,7 @@
   <div class="filter-item">
     <label for="priceRange">Price Range:</label>
     <div class="price-range-value">{{selectedPriceRange[0]}} - {{selectedPriceRange[1]}}</div>
-    <p-slider id="priceRange" [(ngModel)]="selectedPriceRange" [range]="true" [min]="0" [max]="1000" [step]="10"></p-slider>
+    <p-slider id="priceRange" [(ngModel)]="selectedPriceRange" [range]="true" [min]="0" [max]="300000" [step]="10"></p-slider>
   </div>
     <span class="p-buttonset">
       <button pButton pRipple label="Apply Filters" (click)="applyFilters()"></button>
