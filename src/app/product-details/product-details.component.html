@@ -24,7 +24,10 @@
         [containerStyle]="{ width: '50vw' }"
       >
         <ng-template pTemplate="item" let-image>
-          <img [src]="image" style="height: 500px; width: 50vw; object-fit: contain;" />
+          <img
+            [src]="image"
+            style="height: 500px; width: 50vw; object-fit: contain"
+          />
         </ng-template>
       </p-galleria>
     </div>
@@ -37,18 +40,29 @@
         [style]="{ width: '360px' }"
       >
         <p *ngIf="product.discountPercentage > 0">
-          <span class="text-red-700 font-bold text-2xl font-italic">$ {{ discountedPrice }} </span>
-          <span class="text-base font-bold"><s>$ {{ product.price }}</s></span>
+          <span class="text-red-700 font-bold text-2xl font-italic"
+            >$ {{ discountedPrice }}
+          </span>
+          <span class="text-base font-bold"
+            ><s>$ {{ product.price }}</s></span
+          >
         </p>
         <p *ngIf="product.discountPercentage === 0">
-          <span class="text-red-700 text-2xl font-bold font-italic">$ {{ product.price }}</span>
+          <span class="text-red-700 text-2xl font-bold font-italic"
+            >$ {{ product.price }}</span
+          >
         </p>
         <p>
-          Estimated delivery time at the address 
-          <a *ngIf="userAddresses.length > 0" style="color:coral; cursor: pointer;" routerLink="/user-details">
-            {{userAddresses[0].address}}, {{userAddresses[0].city}} - {{userAddresses[0].county}}
+          Estimated delivery time at the address
+          <a
+            *ngIf="userAddresses.length > 0"
+            style="color: coral; cursor: pointer"
+            routerLink="/user-details"
+          >
+            {{ userAddresses[0].address }}, {{ userAddresses[0].city }} -
+            {{ userAddresses[0].county }}
           </a>
-           is 7 days after completing the order.
+          is 7 days after completing the order.
         </p>
         <ng-template pTemplate="footer">
           <div class="justify-content-center">
@@ -58,6 +72,10 @@
               label="Add to cart"
               icon="pi pi-shopping-cart"
               (click)="addToCart(product)"
+              pTooltip="You need to be logged in."
+              [tooltipDisabled]="!isUserLoggedIn()"
+              tooltipPosition="top"
+              [disabled]="product.unitsInStock < 1 || isUserLoggedIn()"
             ></p-button>
             <p-button
               [style]="{ width: '100%', margin: '5px 0' }"
@@ -67,6 +85,10 @@
                 checkIfFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'
               "
               (click)="addToFavorite(product)"
+              pTooltip="You need to be logged in."
+              [tooltipDisabled]="!isUserLoggedIn()"
+              tooltipPosition="top"
+              [disabled]="isUserLoggedIn()"
             ></p-button>
             <p-button
               [style]="{ width: '100%', margin: '5px 0' }"
