@@ -53,7 +53,7 @@
         [styleClass]="
           product.unitsInStock === 0 ? 'p-button-danger' : 'p-button-info'
         "
-        [disabled]="isUserLoggedIn()"
+        [disabled]="product.unitsInStock < 1 || isUserLoggedIn()"
         pTooltip="You need to be logged in."
         [tooltipDisabled]="!isUserLoggedIn()"
         tooltipPosition="bottom"
