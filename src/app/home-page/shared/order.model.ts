@@ -11,6 +11,7 @@ export interface Order {
   userEmail: string;
   orderItems: number[];
   productNames:string[];
+  productIdsAndNames:string[]
 }
 
 export interface DetailedOrder {

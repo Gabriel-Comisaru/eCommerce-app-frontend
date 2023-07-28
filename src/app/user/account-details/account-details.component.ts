@@ -59,7 +59,7 @@ export class AccountDetailsComponent implements OnInit{
     this.addressService
       .getCities(this.userAddressForm.controls.county.value!)
       .subscribe((list: any) => {
-        this.cities = list;        
+        this.cities = list;
       });
   }
 
@@ -76,7 +76,7 @@ export class AccountDetailsComponent implements OnInit{
       address: String(this.userAddressForm.controls.address.value),
       county: String(this.userAddressForm.controls.county.value),
       city: String(this.userAddressForm.controls.city.value)
-    }
+    } as UserAddress
 
     if (this.header === 'Add new address') {
       this.addressService.setAddress(address);
@@ -102,7 +102,7 @@ export class AccountDetailsComponent implements OnInit{
         life: 4000,
       });
     }
-    this.cancel(); 
+    this.cancel();
   }
 
   editAddress(address: any) {
@@ -133,6 +133,6 @@ export class AccountDetailsComponent implements OnInit{
         this.userAddresses = addresses;
       });
   });
-    
+
   }
 }

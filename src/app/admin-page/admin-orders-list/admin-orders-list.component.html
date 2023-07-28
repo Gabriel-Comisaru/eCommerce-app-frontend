@@ -1,4 +1,16 @@
 <p-toast></p-toast>
+<p-menubar>
+<ng-template pTemplate="start">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input pInputText
+               type="text"
+               [(ngModel)]="searchTerm"
+               (ngModelChange)="this.searchTermUpdate.next($event)"
+               placeholder="Search"/>
+      </span>
+</ng-template>
+</p-menubar>
 <ng-template pTemplate="search"></ng-template>
 <p-table styleClass="p-datatable-sm"
          [pageLinks]="numberOfPages"

@@ -36,6 +36,11 @@ export class ProductsService {
     return this.httpClient.get<any>(url);
   }
 
+  getSearchedOrders(name: string): Observable<any> {
+    const url = `${this.ordersUrl}?user=${name}`;
+    return this.httpClient.get<any>(url);
+  }
+
   getShopingCartObservable(): Observable<{
     basketOrderItems?: OrderItem[];
   }> {
