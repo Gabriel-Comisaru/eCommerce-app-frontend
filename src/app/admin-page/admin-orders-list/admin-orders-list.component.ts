@@ -34,6 +34,7 @@ export class AdminOrdersListComponent {
     this.loading = true;
     this.service.getOrders(this.pageNumber, this.row)
       .subscribe(item => {
+        this.orders=item.orders;
         this.numberOfPages = item.numberOfPages;
         this.totalRecords = item.numberOfItems;
         this.orders.forEach(item => {
