@@ -24,7 +24,10 @@
         [containerStyle]="{ width: '50vw' }"
       >
         <ng-template pTemplate="item" let-image>
-          <img [src]="image" style="height: 500px; width: 50vw; object-fit: contain;" />
+          <img
+            [src]="image"
+            style="height: 500px; width: 50vw; object-fit: contain"
+          />
         </ng-template>
       </p-galleria>
     </div>
@@ -58,6 +61,10 @@
               label="Add to cart"
               icon="pi pi-shopping-cart"
               (click)="addToCart(product)"
+              pTooltip="You need to be logged in."
+              [tooltipDisabled]="!isUserLoggedIn()"
+              tooltipPosition="top"
+              [disabled]="isUserLoggedIn()"
             ></p-button>
             <p-button
               [style]="{ width: '100%', margin: '5px 0' }"
@@ -67,6 +74,10 @@
                 checkIfFavorite(product) ? 'pi pi-heart-fill' : 'pi pi-heart'
               "
               (click)="addToFavorite(product)"
+              pTooltip="You need to be logged in."
+              [tooltipDisabled]="!isUserLoggedIn()"
+              tooltipPosition="top"
+              [disabled]="isUserLoggedIn()"
             ></p-button>
             <p-button
               [style]="{ width: '100%', margin: '5px 0' }"

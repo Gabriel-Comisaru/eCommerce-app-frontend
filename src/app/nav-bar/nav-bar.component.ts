@@ -161,7 +161,13 @@ export class NavBarComponent {
 
   gotToFavoritesPage() {
     this.favoriteItemsOverlay.hide();
-    return this.router.navigate(['my-favorites']);
+
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['my-favorites']);
+    } else {
+      this.router.navigate(['login']);
+    }
+    this.shoppingCartOverlay.hide();
   }
   getProductImage(productImage: string) {
     return `${BASE_URL_API}/images/download?name=${productImage}`;

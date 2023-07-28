@@ -4,7 +4,7 @@
   z-index: 99;
   width: 100%;
 }
-::ng-deep.p-menuitem-text {
+:host ::ng-deep.p-menuitem-text {
   white-space: nowrap;
 }
 .logo {
@@ -84,7 +84,7 @@
   padding-left: 0.5rem;
 }
 
-::ng-deep .p-overlaypanel .p-overlaypanel-content {
+:host ::ng-deep .p-overlaypanel .p-overlaypanel-content {
   padding: 0;
 }
 
@@ -135,7 +135,8 @@
   align-items: center;
 }
 
-::ng-deep
+:host
+  ::ng-deep
   .p-menubar-root-list
   > .p-menuitem-active
   > p-menubarsub
@@ -156,16 +157,16 @@
   width: 8rem;
 }
 
-::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+.overlay ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
   border: transparent;
 }
-::ng-deep .p-datatable .p-datatable-thead > tr > th {
+.overlay ::ng-deep .p-datatable .p-datatable-thead > tr > th {
   border: transparent;
 }
-::ng-deep .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
+.overlay ::ng-deep .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
   flex-grow: 1;
 }
-::ng-deep .p-icon-wrapper {
+:host ::ng-deep .p-icon-wrapper {
   display: none;
 }
 @media screen and (max-width: 960px) {

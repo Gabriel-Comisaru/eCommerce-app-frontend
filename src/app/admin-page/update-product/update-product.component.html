@@ -1,34 +1,70 @@
 <div class="card flex justify-content-center">
-  <p-dialog [maximizable]="true"
-            (onHide)="onClose(uploadComponent)"
-            header="{{editModalFlag ? 'Edit product' : 'Add new product'}}"
-            [(visible)]="visible"
-            [style]="{width: '50vw'}"
-            [modal]="true">
-    <h1 *ngIf="editModalFlag">{{selectedProduct?.name}}</h1>
+  <p-dialog
+    [maximizable]="true"
+    (onHide)="onClose(uploadComponent)"
+    header="{{ editModalFlag ? 'Edit product' : 'Add new product' }}"
+    [(visible)]="visible"
+    [style]="{ width: '50vw' }"
+    [modal]="true"
+  >
+    <h1 *ngIf="editModalFlag">{{ selectedProduct?.name }}</h1>
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
       <div class="flex flex-column gap-2">
         <label htmlFor="title" class="block font-bold mb-2">Title*</label>
-        <input pInputText id="title" formControlName="name"/>
-        <p class="error" *ngIf="productForm.controls.name.hasError('required') && productForm.controls.name.dirty">Name
-          required*
+        <input pInputText id="title" formControlName="name" />
+        <p
+          class="error"
+          *ngIf="
+            productForm.controls.name.hasError('required') &&
+            productForm.controls.name.dirty
+          "
+        >
+          Name required*
         </p>
-        <p class="error" *ngIf="productForm.controls.name.hasError('minlength') && productForm.controls.name.dirty">Name
-          must have minimum 3 characters*
+        <p
+          class="error"
+          *ngIf="
+            productForm.controls.name.hasError('minlength') &&
+            productForm.controls.name.dirty
+          "
+        >
+          Name must have minimum 3 characters*
         </p>
         <label class="block font-bold mb-2">Category*</label>
-        <p-dropdown *ngIf="editModalFlag" formControlName="categoryId" optionValue="name"
-                    placeholder="Select a category"
-                    [options]="categoriesList" optionLabel="name"></p-dropdown>
-        <p-dropdown *ngIf="!editModalFlag" formControlName="categoryId" optionValue="id" placeholder="Select a category"
-                    [options]="categoriesList" optionLabel="name"></p-dropdown>
-        <p class="error" *ngIf="productForm.controls.categoryId.hasError('required')
-          && productForm.controls.categoryId.touched">Please select a category*
+        <p-dropdown
+          *ngIf="editModalFlag"
+          formControlName="categoryId"
+          optionValue="name"
+          placeholder="Select a category"
+          [options]="categoriesList"
+          optionLabel="name"
+        ></p-dropdown>
+        <p-dropdown
+          *ngIf="!editModalFlag"
+          formControlName="categoryId"
+          optionValue="id"
+          placeholder="Select a category"
+          [options]="categoriesList"
+          optionLabel="name"
+        ></p-dropdown>
+        <p
+          class="error"
+          *ngIf="
+            productForm.controls.categoryId.hasError('required') &&
+            productForm.controls.categoryId.touched
+          "
+        >
+          Please select a category*
         </p>
         <label htmlFor="price" class="block font-bold mb-2">Price*</label>
-        <input pInputText [style]="{width: '100%'}"
-               formControlName="price"/>
-        <p class="error" *ngIf="productForm.controls.price.hasError('required') && productForm.controls.price.dirty">
+        <input pInputText [style]="{ width: '100%' }" formControlName="price" />
+        <p
+          class="error"
+          *ngIf="
+            productForm.controls.price.hasError('required') &&
+            productForm.controls.price.dirty
+          "
+        >
           Price required*
         </p>
         <p class="error" *ngIf="productForm.controls.price.hasError('min')">
@@ -38,8 +74,19 @@
           Price must contain only numbers for delimiter use "."*
         </p>
         <label htmlFor="stock" class="block font-bold mb-2">Stock*</label>
-        <input pInputText [style]="{width: '100%'}" id="stock" formControlName="stock"/>
-        <p class="error" *ngIf="productForm.controls.stock.hasError('required') && productForm.controls.stock.dirty">
+        <input
+          pInputText
+          [style]="{ width: '100%' }"
+          id="stock"
+          formControlName="stock"
+        />
+        <p
+          class="error"
+          *ngIf="
+            productForm.controls.stock.hasError('required') &&
+            productForm.controls.stock.dirty
+          "
+        >
           Stock required*
         </p>
         <p class="error" *ngIf="productForm.controls.stock.hasError('min')">
@@ -48,13 +95,28 @@
         <p class="error" *ngIf="productForm.controls.stock.hasError('pattern')">
           Stock must contain only numbers*
         </p>
-        <label htmlFor="discount" class="block font-bold mb-2">Discount percentage*</label>
-        <input pInputText [style]="{width: '100%'}" id="discount" formControlName="discount"/>
-        <p class="error"
-           *ngIf="productForm.controls.discount.hasError('required') && productForm.controls.discount.dirty">
+        <label htmlFor="discount" class="block font-bold mb-2"
+          >Discount percentage*</label
+        >
+        <input
+          pInputText
+          [style]="{ width: '100%' }"
+          id="discount"
+          formControlName="discount"
+        />
+        <p
+          class="error"
+          *ngIf="
+            productForm.controls.discount.hasError('required') &&
+            productForm.controls.discount.dirty
+          "
+        >
           Discount required*
         </p>
-        <p class="error" *ngIf="productForm.controls.discount.hasError('pattern')">
+        <p
+          class="error"
+          *ngIf="productForm.controls.discount.hasError('pattern')"
+        >
           Stock must contain only numbers*
         </p>
         <p class="error" *ngIf="productForm.controls.discount.hasError('min')">
@@ -63,49 +125,99 @@
         <p class="error" *ngIf="productForm.controls.discount.hasError('max')">
           Maximum discount allowed is 100*
         </p>
-        <label htmlFor="description" class="block font-bold mb-2">Description*</label>
-        <textarea pInputTextarea rows="5" cols="30" id="description" formControlName="description"></textarea>
-        <p class="error"
-           *ngIf="productForm.controls.description.hasError('required') && productForm.controls.description.dirty">
+        <label htmlFor="description" class="block font-bold mb-2"
+          >Description*</label
+        >
+        <textarea
+          pInputTextarea
+          rows="5"
+          cols="30"
+          id="description"
+          formControlName="description"
+        ></textarea>
+        <p
+          class="error"
+          *ngIf="
+            productForm.controls.description.hasError('required') &&
+            productForm.controls.description.dirty
+          "
+        >
           Description required*
         </p>
         <div class="card flex flex-row">
-          <p-progressSpinner styleClass="w-3rem h-3rem" *ngIf='spinnerLoading'></p-progressSpinner>
-          <p-fileUpload #uploadComponent
-                        mode="basic"
-                        [showUploadButton]="false"
-                        [showCancelButton]="false"
-                        chooseLabel="Choose"
-                        accept="image/*"
-                        (onSelect)="onFileChanged($event,uploadComponent,selectedProduct?.id)">
+          <p-progressSpinner
+            styleClass="w-3rem h-3rem"
+            *ngIf="spinnerLoading"
+          ></p-progressSpinner>
+          <p-fileUpload
+            #uploadComponent
+            mode="basic"
+            [showUploadButton]="false"
+            [showCancelButton]="false"
+            chooseLabel="Choose"
+            accept="image/*"
+            (onSelect)="
+              onFileChanged($event, uploadComponent, selectedProduct?.id)
+            "
+          >
           </p-fileUpload>
         </div>
         <p *ngIf="showImageError" class="error">Image required*</p>
 
-        <div class="card flex flex-wrap justify-content-center justify-content-evenly align-content-evenly">
+        <div
+          class="card flex flex-wrap justify-content-center justify-content-evenly align-content-evenly"
+        >
           <div class="div-1" *ngFor="let item of imagesList">
-            <p-image src="http://34.132.132.163:8081/api/images/download?name={{item}}"
-                     alt="{{item}}" width="150" height="150">
+            <p-image
+              src="http://34.132.132.163:8081/api/images/download?name={{
+                item
+              }}"
+              alt="{{ item }}"
+              width="150"
+              height="150"
+            >
             </p-image>
             <div class="div-2">
-              <p-button class="imageButton" styleClass="p-button-text p-button-danger" [disabled]="ifPressed"
-                        (click)="deleteImage(item)" icon="pi pi-trash"></p-button>
+              <p-button
+                class="imageButton"
+                styleClass="p-button-text p-button-danger"
+                [disabled]="ifPressed"
+                (click)="deleteImage(item)"
+                icon="pi pi-trash"
+              ></p-button>
             </div>
           </div>
           <p-toast></p-toast>
-
         </div>
       </div>
       <div class="card mt-2 flex flex-wrap gap-3 justify-content-center">
-        <p-button [ngClass]="{'disabled':!productForm.valid}" [disabled]="!productForm.valid || !productForm.dirty"
-                  [loading]="loading"
-                  *ngIf="editModalFlag" type="submit" icon="pi pi-check"
-                  label="Update" styleClass="p-button-primary p-button-primary"></p-button>
-        <p-button [disabled]="!productForm.valid" *ngIf="!editModalFlag" [loading]="loading" type="submit"
-                  icon="pi pi-check"
-                  label="Add" styleClass="p-button-primary p-button-primary"></p-button>
-        <p-button (click)="onClose(uploadComponent)" icon="pi pi-times" label="Cancel"
-                  styleClass="p-button-text p-button-danger"></p-button>
+        <p-button
+          [ngClass]="{ disabled: !productForm.valid }"
+          [disabled]="!productForm.valid || !productForm.dirty"
+          [loading]="loading"
+          *ngIf="editModalFlag"
+          type="submit"
+          icon="pi pi-check"
+          label="Update"
+          styleClass="p-button-primary p-button-primary"
+          class="updateButton"
+        ></p-button>
+        <p-button
+          [disabled]="!productForm.valid"
+          *ngIf="!editModalFlag"
+          [loading]="loading"
+          type="submit"
+          icon="pi pi-check"
+          label="Add"
+          styleClass="p-button-primary p-button-primary"
+          class="updateButton"
+        ></p-button>
+        <p-button
+          (click)="onClose(uploadComponent)"
+          icon="pi pi-times"
+          label="Cancel"
+          styleClass="p-button-text p-button-danger"
+        ></p-button>
       </div>
     </form>
   </p-dialog>

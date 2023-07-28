@@ -134,4 +134,7 @@ export class ProductDetailsComponent implements OnInit {
   checkIfFavorite(product: Product) {
     return this.favoriteItems.some((el) => el.id === product.id);
   }
+  isUserLoggedIn() {
+    return !localStorage.getItem('currentUser');
+  }
 }
