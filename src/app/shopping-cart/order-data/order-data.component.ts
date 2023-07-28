@@ -93,7 +93,7 @@ export class OrderDataComponent implements OnInit {
     this.userAddressForm.controls.city.disable();
     this.addressService.getUserAddresses(this.loggedInUser.id!).subscribe(addresses => {
       this.userAddresses = addresses;
-    
+
     });
   }
 
