@@ -1,23 +1,35 @@
 <header class="header"></header>
 <main>
-  <app-products-list-carousel
-    [mockProductsList]="mockProductsList"
-  ></app-products-list-carousel>
+  <ng-container *ngFor="let section of listOfSections; let i = index">
+    <ng-container
+      *ngIf="section.condition !== undefined ? section.condition : true"
+    >
+      <section>
+        <div class="titles">
+          <h2 class="mt-1 ml-7">{{ sectionsName[i] }}</h2>
+          <p-button
+            class="mt-2 mr-6"
+            label="View more"
+            styleClass="p-button-link"
+            (onClick)="goToAllProductsPage()"
+          ></p-button>
+        </div>
+        <app-products-list-carousel
+          [productsToDisplay]="section.list"
+        ></app-products-list-carousel></section
+    ></ng-container>
+  </ng-container>
 
-  <section>
-    <h2>Hottest Products</h2>
-  </section>
-
-  <section>
-    <h2>Discounted Products</h2>
-  </section>
-
-  <!-- if logged in - recommended for you products -->
-  <section>
-    <h2>Recommended for you</h2>
-  </section>
+  <ng-container *ngFor="let section of sectionsName">
+    <div class="titles" *ngIf="dataIsLoading">
+      <h2 class="ml-7">{{ section }}</h2>
+      <p-button
+        class="mr-6"
+        label="View more"
+        styleClass="p-button-link"
+        (onClick)="goToAllProductsPage()"
+      ></p-button>
+    </div>
+    <app-skeleton [dataIsLoading]="dataIsLoading"> </app-skeleton>
+  </ng-container>
 </main>
-
-<footer>
-  <!-- copyright info -->
-</footer>

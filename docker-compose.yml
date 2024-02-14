@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+          NG_APP_API_URL: 'http://34.132.132.163:8081'
+          NG_APP_APP_HOST: 'http://34.132.132.163:4200'
+    ports:
+      - '4200:80'

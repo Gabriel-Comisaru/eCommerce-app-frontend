@@ -1,0 +1,22 @@
+.actions {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  text-align: center;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-tfoot > tr > td {
+  text-align: center;
+}
+
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th,
+:host ::ng-deep .p-datatable .p-datatable-tfoot > tr > td {
+  background-color: whitesmoke;
+  border: transparent;
+}
+:host ::ng-deep .p-card .p-card-body {
+  padding: 0;
+}

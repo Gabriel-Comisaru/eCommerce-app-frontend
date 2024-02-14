@@ -1,0 +1,125 @@
+<div class="w-6 xl:w-8 lg:w-8 md:w-10 sm:w-full mx-auto my-8">
+    <div class="card my-4 flex justify-content-center">
+        <h1 class="title">ACCOUNT DETAILS</h1>
+    </div>
+    <div class="flex justify-content-center">
+        <p-card
+            class="my-auto flex justify-content-center"
+            header="{{loggedInUser.firstName}} {{loggedInUser.lastName}}"
+            subheader="{{loggedInUser.username}}"
+            [style]="{ width: '800px' }"
+        >
+            <p-divider></p-divider>
+            <h2>Account credentials</h2>
+            <p>You can change your credentials below:</p><br>
+            <form class="mb-4" [formGroup]="userForm" (ngSubmit)="editCredentials()">
+                <label for="username">Username:</label>
+                <input
+                    pInputText
+                    class="w-full max-w-full mb-2"
+                    name="username"
+                    type="text"
+                    formControlName="username"
+                />
+                <label for="email">Email:</label>
+                <input
+                    pInputText
+                    class="w-full max-w-full mb-2"
+                    name="email"
+                    type="text"
+                    formControlName="email"
+                />
+                <label for="password">Password:</label>
+                <input
+                    pInputText
+                    class="w-full max-w-full mb-4"
+                    name="password"
+                    type="password"
+                    formControlName="password"
+                />
+                <p-button type="submit" [disabled]="!userForm.valid || !userForm.dirty">Confirm</p-button>
+            </form>
+            <p-divider></p-divider>
+            <h2>Delivery address:</h2> <br>
+            <p><em>Pro tip: you can choose your main address right here. Just select the preferred address.</em></p>
+            <p *ngIf="userAddresses.length === 0"><em>You did not set your address yet. Set it up now for an easier checkout process!</em></p>
+            <div *ngFor="let address of userAddresses" class="surface-card shadow-none clientDeets">
+                <div class="checkbox pt-3">
+                  <p-radioButton name="address{{address.id}}" value="{{address.id}}" [(ngModel)]="selectedAddress" (click)="setMainAddress(address)"></p-radioButton>
+                </div>
+                <p-divider layout="vertical"></p-divider>
+                <div class="detailsContainer pt-2">
+                  <button pButton pRipple
+                          (click)="deleteAddress(address)"
+                          class="p-button-outlined p-button-sm editBtn p-button-danger" icon="pi pi-trash"></button>
+                  <button pButton pRipple label="Edit"
+                          (click)="editAddress(address)"
+                          class="p-button-outlined p-button-sm editBtn"></button>
+                  <div class=""> {{ address.first_name }} {{ address.last_name }} - {{ address.phone_number }}</div>
+                  <div class="">{{ address.address }} - {{ address.county }} - {{ address.city }}</div>
+                </div>
+            </div>
+            <div class="flex justify-between mt-5">
+                <p-button (click)="showDialog()" icon="pi pi-plus" styleClass="p-button-outlined p-button-sm ml-2"
+                        label="New Address"></p-button>
+            </div>
+        </p-card>
+    </div>
+</div>
+
+
+<p-dialog header="{{ header }}" [(visible)]="visible" [style]="{width: 'auto'}">
+    <div>
+      <h3>Contact Details</h3>
+      <form [formGroup]="userAddressForm" (ngSubmit)="submitAddress()">
+        <div class="userDetails">
+          <div class="mr-3 userName">
+            <label for="firstName" class="block  w-full font-medium mb-2">First Name</label>
+            <input id="firstName" type="text" placeholder="eg. John" pInputText class="w-full mb-3 br-3"
+                   formControlName="firstName">
+            <label for="lastName" class="block  w-full font-medium mb-2">Last Name</label>
+            <input id="lastName" type="text" placeholder="eg. Doe" pInputText class="w-full mb-3 br-3"
+                   formControlName="lastName">
+          </div>
+          <div class="userPhone">
+            <label for="phone" class="block font-medium mb-2">Phone number</label>
+            <input id="phone" type="text" placeholder="eg. 0123123123" pInputText class="w-full mb-3"
+                   formControlName="phone">
+          </div>
+        </div>
+        <p-divider></p-divider>
+        <h3>Delivery Address</h3>
+        <div class="deliveryDetails">
+          <div class="countyCity flex-auto">
+  
+            <div class="mr-3 county">
+              <label for="county" class="block font-medium mb-2">County</label>
+              <p-dropdown id="county" optionValue="auto" placeholder="Select a County"
+                          [options]="counties" optionLabel="nume" formControlName="county"
+                          (onChange)="getCities()" styleClass="mb-2"></p-dropdown>
+            </div>
+            <div class="mr-3 city">
+              <label for="city" class="block font-medium mb-2">City</label>
+              <p-dropdown id="city" optionValue="nume" placeholder="Select a City"
+                          [options]="cities" optionLabel="nume" styleClass="mb-2"
+                          formControlName="city"
+                          [dropdownIcon]="'pi pi-chevron-down'"
+              ></p-dropdown>
+            </div>
+          </div>
+          <div class="mr-3 Address">
+            <label for="address" class="block font-medium mb-2">Address</label>
+            <input id="address" type="text" placeholder="eg. 1234 Main St" pInputText class="w-full mb-3"
+                   formControlName="address"
+            >
+          </div>
+  
+        </div>
+        <div class="flex">
+          <button pButton pRipple label="{{ header }}" [disabled]="!userAddressForm.valid" class="w-full p-button-outlined"></button>
+          <button pButton pRipple label="Cancel" (click)="cancel(); $event.preventDefault()"
+                  class="w-full p-button-danger p-button-text"></button>
+        </div>
+      </form>
+    </div>
+  </p-dialog>

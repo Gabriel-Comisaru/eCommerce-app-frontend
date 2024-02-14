@@ -1,10 +1,23 @@
+import { AdminProductListComponent } from './admin-page/admin-product-list.component';
+import { AdminOrdersListComponent } from './admin-page/admin-orders-list/admin-orders-list.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
-import {ProductAllComponent} from "./product-all/product-all.component";
-import {ProductCategoriesComponent} from "./product-categories/product-categories.component";
-import {BasketpageComponent} from "./shopping-cart/basketpage/basketpage.component";
-import {AdminPageComponent} from "./admin-page/admin-page.component";
+import { ProductAllComponent } from './product-all/product-all.component';
+import { ProductCategoriesComponent } from './product-categories/product-categories.component';
+import { BasketpageComponent } from './shopping-cart/basketpage/basketpage.component';
+import { AdminPageComponent } from './admin-page/admin-page/admin-page.component';
+import { ProductDetailsComponent } from './product-details/product-details.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { AuthGuard } from './services/auth.guard';
+import { AlreadyLoggedGuard } from './services/already-logged.guard';
+import { AccountDetailsComponent } from './user/account-details/account-details.component';
+import { OrderDataComponent } from './shopping-cart/order-data/order-data.component';
+import { OrderSummaryComponent } from './shopping-cart/order-summary/order-summary.component';
+import { UserOrdersPageComponent } from './user/user-orders-page/user-orders-page.component';
+import { UserOrderDetailsComponent } from './user/user-order-details/user-order-details.component';
+import { FavoriteProductsPageComponent } from './shopping-cart/favorite-products-page/favorite-products-page.component';
 
 const routes: Routes = [
   {
@@ -12,8 +25,31 @@ const routes: Routes = [
     component: HomePageComponent,
   },
   {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [AlreadyLoggedGuard],
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [AlreadyLoggedGuard],
+  },
+  {
     path: 'admin',
     component: AdminPageComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'products',
+        component: AdminProductListComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'orders',
+        component: AdminOrdersListComponent,
+        canActivate: [AuthGuard],
+      },
+    ],
   },
   {
     path: 'products',
@@ -25,14 +61,43 @@ const routes: Routes = [
   },
   {
     path: 'products/:category',
-    component: ProductAllComponent
+    component: ProductAllComponent,
   },
   {
     path: 'basket',
-    component: BasketpageComponent
-  }
-];
+    component: BasketpageComponent,
+    canActivate: [AuthGuard],
+  },
 
+  {
+    path: 'product-details/:id',
+    component: ProductDetailsComponent,
+  },
+  {
+    path: 'order-data',
+    component: OrderDataComponent,
+  },
+  {
+    path: 'user-details',
+    component: AccountDetailsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'order-summary',
+    component: OrderSummaryComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'my-orders',
+    component: UserOrdersPageComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'my-favorites',
+    component: FavoriteProductsPageComponent,
+    canActivate: [AuthGuard],
+  },
+];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],

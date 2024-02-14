@@ -1,0 +1,41 @@
+.ordersListContainer {
+  background-color: whitesmoke;
+  padding: 1rem 0;
+  margin-top: 2.5rem;
+  border-radius: 0.5rem;
+  min-width: fit-content;
+}
+
+.orderContainer {
+  margin: 2rem 5rem;
+  width: 50rem;
+}
+:host .order ::ng-deep .p-card {
+  background-color: white;
+  height: min-content;
+
+  min-width: min-content;
+}
+
+.dataParagraph {
+  margin: 0;
+}
+
+:host .order ::ng-deep .p-card-content {
+  padding: 0;
+}
+
+.controls {
+  margin-left: 5rem;
+}
+
+:host ::ng-deep .p-button-label {
+  min-width: 5rem;
+}
+
+.order {
+  position: relative;
+}
+
+:host ::ng-deep .p-divider {
+}

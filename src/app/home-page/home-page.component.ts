@@ -1,33 +1,57 @@
 import { Component } from '@angular/core';
+import { ProductsService } from './shared/products.service';
+import { Product } from './shared/product.model';
+import { AuthService } from '../services/auth.service';
+import { combineLatest } from 'rxjs';
+import { Router } from '@angular/router';
+import { UserService } from '../services/user.service';
 
-import { MockProductsService } from './shared/mock-products.service';
-import { MockProductDetailed } from './shared/mockProduct.model';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent {
-  public mockProductsList!: MockProductDetailed[];
+  public isLoggedIn: boolean = this.authService.isAuthenticated();
+  public dataIsLoading: boolean = true;
+  public sectionsName: string[] = [
+    'Recommended for you',
+    'Discounted products',
+    'Hottest products',
+  ];
+  public listOfSections: {
+    list: Product[];
+    condition?: boolean;
+  }[] = [];
+  constructor(
+    private productsService: ProductsService,
+    private authService: AuthService,
+    private router: Router,
+    private userService: UserService
+  ) {}
 
-  constructor(private mockProductsService: MockProductsService) {}
   ngOnInit() {
-    // getting mock list of products and mapping it according to my interface
-    this.mockProductsService.getMockProducts().subscribe((list) => {
-      this.mockProductsList = list.products.map((product: any) => {
-        return {
-          id: product.id,
-          name: product.title,
-          photos: product.images,
-          price: product.price,
-          rating: product.rating,
-          reviews: ['No reviews available'],
-          discount: product.discount,
-          category: product.category,
-          description: product.description,
-          stock: product.stock,
-        };
-      });
+    combineLatest(
+      this.productsService.getProducts(),
+      this.productsService.getAllReviews(),
+      this.productsService.getDiscountedProducts(),
+      this.productsService.getMostSelledProducts()
+    ).subscribe((res) => {
+      const [list, reviews, discountedProducts, mostSelledProducts] = res;
+
+      this.listOfSections = [
+        {
+          list: list,
+          condition: this.isLoggedIn,
+        },
+        { list: discountedProducts },
+        { list: mostSelledProducts },
+      ];
+      this.dataIsLoading = false;
     });
+  }
+
+  goToAllProductsPage() {
+    return this.router.navigate(['/products']);
   }
 }

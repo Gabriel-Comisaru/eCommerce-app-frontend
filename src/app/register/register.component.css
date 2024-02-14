@@ -1,0 +1,17 @@
+.errorMessage {
+  margin: 0;
+}
+
+.formSections {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.formSections .checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}

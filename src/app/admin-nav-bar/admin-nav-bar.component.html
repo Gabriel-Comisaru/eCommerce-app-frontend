@@ -1,0 +1,9 @@
+<p-menubar>
+  <ng-template pTemplate="start">
+    <p>Welcome back, <span style="font-weight: bold">{{username}}</span></p>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <p-button label="Log out" styleClass="p-button-text" (onClick)="logOut()"></p-button>
+    <p-button label="Preview" styleClass="p-button-text" icon="pi pi-external-link" routerLink=""></p-button>
+  </ng-template>
+</p-menubar>

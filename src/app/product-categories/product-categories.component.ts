@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {MockProductModel} from "../product-all/shared/mock-product.model";
-import {MockProductsService} from "../product-all/shared/mock-products.service";
-import {Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CategoriesService } from './shared/categories.service';
+import { ProductsService } from '../home-page/shared/products.service';
+import { BASE_URL_API } from '../settings';
 
 @Component({
   selector: 'app-product-categories',
@@ -10,46 +11,50 @@ import {Router} from "@angular/router";
 })
 export class ProductCategoriesComponent implements OnInit {
 
-  public mockProducts: MockProductModel[] = [];
-  public categories: { category: string, image: string }[] = [];
+  public categories: any[] = [];
 
-
-  constructor(private productService: MockProductsService,
-              private router: Router) {}
+  constructor(
+    private productService: ProductsService,
+    private router: Router,
+    private categoryService: CategoriesService
+  ) {}
 
   ngOnInit(): void {
-    this.productService.getMockProducts().subscribe((list) => {
-      this.mockProducts = list.products.map((product: any) => {
-        return {
-          id: product.id,
-          name: product.title,
-          photos: product.images,
-          price: product.price,
-          reviews: ['Nothing yet'],
-          rating: product.rating,
-          discount: product.discount,
-          category: product.category,
-          description: product.description,
-          stock: product.stock,
-        };
-      });
-
-      this.generateCategoryImages();
-
-    });
+    this.loadData();
   }
-  generateCategoryImages(): void {
-    const categories = Array.from(new Set(this.mockProducts.map(product => product.category)));
 
-    this.categories = categories.map(category => {
-      const productsInCategory = this.mockProducts.filter(product => product.category === category);
-      const randomProduct = productsInCategory[Math.floor(Math.random() * productsInCategory.length)];
-
+  async loadData(): Promise<void> {
+    const list = await this.categoryService.getCategories().toPromise();
+    this.categories = await Promise.all(list.map(async (category: any) => {
+      const categoryId = category.id;
+      const categoryName = category.name;
+      const productNo = category.productIds.length;
+      const productIds = category.productIds;
+      const image = await this.getFirstProductImageUrl(productIds);
       return {
-        category: category,
-        image: randomProduct?.photos[0] || '' // Use the first image of the random product, or an empty string if no product found
+        categoryId,
+        categoryName,
+        productNo,
+        image
       };
-    });
+    }));
   }
 
+  async getFirstProductImageUrl(productIds: any): Promise<string | undefined> {
+    if (productIds && productIds.length > 0) {
+      const firstProductId = productIds[0];
+      const firstProduct = await this.productService.getProduct(firstProductId).toPromise();
+      if (firstProduct && firstProduct.imagesName && firstProduct.imagesName.length > 0) {
+        const imageName = firstProduct.imagesName[0];
+        const imageUrl = `${BASE_URL_API}/images/download?name=${imageName}`;
+        return imageUrl;
+      }
+    }
+
+    return undefined;
+  }
+
+  navigateToProducts(category: any): void {
+    this.router.navigate(['/products'], { queryParams: { categoryId: category } });
+  }
 }

@@ -1,0 +1,53 @@
+<div class="card flex justify-content-evenly container align-items-center">
+  <p-fieldset legend="Show details" [toggleable]="true" [collapsed]="true">
+    <p-table
+      styleClass="p-datatable-sm"
+      [value]="orderItems"
+      [tableStyle]="{ width: '40rem' }"
+      selectionMode="single"
+      [(selection)]="hoverProduct"
+    >
+      <ng-template pTemplate="body" let-product>
+        <tr class="productRow">
+          <td
+            class="imageContainer cursor-pointer"
+            (click)="goToProductPage(product.productId)"
+          >
+            <p-image
+              class="mx-2 shadow-2 border-round"
+              [src]="getProductImage(product.imageName)"
+              alt="Image"
+              width="50"
+            ></p-image>
+            <div class="productData">
+              <p class="font-bold text-900">
+                {{ product.productName }}
+              </p>
+              <p>{{ product.quantity }} pcs.</p>
+            </div>
+          </td>
+          <td class="productStock">
+            <app-product-status [product]="product"></app-product-status>
+          </td>
+          <td class="productPrice">
+            <span class="text-2xl font-semibold"
+              >{{ product.productPrice }} $</span
+            >
+            <button
+              *ngIf="orderStatus !== 'ACTIVE'"
+              pButton
+              label="Order again"
+              icon="pi pi-shopping-cart"
+              class="md:align-self-end p-button-square ml-3"
+              [disabled]="product.unitsInStock === 0"
+              (click)="orderAgain(product)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="footer" *ngIf="!orderItems.length">
+        <p class="text-lg">There are no orders.</p>
+      </ng-template>
+    </p-table>
+  </p-fieldset>
+</div>

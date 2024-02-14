@@ -1,0 +1,196 @@
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  width: 100%;
+}
+:host ::ng-deep.p-menuitem-text {
+  white-space: nowrap;
+}
+.logo {
+  margin-top: 0.35rem;
+}
+.navBar {
+  min-width: min-content;
+  /* new */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+}
+
+.navBarItem:last-child:hover {
+  background-color: transparent;
+}
+
+.navBarItem:last-child {
+  margin-right: 0;
+}
+.navControlsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.accountControls .navBarItem {
+  margin: 0.25rem 0.25rem;
+  padding: 0.5rem 0.5rem;
+  display: flex;
+  align-items: flex-end;
+}
+.accountControls .navBarItem i {
+  font-size: 1.5rem;
+  margin: 0 0.75rem;
+  color: #ee4f277e;
+}
+
+.accountControls .navBarItem:hover i {
+  color: #ee4f27;
+}
+
+.searchContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+  align-items: center;
+}
+
+.searchContainer .searchButton {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  border-radius: 0 6px 6px 0;
+  background-color: transparent;
+  border: transparent;
+  height: 2.5rem;
+}
+.searchContainer .searchButton:hover {
+  background-color: lightskyblue;
+  border: 1px solid gray;
+  border-left-color: transparent;
+}
+.searchContainer .searchButton i {
+  font-size: 1.5rem;
+  color: gray;
+}
+
+.searchInput {
+  height: 2.5rem;
+  width: 25vw;
+  min-width: 5rem;
+  border-radius: 0.5rem;
+  border: 1px solid gray;
+  padding-left: 0.5rem;
+}
+
+:host ::ng-deep .p-overlaypanel .p-overlaypanel-content {
+  padding: 0;
+}
+
+.overlay {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  width: 100%;
+}
+
+.contentRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentRow img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.contentRow td,
+.contentRow th {
+  margin: 0.25rem 1rem;
+}
+
+.contentRow td:first-child,
+.contentRow th:first-child {
+  width: 10rem;
+}
+.productName {
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  font-size: 0.75rem;
+}
+
+.productContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+
+:host
+  ::ng-deep
+  .p-menubar-root-list
+  > .p-menuitem-active
+  > p-menubarsub
+  > .p-submenu-list {
+  padding: 1.5rem;
+  width: min-content;
+  display: grid !important;
+  grid-template: 1fr/1fr 1fr 1fr;
+  align-items: center;
+}
+
+.navBarItem {
+  cursor: pointer;
+}
+
+.imagePlaceholder {
+  height: 3rem;
+  width: 8rem;
+}
+
+.overlay ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  border: transparent;
+}
+.overlay ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  border: transparent;
+}
+.overlay ::ng-deep .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
+  flex-grow: 1;
+}
+:host ::ng-deep .p-icon-wrapper {
+  display: none;
+}
+@media screen and (max-width: 960px) {
+  ::ng-deep .p-menubar .p-menubar-button {
+    display: none;
+  }
+  ::ng-deep .p-menubar {
+    position: inherit;
+  }
+  ::ng-deep .p-menubar .p-menubar-root-list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    position: unset;
+    padding: unset;
+    background: inherit;
+    border: unset;
+    box-shadow: unset;
+  }
+  .navProductControls::ng-deep
+    .p-menubar.p-component
+    p-menubarsub
+    .p-menubar-root-list
+    li:nth-child(2) {
+    margin-right: 0;
+  }
+}

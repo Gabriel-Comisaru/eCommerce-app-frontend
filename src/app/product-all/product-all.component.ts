@@ -1,8 +1,8 @@
-import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
-
-import { MockProductModel} from "./shared/mock-product.model";
-import { MockProductsService} from "./shared/mock-products.service";
-import {ActivatedRoute} from "@angular/router";
+import {Component, Input, OnInit} from '@angular/core';
+import {Product} from '../home-page/shared/product.model';
+import {ActivatedRoute, Router} from "@angular/router";
+import {ProductsService} from '../home-page/shared/products.service';
+import { BASE_URL_API } from '../settings';
 
 @Component({
   selector: 'app-product-all',
@@ -10,59 +10,70 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./product-all.component.css']
 })
 export class ProductAllComponent implements OnInit {
-  @Input () selectedCategory!: string;
-  public mockProducts: MockProductModel[] = [];
+  @Input () selectedCategory!: any;
+  loading: boolean = true;
+  public mockProducts: Product[] = [];
   public categories: any[] = [];
-  public placeholder: MockProductModel[] = [];
+  public placeholder: any = [];
+  public filteredList: any[] = [];
+  public totalRows: number = 0;
 
-
-  constructor(private productService: MockProductsService,
-              private route: ActivatedRoute) {}
+  constructor(private productService: ProductsService,
+              private route: ActivatedRoute,
+              private router: Router
+              ) {}
 
   ngOnInit(): void {
-    this.productService.getMockProducts().subscribe((list) => {
-      this.mockProducts = list.products.map((product: any) => {
+   this.loading = true;
+   this.loadProducts();
+  }
+  loadProducts(): void {
+    this.productService.getProducts().subscribe((list) => {
+      this.filteredList = list.map((item: any) => {
+        const url = `${BASE_URL_API}/images/download?name=${item.imagesName[0]}`;
         return {
-          id: product.id,
-          name: product.title,
-          photos: product.images,
-          price: product.price,
-          reviews: ['Nothing yet'],
-          rating: product.rating,
-          discount: product.discount,
-          category: product.category,
-          description: product.description,
-          stock: product.stock,
+          ...item,
+          productImage: url,
         };
       });
-      this.categories = Array.from(new Set(this.mockProducts.map(product => product.category)));
-      this.placeholder = this.mockProducts
-      this.route.paramMap.subscribe(params => {
-        const category = params.get('category');
-        if (category) {
-          this.selectedCategory = category;
-          this.applyFilters(this.selectedCategory);
-        }});
+
+      this.totalRows = this.filteredList.length;
+
+
+      this.placeholder = this.filteredList;
+      this.loading = false;
     });
-
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectedCategory']) {
-      this.applyFilters(this.selectedCategory);
-    }
   }
 
-  applyFilters(selectedCategory: string) {
-    this.selectedCategory = selectedCategory;
-    console.log('Selected Category:', this.selectedCategory);
-    if (this.selectedCategory) {
-      this.mockProducts = this.placeholder.filter((product: MockProductModel) => product.category === this.selectedCategory);
-      console.log(this.mockProducts);
+
+  applyFilters(filters: any): void {
+    const selectedCategoryId = filters.categoryId
+    const priceMin = filters.priceMin;
+    const priceMax = filters.priceMax;
+
+    if (selectedCategoryId) {
+      this.filteredList = this.placeholder.filter((product: Product) => product.categoryId == selectedCategoryId);
     } else {
-      console.log('No selected category');
+      this.filteredList = this.placeholder;
     }
+
+    if (priceMin>-1 && priceMax) {
+      this.filteredList = this.filteredList.filter((product: Product) => {
+        const price = product.price;
+        return price >= priceMin && price <= priceMax;
+      });
+    }
+    this.totalRows = this.filteredList.length;
   }
-  clearFilters(selectedCategory: string) {
-    this.mockProducts = this.placeholder
+
+  clearFilters(): void {
+    this.selectedCategory = null;
+    this.filteredList = this.placeholder;
+    this.totalRows = this.filteredList.length;
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: null
+    });
   }
 }

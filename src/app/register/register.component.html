@@ -1,0 +1,86 @@
+<form
+  (ngSubmit)="onSubmit()"
+  [formGroup]="registerForm"
+  class="flex justify-content-center"
+>
+  <div class="shadow-2 border-round w-full lg:w-6 my-6">
+    <p-panel header="Create new account">
+      <div
+        class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid"
+        style="margin: 10px 0px"
+      >
+        <div
+          class="ui-grid-row formSections mb-2"
+          *ngFor="let field of registerFormFields"
+        >
+          <ng-container
+            *ngIf="field.inputType === 'text' || field.inputType === 'password'"
+          >
+            <label
+              [for]="field.fieldName"
+              class="block text-900 font-medium mb-2 ml-2"
+              >{{ field.fieldName }}:</label
+            >
+            <div
+              class="w-full flex flex-row align-items-center justify-content-center"
+            >
+              <input
+                [id]="field.fieldName"
+                pInputText
+                [type]="field.inputType"
+                [formControlName]="field.controlName"
+                class="form-control w-full my-2"
+                [name]="field.controlName"
+                autocomplete="off"
+                [placeholder]="field.placeholder"
+              />
+              <i
+                *ngIf="getField(field.controlName)?.valid"
+                class="pi pi-check-circle ml-3"
+                style="color: darkgreen; font-size: 1.7rem"
+              ></i>
+            </div>
+            <div [hidden]="!getFieldValidity(field.controlName)">
+              <div
+                class="errors flex flex-row align-items-center my-1"
+                *ngFor="let error of field.errors | keyvalue"
+              >
+                <i
+                  class="pi pi-times"
+                  style="color: firebrick; font-size: 1.5rem"
+                ></i>
+                <p class="errorMessage ml-2" style="color: tomato">
+                  {{ field.fieldName }} {{ error.value }}
+                </p>
+              </div>
+            </div>
+          </ng-container>
+          <div *ngIf="field.inputType === 'checkbox'" class="checkbox">
+            <label
+              [for]="field.fieldName"
+              class="block text-900 font-medium ml-2 mr-4"
+              >{{ field.fieldName }}</label
+            >
+            <p-checkbox
+              class
+              [formControlName]="field.controlName"
+              value="ADMIN"
+              [inputId]="field.fieldName"
+            ></p-checkbox>
+          </div>
+        </div>
+
+        <div class="ui-grid-row mt-6">
+          <button
+            pButton
+            type="submit"
+            label="Sign up"
+            [disabled]="!registerForm.valid"
+            class="w-full"
+          ></button>
+        </div>
+      </div>
+    </p-panel>
+  </div>
+</form>
+<p-toast></p-toast>

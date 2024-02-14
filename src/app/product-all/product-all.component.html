@@ -1,14 +1,19 @@
-<div class="product-all">
+<div class="product-all mt-5">
   <div class="filters">
     <app-filters
-      [categories]="categories"
       (filtersApplied)="applyFilters($event)"
-      (filtersCleared)="clearFilters($event)"
+      (filtersCleared)="clearFilters()"
     ></app-filters>
   </div>
   <div class="product-list">
     <app-product-list
       [mockProduct]="mockProducts"
+      [filteredList]="filteredList"
+      [totalRows]="totalRows"
     ></app-product-list>
   </div>
+
+</div>
+<div *ngIf="loading" class="loading">
+  <div class="spinner"></div>
 </div>

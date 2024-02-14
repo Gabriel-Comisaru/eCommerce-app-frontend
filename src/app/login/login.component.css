@@ -1,0 +1,26 @@
+.login-form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4rem 0;
+}
+
+.error {
+  color: tomato;
+}
+
+.passwordContainer {
+  position: relative;
+  display: flex;
+
+  align-items: center;
+}
+.passwordIcon {
+  position: absolute;
+  right: 20px;
+}
+.form-control {
+  width: 100%;
+  padding-right: 50px;
+}

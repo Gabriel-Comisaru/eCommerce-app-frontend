@@ -1,80 +1,107 @@
 import { Component, OnInit } from '@angular/core';
-import { MockProductModel } from "../../product-all/shared/mock-product.model";
-import { BasketService } from "../shared/basket.service";
-import { MockProductDetailed } from "../../home-page/shared/mockProduct.model";
+import { BasketService } from '../shared/basket.service';
+import { ProductsService } from '../../home-page/shared/products.service';
+import { Item } from '../shared/item.model';
+import {Router} from "@angular/router";
+import {BasketModel} from "../shared/basket-model";
+import { BASE_URL_API } from 'src/app/settings';
 
 @Component({
   selector: 'app-basketpage',
   templateUrl: './basketpage.component.html',
-  styleUrls: ['./basketpage.component.css']
+  styleUrls: ['./basketpage.component.css'],
 })
 export class BasketpageComponent implements OnInit {
+  constructor(
+    private basketService: BasketService,
+    private productService: ProductsService,
+    private router: Router
+  ) {}
 
-  public basketItems: MockProductModel[] = [];
-  visible = false;
-  header = '';
-  products: Array<MockProductDetailed> = [];
-  public productQuantityMap: Map<string, number> = new Map<string, number>();
-
-  selectedProduct: any = [];
-  rows: any = [5, 10, 15];
-  row: any = 5;
-
-  constructor(private basketService: BasketService) { }
+  public products: any = [];
+  public orderItemProducts: any = [];
+  public orderedItems: BasketModel[] = [];
+  loading: boolean = true;
+  rows: number[] = [5, 10, 15];
+  row: number = 5;
+  public orderedItemsIds: number[] = [];
 
   ngOnInit(): void {
-    this.basketItems = this.basketService.getBasketItems();
-    console.log(this.basketItems);
-    this.updateProductQuantityMap();
+    this.loading = true;
+
+    this.basketService.getOrderedItems().subscribe((res) => {
+      this.orderedItems = res.map((item: any) => {
+        return {
+          ...item,
+          productImage: `${BASE_URL_API}/images/download?name=${item.imageName}`,
+        };
+      });
+      this.loading = false;
+    })
+
+    this.loading = false;
   }
 
-  deleteProduct(product: any, index: number, event: any) {
-    event.stopPropagation();
-    this.header = 'Delete';
-    this.selectedProduct = product;
+  loadData() {
+    this.loading = true;
+    this.basketService.getMyOrders().subscribe((res) => {
+      this.orderedItems = res.map((item: any) => {
+        return {
+          ...item,
+          productImage: `${BASE_URL_API}/images/download?name=${item.imageName}`,
+        };
+      })
+      this.loading = false;
+    });
 
-    if (index !== -1) {
-      this.basketService.deleteFromBasket(index);
-      this.updateProductQuantityMap();
-    }
   }
 
-  selectRows(event: any) {
-    this.row = +event.value;
+  deleteProduct(product: any, event: any) {
+    this.productService.deleteOrderItem(product.id).subscribe((res) => {
+      this.orderedItems = this.orderedItems.filter(
+        (item: any) => item.id !== product.id
+      );
+    });
   }
 
   checkout() {
     // Implement the checkout functionality here
+    this.orderedItemsIds = this.orderedItems.map((item: any) => item.id);
+    this.router.navigate(['/order-data'], { queryParams: { ids: this.orderedItems[0].orderId } });
   }
 
-  updateProductQuantityMap(): void {
-    this.productQuantityMap.clear();
-    this.basketItems.forEach((item) => {
-      const productName = item.name;
-      if (!this.productQuantityMap.has(productName)) {
-        const count = this.basketItems.filter((prod) => prod.name === productName).length;
-        this.productQuantityMap.set(productName, count);
-      }
-    });
+  increment(Item: Item) {
+    if(Item.unitsInStock >= Item.quantity) {
+      Item.quantity += 1;
+      this.productService.updateOrderQuantity(Item.id, Item.quantity);
+      this.updateProductQuantity(Item);
+    }
+
   }
 
-  getFirstIndex(product: any): number {
-    return this.basketItems.findIndex((item) => item.name === product.name);
+  decrement(Item: Item) {
+    if (Item.quantity > 1) {
+      Item.quantity -= 1;
+    } else if (Item.quantity === 1) {
+      this.deleteProduct(Item, null);
+    }
+    this.productService.updateOrderQuantity(Item.id, Item.quantity);
+    this.updateProductQuantity(Item);
   }
 
-  getQuantity(product: any): number {
-    return this.productQuantityMap.get(product.name) || 0;
-  }
-
-  isProductAvailable(product: any): boolean {
-    const firstIndex = this.getFirstIndex(product);
-    return firstIndex !== -1 && firstIndex === this.basketItems.indexOf(product);
-  }
-  getTotalPrice(): number {
+  getTotalPrice(): string {
     let totalPrice = 0;
-    this.basketItems.forEach((item) => {
-      totalPrice += item.price * this.getQuantity(item);
+    this.orderedItems.forEach((item: any) => {
+      totalPrice += item.productPrice * item.quantity;
     });
-    return totalPrice;
+    return totalPrice.toFixed(2);
+  }
+
+  getItemPrice(item: any) {
+    return (item.productPrice * item.quantity).toFixed(2);
+  }
+
+  updateProductQuantity(Item: any) {
+    this.productService.updateOrderQuantity(Item.id, Item.quantity).subscribe();
   }
 }

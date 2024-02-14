@@ -1,13 +1,11 @@
 <div class="categories-list">
-  <p-card *ngFor="let category of categories" [routerLink]="['/products', category.category]" class="category-card"
-
-  >
+  <p-card *ngFor="let category of categories" (click)="navigateToProducts(category.categoryId)" class="category-card" >
     <ng-template pTemplate="title">
-      {{ category.category }}
+      {{ category.categoryName }}
     </ng-template>
     <ng-template pTemplate="content">
       <div class="category-image">
-        <img [src]="category.image" alt="Category Image" class="fit-image">
+        <img src="{{category.image}}" alt="Image not available"  class="fit-image">
       </div>
     </ng-template>
   </p-card>
